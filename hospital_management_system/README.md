@@ -29,6 +29,35 @@ Studi independent Kampus Merdeka Altera Academy, materi akhir dari Alta yaitu pr
     - Package Dio
 
 
+## Architecture Structure
+
+ - Models
+
+    Aliran data atau arsitektur pengontrol dari tampilan model
+
+ - Providers
+
+    Menghandle busines logic / viewModels dari aplikasi ini
+
+ - Screen
+
+    Unit interface dan juga halaman dari aplikasi
+
+ - Services
+
+    Menghandle response dan request dari backend
+
+ - Utilities
+
+    Berisikan Common dan juga Constant yang dimana berfungsi sebagai penyimpanan suatu widget, package, atau tools tambahan yang sering dipanggil dan tanpa perlu perubahan. contohnya : 
+
+    - Menyimpan theme
+    - Menyimpan color
+    - Dialog
+    - Modal bottom sheet
+    - Navigation
+    - dll.
+
 Team : 
 - Naufal Ulwan
 - Rifki Amirul Hakim

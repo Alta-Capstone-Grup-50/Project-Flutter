@@ -9,6 +9,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp();
+    return const MaterialApp(
+      debugShowCheckedModeBanner: false,
+      title: 'Projek capstone alta kelompok 50',
+      home: null,
+    );
   }
 }
