@@ -37,3 +37,5 @@ Color shadeColor(Color color, double factor) => Color.fromRGBO(
     shadeValue(color.green, factor),
     shadeValue(color.blue, factor),
     1);
+
+final primaryColor = coloring(Palette.primary);

@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Projek capstone alta kelompok 50',
       home: null,
-      theme: ThemeData(primaryColor: coloring(Palette.primary)),
+      theme: ThemeData(primaryColor: primaryColor),
     );
   }
 }
