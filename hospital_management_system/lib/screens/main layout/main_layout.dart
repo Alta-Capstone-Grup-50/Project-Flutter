@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hospital_management_system/utilities/constants/color.dart';
+import 'package:hospital_management_system/utilities/constants/responsive.dart';
 
 class MainLayout extends StatelessWidget {
   const MainLayout({Key? key, required this.action, required this.child})
@@ -7,81 +10,75 @@ class MainLayout extends StatelessWidget {
   final bool action;
   final Widget child;
 
+  final String assetLogo = 'assets/icons/logo.png';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              color: ThemeData().primaryColor,
-              height: 103,
-              width: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Responsive.isDesktop(context) ||
+                Responsive.isTablet(context) &&
+                    MediaQuery.of(context).orientation == Orientation.landscape
+            ? Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Container(
-                    width: 99,
-                    height: 25,
-                    margin: const EdgeInsets.only(left: 70),
-                    child: const Text(
-                      'Logo Klinik',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  action == true
-                      ? Container(
-                          padding: const EdgeInsets.only(right: 60),
-                          child: Row(
-                            children: [
-                              const Text(
-                                'Manage Account',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w700),
-                              ),
-                              const SizedBox(
-                                width: 43,
-                              ),
-                              SizedBox(
-                                width: 100,
-                                height: 60,
-                                child: Card(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceEvenly,
-                                    children: const [
-                                      CircleAvatar(
-                                        backgroundColor: Colors.black,
-                                        radius: 16,
-                                        child: Icon(
-                                          Icons.person,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Icon(Icons.keyboard_arrow_down),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        )
-                      : const SizedBox.shrink(),
+                  appBar(context),
+                  child,
                 ],
+              )
+            : const Center(
+                child: Text(
+                  'Not Support :(',
+                  style: TextStyle(
+                      fontSize: 30,
+                      fontFamily: 'OpenSans',
+                      fontWeight: FontWeight.w700),
+                ),
               ),
-            ),
-            child
+      ),
+    );
+  }
+
+  Widget appBar(BuildContext context) {
+    return Material(
+      elevation: 5,
+      child: Container(
+        constraints: const BoxConstraints(maxWidth: maxWidth),
+        height: AppBar().preferredSize.height * 1.3,
+        width: double.infinity,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Padding(
+                padding: const EdgeInsets.only(left: 70, top: 5),
+                child: Image(
+                  width: 150,
+                  image: AssetImage(assetLogo),
+                )),
+            action == true
+                ? Container(
+                    padding: const EdgeInsets.only(right: 60),
+                    child: MaterialButton(
+                      highlightElevation: 0,
+                      focusElevation: 0,
+                      elevation: 0,
+                      height: 50,
+                      minWidth: maxWidth / 9.5,
+                      color: primaryColor,
+                      textColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(11)),
+                      onPressed: () {},
+                      child: const Text(
+                        "Manage Account",
+                        style: TextStyle(
+                          fontFamily: "Open Sans",
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ),
+                  )
+                : const SizedBox.shrink(),
           ],
         ),
       ),

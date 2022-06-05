@@ -9,91 +9,51 @@ class DialogAlert extends StatelessWidget {
   final bool isSuccess;
   String label;
 
+  final String assetSuccess = 'assets/icons/success.svg';
+  final String assetFailed = 'assets/icons/failed.svg';
+
   @override
   Widget build(BuildContext context) {
-    if (isSuccess == true) {
-      return AlertDialog(
-        content: Stack(
-          children: [
-            Positioned(
-              right: -5,
-              top: -5,
-              child: InkResponse(
-                radius: 25,
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Icon(Icons.close),
-              ),
+    return AlertDialog(
+      content: Stack(
+        children: [
+          Positioned(
+            right: -5,
+            top: -5,
+            child: InkResponse(
+              radius: 25,
+              onTap: () {
+                Navigator.of(context).pop();
+              },
+              child: const Icon(Icons.close),
             ),
-            SizedBox(
-              width: maxWidth / 2,
-              height: 500,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: SvgPicture.asset(
-                      "assets/icons/success.svg",
-                      width: 150,
-                      height: 150,
-                    ),
+          ),
+          SizedBox(
+            width: maxWidth / 2,
+            height: 500,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
+                  child: SvgPicture.asset(
+                    isSuccess ? assetSuccess : assetFailed,
+                    width: 150,
+                    height: 150,
                   ),
-                  Text(
-                    label,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        fontSize: 25, fontWeight: FontWeight.w700),
-                  ),
-                ],
-              ),
+                ),
+                Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontSize: 25, fontWeight: FontWeight.w700),
+                ),
+              ],
             ),
-          ],
-        ),
-      );
-    } else {
-      return AlertDialog(
-        content: Stack(
-          children: [
-            Positioned(
-              right: -5,
-              top: -5,
-              child: InkResponse(
-                radius: 25,
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Icon(Icons.close),
-              ),
-            ),
-            SizedBox(
-              width: maxWidth / 2,
-              height: 500,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 20),
-                    child: SvgPicture.asset(
-                      "assets/icons/success.svg",
-                      width: 150,
-                      height: 150,
-                    ),
-                  ),
-                  Text(
-                    label,
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                        fontSize: 25, fontWeight: FontWeight.w700),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      );
-    }
+          ),
+        ],
+      ),
+    );
   }
 }
 

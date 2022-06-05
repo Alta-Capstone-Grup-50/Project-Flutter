@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hospital_management_system/screens/main%20layout/main_layout.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
-    DeviceOrientation.portraitUp,
-    DeviceOrientation.portraitDown,
     DeviceOrientation.landscapeRight,
-    DeviceOrientation.landscapeLeft
+    DeviceOrientation.landscapeLeft,
   ]).then((_) {
     runApp(const MyApp());
   });
@@ -22,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Projek capstone alta kelompok 50',
-      home: null,
+      home: const MainLayout(action: true, child: SizedBox.shrink()),
       theme: ThemeData(primaryColor: primaryColor),
     );
   }

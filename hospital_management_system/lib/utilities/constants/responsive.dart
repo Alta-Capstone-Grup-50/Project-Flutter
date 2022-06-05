@@ -4,40 +4,42 @@ class Responsive extends StatelessWidget {
   const Responsive(
       {Key? key,
       required this.mobile,
-      this.mobileLarge,
-      this.tablet,
+      required this.tablet,
       required this.desktop})
       : super(key: key);
 
   final Widget mobile;
-  final Widget? mobileLarge;
-  final Widget? tablet;
+  final Widget tablet;
   final Widget desktop;
 
   static bool isMobile(BuildContext context) =>
-      MediaQuery.of(context).size.width <= 500;
-
-  static bool isMobileLarge(BuildContext context) =>
-      MediaQuery.of(context).size.width <= 700;
+      MediaQuery.of(context).size.width < 650;
 
   static bool isTablet(BuildContext context) =>
-      MediaQuery.of(context).size.width < 1024;
+      MediaQuery.of(context).size.width < 900 &&
+      MediaQuery.of(context).size.width >= 650;
 
   static bool isDesktop(BuildContext context) =>
-      MediaQuery.of(context).size.width >= 1024;
+      MediaQuery.of(context).size.width >= 900;
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
-    if (size.width >= 1024) {
-      return desktop;
-    } else if (size.width >= 700 && tablet != null) {
-      return tablet!;
-    } else if (size.width >= 500 && mobileLarge != null) {
-      return mobileLarge!;
-    } else {
-      return mobile;
-    }
+    return LayoutBuilder(
+      // If our width is more than 900 then we consider it a desktop
+      builder: (context, constraints) {
+        if (constraints.maxWidth >= 900) {
+          return desktop;
+        }
+        // If width it less then 900 and more then 650 we consider it as tablet
+        else if (constraints.maxWidth >= 650) {
+          return tablet;
+        }
+        // Or less then that we called it mobile
+        else {
+          return mobile;
+        }
+      },
+    );
   }
 }
 
