@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Projek capstone alta kelompok 50',
-      home: const HomePage(),
+      home: const HomeScreen(),
       theme: ThemeData(primaryColor: primaryColor),
     );
   }

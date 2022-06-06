@@ -3,8 +3,8 @@ import 'package:hospital_management_system/screens/home%20screen/components/chos
 import 'package:hospital_management_system/screens/home%20screen/components/content.dart';
 import 'package:hospital_management_system/screens/main%20layout/main_layout.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
