@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class Palette {
   static const Color primary = Color(0xFF2EC2F0);
+  static const Color rocketMetalic = Color(0xFFF807979);
 }
 
 MaterialColor coloring(Color color) {
@@ -39,3 +40,4 @@ Color shadeColor(Color color, double factor) => Color.fromRGBO(
     1);
 
 final primaryColor = coloring(Palette.primary);
+final rocketMetalic = coloring(Palette.rocketMetalic);

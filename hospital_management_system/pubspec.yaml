@@ -30,6 +30,7 @@ flutter:
     - assets/icons/success.svg
     - assets/icons/failed.svg
     - assets/icons/logo.png
+    - assets/contents/
 
 
   fonts:

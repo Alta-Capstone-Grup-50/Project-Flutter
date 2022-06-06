@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hospital_management_system/screens/main%20layout/main_layout.dart';
+import 'package:hospital_management_system/screens/login%20screen/login_screen.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
 
 void main() {
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Projek capstone alta kelompok 50',
-      home: const MainLayout(action: true, child: SizedBox.shrink()),
+      home: const LoginScreen(),
       theme: ThemeData(primaryColor: primaryColor),
     );
   }
