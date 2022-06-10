@@ -43,7 +43,7 @@ class Input extends StatelessWidget {
         errorText: errorText,
         hintText: hintText,
         prefixIcon: icon,
-        contentPadding: EdgeInsets.zero,
+        contentPadding: const EdgeInsets.all(10),
         hintStyle: const TextStyle(color: Colors.black26),
         enabledBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.black),

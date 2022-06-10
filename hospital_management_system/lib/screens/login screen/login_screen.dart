@@ -13,7 +13,7 @@ class LoginScreen extends StatelessWidget {
         action: false,
         child: Row(
           children: [
-            Expanded(child: LoginView()),
+            const Expanded(child: LoginView()),
             Expanded(child: content()),
           ],
         ));

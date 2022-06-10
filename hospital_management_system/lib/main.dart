@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hospital_management_system/providers/login_provider.dart';
 import 'package:hospital_management_system/screens/login%20screen/login_screen.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,11 +20,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Projek capstone alta kelompok 50',
-      home: const LoginScreen(),
-      theme: ThemeData(primaryColor: primaryColor),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: ((context) => LoginProvider()),
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Projek capstone alta kelompok 50',
+        home: const LoginScreen(),
+        theme: ThemeData(primaryColor: primaryColor),
+      ),
     );
   }
 }
