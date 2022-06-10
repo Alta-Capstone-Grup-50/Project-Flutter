@@ -66,7 +66,6 @@ class LoginView extends StatelessWidget {
           Input(
             controller: loginValue.usernameController,
             hintText: 'Masukan username kamu',
-            onSaved: (value) {},
             validator: (value) {
               return validateEmail(value!);
             },
@@ -86,7 +85,6 @@ class LoginView extends StatelessWidget {
             hintText: 'Masukan password kamu',
             keyboardType: TextInputType.visiblePassword,
             obscureText: loginValue.obscure ? true : false,
-            onSaved: (value) {},
             validator: (value) {
               return value!.isEmpty ? "Please enter your password" : null;
             },
