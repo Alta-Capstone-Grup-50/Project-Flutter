@@ -1,11 +1,11 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
-import 'package:hospital_management_system/models/user_model.dart';
-import 'package:hospital_management_system/services/login_service.dart';
-import 'package:hospital_management_system/utilities/common/snackbar.dart';
 
-import '../utilities/constants/user_preferences.dart';
+import '/models/user_model.dart';
+import '/services/login_service.dart';
+import '/utilities/common/snackbar.dart';
+
+import '../../utilities/constants/user_preferences.dart';
 
 enum Status {
   notLoggedIn,
@@ -16,13 +16,10 @@ enum Status {
 
 class LoginProvider extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
-
   bool obscure = false;
 
   Status _loggedInStatus = Status.notLoggedIn;
-
   Status get loggedInStatus => _loggedInStatus;
-
   set loggedInStatus(Status value) {
     _loggedInStatus = value;
   }

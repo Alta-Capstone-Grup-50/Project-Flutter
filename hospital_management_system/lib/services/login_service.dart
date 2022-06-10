@@ -1,5 +1,6 @@
-import 'package:hospital_management_system/utilities/constants/api_url.dart';
 import 'package:http/http.dart' as http;
+
+import '../utilities/constants/api_url.dart';
 
 class LoginService {
   Future post(loginData) async {

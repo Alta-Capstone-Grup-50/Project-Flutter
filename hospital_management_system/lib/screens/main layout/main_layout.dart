@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/utilities/constants/color.dart';
-import 'package:hospital_management_system/utilities/constants/responsive.dart';
+
+import '/utilities/constants/color.dart';
+import '/utilities/constants/responsive.dart';
 
 class MainLayout extends StatelessWidget {
   const MainLayout({Key? key, required this.action, required this.child})
