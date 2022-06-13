@@ -1,0 +1,38 @@
+{
+    "dataPasien" : [
+        {
+            "nik" : "3511110123410002",
+            "nama" : "Tia Sari",
+            "alamat" : "Jl.MT Haryono No.23 RT23/RW02 Malang",
+            "jenis_kelamin" : "Perempuan",
+            "no_telp" : "0851569785125",
+            "tempat_lahir" : "New York",
+            "tanggal_lahir" : "26 Januari 2000",
+            "jenis_penyakit" : "Mata",
+            "jadwal_rawat" : "Senin / 25 Juni 2022",
+            "no_antrian" : 1
+        }, {
+            "nik" : "3511110123410002",
+            "nama" : "Naufal Ulwan",
+            "alamat" : "Jl.Puskesmas No.170 RT04/RW10 Kranji",
+            "jenis_kelamin" : "Laki laki",
+            "no_telp" : "082124293938",
+            "tempat_lahir" : "Amsterdam",
+            "tanggal_lahir" : "2 Agustus 1998",
+            "jenis_penyakit" : "Lambung",
+            "jadwal_rawat" : "Senin / 25 Juni 2022",
+            "no_antrian" : 2
+        }, {
+            "nik" : "3511110123410002",
+            "nama" : "Ainun Rizki",
+            "alamat" : "Jl.MT Haryono No.25 RT23/RW02 Malang",
+            "jenis_kelamin" : "Laki laki",
+            "no_telp" : "081291249192",
+            "tempat_lahir" : "Berlin",
+            "tanggal_lahir" : "30 April 2000",
+            "jenis_penyakit" : "Pusing",
+            "jadwal_rawat" : "Senin / 25 Juni 2022",
+            "no_antrian" : 3
+        }
+    ]
+}

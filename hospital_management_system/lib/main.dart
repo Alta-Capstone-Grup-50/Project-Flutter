@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hospital_management_system/screens/home%20screen/home_screen.dart';
 import 'package:hospital_management_system/screens/pasien%20screen/pasien_screen.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
 
@@ -22,7 +21,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Projek capstone alta kelompok 50',
-      home: const HomeScreen(),
+      home: const PasienScreen(),
       theme: ThemeData(primaryColor: primaryColor),
     );
   }
