@@ -32,3 +32,114 @@ class UserModel {
     }
   }
 }
+
+
+// class AkunDoktorPerawatModel {
+//   List<AkunDoktorPerawat>? akunDoktorPerawat;
+
+//   AkunDoktorPerawatModel({this.akunDoktorPerawat});
+
+//   AkunDoktorPerawatModel.fromJson(Map<String, dynamic> json) {
+//     if (json['akun_doktor_perawat'] != null) {
+//       akunDoktorPerawat = <AkunDoktorPerawat>[];
+//       json['akun_doktor_perawat'].forEach((v) {
+//         akunDoktorPerawat!.add(AkunDoktorPerawat.fromJson(v));
+//       });
+//     }
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     if (akunDoktorPerawat != null) {
+//       data['akun_doktor_perawat'] =
+//           akunDoktorPerawat!.map((v) => v.toJson()).toList();
+//     }
+//     return data;
+//   }
+// }
+
+// class AkunDoktorPerawat {
+//   int? id;
+//   String? nickname;
+//   String? email;
+//   String? jenisPekerjaan;
+//   DataDoktorPerawat? dataDoktorPerawat;
+
+//   AkunDoktorPerawat(
+//       {this.id,
+//       this.nickname,
+//       this.email,
+//       this.jenisPekerjaan,
+//       this.dataDoktorPerawat});
+
+//   AkunDoktorPerawat.fromJson(Map<String, dynamic> json) {
+//     id = json['id'];
+//     nickname = json['nickname'];
+//     email = json['email'];
+//     jenisPekerjaan = json['jenis_pekerjaan'];
+//     dataDoktorPerawat = json['data_doktor_perawat'] != null
+//         ? DataDoktorPerawat.fromJson(json['data_doktor_perawat'])
+//         : null;
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['id'] = id;
+//     data['nickname'] = nickname;
+//     data['email'] = email;
+//     data['jenis_pekerjaan'] = jenisPekerjaan;
+//     if (dataDoktorPerawat != null) {
+//       data['data_doktor_perawat'] = dataDoktorPerawat!.toJson();
+//     }
+//     return data;
+//   }
+// }
+
+// class DataDoktorPerawat {
+//   int? akunDokterPerawatId;
+//   String? nomorSIP;
+//   String? nama;
+//   String? jabatan;
+//   String? nomorTelfon;
+//   String? jenisKelamin;
+//   String? spesialis;
+//   String? jadwalPraktek;
+//   int? nomorSTR;
+
+//   DataDoktorPerawat(
+//       {this.akunDokterPerawatId,
+//       this.nomorSIP,
+//       this.nama,
+//       this.jabatan,
+//       this.nomorTelfon,
+//       this.jenisKelamin,
+//       this.spesialis,
+//       this.jadwalPraktek,
+//       this.nomorSTR});
+
+//   DataDoktorPerawat.fromJson(Map<String, dynamic> json) {
+//     akunDokterPerawatId = json['akun_dokter_perawat_id'];
+//     nomorSIP = json['nomor_SIP'];
+//     nama = json['nama'];
+//     jabatan = json['jabatan'];
+//     nomorTelfon = json['nomor_telfon'];
+//     jenisKelamin = json['jenis_kelamin'];
+//     spesialis = json['spesialis'];
+//     jadwalPraktek = json['jadwal_praktek'];
+//     nomorSTR = json['nomor_STR'];
+//   }
+
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['akun_dokter_perawat_id'] = akunDokterPerawatId;
+//     data['nomor_SIP'] = nomorSIP;
+//     data['nama'] = nama;
+//     data['jabatan'] = jabatan;
+//     data['nomor_telfon'] = nomorTelfon;
+//     data['jenis_kelamin'] = jenisKelamin;
+//     data['spesialis'] = spesialis;
+//     data['jadwal_praktek'] = jadwalPraktek;
+//     data['nomor_STR'] = nomorSTR;
+//     return data;
+//   }
+// }
