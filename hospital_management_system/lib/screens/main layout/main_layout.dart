@@ -59,24 +59,19 @@ class MainLayout extends StatelessWidget {
                 ? Container(
                     padding: const EdgeInsets.only(right: 60),
                     child: MaterialButton(
-                      highlightElevation: 0,
-                      focusElevation: 0,
-                      elevation: 0,
-                      height: 50,
-                      minWidth: maxWidth / 9.5,
-                      color: primaryColor,
-                      textColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(11)),
-                      onPressed: () {},
-                      child: const Text(
-                        "Manage Account",
-                        style: TextStyle(
-                          fontFamily: "Open Sans",
-                          fontWeight: FontWeight.w700,
-                        ),
-                      ),
-                    ),
+                        highlightElevation: 0,
+                        focusElevation: 0,
+                        elevation: 0,
+                        height: 50,
+                        minWidth: maxWidth / 9.5,
+                        color: primaryColor,
+                        textColor: Colors.white,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(11)),
+                        onPressed: () {},
+                        child: Row(
+                          children: [],
+                        )),
                   )
                 : const SizedBox.shrink(),
           ],
