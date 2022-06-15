@@ -1,12 +1,12 @@
-class PasienModel {
+class PasienDataModel {
   List<DataPasien>? dataPasien;
 
-  PasienModel({this.dataPasien});
+  PasienDataModel({this.dataPasien});
 
-  PasienModel.fromJson(Map<String, dynamic> json) {
-    if (json['dataPasien'] != null) {
+  PasienDataModel.fromJson(Map<String, dynamic> json) {
+    if (json['data_pasien'] != null) {
       dataPasien = <DataPasien>[];
-      json['dataPasien'].forEach((v) {
+      json['data_pasien'].forEach((v) {
         dataPasien!.add(DataPasien.fromJson(v));
       });
     }
@@ -15,7 +15,7 @@ class PasienModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (dataPasien != null) {
-      data['dataPasien'] = dataPasien!.map((v) => v.toJson()).toList();
+      data['data_pasien'] = dataPasien!.map((v) => v.toJson()).toList();
     }
     return data;
   }
