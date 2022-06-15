@@ -1,5 +1,6 @@
 import 'dart:convert';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:hospital_management_system/screens/home%20screen/home_screen.dart';
 
 import '/models/user_model.dart';
 import '/services/login_service.dart';
@@ -65,6 +66,13 @@ class LoginProvider extends ChangeNotifier {
             };
 
             print('berhasil login');
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => const HomeScreen(),
+              ),
+              (route) => false,
+            );
           } else {
             _loggedInStatus = Status.notLoggedIn;
             notifyListeners();

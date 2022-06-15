@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'package:provider/provider.dart';
 
 import '../providers/login%20provider/login_provider.dart';
 import '../screens/login%20screen/login_screen.dart';
 import '../utilities/constants/color.dart';
+
+import 'package:hospital_management_system/utilities/constants/color.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
