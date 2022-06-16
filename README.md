@@ -3,4 +3,4 @@
   <h2> <i> Project Capstone (FLUTTER) </i> </h2>
 </div> 
 
-![ScreenShot]()
+![ScreenShot](hospital_management_system/screenshots/data pasien rawat jalan.png)
