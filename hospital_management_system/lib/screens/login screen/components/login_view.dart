@@ -177,10 +177,7 @@ class LoginView extends StatelessWidget {
           highlightColor: Colors.transparent,
           hoverColor: Colors.transparent,
           splashColor: Colors.transparent,
-          onTap: () {
-            // UserPreferences().removeUser();
-            print(UserPreferences().getUser());
-          },
+          onTap: () {},
           child: Text(
             'Forgot Password?',
             style: TextStyle(color: primaryColor),

@@ -34,6 +34,7 @@ flutter:
     - assets/icons/failed.svg
     - assets/icons/logo.png
     - assets/icons/iconTable.png
+    - assets/icons/accountCircle.png
     - assets/contents/
 
 

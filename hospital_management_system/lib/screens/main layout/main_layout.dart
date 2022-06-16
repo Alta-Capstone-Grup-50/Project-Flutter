@@ -1,15 +1,155 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/screens/dokter%20perawat%20screen/dokterPerawat_screen.dart';
+import 'package:hospital_management_system/screens/home%20screen/home_screen.dart';
+import 'package:hospital_management_system/screens/rawat%20screen/dokter%20perawat%20screen/rawat_screen.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
 import 'package:hospital_management_system/utilities/constants/responsive.dart';
 
+import '../pasien screen/pasien_screen.dart';
+
 class MainLayout extends StatelessWidget {
-  const MainLayout({Key? key, required this.action, required this.child})
+  const MainLayout(
+      {Key? key, required this.action, required this.child, this.screens})
       : super(key: key);
 
   final bool action;
   final Widget child;
-
+  final screens;
   final String assetLogo = 'assets/icons/logo.png';
+
+  List<Widget> screen() {
+    if (screens == 'PasienScreen') {
+      List<Widget> widgets = [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40),
+          child: Text(
+            'Home',
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+          ),
+        ),
+        const Text(
+          'Data Rawat Jalan',
+          style: TextStyle(
+              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40),
+          child: Text(
+            'Data Tenaga Kesehatan',
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+          ),
+        ),
+      ];
+      return widgets;
+    } else if (screens == 'RawatScreen') {
+      List<Widget> widgets = [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40),
+          child: Text(
+            'Home',
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+          ),
+        ),
+        const Text(
+          'Data Pasien',
+          style: TextStyle(
+              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40),
+          child: Text(
+            'Data Tenaga Kesehatan',
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+          ),
+        ),
+      ];
+      return widgets;
+    } else if (screens == 'DokterPerawatScreen') {
+      List<Widget> widgets = [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40),
+          child: Text(
+            'Home',
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+          ),
+        ),
+        const Text(
+          'Data Pasien',
+          style: TextStyle(
+              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40),
+          child: Text(
+            'Data Rawat Jalan',
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+          ),
+        ),
+      ];
+      return widgets;
+    } else if (screens == 'HomeScreen') {
+      List<Widget> widgets = [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40),
+          child: Text(
+            'Data Pasien',
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+          ),
+        ),
+        const Text(
+          'Data Rawat Jalan',
+          style: TextStyle(
+              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40),
+          child: Text(
+            'Data Tenaga Kesehatan',
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+          ),
+        ),
+      ];
+      return widgets;
+    } else {
+      List<Widget> widgets = [
+        const Text(
+          'Home',
+          style: TextStyle(
+              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40),
+          child: Text(
+            'Data Pasien',
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+          ),
+        ),
+        const Text(
+          'Data Rawat Jalan',
+          style: TextStyle(
+              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+        ),
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 40),
+          child: Text(
+            'Data Tenaga Kesehatan',
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+          ),
+        ),
+      ];
+      return widgets;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,31 +190,52 @@ class MainLayout extends StatelessWidget {
           children: [
             Padding(
                 padding: const EdgeInsets.only(left: 70, top: 5),
-                child: Image(
-                  width: 150,
-                  image: AssetImage(assetLogo),
+                child: GestureDetector(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  child: Image(
+                    width: 150,
+                    image: AssetImage(assetLogo),
+                  ),
                 )),
             action == true
                 ? Container(
                     padding: const EdgeInsets.only(right: 60),
-                    child: MaterialButton(
-                      highlightElevation: 0,
-                      focusElevation: 0,
-                      elevation: 0,
-                      height: 50,
-                      minWidth: maxWidth / 9.5,
-                      color: primaryColor,
-                      textColor: Colors.white,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(11)),
-                      onPressed: () {},
-                      child: const Text(
-                        "Manage Account",
-                        style: TextStyle(
-                          fontFamily: "Open Sans",
-                          fontWeight: FontWeight.w700,
+                    child: Row(
+                      children: [
+                        Row(
+                          children: screen(),
                         ),
-                      ),
+                        SizedBox(
+                          width: 70,
+                          height: 52,
+                          child: Card(
+                            color: primaryColor.shade500,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: const [
+                                CircleAvatar(
+                                  backgroundColor: Colors.transparent,
+                                  radius: 16,
+                                  child: ImageIcon(
+                                    AssetImage(
+                                        'assets/icons/accountCircle.png'),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                Icon(
+                                  Icons.keyboard_arrow_down,
+                                  color: Colors.white,
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   )
                 : const SizedBox.shrink(),

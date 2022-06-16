@@ -14,13 +14,9 @@ class DokterPerawatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future.delayed(Duration.zero, () {
-      final _provider =
-          Provider.of<DokterPerawatProvider>(context, listen: false);
-      _provider.getDataApiDokter();
-    });
     return MainLayout(
       action: true,
+      screens: 'DokterPerawatScreen',
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 29),
         child: Column(
@@ -66,17 +62,15 @@ class DokterPerawatScreen extends StatelessWidget {
             const SizedBox(
               height: 45,
             ),
-            Consumer<DokterPerawatProvider>(builder: (context, value, child) {
+            Consumer<DokterPerawatProvider>(builder: (context, value, _) {
               if (value.isLoading) {
                 return SizedBox(
                   height: MediaQuery.of(context).size.height * 0.5,
-                  child: const Card(
-                    child: Center(
-                      child: SizedBox(
-                        width: 60,
-                        height: 60,
-                        child: CircularProgressIndicator(),
-                      ),
+                  child: const Center(
+                    child: SizedBox(
+                      width: 60,
+                      height: 60,
+                      child: CircularProgressIndicator(),
                     ),
                   ),
                 );
@@ -84,143 +78,162 @@ class DokterPerawatScreen extends StatelessWidget {
                 final DataSourceTable _dataSource =
                     DataSourceTable(value.listDokterData);
                 return LayoutBuilder(
-                    builder: ((context, constraints) => Row(
-                          children: [
-                            Column(
-                              children: [
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.5,
-                                  width: constraints.maxWidth,
-                                  child: SfDataGrid(
-                                    source: _dataSource,
-                                    columnWidthMode: ColumnWidthMode.auto,
-                                    columns: [
-                                      GridColumn(
-                                        columnName: 'No',
-                                        label: Container(
-                                          color: primaryColor,
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 16.0),
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'No',
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
+                  builder: ((context, constraints) => Row(
+                        children: [
+                          Column(
+                            children: [
+                              SizedBox(
+                                height:
+                                    MediaQuery.of(context).size.height * 0.5,
+                                width: constraints.maxWidth,
+                                child: SfDataGrid(
+                                  source: _dataSource,
+                                  columnWidthMode: ColumnWidthMode.auto,
+                                  columns: [
+                                    GridColumn(
+                                      columnName: 'No',
+                                      label: Container(
+                                        color: primaryColor.shade200,
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16.0),
+                                        alignment: Alignment.centerLeft,
+                                        child: const Text(
+                                          'No',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                      GridColumn(
-                                        columnName: 'SIP/SIPP',
-                                        label: Container(
-                                          color: primaryColor,
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'SIP/SIPP',
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
+                                    ),
+                                    GridColumn(
+                                      columnName: 'SIP/SIPP',
+                                      label: Container(
+                                        color: primaryColor.shade200,
+                                        alignment: Alignment.centerLeft,
+                                        child: const Text(
+                                          'SIP/SIPP',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                      GridColumn(
-                                        columnName: 'Nama',
-                                        label: Container(
-                                          color: primaryColor,
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'Nama',
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
+                                    ),
+                                    GridColumn(
+                                      columnName: 'Nama',
+                                      label: Container(
+                                        color: primaryColor.shade200,
+                                        alignment: Alignment.centerLeft,
+                                        child: const Text(
+                                          'Nama',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                      GridColumn(
-                                        columnName: 'Jabatan',
-                                        label: Container(
-                                          color: primaryColor,
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'Jabatan',
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
+                                    ),
+                                    GridColumn(
+                                      columnName: 'Jabatan',
+                                      label: Container(
+                                        color: primaryColor.shade200,
+                                        alignment: Alignment.centerLeft,
+                                        child: const Text(
+                                          'Jabatan',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                      GridColumn(
-                                        columnName: 'Jenis Kelamin',
-                                        label: Container(
-                                          color: primaryColor,
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'Jenis Kelamin',
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
+                                    ),
+                                    GridColumn(
+                                      columnName: 'Jenis Kelamin',
+                                      label: Container(
+                                        color: primaryColor.shade200,
+                                        alignment: Alignment.centerLeft,
+                                        child: const Text(
+                                          'Jenis Kelamin',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                      GridColumn(
-                                        columnName: 'Nomor Telepon',
-                                        label: Container(
-                                          color: primaryColor,
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'Nomor Telepon',
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
+                                    ),
+                                    GridColumn(
+                                      columnName: 'Nomor Telepon',
+                                      label: Container(
+                                        color: primaryColor.shade200,
+                                        alignment: Alignment.centerLeft,
+                                        child: const Text(
+                                          'Nomor Telepon',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                      GridColumn(
-                                        columnName: 'Spesialis',
-                                        label: Container(
-                                          color: primaryColor,
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'Spesialis',
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
+                                    ),
+                                    GridColumn(
+                                      columnName: 'Spesialis',
+                                      label: Container(
+                                        color: primaryColor.shade200,
+                                        alignment: Alignment.centerLeft,
+                                        child: const Text(
+                                          'Spesialis',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                      GridColumn(
-                                        columnName: 'Jadwal Praktek',
-                                        label: Container(
-                                          color: primaryColor,
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'Jadwal Praktek',
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
+                                    ),
+                                    GridColumn(
+                                      columnName: 'Jadwal Praktek',
+                                      label: Container(
+                                        color: primaryColor.shade200,
+                                        alignment: Alignment.centerLeft,
+                                        child: const Text(
+                                          'Jadwal Praktek',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
-                                      GridColumn(
-                                        columnName: 'STR',
-                                        label: Container(
-                                          color: primaryColor,
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'STR',
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
+                                    ),
+                                    GridColumn(
+                                      columnName: 'STR',
+                                      label: Container(
+                                        color: primaryColor.shade200,
+                                        alignment: Alignment.centerLeft,
+                                        child: const Text(
+                                          'STR',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.w700),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
-                                      )
-                                    ],
-                                  ),
+                                      ),
+                                    )
+                                  ],
                                 ),
-                                SizedBox(
-                                  height: 60,
-                                  child: SfDataPagerTheme(
-                                    data: SfDataPagerThemeData(),
-                                    child: SfDataPager(
-                                        pageCount: _dataSource.data.length /
-                                            _dataSource.rowsPerPage,
-                                        direction: Axis.horizontal,
-                                        onPageNavigationStart: (int pageIndex) {
-                                          value.changeLoadingIndicator();
-                                        },
-                                        delegate: _dataSource,
-                                        onPageNavigationEnd: (int pageIndex) {
-                                          value.changeLoadingIndicator();
-                                        }),
-                                  ),
+                              ),
+                              SizedBox(
+                                height: 60,
+                                child: SfDataPagerTheme(
+                                  data: SfDataPagerThemeData(),
+                                  child: SfDataPager(
+                                      pageCount: _dataSource.data.length /
+                                          _dataSource.rowsPerPage,
+                                      direction: Axis.horizontal,
+                                      onPageNavigationStart: (int pageIndex) {
+                                        value.changeLoadingIndicator();
+                                      },
+                                      delegate: _dataSource,
+                                      onPageNavigationEnd: (int pageIndex) {
+                                        value.changeLoadingIndicator();
+                                      }),
                                 ),
-                              ],
-                            ),
-                          ],
-                        )));
+                              ),
+                            ],
+                          ),
+                        ],
+                      )),
+                );
               }
             }),
           ],

@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/screens/pasien%20screen/components/data_source_table.dart';
+import 'package:hospital_management_system/view%20model/pasien%20provider/pasien_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../view model/pasien provider/pasien_provider.dart';
 import '/screens/main%20layout/main_layout.dart';
 import '/utilities/components/input.dart';
 import '/utilities/constants/color.dart';
+import 'components/data_source_table.dart';
 
-class PasienScreen extends StatelessWidget {
-  const PasienScreen({Key? key}) : super(key: key);
+class RawatScreen extends StatelessWidget {
+  const RawatScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MainLayout(
       action: true,
-      screens: 'PasienScreen',
+      screens: 'RawatScreen',
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 29),
         child: Column(
@@ -30,13 +30,13 @@ class PasienScreen extends StatelessWidget {
                     style: TextStyle(color: Colors.grey),
                   ),
                 ),
-                const Text("Data Pasien"),
+                const Text("Data pasien rawat jalan"),
               ],
             ),
             const Padding(
               padding: EdgeInsets.only(top: 25),
               child: Text(
-                'Data Pasien',
+                'Data Pasien Rawat Jalan',
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.w700,
@@ -88,7 +88,8 @@ class PasienScreen extends StatelessWidget {
                                   width: constraints.maxWidth,
                                   child: SfDataGrid(
                                     source: _dataSource,
-                                    columnWidthMode: ColumnWidthMode.auto,
+                                    columnWidthMode:
+                                        ColumnWidthMode.lastColumnFill,
                                     columns: [
                                       GridColumn(
                                         columnName: 'No',
@@ -124,33 +125,7 @@ class PasienScreen extends StatelessWidget {
                                           color: primaryColor.shade200,
                                           alignment: Alignment.centerLeft,
                                           child: const Text(
-                                            'Name',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w700),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ),
-                                      GridColumn(
-                                        columnName: 'Alamat',
-                                        label: Container(
-                                          color: primaryColor.shade200,
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'Alamat',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w700),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ),
-                                      GridColumn(
-                                        columnName: 'Nomor Telepon',
-                                        label: Container(
-                                          color: primaryColor.shade200,
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'Nomor Telepon',
+                                            'Nama',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w700),
                                             overflow: TextOverflow.ellipsis,
@@ -171,18 +146,44 @@ class PasienScreen extends StatelessWidget {
                                         ),
                                       ),
                                       GridColumn(
-                                        columnName: 'Jenis Penyakit',
+                                        columnName: 'Jadwal Rawat Jalan',
                                         label: Container(
                                           color: primaryColor.shade200,
                                           alignment: Alignment.centerLeft,
                                           child: const Text(
-                                            'Jenis Penyakit',
+                                            'Jadwal Rawat Jalan',
                                             style: TextStyle(
                                                 fontWeight: FontWeight.w700),
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
-                                      )
+                                      ),
+                                      GridColumn(
+                                        columnName: 'Nomor Antrian',
+                                        label: Container(
+                                          color: primaryColor.shade200,
+                                          alignment: Alignment.center,
+                                          child: const Text(
+                                            'Nomor Antrian',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w700),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ),
+                                      GridColumn(
+                                        columnName: 'Ket. Rawat Jalan',
+                                        label: Container(
+                                          color: primaryColor.shade200,
+                                          alignment: Alignment.center,
+                                          child: const Text(
+                                            'Ket. Rawat Jalan',
+                                            style: TextStyle(
+                                                fontWeight: FontWeight.w700),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ),

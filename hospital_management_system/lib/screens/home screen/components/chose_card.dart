@@ -25,8 +25,7 @@ class ChoseCard extends StatelessWidget {
         ),
         child: InkWell(
           onTap: () {
-            Navigator.pushReplacement(
-                context, MaterialPageRoute(builder: (_) => page));
+            Navigator.push(context, MaterialPageRoute(builder: (_) => page));
           },
           child: Column(
             children: [

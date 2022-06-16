@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 
 import '../../services/api_dokter_service.dart';
-import '../../services/api_pasien_service.dart';
 
 class DokterPerawatProvider extends ChangeNotifier {
   bool showLoadingIndicator = false;
@@ -9,6 +8,10 @@ class DokterPerawatProvider extends ChangeNotifier {
 
   ApiServiceDokterData service = ApiServiceDokterData();
   var listDokterData;
+
+  DokterPerawatProvider() {
+    getDataApiDokter();
+  }
 
   changeLoadingIndicator() {
     showLoadingIndicator = !showLoadingIndicator;

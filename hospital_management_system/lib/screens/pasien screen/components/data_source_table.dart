@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../models/pasien_data_model.dart';
@@ -12,19 +11,13 @@ class DataSourceTable extends DataGridSource {
 
   int rowsPerPage = 0;
 
+  final DataPagerController _controller = DataPagerController();
+
   DataSourceTable(this._data) {
     _paginatedData = _data.getRange(0, _data.length).toList(growable: false);
     rowsPerPage = _data.length;
-    List index = [];
-    int count = 0;
-    for (int i = 1; i <= _data.length;) {
-      count = i;
-      index.add(count);
-      i++;
-    }
-    buildPaginatedDataGridRows();
 
-    print(_data);
+    buildPaginatedDataGridRows();
   }
 
   List<DataGridRow> dataGridRows = [];
@@ -120,11 +113,12 @@ class DataSourceTable extends DataGridSource {
     int startIndex = newPageIndex * rowsPerPage;
     int endIndex = startIndex + rowsPerPage;
     if (startIndex < _data.length && endIndex <= _data.length) {
-      await Future.delayed(const Duration(milliseconds: 2000));
+      Future.delayed(const Duration(milliseconds: 2000));
       _paginatedData =
           _data.getRange(startIndex, endIndex).toList(growable: false);
-
+      buildPaginatedDataGridRows();
       notifyListeners();
+      _controller.dispose();
     } else {
       _paginatedData = [];
     }

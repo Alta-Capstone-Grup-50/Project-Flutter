@@ -8,6 +8,10 @@ class PasienProvider extends ChangeNotifier {
   ApiServicePasienData service = ApiServicePasienData();
   var listPasienData;
 
+  PasienProvider() {
+    getDataApiPasien();
+  }
+
   changeLoadingIndicator() {
     showLoadingIndicator = !showLoadingIndicator;
     notifyListeners();

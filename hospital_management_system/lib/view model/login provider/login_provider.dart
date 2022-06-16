@@ -1,7 +1,6 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:hospital_management_system/models/user_model.dart';
+import 'package:hospital_management_system/screens/home%20screen/home_screen.dart';
 import 'package:hospital_management_system/services/login_service.dart';
 import 'package:hospital_management_system/utilities/common/snackbar.dart';
 
@@ -24,11 +23,6 @@ class LoginProvider extends ChangeNotifier {
 
   UserModel get user => _user;
 
-  void setUser(UserModel user) {
-    _user = user;
-    notifyListeners();
-  }
-
   Status _loggedInStatus = Status.notLoggedIn;
 
   Status get loggedInStatus => _loggedInStatus;
@@ -45,9 +39,19 @@ class LoginProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void setUser(UserModel user) {
+    _user = user;
+    notifyListeners();
+  }
+
   void functionObscure() {
     obscure = !obscure;
     notifyListeners();
+  }
+
+  void dispose() {
+    usernameController.dispose();
+    passwordController.dispose();
   }
 
   Future<Object> login(BuildContext context) async {
@@ -81,10 +85,18 @@ class LoginProvider extends ChangeNotifier {
               'message': 'Successful',
               'user': authUser
             };
-
-            setUser(authUser);
             SnackBarComponent(
                 context: context, message: 'Login berhasil', type: 'success');
+            setUser(authUser);
+            Future.delayed(const Duration(seconds: 3), () async {
+              await Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                    builder: ((context) => const HomeScreen()),
+                  ),
+                  (route) => true);
+              dispose();
+            });
           } else {
             _loggedInStatus = Status.notLoggedIn;
             notifyListeners();
