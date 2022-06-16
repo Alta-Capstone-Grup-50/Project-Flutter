@@ -1,5 +1,4 @@
 import 'package:flutter/widgets.dart';
-import 'package:hospital_management_system/models/pasien_data_model.dart';
 import 'package:hospital_management_system/services/api_service_pasien.dart';
 
 class PasienProvider extends ChangeNotifier {

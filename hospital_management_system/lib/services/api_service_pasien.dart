@@ -19,7 +19,7 @@ class ApiServicePasienData {
       if (response.statusCode! >= 200 && response.statusCode! <= 300) {
         var _model = PasienDataModel.fromJson(response.data);
         var listData = _model.dataPasien;
-        print(listData![0].nama);
+
         return listData;
       }
     } catch (e) {

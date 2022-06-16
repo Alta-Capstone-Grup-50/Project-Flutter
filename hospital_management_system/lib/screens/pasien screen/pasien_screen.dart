@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/view model/pasien%20provider/pasien_provider.dart';
-import 'package:hospital_management_system/screens/main%20layout/main_layout.dart';
-import 'package:hospital_management_system/screens/pasien%20screen/data_table.dart';
-import 'package:hospital_management_system/utilities/components/input.dart';
-import 'package:hospital_management_system/utilities/constants/color.dart';
 import 'package:provider/provider.dart';
+
+import '/view model/pasien%20provider/pasien_provider.dart';
+import '/screens/main%20layout/main_layout.dart';
+import '/screens/pasien%20screen/data_table.dart';
+import '/utilities/components/input.dart';
+import '/utilities/constants/color.dart';
 
 class PasienScreen extends StatelessWidget {
   const PasienScreen({Key? key}) : super(key: key);
