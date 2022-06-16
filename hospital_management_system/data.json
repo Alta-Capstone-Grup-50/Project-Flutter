@@ -1,0 +1,37 @@
+{
+    "patients": [
+      {
+        "id": 1,
+        "name": "Jane Cooper",
+        "address": "4517 Washington Ave. Manchester, Kentucky 39495",
+        "gender": "L",
+        "phone": "(406) 555-0120",
+        "placeOfBirth": "New York",
+        "dateOfBirth": "18/2/70",
+        "disease": "Jantung",
+        "handling": "Rawat Inap"
+      },
+      {
+        "id": 2,
+        "name": "Jane Cooper",
+        "address": "4517 Washington Ave. Manchester, Kentucky 39495",
+        "gender": "L",
+        "phone": "(406) 555-0120",
+        "placeOfBirth": "New York",
+        "dateOfBirth": "18/2/70",
+        "disease": "Jantung",
+        "handling": "Rawat Inap"
+      },
+      {
+        "id": 3,
+        "name": "Jane Cooper",
+        "address": "4517 Washington Ave. Manchester, Kentucky 39495",
+        "gender": "L",
+        "phone": "(406) 555-0120",
+        "placeOfBirth": "New York",
+        "dateOfBirth": "18/2/70",
+        "disease": "Jantung",
+        "handling": "Rawat Inap"
+      }
+    ]
+  }

@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/models/dokterPerawat_model.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../models/pasien_data_model.dart';
 
 class DataSourceTable extends DataGridSource {
-  List<DataDoktorPerawat> _data;
-  List<DataDoktorPerawat> get data => _data;
+  List<DataPasien> _data;
+  List<DataPasien> get data => _data;
 
-  List<DataDoktorPerawat> _paginatedData = [];
+  List<DataPasien> _paginatedData = [];
 
   int rowsPerPage = 0;
 
@@ -55,7 +54,7 @@ class DataSourceTable extends DataGridSource {
             overflow: TextOverflow.ellipsis,
           ),
         );
-      } else if (dataGridCell.columnName == 'sIP/SIPP') {
+      } else if (dataGridCell.columnName == 'NIK') {
         return Container(
           color: getRowBackgroundColor(),
           alignment: Alignment.centerLeft,
@@ -66,14 +65,25 @@ class DataSourceTable extends DataGridSource {
         );
       } else if (dataGridCell.columnName == 'Nama') {
         return Container(
+            padding: const EdgeInsets.only(right: 16.0),
             color: getRowBackgroundColor(),
             alignment: Alignment.centerLeft,
             child: Text(
               dataGridCell.value.toString(),
               overflow: TextOverflow.ellipsis,
             ));
-      } else if (dataGridCell.columnName == 'Jabatan') {
+      } else if (dataGridCell.columnName == 'Alamat') {
         return Container(
+          color: getRowBackgroundColor(),
+          alignment: Alignment.centerLeft,
+          child: Text(
+            dataGridCell.value.toString(),
+            overflow: TextOverflow.ellipsis,
+          ),
+        );
+      } else if (dataGridCell.columnName == 'Nomor telepon') {
+        return Container(
+          padding: const EdgeInsets.only(right: 16.0),
           color: getRowBackgroundColor(),
           alignment: Alignment.centerLeft,
           child: Text(
@@ -83,33 +93,7 @@ class DataSourceTable extends DataGridSource {
         );
       } else if (dataGridCell.columnName == 'Jenis Kelamin') {
         return Container(
-          color: getRowBackgroundColor(),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            dataGridCell.value.toString(),
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
-      } else if (dataGridCell.columnName == 'Nomor Telepon') {
-        return Container(
-          color: getRowBackgroundColor(),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            dataGridCell.value.toString(),
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
-      } else if (dataGridCell.columnName == 'Spesialis') {
-        return Container(
-          color: getRowBackgroundColor(),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            dataGridCell.value.toString(),
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
-      } else if (dataGridCell.columnName == 'Jadwal Praktek') {
-        return Container(
+          padding: const EdgeInsets.only(right: 16.0),
           color: getRowBackgroundColor(),
           alignment: Alignment.centerLeft,
           child: Text(
@@ -119,6 +103,7 @@ class DataSourceTable extends DataGridSource {
         );
       } else {
         return Container(
+          padding: const EdgeInsets.only(right: 16.0),
           color: getRowBackgroundColor(),
           alignment: Alignment.centerLeft,
           child: Text(
@@ -151,17 +136,14 @@ class DataSourceTable extends DataGridSource {
     dataGridRows = _paginatedData.map<DataGridRow>((dataGridRow) {
       return DataGridRow(cells: [
         const DataGridCell(columnName: 'No', value: null),
-        DataGridCell(columnName: 'SIP/SIPP', value: dataGridRow.nomorSIP),
+        DataGridCell(columnName: 'NIK', value: dataGridRow.nik),
         DataGridCell(columnName: 'Nama', value: dataGridRow.nama),
-        DataGridCell(columnName: 'Jabatan', value: dataGridRow.jabatan),
+        DataGridCell(columnName: 'Alamat', value: dataGridRow.alamat),
+        DataGridCell(columnName: 'Nomor telepon', value: dataGridRow.noTelp),
         DataGridCell(
             columnName: 'Jenis Kelamin', value: dataGridRow.jenisKelamin),
         DataGridCell(
-            columnName: 'Nomor Telepon', value: dataGridRow.nomorTelfon),
-        DataGridCell(columnName: 'Spesialis', value: dataGridRow.spesialis),
-        DataGridCell(
-            columnName: 'Jadwal Praktek', value: dataGridRow.jadwalPraktek),
-        DataGridCell(columnName: 'STR', value: dataGridRow.nomorSTR),
+            columnName: 'Jenis Penyakit', value: dataGridRow.jenisPenyakit),
       ]);
     }).toList(growable: false);
   }

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/view%20model/dokter%20perawat%20provider/dokterPerawat_provider.dart';
-import 'package:hospital_management_system/view%20model/pasien%20provider/pasien_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -18,7 +17,7 @@ class DokterPerawatScreen extends StatelessWidget {
     Future.delayed(Duration.zero, () {
       final _provider =
           Provider.of<DokterPerawatProvider>(context, listen: false);
-      _provider.getDataApiPasien();
+      _provider.getDataApiDokter();
     });
     return MainLayout(
       action: true,
@@ -35,13 +34,13 @@ class DokterPerawatScreen extends StatelessWidget {
                     style: TextStyle(color: Colors.grey),
                   ),
                 ),
-                const Text("Data Pasien"),
+                const Text("Data Dokter dan Perawat"),
               ],
             ),
             const Padding(
               padding: EdgeInsets.only(top: 25),
               child: Text(
-                'Data Pasien',
+                'Data Dokter dan Perawat',
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.w700,
@@ -83,7 +82,7 @@ class DokterPerawatScreen extends StatelessWidget {
                 );
               } else {
                 final DataSourceTable _dataSource =
-                    DataSourceTable(value.listPasienData);
+                    DataSourceTable(value.listDokterData);
                 return LayoutBuilder(
                     builder: ((context, constraints) => Row(
                           children: [
@@ -111,12 +110,12 @@ class DokterPerawatScreen extends StatelessWidget {
                                         ),
                                       ),
                                       GridColumn(
-                                        columnName: 'NIK',
+                                        columnName: 'SIP/SIPP',
                                         label: Container(
                                           color: primaryColor,
                                           alignment: Alignment.centerLeft,
                                           child: const Text(
-                                            'NIK',
+                                            'SIP/SIPP',
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
@@ -127,29 +126,18 @@ class DokterPerawatScreen extends StatelessWidget {
                                           color: primaryColor,
                                           alignment: Alignment.centerLeft,
                                           child: const Text(
-                                            'Name',
+                                            'Nama',
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
                                       ),
                                       GridColumn(
-                                        columnName: 'Alamat',
+                                        columnName: 'Jabatan',
                                         label: Container(
                                           color: primaryColor,
                                           alignment: Alignment.centerLeft,
                                           child: const Text(
-                                            'Alamat',
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ),
-                                      GridColumn(
-                                        columnName: 'Nomor Telepon',
-                                        label: Container(
-                                          color: primaryColor,
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'Nomor Telepon',
+                                            'Jabatan',
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
@@ -166,12 +154,45 @@ class DokterPerawatScreen extends StatelessWidget {
                                         ),
                                       ),
                                       GridColumn(
-                                        columnName: 'Jenis Penyakit',
+                                        columnName: 'Nomor Telepon',
                                         label: Container(
                                           color: primaryColor,
                                           alignment: Alignment.centerLeft,
                                           child: const Text(
-                                            'Jenis Penyakit',
+                                            'Nomor Telepon',
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ),
+                                      GridColumn(
+                                        columnName: 'Spesialis',
+                                        label: Container(
+                                          color: primaryColor,
+                                          alignment: Alignment.centerLeft,
+                                          child: const Text(
+                                            'Spesialis',
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ),
+                                      GridColumn(
+                                        columnName: 'Jadwal Praktek',
+                                        label: Container(
+                                          color: primaryColor,
+                                          alignment: Alignment.centerLeft,
+                                          child: const Text(
+                                            'Jadwal Praktek',
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                      ),
+                                      GridColumn(
+                                        columnName: 'STR',
+                                        label: Container(
+                                          color: primaryColor,
+                                          alignment: Alignment.centerLeft,
+                                          child: const Text(
+                                            'STR',
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),

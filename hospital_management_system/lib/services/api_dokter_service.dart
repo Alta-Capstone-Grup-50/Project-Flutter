@@ -1,24 +1,24 @@
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:hospital_management_system/utilities/constants/api_url.dart';
 
+import '../models/dokterPerawat_model.dart';
 import '../models/pasien_data_model.dart';
 
-class ApiServicePasienData {
+class ApiServiceDokterData {
   final Dio _dio = Dio();
 
-  Future<List<DataPasien>?> getDataPasienApi() async {
+  Future<List<DataDoktorPerawat>?> getDataDokterApi() async {
     try {
-      var response = await _dio.get(ApiUrl.getData,
+      var response = await _dio.get(ApiUrl.getDataDokter,
           options: Options(headers: {
             "x-hasura-admin-secret":
                 "WxgA2zHO3k5x78XJHimGkWwFWEGS7KrseH9PyY9ljNbY6mvsIszBEQHgUh6X84y4"
           }));
       if (response.statusCode! >= 200 && response.statusCode! <= 300) {
-        var _model = PasienDataModel.fromJson(response.data);
-        var listData = _model.dataPasien;
+        var _model = DokterPerawatDataModel.fromJson(response.data);
+        var listData = _model.dataDoktorPerawat;
 
         return listData;
       }

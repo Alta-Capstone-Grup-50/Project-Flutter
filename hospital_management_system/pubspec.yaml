@@ -12,13 +12,13 @@ dependencies:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  dio: ^4.0.6
   provider: ^6.0.3
   shared_preferences: ^2.0.15
   flutter_svg: ^1.1.0
   syncfusion_flutter_datagrid: ^20.1.59
   intl: ^0.17.0
   syncfusion_flutter_core: ^20.1.60
+  dio: ^4.0.6
 
 dev_dependencies:
   flutter_test:
