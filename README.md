@@ -1,4 +1,4 @@
 <div align="center">
-  <h2> HAH KOSONG! </h2>
-  <h4> <i> Project Capstone (FLUTTER) </i> </h4>
+  <h1> HAH KOSONG! </h1>
+  <h2> <i> Project Capstone (FLUTTER) </i> </h2>
 </div> 
