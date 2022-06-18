@@ -96,14 +96,10 @@ class DataSourceTable extends DataGridSource {
         );
       } else {
         return Container(
-            color: getRowBackgroundColor(),
-            alignment: Alignment.center,
-            child: MaterialButton(
-              textColor: Colors.white,
-              color: green,
-              onPressed: () {},
-              child: const Text('Keterangan'),
-            ));
+          color: getRowBackgroundColor(),
+          alignment: Alignment.center,
+          child: dataGridCell.value,
+        );
       }
     }).toList());
   }
@@ -113,7 +109,7 @@ class DataSourceTable extends DataGridSource {
     int startIndex = newPageIndex * rowsPerPage;
     int endIndex = startIndex + rowsPerPage;
     if (startIndex < _data.length && endIndex <= _data.length) {
-       Future.delayed(const Duration(milliseconds: 2000));
+      Future.delayed(const Duration(milliseconds: 2000));
       _paginatedData =
           _data.getRange(startIndex, endIndex).toList(growable: false);
       buildPaginatedDataGridRows();
@@ -136,7 +132,15 @@ class DataSourceTable extends DataGridSource {
         DataGridCell(
             columnName: 'Jadwal Rawat Jalan', value: dataGridRow.jadwalRawat),
         DataGridCell(columnName: 'Nomor Antrian', value: dataGridRow.noAntrian),
-        const DataGridCell(columnName: 'Ket. Rawat Jalan', value: null),
+        DataGridCell(
+          columnName: 'Ket. Rawat Jalan',
+          value: (MaterialButton(
+            textColor: Colors.white,
+            color: green,
+            onPressed: () {},
+            child: const Text('Keterangan'),
+          )),
+        ),
       ]);
     }).toList(growable: false);
   }

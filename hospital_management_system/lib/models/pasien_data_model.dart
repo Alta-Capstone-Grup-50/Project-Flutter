@@ -33,17 +33,18 @@ class DataPasien {
   String? jadwalRawat;
   int? noAntrian;
 
-  DataPasien(
-      {this.nik,
-      this.nama,
-      this.alamat,
-      this.jenisKelamin,
-      this.noTelp,
-      this.tempatLahir,
-      this.tanggalLahir,
-      this.jenisPenyakit,
-      this.jadwalRawat,
-      this.noAntrian});
+  DataPasien({
+    this.nik,
+    this.nama,
+    this.alamat,
+    this.jenisKelamin,
+    this.noTelp,
+    this.tempatLahir,
+    this.tanggalLahir,
+    this.jenisPenyakit,
+    // this.jadwalRawat,
+    // this.noAntrian,
+  });
 
   DataPasien.fromJson(Map<String, dynamic> json) {
     nik = json['nik'];

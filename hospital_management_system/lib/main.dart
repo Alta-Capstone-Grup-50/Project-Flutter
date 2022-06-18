@@ -3,12 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:hospital_management_system/models/user_model.dart';
 import 'package:hospital_management_system/screens/home%20screen/home_screen.dart';
 import 'package:hospital_management_system/screens/login%20screen/login_screen.dart';
-import 'package:hospital_management_system/utilities/constants/user_preferences.dart';
-import 'package:hospital_management_system/view model/pasien%20provider/pasien_provider.dart';
+import 'package:hospital_management_system/services/perfs_service.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
-import 'package:hospital_management_system/view%20model/dokter%20perawat%20provider/dokterPerawat_provider.dart';
-import 'package:hospital_management_system/view%20model/login%20provider/login_provider.dart';
+
 import 'package:provider/provider.dart';
+
+import 'viewModels/dokter perawat viewModel/dokterPerawat_provider.dart';
+import 'viewModels/login viewModel/login_provider.dart';
+import 'viewModels/pasien viewModel/pasien_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();

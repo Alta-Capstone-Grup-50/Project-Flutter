@@ -1,10 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/screens/pasien%20screen/components/data_source_table.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../view model/pasien provider/pasien_provider.dart';
+import '../../viewModels/pasien viewModel/pasien_provider.dart';
 import '/screens/main%20layout/main_layout.dart';
 import '/utilities/components/input.dart';
 import '/utilities/constants/color.dart';
@@ -50,17 +52,24 @@ class PasienScreen extends StatelessWidget {
             SizedBox(
               width: 391,
               height: 40,
-              child: Input(
-                hintText: 'Cari di sini',
-                backgroundColor: const Color(0xFFEBEBEB),
-                prefixIcon: Icon(
-                  Icons.search,
-                  color: primaryColor,
-                ),
-              ),
+              child: Consumer<PasienProvider>(
+                  builder: ((context, valueProvider, child) => Form(
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        key: valueProvider.formKey,
+                        child: Input(
+                          controller: valueProvider.searchController,
+                          onChanged: valueProvider.onSearch,
+                          hintText: 'Cari di sini',
+                          backgroundColor: const Color(0xFFEBEBEB),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: primaryColor,
+                          ),
+                        ),
+                      ))),
             ),
             const SizedBox(
-              height: 45,
+              height: 20,
             ),
             Consumer<PasienProvider>(builder: (context, value, _) {
               if (value.isLoading) {
@@ -75,138 +84,158 @@ class PasienScreen extends StatelessWidget {
                   ),
                 );
               } else {
-                final DataSourceTable _dataSource =
-                    DataSourceTable(value.listPasienData);
+                var val;
+
+                if (value.search.isNotEmpty ||
+                    value.searchController.text.isNotEmpty) {
+                  val = value.search;
+                } else {
+                  val = value.listPasienData;
+                }
+                final DataSourceTable _dataSource = DataSourceTable(val);
+
+                double countPage =
+                    _dataSource.data.length / _dataSource.rowsPerPage;
+
+                double countPageOfSearch =
+                    value.search.length / _dataSource.rowsPerPage;
+
+                print("countPageOfSearch = ${countPageOfSearch}");
+
                 return LayoutBuilder(
-                    builder: ((context, constraints) => Row(
-                          children: [
-                            Column(
-                              children: [
-                                SizedBox(
-                                  height:
-                                      MediaQuery.of(context).size.height * 0.5,
-                                  width: constraints.maxWidth,
-                                  child: SfDataGrid(
-                                    source: _dataSource,
-                                    columnWidthMode: ColumnWidthMode.auto,
-                                    columns: [
-                                      GridColumn(
-                                        columnName: 'No',
-                                        label: Container(
-                                          color: primaryColor.shade200,
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 16.0),
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'No',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w700),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
+                  builder: ((context, constraints) => Column(
+                        children: [
+                          SizedBox(
+                            width: constraints.maxWidth,
+                            child: SfDataGridTheme(
+                              data: SfDataGridThemeData(
+                                sortIconColor: Colors.black,
+                                headerHoverColor: primaryColor.shade200,
+                                headerColor: primaryColor.shade200,
+                                rowHoverColor: primaryColor,
+                              ),
+                              child: SfDataGrid(
+                                source: _dataSource,
+                                rowHeight: 40,
+                                allowPullToRefresh: true,
+                                isScrollbarAlwaysShown: true,
+                                columnWidthMode: ColumnWidthMode.lastColumnFill,
+                                columns: [
+                                  GridColumn(
+                                    columnName: 'No',
+                                    label: Container(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 16.0),
+                                      alignment: Alignment.centerLeft,
+                                      child: const Text(
+                                        'No',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700),
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                      GridColumn(
-                                        columnName: 'NIK',
-                                        label: Container(
-                                          color: primaryColor.shade200,
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'NIK',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w700),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ),
-                                      GridColumn(
-                                        columnName: 'Nama',
-                                        label: Container(
-                                          color: primaryColor.shade200,
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'Name',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w700),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ),
-                                      GridColumn(
-                                        columnName: 'Alamat',
-                                        label: Container(
-                                          color: primaryColor.shade200,
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'Alamat',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w700),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ),
-                                      GridColumn(
-                                        columnName: 'Nomor Telepon',
-                                        label: Container(
-                                          color: primaryColor.shade200,
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'Nomor Telepon',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w700),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ),
-                                      GridColumn(
-                                        columnName: 'Jenis Kelamin',
-                                        label: Container(
-                                          color: primaryColor.shade200,
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'Jenis Kelamin',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w700),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      ),
-                                      GridColumn(
-                                        columnName: 'Jenis Penyakit',
-                                        label: Container(
-                                          color: primaryColor.shade200,
-                                          alignment: Alignment.centerLeft,
-                                          child: const Text(
-                                            'Jenis Penyakit',
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w700),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      )
-                                    ],
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 60,
-                                  child: SfDataPagerTheme(
-                                    data: SfDataPagerThemeData(),
-                                    child: SfDataPager(
-                                        pageCount: _dataSource.data.length /
-                                            _dataSource.rowsPerPage,
-                                        direction: Axis.horizontal,
-                                        onPageNavigationStart: (int pageIndex) {
-                                          value.changeLoadingIndicator();
-                                        },
-                                        delegate: _dataSource,
-                                        onPageNavigationEnd: (int pageIndex) {
-                                          value.changeLoadingIndicator();
-                                        }),
+                                  GridColumn(
+                                    columnName: 'NIK',
+                                    label: Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: const Text(
+                                        'NIK',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ],
+                                  GridColumn(
+                                    columnName: 'Nama',
+                                    label: Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: const Text(
+                                        'Name',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ),
+                                  GridColumn(
+                                    columnName: 'Alamat',
+                                    label: Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: const Text(
+                                        'Alamat',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ),
+                                  GridColumn(
+                                    columnName: 'Nomor Telepon',
+                                    label: Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: const Text(
+                                        'Nomor Telepon',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ),
+                                  GridColumn(
+                                    columnName: 'Jenis Kelamin',
+                                    label: Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: const Text(
+                                        'Jenis Kelamin',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  ),
+                                  GridColumn(
+                                    columnName: 'Jenis Penyakit',
+                                    label: Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: const Text(
+                                        'Jenis Penyakit',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700),
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                          ],
-                        )));
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 250),
+                            child: SfDataPagerTheme(
+                              data: SfDataPagerThemeData(),
+                              child: SfDataPager(
+                                firstPageItemVisible: false,
+                                lastPageItemVisible: false,
+                                pageCount: (value.search.isNotEmpty ||
+                                        value.searchController.text.isNotEmpty)
+                                    ? (value.search.isNotEmpty)
+                                        ? countPageOfSearch.ceilToDouble()
+                                        : 1
+                                    : countPage.ceil().toDouble(),
+                                direction: Axis.horizontal,
+                                delegate: _dataSource,
+                              ),
+                            ),
+                          ),
+                        ],
+                      )),
+                );
               }
             }),
           ],

@@ -14,53 +14,49 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MainLayout(
       action: true,
-      child: Expanded(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 47),
-            child: Column(
-              children: [
-                const Content(),
-                const SizedBox(
-                  height: 50,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 70,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      ChoseCard(
-                        title: 'Data Pasien',
-                        openHistory: 'Dibuka pada 2 Juni 2022',
-                        image: 'assets/contents/data_pasien.png',
-                        page: const PasienScreen(),
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      ChoseCard(
-                        title: 'Data Dokter dan Perawat',
-                        openHistory: 'Dibuka pada 13 Mei 2022',
-                        image: 'assets/contents/data_dokter.png',
-                        page: const DokterPerawatScreen(),
-                      ),  
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      ChoseCard(
-                        title: 'Data Rawat Jalan',
-                        openHistory: 'Dibuka pada 2 Juni 2022',
-                        image: 'assets/contents/data_rawat.png',
-                        page: const RawatScreen(),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 47),
+        child: Column(
+          children: [
+            const Content(),
+            const SizedBox(
+              height: 50,
             ),
-          ),
+            Padding(
+              padding: const EdgeInsets.symmetric(
+                horizontal: 70,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ChoseCard(
+                    title: 'Data Pasien',
+                    openHistory: 'Dibuka pada 2 Juni 2022',
+                    image: 'assets/contents/data_pasien.png',
+                    page: const PasienScreen(),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  ChoseCard(
+                    title: 'Data Dokter dan Perawat',
+                    openHistory: 'Dibuka pada 13 Mei 2022',
+                    image: 'assets/contents/data_dokter.png',
+                    page: const DokterPerawatScreen(),
+                  ),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  ChoseCard(
+                    title: 'Data Rawat Jalan',
+                    openHistory: 'Dibuka pada 2 Juni 2022',
+                    image: 'assets/contents/data_rawat.png',
+                    page: const RawatScreen(),
+                  ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     );

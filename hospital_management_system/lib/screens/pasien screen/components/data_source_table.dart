@@ -9,13 +9,15 @@ class DataSourceTable extends DataGridSource {
 
   List<DataPasien> _paginatedData = [];
 
-  int rowsPerPage = 0;
+  int rowsPerPage = 6;
+  int restOfPage = 0;
+  int startIndex = 0;
 
   final DataPagerController _controller = DataPagerController();
 
   DataSourceTable(this._data) {
     _paginatedData = _data.getRange(0, _data.length).toList(growable: false);
-    rowsPerPage = _data.length;
+    restOfPage = _paginatedData.length - startIndex;
 
     buildPaginatedDataGridRows();
   }
@@ -28,6 +30,8 @@ class DataSourceTable extends DataGridSource {
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
     final int index = effectiveRows.indexOf(row);
+    int indexOfNumber = effectiveRows.indexOf(row) + (startIndex + 1);
+
     Color getRowBackgroundColor() {
       if (index % 2 != 1) {
         return const Color(0xFFE2E2E2).withOpacity(0.47);
@@ -43,7 +47,7 @@ class DataSourceTable extends DataGridSource {
           color: getRowBackgroundColor(),
           alignment: Alignment.centerLeft,
           child: Text(
-            '${index + 1}',
+            '$indexOfNumber',
             overflow: TextOverflow.ellipsis,
           ),
         );
@@ -110,19 +114,40 @@ class DataSourceTable extends DataGridSource {
 
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    int startIndex = newPageIndex * rowsPerPage;
-    int endIndex = startIndex + rowsPerPage;
+    // print("oldPageIndex =  ${oldPageIndex}");
+    // print("newPageIndex = ${newPageIndex}");
+
+    // print("restOfPage = $restOfPage");
+
+    // print("paginatedData = ${_paginatedData.length}");
+
+    // print("Data = ${_data.length}");
+
+    startIndex = newPageIndex * rowsPerPage;
+    // print("startIndex = $startIndex");
+
+    int endIndex = 0;
+
+    if (_data.length - startIndex <= rowsPerPage) {
+      endIndex = _data.length;
+      // print('oke');
+    } else {
+      endIndex = startIndex + rowsPerPage;
+    }
+
+    print("endIndex = $endIndex");
     if (startIndex < _data.length && endIndex <= _data.length) {
-      Future.delayed(const Duration(milliseconds: 2000));
+      // print("Masuk");
+      // Future.delayed(const Duration(milliseconds: 2000));
       _paginatedData =
           _data.getRange(startIndex, endIndex).toList(growable: false);
       buildPaginatedDataGridRows();
       notifyListeners();
+
       _controller.dispose();
     } else {
       _paginatedData = [];
     }
-
     return true;
   }
 

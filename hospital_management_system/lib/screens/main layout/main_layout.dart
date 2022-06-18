@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/screens/dokter%20perawat%20screen/dokterPerawat_screen.dart';
-import 'package:hospital_management_system/screens/home%20screen/home_screen.dart';
-import 'package:hospital_management_system/screens/rawat%20screen/dokter%20perawat%20screen/rawat_screen.dart';
+
 import 'package:hospital_management_system/utilities/constants/color.dart';
 import 'package:hospital_management_system/utilities/constants/responsive.dart';
-
-import '../pasien screen/pasien_screen.dart';
 
 class MainLayout extends StatelessWidget {
   const MainLayout(
@@ -162,7 +158,11 @@ class MainLayout extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   appBar(context),
-                  child,
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: child,
+                    ),
+                  ),
                 ],
               )
             : const Center(

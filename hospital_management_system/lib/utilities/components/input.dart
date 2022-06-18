@@ -10,6 +10,7 @@ class Input extends StatelessWidget {
     this.errorText,
     this.keyboardType,
     this.onSaved,
+    this.onChanged,
     this.validator,
     this.prefixIcon,
     this.suffix,
@@ -29,6 +30,7 @@ class Input extends StatelessWidget {
   Widget? suffixIcon;
   Widget? suffix;
   Color? backgroundColor;
+  Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -37,6 +39,7 @@ class Input extends StatelessWidget {
       onSaved: onSaved,
       obscureText: obscureText,
       keyboardType: keyboardType,
+      onChanged: onChanged,
       controller: controller,
       decoration: InputDecoration(
         filled: true,

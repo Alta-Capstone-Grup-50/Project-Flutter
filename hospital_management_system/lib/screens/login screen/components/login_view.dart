@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/utilities/constants/user_preferences.dart';
-import 'package:hospital_management_system/view%20model/login%20provider/login_provider.dart';
 import 'package:hospital_management_system/utilities/constants/validate.dart';
 import 'package:provider/provider.dart';
 
+import '../../../viewModels/login viewModel/login_provider.dart';
 import '/utilities/components/input.dart';
 import '/utilities/constants/color.dart';
 

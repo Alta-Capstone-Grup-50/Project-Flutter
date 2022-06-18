@@ -16,4 +16,7 @@ class ApiUrl {
       'https://mini-project-be.herokuapp.com/api';
 
   static const String login = '$baseUrlLogin/login';
+
+  static const String baseUrlTesting =
+      'https://api-capstone-heroku.herokuapp.com/data_pasien';
 }

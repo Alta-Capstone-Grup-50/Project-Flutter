@@ -4,7 +4,7 @@ import 'package:hospital_management_system/screens/home%20screen/home_screen.dar
 import 'package:hospital_management_system/services/login_service.dart';
 import 'package:hospital_management_system/utilities/common/snackbar.dart';
 
-import '../../utilities/constants/user_preferences.dart';
+import '../../services/perfs_service.dart';
 
 enum Status {
   notLoggedIn,
