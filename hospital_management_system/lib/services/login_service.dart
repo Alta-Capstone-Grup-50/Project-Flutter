@@ -6,6 +6,7 @@ import 'package:dio/dio.dart';
 class LoginService {
   final Dio _dio = Dio();
   Future post(loginData) async {
+    print(loginData);
     try {
       final response = await _dio.post(ApiUrl.login,
           data: loginData,

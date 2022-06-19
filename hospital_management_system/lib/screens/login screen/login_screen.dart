@@ -14,6 +14,7 @@ class LoginScreen extends StatelessWidget {
     LoginProvider loginFunction = context.read<LoginProvider>();
     return MainLayout(
         action: false,
+        keyScreens: '',
         child: Column(
           children: [
             loginValue.loggedInStatus == Status.authenticating

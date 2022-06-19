@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/models/user_model.dart';
 import 'package:hospital_management_system/screens/home%20screen/home_screen.dart';
+import 'package:hospital_management_system/screens/login%20screen/login_screen.dart';
 import 'package:hospital_management_system/services/login_service.dart';
 import 'package:hospital_management_system/utilities/common/snackbar.dart';
 
@@ -115,6 +116,19 @@ class LoginProvider extends ChangeNotifier {
       notifyListeners();
       return 'wrong';
     }
+  }
+
+  logout(BuildContext context) {
+    UserPreferences().removeUser();
+    Future.delayed(const Duration(seconds: 3), () async {
+      await Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(
+            builder: ((context) => const LoginScreen()),
+          ),
+          (route) => true);
+      dispose();
+    });
   }
 
   static onError(error) {

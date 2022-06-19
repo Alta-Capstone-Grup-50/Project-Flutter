@@ -1,31 +1,24 @@
 class UserModel {
-  int? id;
-  String? name;
   String? email;
-  String? profilePic;
+  int? statusCode;
   String? accessToken;
-  String? tokenType;
+  String? expire;
   String? message;
 
   UserModel({
-    this.id,
-    this.name,
     this.email,
-    this.profilePic,
+    this.statusCode,
     this.accessToken,
-    this.tokenType,
+    this.expire,
     this.message,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     if (json['data'] != null) {
       return UserModel(
-        id: json['data']['id'] ?? 0,
-        name: json['data']['name'],
-        email: json['data']['email'],
-        tokenType: json['token_type'],
-        accessToken: json['access_token'],
-        message: json['message'],
+        statusCode: json['code'],
+        accessToken: json['token'],
+        expire: json['expire'],
       );
     } else {
       return UserModel(message: json['message']);

@@ -55,7 +55,7 @@ class LoginView extends StatelessWidget {
 
   Widget formField(LoginProvider loginValue, LoginProvider loginFunction) {
     return Form(
-      autovalidateMode: AutovalidateMode.onUserInteraction,
+      autovalidateMode: AutovalidateMode.disabled,
       key: loginValue.formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

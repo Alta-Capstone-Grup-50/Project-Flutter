@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/screens/dokter%20perawat%20screen/dokterPerawat_screen.dart';
-import 'package:hospital_management_system/screens/home%20screen/home_screen.dart';
+
 import 'package:hospital_management_system/screens/pasien%20screen/pasien_screen.dart';
 import 'package:hospital_management_system/screens/rawat%20screen/dokter%20perawat%20screen/rawat_screen.dart';
 
 import 'package:hospital_management_system/utilities/constants/color.dart';
 import 'package:hospital_management_system/utilities/constants/responsive.dart';
 
-class MainLayout extends StatelessWidget {
+import 'dropdown_item.dart';
+
+class MainLayout extends StatefulWidget {
   const MainLayout({
     Key? key,
     required this.action,
@@ -20,10 +22,27 @@ class MainLayout extends StatelessWidget {
   final bool? actionRoute;
   final Widget child;
   final keyScreens;
+
+  @override
+  State<MainLayout> createState() => _MainLayoutState();
+}
+
+class _MainLayoutState extends State<MainLayout>
+    with SingleTickerProviderStateMixin {
+  late AnimationController animationController;
+  bool _menuShown = false;
+
+  @override
+  void initState() {
+    animationController = AnimationController(
+        duration: const Duration(milliseconds: 150), vsync: this);
+    super.initState();
+  }
+
   final String assetLogo = 'assets/icons/logo.png';
 
   List<Widget> route(BuildContext context) {
-    if (keyScreens == 'PasienScreen') {
+    if (widget.keyScreens == 'PasienScreen') {
       List<Widget> widgets = [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -65,7 +84,7 @@ class MainLayout extends StatelessWidget {
         ),
       ];
       return widgets;
-    } else if (keyScreens == 'RawatScreen') {
+    } else if (widget.keyScreens == 'RawatScreen') {
       List<Widget> widgets = [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -107,7 +126,7 @@ class MainLayout extends StatelessWidget {
         ),
       ];
       return widgets;
-    } else if (keyScreens == 'DokterPerawatScreen') {
+    } else if (widget.keyScreens == 'DokterPerawatScreen') {
       List<Widget> widgets = [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -147,7 +166,7 @@ class MainLayout extends StatelessWidget {
         ),
       ];
       return widgets;
-    } else if (keyScreens == 'HomeScreen') {
+    } else if (widget.keyScreens == 'HomeScreen') {
       List<Widget> widgets = [
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -236,6 +255,13 @@ class MainLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Animation<double> opacityAnimation =
+        Tween(begin: 0.0, end: 1.0).animate(animationController);
+    if (_menuShown) {
+      animationController.forward();
+    } else {
+      animationController.reverse();
+    }
     return Scaffold(
       body: SafeArea(
         child: Responsive.isDesktop(context) ||
@@ -246,9 +272,22 @@ class MainLayout extends StatelessWidget {
                 children: [
                   appBar(context),
                   Expanded(
-                    child: SingleChildScrollView(
-                      child: child,
-                    ),
+                    child: Stack(
+                        alignment: AlignmentDirectional.center,
+                        clipBehavior: Clip.none,
+                        children: [
+                          SingleChildScrollView(
+                            child: widget.child,
+                          ),
+                          Positioned(
+                            right: 70,
+                            top: 5,
+                            child: FadeTransition(
+                              opacity: opacityAnimation,
+                              child: const ShapedWidget(),
+                            ),
+                          ),
+                        ]),
                   ),
                 ],
               )
@@ -279,7 +318,7 @@ class MainLayout extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 70, top: 5),
                 child: GestureDetector(
                   onTap: () {
-                    if (keyScreens != 'HomeScreen') {
+                    if (widget.keyScreens != 'HomeScreen') {
                       return Navigator.pop(context);
                     } else {
                       return;
@@ -290,12 +329,12 @@ class MainLayout extends StatelessWidget {
                     image: AssetImage(assetLogo),
                   ),
                 )),
-            action == true
+            widget.action == true
                 ? Container(
-                    padding: const EdgeInsets.only(right: 60),
+                    padding: const EdgeInsets.only(right: 70),
                     child: Row(
                       children: [
-                        (actionRoute != false)
+                        (widget.actionRoute != false)
                             ? Row(
                                 children: route(context),
                               )
@@ -310,8 +349,8 @@ class MainLayout extends StatelessWidget {
                             ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                CircleAvatar(
+                              children: [
+                                const CircleAvatar(
                                   backgroundColor: Colors.transparent,
                                   radius: 16,
                                   child: ImageIcon(
@@ -320,9 +359,17 @@ class MainLayout extends StatelessWidget {
                                     color: Colors.white,
                                   ),
                                 ),
-                                Icon(
-                                  Icons.keyboard_arrow_down,
-                                  color: Colors.white,
+                                InkWell(
+                                  borderRadius: BorderRadius.circular(50),
+                                  child: const Icon(
+                                    Icons.keyboard_arrow_down,
+                                    color: Colors.white,
+                                  ),
+                                  onTap: () {
+                                    setState(() {
+                                      _menuShown = !_menuShown;
+                                    });
+                                  },
                                 ),
                               ],
                             ),
