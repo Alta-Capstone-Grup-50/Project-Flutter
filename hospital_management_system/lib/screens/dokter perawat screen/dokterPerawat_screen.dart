@@ -16,7 +16,7 @@ class DokterPerawatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MainLayout(
       action: true,
-      screens: 'DokterPerawatScreen',
+      keyScreens: 'DokterPerawatScreen',
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 29),
         child: Column(

@@ -14,6 +14,7 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MainLayout(
       action: true,
+      keyScreens: 'HomeScreen',
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 47),
         child: Column(

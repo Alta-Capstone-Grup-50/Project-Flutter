@@ -1,125 +1,204 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/screens/dokter%20perawat%20screen/dokterPerawat_screen.dart';
+import 'package:hospital_management_system/screens/home%20screen/home_screen.dart';
+import 'package:hospital_management_system/screens/pasien%20screen/pasien_screen.dart';
+import 'package:hospital_management_system/screens/rawat%20screen/dokter%20perawat%20screen/rawat_screen.dart';
 
 import 'package:hospital_management_system/utilities/constants/color.dart';
 import 'package:hospital_management_system/utilities/constants/responsive.dart';
 
 class MainLayout extends StatelessWidget {
-  const MainLayout(
-      {Key? key, required this.action, required this.child, this.screens})
-      : super(key: key);
+  const MainLayout({
+    Key? key,
+    required this.action,
+    this.actionRoute = false,
+    required this.child,
+    this.keyScreens,
+  }) : super(key: key);
 
   final bool action;
+  final bool? actionRoute;
   final Widget child;
-  final screens;
+  final keyScreens;
   final String assetLogo = 'assets/icons/logo.png';
 
-  List<Widget> screen() {
-    if (screens == 'PasienScreen') {
+  List<Widget> route(BuildContext context) {
+    if (keyScreens == 'PasienScreen') {
       List<Widget> widgets = [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40),
-          child: Text(
-            'Home',
-            style: TextStyle(
-                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: InkWell(
+            onTap: () => Navigator.pop(context),
+            child: const Text(
+              'Home',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700),
+            ),
           ),
         ),
-        const Text(
-          'Data Rawat Jalan',
-          style: TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
-        ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40),
-          child: Text(
-            'Data Tenaga Kesehatan',
-            style: TextStyle(
-                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
-          ),
-        ),
-      ];
-      return widgets;
-    } else if (screens == 'RawatScreen') {
-      List<Widget> widgets = [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40),
-          child: Text(
-            'Home',
-            style: TextStyle(
-                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
-          ),
-        ),
-        const Text(
-          'Data Pasien',
-          style: TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
-        ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40),
-          child: Text(
-            'Data Tenaga Kesehatan',
-            style: TextStyle(
-                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
-          ),
-        ),
-      ];
-      return widgets;
-    } else if (screens == 'DokterPerawatScreen') {
-      List<Widget> widgets = [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40),
-          child: Text(
-            'Home',
-            style: TextStyle(
-                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
-          ),
-        ),
-        const Text(
-          'Data Pasien',
-          style: TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
-        ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40),
-          child: Text(
+        InkWell(
+          onTap: () => Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const RawatScreen())),
+          child: const Text(
             'Data Rawat Jalan',
             style: TextStyle(
                 color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
           ),
         ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: InkWell(
+            onTap: () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const DokterPerawatScreen())),
+            child: const Text(
+              'Data Tenaga Kesehatan',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700),
+            ),
+          ),
+        ),
       ];
       return widgets;
-    } else if (screens == 'HomeScreen') {
+    } else if (keyScreens == 'RawatScreen') {
       List<Widget> widgets = [
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40),
-          child: Text(
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: InkWell(
+            onTap: () => Navigator.pop(context),
+            child: const Text(
+              'Home',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700),
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () => Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const PasienScreen())),
+          child: const Text(
             'Data Pasien',
             style: TextStyle(
                 color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
           ),
         ),
-        const Text(
-          'Data Rawat Jalan',
-          style: TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: InkWell(
+            onTap: () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const DokterPerawatScreen())),
+            child: const Text(
+              'Data Tenaga Kesehatan',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700),
+            ),
+          ),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40),
-          child: Text(
-            'Data Tenaga Kesehatan',
+      ];
+      return widgets;
+    } else if (keyScreens == 'DokterPerawatScreen') {
+      List<Widget> widgets = [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: InkWell(
+            onTap: () => Navigator.pop(context),
+            child: const Text(
+              'Home',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700),
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () => Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const PasienScreen())),
+          child: const Text(
+            'Data Pasien',
             style: TextStyle(
                 color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: InkWell(
+            onTap: () => Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const RawatScreen())),
+            child: const Text(
+              'Data Rawat Jalan',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700),
+            ),
+          ),
+        ),
+      ];
+      return widgets;
+    } else if (keyScreens == 'HomeScreen') {
+      List<Widget> widgets = [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: InkWell(
+            onTap: () => Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const PasienScreen())),
+            child: const Text(
+              'Data Pasien',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700),
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () => Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const RawatScreen())),
+          child: const Text(
+            'Data Rawat Jalan',
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: InkWell(
+            onTap: () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const DokterPerawatScreen())),
+            child: const Text(
+              'Data Tenaga Kesehatan',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700),
+            ),
           ),
         ),
       ];
       return widgets;
     } else {
       List<Widget> widgets = [
-        const Text(
-          'Home',
-          style: TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+        InkWell(
+          onTap: () => Navigator.pop(context),
+          child: const Text(
+            'Home',
+            style: TextStyle(
+                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+          ),
         ),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 40),
@@ -134,12 +213,20 @@ class MainLayout extends StatelessWidget {
           style: TextStyle(
               color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40),
-          child: Text(
-            'Data Tenaga Kesehatan',
-            style: TextStyle(
-                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: InkWell(
+            onTap: () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const DokterPerawatScreen())),
+            child: const Text(
+              'Data Tenaga Kesehatan',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700),
+            ),
           ),
         ),
       ];
@@ -192,7 +279,11 @@ class MainLayout extends StatelessWidget {
                 padding: const EdgeInsets.only(left: 70, top: 5),
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.pop(context);
+                    if (keyScreens != 'HomeScreen') {
+                      return Navigator.pop(context);
+                    } else {
+                      return;
+                    }
                   },
                   child: Image(
                     width: 150,
@@ -204,9 +295,11 @@ class MainLayout extends StatelessWidget {
                     padding: const EdgeInsets.only(right: 60),
                     child: Row(
                       children: [
-                        Row(
-                          children: screen(),
-                        ),
+                        (actionRoute != false)
+                            ? Row(
+                                children: route(context),
+                              )
+                            : const SizedBox.shrink(),
                         SizedBox(
                           width: 70,
                           height: 52,

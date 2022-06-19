@@ -16,7 +16,7 @@ class RawatScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MainLayout(
       action: true,
-      screens: 'RawatScreen',
+      keyScreens: 'RawatScreen',
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 29),
         child: Column(
@@ -199,16 +199,11 @@ class RawatScreen extends StatelessWidget {
                                   child: SfDataPagerTheme(
                                     data: SfDataPagerThemeData(),
                                     child: SfDataPager(
-                                        pageCount: _dataSource.data.length /
-                                            _dataSource.rowsPerPage,
-                                        direction: Axis.horizontal,
-                                        onPageNavigationStart: (int pageIndex) {
-                                          value.changeLoadingIndicator();
-                                        },
-                                        delegate: _dataSource,
-                                        onPageNavigationEnd: (int pageIndex) {
-                                          value.changeLoadingIndicator();
-                                        }),
+                                      pageCount: _dataSource.data.length /
+                                          _dataSource.rowsPerPage,
+                                      direction: Axis.horizontal,
+                                      delegate: _dataSource,
+                                    ),
                                   ),
                                 ),
                               ],

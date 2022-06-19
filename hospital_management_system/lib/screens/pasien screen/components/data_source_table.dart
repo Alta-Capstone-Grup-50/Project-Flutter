@@ -59,67 +59,60 @@ class DataSourceTable extends DataGridSource {
         );
       } else if (dataGridCell.columnName == 'NIK') {
         return Container(
-          padding: const EdgeInsets.only(right: 16.0),
-          color: getRowBackgroundColor(),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            dataGridCell.value.toString(),
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
+            padding: const EdgeInsets.only(right: 16.0),
+            color: getRowBackgroundColor(),
+            alignment: Alignment.centerLeft,
+            child: Text.rich(TextSpan(
+                children: dataGridCell.value,
+                style: const TextStyle(
+                  color: Colors.black,
+                ))));
       } else if (dataGridCell.columnName == 'Nama') {
         return Container(
             padding: const EdgeInsets.only(right: 16.0),
             color: getRowBackgroundColor(),
             alignment: Alignment.centerLeft,
-            child: Text.rich(
-              TextSpan(
+            child: Text.rich(TextSpan(
                 children: dataGridCell.value,
                 style: const TextStyle(
                   color: Colors.black,
-                ),
-              ),
-            ));
+                ))));
       } else if (dataGridCell.columnName == 'Alamat') {
         return Container(
-          padding: const EdgeInsets.only(right: 16.0),
-          color: getRowBackgroundColor(),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            dataGridCell.value.toString(),
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
+            padding: const EdgeInsets.only(right: 16.0),
+            color: getRowBackgroundColor(),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              dataGridCell.value.toString(),
+              overflow: TextOverflow.ellipsis,
+            ));
       } else if (dataGridCell.columnName == 'Nomor telepon') {
         return Container(
-          padding: const EdgeInsets.only(right: 16.0),
-          color: getRowBackgroundColor(),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            dataGridCell.value.toString(),
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
+            padding: const EdgeInsets.only(right: 16.0),
+            color: getRowBackgroundColor(),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              dataGridCell.value.toString(),
+              overflow: TextOverflow.ellipsis,
+            ));
       } else if (dataGridCell.columnName == 'Jenis Kelamin') {
         return Container(
-          padding: const EdgeInsets.only(right: 16.0),
-          color: getRowBackgroundColor(),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            dataGridCell.value.toString(),
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
+            padding: const EdgeInsets.only(right: 16.0),
+            color: getRowBackgroundColor(),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              dataGridCell.value.toString(),
+              overflow: TextOverflow.ellipsis,
+            ));
       } else {
         return Container(
-          color: getRowBackgroundColor(),
-          padding: const EdgeInsets.only(right: 20.0),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            dataGridCell.value.toString(),
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
+            color: getRowBackgroundColor(),
+            padding: const EdgeInsets.only(right: 20.0),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              dataGridCell.value.toString(),
+              overflow: TextOverflow.ellipsis,
+            ));
       }
     }).toList());
   }
@@ -153,7 +146,7 @@ class DataSourceTable extends DataGridSource {
     // print("endIndex = $endIndex");
     if (startIndex < _data.length && endIndex <= _data.length) {
       // print("Masuk");
-      // Future.delayed(const Duration(milliseconds: 2000));
+
       _paginatedData =
           _data.getRange(startIndex, endIndex).toList(growable: false);
       buildPaginatedDataGridRows();
@@ -168,21 +161,27 @@ class DataSourceTable extends DataGridSource {
 
   void buildPaginatedDataGridRows() {
     dataGridRows = _paginatedData.map<DataGridRow>((dataGridRow) {
-      print(valProvider!.highlightOccurences(
-          dataGridRow.nama!, valProvider!.searchController.text));
+      // print(valProvider!.highlightOccurences(
+      //     dataGridRow.nama!, valProvider!.searchController.text));
       return DataGridRow(cells: [
-        const DataGridCell(columnName: 'No', value: null),
-        DataGridCell(columnName: 'NIK', value: dataGridRow.nik),
+        const DataGridCell(columnName: 'No', value: ' '),
+        DataGridCell(
+            columnName: 'NIK',
+            value: valProvider!.highlightOccurences(
+                dataGridRow.nik ?? ' ', valProvider!.searchController.text)),
         DataGridCell(
             columnName: 'Nama',
             value: valProvider!.highlightOccurences(
-                dataGridRow.nama!, valProvider!.searchController.text)),
-        DataGridCell(columnName: 'Alamat', value: dataGridRow.alamat),
-        DataGridCell(columnName: 'Nomor telepon', value: dataGridRow.noTelp),
+                dataGridRow.nama ?? ' ', valProvider!.searchController.text)),
+        DataGridCell(columnName: 'Alamat', value: dataGridRow.alamat ?? ' '),
         DataGridCell(
-            columnName: 'Jenis Kelamin', value: dataGridRow.jenisKelamin),
+            columnName: 'Nomor telepon', value: dataGridRow.noTelp ?? ' '),
         DataGridCell(
-            columnName: 'Jenis Penyakit', value: dataGridRow.jenisPenyakit),
+            columnName: 'Jenis Kelamin',
+            value: dataGridRow.jenisKelamin ?? ' '),
+        DataGridCell(
+            columnName: 'Jenis Penyakit',
+            value: dataGridRow.jenisPenyakit ?? ' '),
       ]);
     }).toList(growable: false);
   }

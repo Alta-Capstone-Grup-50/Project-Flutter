@@ -7,7 +7,6 @@ import 'package:hospital_management_system/utilities/constants/color.dart';
 class PasienProvider extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
 
-  bool showLoadingIndicator = false;
   bool isLoading = true;
 
   List<DataPasien> listPasienData = [];
@@ -21,11 +20,6 @@ class PasienProvider extends ChangeNotifier {
 
   PasienProvider() {
     getDataApiPasien();
-  }
-
-  changeLoadingIndicator() {
-    showLoadingIndicator = !showLoadingIndicator;
-    notifyListeners();
   }
 
   Future getDataApiPasien() async {
@@ -47,13 +41,6 @@ class PasienProvider extends ChangeNotifier {
             (element.nik!.toLowerCase().contains(query.toLowerCase())))
         .toList();
 
-    // listPasienData.forEach((list) {
-    //   if (list.nama!.toLowerCase().contains(text) ||
-    //       list.nik.toString().contains(text)) {
-    //     _search.add(list);
-    //   }
-    // });
-
     notifyListeners();
   }
 
@@ -74,7 +61,7 @@ class PasienProvider extends ChangeNotifier {
 
     int lastMatchEnd = 0;
     final List<TextSpan> children = <TextSpan>[];
-    Color matchColor = Colors.black;
+    Color matchColor = primaryColor.shade900;
     for (final Match match in matches) {
       if (match.end <= lastMatchEnd) {
       } else if (match.start <= lastMatchEnd) {
