@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/screens/pasien%20screen/components/data_source_table.dart';
 import 'package:provider/provider.dart';
@@ -36,18 +34,18 @@ class PasienScreen extends StatelessWidget {
               ],
             ),
             const Padding(
-              padding: EdgeInsets.only(top: 25),
+              padding: EdgeInsets.only(top: 20),
               child: Text(
                 'Data Pasien',
                 style: TextStyle(
-                  fontSize: 32,
+                  fontSize: 40,
                   fontWeight: FontWeight.w700,
                   fontFamily: 'Open Sans',
                 ),
               ),
             ),
             const SizedBox(
-              height: 20,
+              height: 50,
             ),
             SizedBox(
               width: 391,
@@ -92,7 +90,8 @@ class PasienScreen extends StatelessWidget {
                 } else {
                   val = value.listPasienData;
                 }
-                final DataSourceTable _dataSource = DataSourceTable(val);
+                final DataSourceTable _dataSource =
+                    DataSourceTable(val, context);
 
                 double countPage =
                     _dataSource.data.length / _dataSource.rowsPerPage;
@@ -100,7 +99,7 @@ class PasienScreen extends StatelessWidget {
                 double countPageOfSearch =
                     value.search.length / _dataSource.rowsPerPage;
 
-                print("countPageOfSearch = ${countPageOfSearch}");
+                print("countPageOfSearch = $countPageOfSearch");
 
                 return LayoutBuilder(
                   builder: ((context, constraints) => Column(
@@ -119,14 +118,14 @@ class PasienScreen extends StatelessWidget {
                                 rowHeight: 40,
                                 allowPullToRefresh: true,
                                 isScrollbarAlwaysShown: true,
-                                columnWidthMode: ColumnWidthMode.lastColumnFill,
+                                columnWidthMode: ColumnWidthMode.fill,
                                 columns: [
                                   GridColumn(
+                                    width: 60,
                                     columnName: 'No',
                                     label: Container(
-                                      padding: const EdgeInsets.symmetric(
-                                          horizontal: 16.0),
-                                      alignment: Alignment.centerLeft,
+                                      alignment: Alignment.center,
+                                      padding: const EdgeInsets.only(right: 10),
                                       child: const Text(
                                         'No',
                                         style: TextStyle(
@@ -137,6 +136,7 @@ class PasienScreen extends StatelessWidget {
                                   ),
                                   GridColumn(
                                     columnName: 'NIK',
+                                    width: 160,
                                     label: Container(
                                       alignment: Alignment.centerLeft,
                                       child: const Text(
@@ -149,6 +149,7 @@ class PasienScreen extends StatelessWidget {
                                   ),
                                   GridColumn(
                                     columnName: 'Nama',
+                                    width: 190,
                                     label: Container(
                                       alignment: Alignment.centerLeft,
                                       child: const Text(
@@ -161,6 +162,7 @@ class PasienScreen extends StatelessWidget {
                                   ),
                                   GridColumn(
                                     columnName: 'Alamat',
+                                    width: 300,
                                     label: Container(
                                       alignment: Alignment.centerLeft,
                                       child: const Text(
@@ -173,6 +175,7 @@ class PasienScreen extends StatelessWidget {
                                   ),
                                   GridColumn(
                                     columnName: 'Nomor Telepon',
+                                    width: 150,
                                     label: Container(
                                       alignment: Alignment.centerLeft,
                                       child: const Text(
@@ -185,6 +188,7 @@ class PasienScreen extends StatelessWidget {
                                   ),
                                   GridColumn(
                                     columnName: 'Jenis Kelamin',
+                                    width: 130,
                                     label: Container(
                                       alignment: Alignment.centerLeft,
                                       child: const Text(
@@ -196,6 +200,7 @@ class PasienScreen extends StatelessWidget {
                                     ),
                                   ),
                                   GridColumn(
+                                    width: 160,
                                     columnName: 'Jenis Penyakit',
                                     label: Container(
                                       alignment: Alignment.centerLeft,
@@ -218,7 +223,10 @@ class PasienScreen extends StatelessWidget {
                             padding:
                                 const EdgeInsets.symmetric(horizontal: 250),
                             child: SfDataPagerTheme(
-                              data: SfDataPagerThemeData(),
+                              data: SfDataPagerThemeData(
+                                selectedItemColor: primaryColor.shade200,
+                                itemBorderRadius: BorderRadius.circular(11),
+                              ),
                               child: SfDataPager(
                                 firstPageItemVisible: false,
                                 lastPageItemVisible: false,

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/viewModels/pasien%20viewModel/pasien_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../models/pasien_data_model.dart';
@@ -13,9 +15,13 @@ class DataSourceTable extends DataGridSource {
   int restOfPage = 0;
   int startIndex = 0;
 
+  PasienProvider? valProvider;
+
   final DataPagerController _controller = DataPagerController();
 
-  DataSourceTable(this._data) {
+  DataSourceTable(this._data, BuildContext context) {
+    valProvider = context.read<PasienProvider>();
+
     _paginatedData = _data.getRange(0, _data.length).toList(growable: false);
     restOfPage = _paginatedData.length - startIndex;
 
@@ -43,9 +49,9 @@ class DataSourceTable extends DataGridSource {
         cells: row.getCells().map<Widget>((dataGridCell) {
       if (dataGridCell.columnName == 'No') {
         return Container(
-          padding: const EdgeInsets.only(left: 16.0),
+          padding: const EdgeInsets.only(right: 10),
           color: getRowBackgroundColor(),
-          alignment: Alignment.centerLeft,
+          alignment: Alignment.center,
           child: Text(
             '$indexOfNumber',
             overflow: TextOverflow.ellipsis,
@@ -53,6 +59,7 @@ class DataSourceTable extends DataGridSource {
         );
       } else if (dataGridCell.columnName == 'NIK') {
         return Container(
+          padding: const EdgeInsets.only(right: 16.0),
           color: getRowBackgroundColor(),
           alignment: Alignment.centerLeft,
           child: Text(
@@ -65,12 +72,17 @@ class DataSourceTable extends DataGridSource {
             padding: const EdgeInsets.only(right: 16.0),
             color: getRowBackgroundColor(),
             alignment: Alignment.centerLeft,
-            child: Text(
-              dataGridCell.value.toString(),
-              overflow: TextOverflow.ellipsis,
+            child: Text.rich(
+              TextSpan(
+                children: dataGridCell.value,
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
+              ),
             ));
       } else if (dataGridCell.columnName == 'Alamat') {
         return Container(
+          padding: const EdgeInsets.only(right: 16.0),
           color: getRowBackgroundColor(),
           alignment: Alignment.centerLeft,
           child: Text(
@@ -100,8 +112,8 @@ class DataSourceTable extends DataGridSource {
         );
       } else {
         return Container(
-          padding: const EdgeInsets.only(right: 16.0),
           color: getRowBackgroundColor(),
+          padding: const EdgeInsets.only(right: 20.0),
           alignment: Alignment.centerLeft,
           child: Text(
             dataGridCell.value.toString(),
@@ -113,7 +125,10 @@ class DataSourceTable extends DataGridSource {
   }
 
   @override
-  Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
+  Future<bool> handlePageChange(
+    int oldPageIndex,
+    int newPageIndex,
+  ) async {
     // print("oldPageIndex =  ${oldPageIndex}");
     // print("newPageIndex = ${newPageIndex}");
 
@@ -135,7 +150,7 @@ class DataSourceTable extends DataGridSource {
       endIndex = startIndex + rowsPerPage;
     }
 
-    print("endIndex = $endIndex");
+    // print("endIndex = $endIndex");
     if (startIndex < _data.length && endIndex <= _data.length) {
       // print("Masuk");
       // Future.delayed(const Duration(milliseconds: 2000));
@@ -153,10 +168,15 @@ class DataSourceTable extends DataGridSource {
 
   void buildPaginatedDataGridRows() {
     dataGridRows = _paginatedData.map<DataGridRow>((dataGridRow) {
+      print(valProvider!.highlightOccurences(
+          dataGridRow.nama!, valProvider!.searchController.text));
       return DataGridRow(cells: [
         const DataGridCell(columnName: 'No', value: null),
         DataGridCell(columnName: 'NIK', value: dataGridRow.nik),
-        DataGridCell(columnName: 'Nama', value: dataGridRow.nama),
+        DataGridCell(
+            columnName: 'Nama',
+            value: valProvider!.highlightOccurences(
+                dataGridRow.nama!, valProvider!.searchController.text)),
         DataGridCell(columnName: 'Alamat', value: dataGridRow.alamat),
         DataGridCell(columnName: 'Nomor telepon', value: dataGridRow.noTelp),
         DataGridCell(
