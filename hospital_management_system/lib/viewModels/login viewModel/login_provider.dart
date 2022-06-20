@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/models/detailLogin_model.dart';
 import 'package:hospital_management_system/models/user_model.dart';
 import 'package:hospital_management_system/screens/home%20screen/home_screen.dart';
 import 'package:hospital_management_system/screens/login%20screen/login_screen.dart';
@@ -18,7 +21,7 @@ class LoginProvider extends ChangeNotifier {
   final formKey = GlobalKey<FormState>();
 
   bool obscure = true;
-  bool rememberMe = false;
+  bool checkBox = false;
 
   UserModel _user = UserModel();
 
@@ -28,15 +31,37 @@ class LoginProvider extends ChangeNotifier {
 
   Status get loggedInStatus => _loggedInStatus;
 
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
+  LoginProvider() {
+    getCheckBox();
+    getDetailLogin();
+  }
+
   set loggedInStatus(Status value) {
     _loggedInStatus = value;
   }
 
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  functionCheckBox() {
+    checkBox = !checkBox;
+    UserPreferences().checked(checkBox);
+    notifyListeners();
+  }
 
-  void functionRememberMe() {
-    rememberMe = !rememberMe;
+  getCheckBox() async {
+    checkBox = await (UserPreferences().getCheck()) ?? false;
+    notifyListeners();
+  }
+
+  getDetailLogin() async {
+    DetailLoginModel detailLogin = await (UserPreferences().getLoginDetail());
+
+    usernameController.text = detailLogin.detailEmail!;
+    passwordController.text = detailLogin.detailPassword!;
+    log(detailLogin.detailEmail!);
+    log(detailLogin.detailPassword!);
+
     notifyListeners();
   }
 
@@ -53,6 +78,7 @@ class LoginProvider extends ChangeNotifier {
   void dispose() {
     usernameController.dispose();
     passwordController.dispose();
+    notifyListeners();
   }
 
   Future<Object> login(BuildContext context) async {
@@ -70,6 +96,14 @@ class LoginProvider extends ChangeNotifier {
 
     if (form!.validate()) {
       form.save();
+      if (checkBox == true) {
+        UserPreferences()
+            .saveLoginDetail(usernameController.text, passwordController.text);
+      } else {
+        UserPreferences().removeDetailLogin();
+      }
+
+      notifyListeners();
       LoginService().post(loginData).then(
         (response) {
           final Map<String, dynamic> responseData = response.data;

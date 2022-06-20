@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/models/dokterPerawat_model.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-class DataSourceTable extends DataGridSource {
+import '../../../models/dokterPerawat_model.dart';
+import '../../../viewModels/dokter perawat viewModel/dokterPerawat_provider.dart';
+
+class DokterPerawatDataSourceTable extends DataGridSource {
   List<DataDoktorPerawat> _data;
   List<DataDoktorPerawat> get data => _data;
 
   late List<DataDoktorPerawat> _paginatedData;
 
-  int rowsPerPage = 0;
+  int rowsPerPage = 6;
+  int restOfPage = 0;
+  int startIndex = 0;
 
-  DataSourceTable(this._data) {
+  DokterPerawatProvider? valProvider;
+
+  final DataPagerController _controller = DataPagerController();
+
+  DokterPerawatDataSourceTable(this._data, BuildContext context) {
+    valProvider = context.read<DokterPerawatProvider>();
     _paginatedData = _data.getRange(0, _data.length).toList(growable: false);
-    rowsPerPage = _data.length;
+    restOfPage = _paginatedData.length - startIndex;
 
     buildPaginatedDataGridRows();
   }
@@ -25,6 +35,7 @@ class DataSourceTable extends DataGridSource {
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
     final int index = effectiveRows.indexOf(row);
+    int indexOfNumber = effectiveRows.indexOf(row) + (startIndex + 1);
     Color getRowBackgroundColor() {
       if (index % 2 != 1) {
         return const Color(0xFFE2E2E2).withOpacity(0.47);
@@ -36,17 +47,18 @@ class DataSourceTable extends DataGridSource {
         cells: row.getCells().map<Widget>((dataGridCell) {
       if (dataGridCell.columnName == 'No') {
         return Container(
-          padding: const EdgeInsets.only(left: 16.0),
           color: getRowBackgroundColor(),
-          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.only(right: 10),
+          alignment: Alignment.center,
           child: Text(
-            '${index + 1}',
+            '$indexOfNumber',
             overflow: TextOverflow.ellipsis,
           ),
         );
-      } else if (dataGridCell.columnName == 'sIP/SIPP') {
+      } else if (dataGridCell.columnName == 'SIP/SIPP') {
         return Container(
           color: getRowBackgroundColor(),
+          padding: const EdgeInsets.only(right: 16),
           alignment: Alignment.centerLeft,
           child: Text(
             dataGridCell.value.toString(),
@@ -57,10 +69,11 @@ class DataSourceTable extends DataGridSource {
         return Container(
             color: getRowBackgroundColor(),
             alignment: Alignment.centerLeft,
-            child: Text(
-              dataGridCell.value.toString(),
-              overflow: TextOverflow.ellipsis,
-            ));
+            child: Text.rich(TextSpan(
+                children: dataGridCell.value,
+                style: const TextStyle(
+                  color: Colors.black,
+                ))));
       } else if (dataGridCell.columnName == 'Jabatan') {
         return Container(
           color: getRowBackgroundColor(),
@@ -73,6 +86,7 @@ class DataSourceTable extends DataGridSource {
       } else if (dataGridCell.columnName == 'Jenis Kelamin') {
         return Container(
           color: getRowBackgroundColor(),
+          padding: const EdgeInsets.only(right: 16),
           alignment: Alignment.centerLeft,
           child: Text(
             dataGridCell.value.toString(),
@@ -101,6 +115,7 @@ class DataSourceTable extends DataGridSource {
         return Container(
           color: getRowBackgroundColor(),
           alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.only(right: 16),
           child: Text(
             dataGridCell.value.toString(),
             overflow: TextOverflow.ellipsis,
@@ -109,6 +124,7 @@ class DataSourceTable extends DataGridSource {
       } else {
         return Container(
           color: getRowBackgroundColor(),
+          padding: const EdgeInsets.only(right: 16),
           alignment: Alignment.centerLeft,
           child: Text(
             dataGridCell.value.toString(),
@@ -122,12 +138,19 @@ class DataSourceTable extends DataGridSource {
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     int startIndex = newPageIndex * rowsPerPage;
-    int endIndex = startIndex + rowsPerPage;
+    int endIndex = 0;
+
+    if (_data.length - startIndex <= rowsPerPage) {
+      endIndex = _data.length;
+      // print('oke');
+    } else {
+      endIndex = startIndex + rowsPerPage;
+    }
     if (startIndex < _data.length && endIndex <= _data.length) {
-      Future.delayed(const Duration(milliseconds: 2000));
       _paginatedData =
           _data.getRange(startIndex, endIndex).toList(growable: false);
       buildPaginatedDataGridRows();
+      _controller.dispose();
       notifyListeners();
     } else {
       _paginatedData = [];
@@ -139,18 +162,29 @@ class DataSourceTable extends DataGridSource {
   void buildPaginatedDataGridRows() {
     dataGridRows = _paginatedData.map<DataGridRow>((dataGridRow) {
       return DataGridRow(cells: [
-        const DataGridCell(columnName: 'No', value: null),
-        DataGridCell(columnName: 'SIP/SIPP', value: dataGridRow.nomorSIP),
-        DataGridCell(columnName: 'Nama', value: dataGridRow.nama),
-        DataGridCell(columnName: 'Jabatan', value: dataGridRow.jabatan),
+        const DataGridCell(columnName: 'No', value: ' '),
         DataGridCell(
-            columnName: 'Jenis Kelamin', value: dataGridRow.jenisKelamin),
+            columnName: 'SIP/SIPP', value: dataGridRow.nomorSIP ?? ' '),
         DataGridCell(
-            columnName: 'Nomor Telepon', value: dataGridRow.nomorTelfon),
-        DataGridCell(columnName: 'Spesialis', value: dataGridRow.spesialis),
+            columnName: 'Nama',
+            value: valProvider!.highlightOccurences(
+                dataGridRow.nama ?? ' ', valProvider!.searchController.text)),
+        DataGridCell(columnName: 'Jabatan', value: dataGridRow.jabatan ?? ' '),
         DataGridCell(
-            columnName: 'Jadwal Praktek', value: dataGridRow.jadwalPraktek),
-        DataGridCell(columnName: 'STR', value: dataGridRow.nomorSTR),
+            columnName: 'Jenis Kelamin',
+            value: (dataGridRow.jenisKelamin!.isNotEmpty)
+                ? (dataGridRow.jenisKelamin == 'L')
+                    ? 'Laki - laki'
+                    : 'Perempuan'
+                : ' '),
+        DataGridCell(
+            columnName: 'Nomor Telepon', value: dataGridRow.nomorTelfon ?? ' '),
+        DataGridCell(
+            columnName: 'Spesialis', value: dataGridRow.spesialis ?? ' '),
+        DataGridCell(
+            columnName: 'Jadwal Praktek',
+            value: dataGridRow.jadwalPraktek ?? ' '),
+        DataGridCell(columnName: 'STR', value: dataGridRow.nomorSTR ?? ' '),
       ]);
     }).toList(growable: false);
   }

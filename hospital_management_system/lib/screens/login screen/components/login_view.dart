@@ -1,4 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/models/detailLogin_model.dart';
+import 'package:hospital_management_system/services/perfs_service.dart';
 import 'package:hospital_management_system/utilities/constants/validate.dart';
 import 'package:provider/provider.dart';
 
@@ -149,8 +153,11 @@ class LoginView extends StatelessWidget {
     );
   }
 
-  Widget anotherButton(
-      LoginProvider value, LoginProvider function, BuildContext context) {
+  Widget anotherButton(LoginProvider checkValue, LoginProvider checkFunction,
+      BuildContext context) {
+    if (checkValue.checkBox == false) {
+      UserPreferences().removeDetailLogin();
+    }
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -165,9 +172,9 @@ class LoginView extends StatelessWidget {
                 fontSize: 14,
               ),
             ),
-            value: value.rememberMe,
+            value: checkValue.checkBox,
             onChanged: (_) {
-              return function.functionRememberMe();
+              checkFunction.functionCheckBox();
             },
             controlAffinity: ListTileControlAffinity.leading,
           ),

@@ -1,9 +1,9 @@
-class DokterPerawatDataModel {
+class DokterPerawatModel {
   List<DataDoktorPerawat>? dataDoktorPerawat;
 
-  DokterPerawatDataModel({this.dataDoktorPerawat});
+  DokterPerawatModel({this.dataDoktorPerawat});
 
-  DokterPerawatDataModel.fromJson(Map<String, dynamic> json) {
+  DokterPerawatModel.fromJson(Map<String, dynamic> json) {
     if (json['data_doktor_perawat'] != null) {
       dataDoktorPerawat = <DataDoktorPerawat>[];
       json['data_doktor_perawat'].forEach((v) {

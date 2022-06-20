@@ -1,33 +1,30 @@
-import 'package:flutter/cupertino.dart';
-import 'package:hospital_management_system/models/dokterPerawat_model.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:hospital_management_system/models/pasien_data_model.dart';
+import 'package:hospital_management_system/services/pasien_service.dart';
+import 'package:hospital_management_system/utilities/constants/color.dart';
 
-import '../../services/dokterPerawat_service.dart';
-import '../../utilities/constants/color.dart';
+class RawatProvider extends ChangeNotifier {
+  final formKey = GlobalKey<FormState>();
 
-class DokterPerawatProvider extends ChangeNotifier {
-  bool showLoadingIndicator = false;
   bool isLoading = true;
 
-  List<DataDoktorPerawat> listDokterPerawatData = [];
-  List<DataDoktorPerawat> _search = [];
+  List<DataPasien> listPasienData = [];
+  List<DataPasien> _search = [];
 
-  List<DataDoktorPerawat> get search => _search;
+  List<DataPasien> get search => _search;
 
-  DokterPerawatService service = DokterPerawatService();
+  PasienService service = PasienService();
 
   TextEditingController searchController = TextEditingController();
 
-  DokterPerawatProvider() {
-    getDataApiDokter();
+  RawatProvider() {
+    getDataApiPasien();
   }
 
-  changeLoadingIndicator() {
-    showLoadingIndicator = !showLoadingIndicator;
-    notifyListeners();
-  }
+  Future getDataApiPasien() async {
+    listPasienData = (await service.getDataPasienApi())!;
 
-  Future getDataApiDokter() async {
-    listDokterPerawatData = (await service.getDataDokterApi())!;
     isLoading = false;
     notifyListeners();
   }
@@ -38,9 +35,10 @@ class DokterPerawatProvider extends ChangeNotifier {
       notifyListeners();
     }
 
-    _search = listDokterPerawatData
-        .where((DataDoktorPerawat element) =>
-            (element.nama!.toLowerCase().contains(query.toLowerCase())))
+    _search = listPasienData
+        .where((DataPasien element) =>
+            (element.nama!.toLowerCase().contains(query.toLowerCase())) ||
+            (element.nik!.toLowerCase().contains(query.toLowerCase())))
         .toList();
 
     notifyListeners();

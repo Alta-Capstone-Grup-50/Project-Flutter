@@ -36,7 +36,7 @@ class PasienTable {
         } else {
           val = value.listPasienData;
         }
-        final DataSourceTable _dataSource = DataSourceTable(val, context);
+        final PasienDataSourceTable _dataSource = PasienDataSourceTable(val, context);
 
         double countPage = _dataSource.data.length / _dataSource.rowsPerPage;
 

@@ -13,7 +13,7 @@ class ApiUrl {
   static const String deleteDataDokter = '$baseUrl/delete/data_dokter_perawat';
 
   static const String baseUrlLogin =
-      'https://api-capstone-heroku.herokuapp.com';
+      'https://mini-project-be.herokuapp.com/api';
 
   static const String login = '$baseUrlLogin/login';
 

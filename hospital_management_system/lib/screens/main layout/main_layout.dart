@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/screens/dokter%20perawat%20screen/dokterPerawat_screen.dart';
+import 'package:hospital_management_system/screens/main%20layout/inRoute.dart';
 
 import 'package:hospital_management_system/screens/pasien%20screen/pasien_screen.dart';
 import 'package:hospital_management_system/screens/rawat%20screen/dokter%20perawat%20screen/rawat_screen.dart';
@@ -41,218 +42,6 @@ class _MainLayoutState extends State<MainLayout>
 
   final String assetLogo = 'assets/icons/logo.png';
 
-  List<Widget> route(BuildContext context) {
-    if (widget.keyScreens == 'PasienScreen') {
-      List<Widget> widgets = [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: InkWell(
-            onTap: () => Navigator.pop(context),
-            child: const Text(
-              'Home',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-        ),
-        InkWell(
-          onTap: () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const RawatScreen())),
-          child: const Text(
-            'Data Rawat Jalan',
-            style: TextStyle(
-                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: InkWell(
-            onTap: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const DokterPerawatScreen())),
-            child: const Text(
-              'Data Tenaga Kesehatan',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-        ),
-      ];
-      return widgets;
-    } else if (widget.keyScreens == 'RawatScreen') {
-      List<Widget> widgets = [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: InkWell(
-            onTap: () => Navigator.pop(context),
-            child: const Text(
-              'Home',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-        ),
-        InkWell(
-          onTap: () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const PasienScreen())),
-          child: const Text(
-            'Data Pasien',
-            style: TextStyle(
-                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: InkWell(
-            onTap: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const DokterPerawatScreen())),
-            child: const Text(
-              'Data Tenaga Kesehatan',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-        ),
-      ];
-      return widgets;
-    } else if (widget.keyScreens == 'DokterPerawatScreen') {
-      List<Widget> widgets = [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: InkWell(
-            onTap: () => Navigator.pop(context),
-            child: const Text(
-              'Home',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-        ),
-        InkWell(
-          onTap: () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const PasienScreen())),
-          child: const Text(
-            'Data Pasien',
-            style: TextStyle(
-                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: InkWell(
-            onTap: () => Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const RawatScreen())),
-            child: const Text(
-              'Data Rawat Jalan',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-        ),
-      ];
-      return widgets;
-    } else if (widget.keyScreens == 'HomeScreen') {
-      List<Widget> widgets = [
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: InkWell(
-            onTap: () => Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const PasienScreen())),
-            child: const Text(
-              'Data Pasien',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-        ),
-        InkWell(
-          onTap: () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const RawatScreen())),
-          child: const Text(
-            'Data Rawat Jalan',
-            style: TextStyle(
-                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: InkWell(
-            onTap: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const DokterPerawatScreen())),
-            child: const Text(
-              'Data Tenaga Kesehatan',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-        ),
-      ];
-      return widgets;
-    } else {
-      List<Widget> widgets = [
-        InkWell(
-          onTap: () => Navigator.pop(context),
-          child: const Text(
-            'Home',
-            style: TextStyle(
-                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
-          ),
-        ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40),
-          child: Text(
-            'Data Pasien',
-            style: TextStyle(
-                color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
-          ),
-        ),
-        const Text(
-          'Data Rawat Jalan',
-          style: TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
-          child: InkWell(
-            onTap: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const DokterPerawatScreen())),
-            child: const Text(
-              'Data Tenaga Kesehatan',
-              style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 14,
-                  fontWeight: FontWeight.w700),
-            ),
-          ),
-        ),
-      ];
-      return widgets;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     Animation<double> opacityAnimation =
@@ -273,7 +62,7 @@ class _MainLayoutState extends State<MainLayout>
                   appBar(context),
                   Expanded(
                     child: Stack(
-                        alignment: AlignmentDirectional.center,
+                        alignment: AlignmentDirectional.topCenter,
                         clipBehavior: Clip.none,
                         children: [
                           SingleChildScrollView(
@@ -336,7 +125,8 @@ class _MainLayoutState extends State<MainLayout>
                       children: [
                         (widget.actionRoute != false)
                             ? Row(
-                                children: route(context),
+                                children:
+                                    InRoute().route(context, widget.keyScreens),
                               )
                             : const SizedBox.shrink(),
                         SizedBox(

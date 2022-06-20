@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hospital_management_system/models/pasien_data_model.dart';
-import 'package:hospital_management_system/services/api_pasien_service.dart';
+import 'package:hospital_management_system/services/pasien_service.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
 
 class PasienProvider extends ChangeNotifier {
@@ -14,7 +14,7 @@ class PasienProvider extends ChangeNotifier {
 
   List<DataPasien> get search => _search;
 
-  ApiServicePasienData service = ApiServicePasienData();
+  PasienService service = PasienService();
 
   TextEditingController searchController = TextEditingController();
 

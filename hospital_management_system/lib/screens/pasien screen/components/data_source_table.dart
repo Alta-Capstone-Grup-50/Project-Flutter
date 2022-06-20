@@ -5,7 +5,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../models/pasien_data_model.dart';
 
-class DataSourceTable extends DataGridSource {
+class PasienDataSourceTable extends DataGridSource {
   List<DataPasien> _data;
   List<DataPasien> get data => _data;
 
@@ -19,7 +19,7 @@ class DataSourceTable extends DataGridSource {
 
   final DataPagerController _controller = DataPagerController();
 
-  DataSourceTable(this._data, BuildContext context) {
+  PasienDataSourceTable(this._data, BuildContext context) {
     valProvider = context.read<PasienProvider>();
 
     _paginatedData = _data.getRange(0, _data.length).toList(growable: false);
@@ -118,10 +118,7 @@ class DataSourceTable extends DataGridSource {
   }
 
   @override
-  Future<bool> handlePageChange(
-    int oldPageIndex,
-    int newPageIndex,
-  ) async {
+  Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     // print("oldPageIndex =  ${oldPageIndex}");
     // print("newPageIndex = ${newPageIndex}");
 
@@ -150,9 +147,8 @@ class DataSourceTable extends DataGridSource {
       _paginatedData =
           _data.getRange(startIndex, endIndex).toList(growable: false);
       buildPaginatedDataGridRows();
-      notifyListeners();
-
       _controller.dispose();
+      notifyListeners();
     } else {
       _paginatedData = [];
     }

@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'viewModels/dokter perawat viewModel/dokterPerawat_provider.dart';
 import 'viewModels/login viewModel/login_provider.dart';
 import 'viewModels/pasien viewModel/pasien_provider.dart';
+import 'viewModels/rawat viewModel/rawat_provider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -39,6 +40,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: ((context) => LoginProvider()),
+        ),
+        ChangeNotifierProvider(
+          create: ((context) => RawatProvider()),
         ),
       ],
       child: MaterialApp(

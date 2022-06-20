@@ -5,7 +5,7 @@ import 'package:hospital_management_system/utilities/constants/api_url.dart';
 
 import '../models/pasien_data_model.dart';
 
-class ApiServicePasienData {
+class PasienService {
   final Dio _dio = Dio();
 
   Future<List<DataPasien>?> getDataPasienApi() async {
