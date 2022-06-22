@@ -65,7 +65,7 @@ class Input extends StatelessWidget {
       keyboardType: keyboardType,
       onChanged: onChanged,
       enabled: enabled,
-      controller: controller,
+      controller: controller, 
       decoration: InputDecoration(
         filled: true,
         suffixIcon: suffixIcon,
