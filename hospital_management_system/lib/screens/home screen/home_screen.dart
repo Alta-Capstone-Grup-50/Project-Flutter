@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/screens/home%20screen/components/chose_card.dart';
-import 'package:hospital_management_system/screens/home%20screen/components/content.dart';
-import 'package:hospital_management_system/screens/main%20layout/main_layout.dart';
-import 'package:hospital_management_system/screens/rawat%20screen/dokter%20perawat%20screen/rawat_screen.dart';
+import 'package:provider/provider.dart';
+
+import '/screens/home%20screen/components/chose_card.dart';
+import '/screens/home%20screen/components/content.dart';
+import '/screens/main%20layout/main_layout.dart';
+import '/screens/rawat%20screen/dokter%20perawat%20screen/rawat_screen.dart';
+import '/viewModels/home%20provider/home_provider.dart';
 
 import '../dokter perawat screen/dokterPerawat_screen.dart';
 import '../pasien screen/pasien_screen.dart';
@@ -12,16 +15,25 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var valueProvider = context.watch<HomeProvider>();
     return MainLayout(
       action: true,
       keyScreens: 'HomeScreen',
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 47),
+        padding: const EdgeInsets.symmetric(vertical: 25),
         child: Column(
           children: [
-            const Content(),
+            Container(
+              alignment: Alignment.centerLeft,
+              padding: const EdgeInsets.only(left: 70, bottom: 16),
+              child: const Text(
+                'Info Terkini',
+                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
+              ),
+            ),
+            Content(),
             const SizedBox(
-              height: 50,
+              height: 35,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(
@@ -32,7 +44,7 @@ class HomeScreen extends StatelessWidget {
                 children: [
                   ChoseCard(
                     title: 'Data Pasien',
-                    openHistory: 'Dibuka pada 2 Juni 2022',
+                    openHistory: valueProvider.lastOpenDataPasien ?? '...',
                     image: 'assets/contents/data_pasien.png',
                     page: const PasienScreen(),
                   ),
@@ -41,7 +53,8 @@ class HomeScreen extends StatelessWidget {
                   ),
                   ChoseCard(
                     title: 'Data Dokter dan Perawat',
-                    openHistory: 'Dibuka pada 13 Mei 2022',
+                    openHistory:
+                        valueProvider.lastOpenDataDokterPerawat ?? '...',
                     image: 'assets/contents/data_dokter.png',
                     page: const DokterPerawatScreen(),
                   ),
@@ -49,8 +62,8 @@ class HomeScreen extends StatelessWidget {
                     width: 20,
                   ),
                   ChoseCard(
-                    title: 'Data Rawat Jalan',
-                    openHistory: 'Dibuka pada 2 Juni 2022',
+                    title: 'Data Pasien Rawat Jalan',
+                    openHistory: valueProvider.lastOpenDataRawatJalan ?? '...',
                     image: 'assets/contents/data_rawat.png',
                     page: const RawatScreen(),
                   ),

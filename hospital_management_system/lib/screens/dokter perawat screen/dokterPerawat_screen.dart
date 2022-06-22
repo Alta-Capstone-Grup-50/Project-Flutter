@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import '../../viewModels/dokter perawat viewModel/dokterPerawat_provider.dart';
 import '/screens/main%20layout/main_layout.dart';
@@ -34,7 +35,7 @@ class DokterPerawatScreen extends StatelessWidget {
               ],
             ),
             const Padding(
-              padding: EdgeInsets.only(top: 25),
+              padding: EdgeInsets.only(top: 20),
               child: Text(
                 'Data Dokter dan Perawat',
                 style: TextStyle(
@@ -47,24 +48,71 @@ class DokterPerawatScreen extends StatelessWidget {
             const SizedBox(
               height: 50,
             ),
-            SizedBox(
-              width: 391,
-              height: 40,
-              child: Consumer<DokterPerawatProvider>(
-                builder: ((context, valueProvider, _) => Input(
-                      hintText: 'Cari di sini',
-                      controller: valueProvider.searchController,
-                      onChanged: valueProvider.onSearch,
-                      backgroundColor: const Color(0xFFEBEBEB),
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: primaryColor,
+            Consumer<DokterPerawatProvider>(
+              builder: ((context, valueProvider, _) {
+                if (Theme.of(context).platform == TargetPlatform.windows ||
+                    kIsWeb) {
+                  return Row(
+                    children: [
+                      SizedBox(
+                        width: 391,
+                        height: 40,
+                        child: Input(
+                          hintText: 'Cari di sini',
+                          controller: valueProvider.searchController,
+                          onChanged: valueProvider.onSearch,
+                          backgroundColor: const Color(0xFFEBEBEB),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: primaryColor,
+                          ),
+                        ),
                       ),
-                    )),
-              ),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: Card(
+                          color: primaryColor.shade300,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(12),
+                            child: const Icon(
+                              Icons.refresh,
+                              color: Colors.white,
+                            ),
+                            onTap: () {
+                              valueProvider.keyDokterPerawat.currentState!
+                                  .refresh();
+                            },
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return SizedBox(
+                      width: 391,
+                      height: 40,
+                      child: Input(
+                        controller: valueProvider.searchController,
+                        onChanged: valueProvider.onSearch,
+                        hintText: 'Cari di sini',
+                        backgroundColor: const Color(0xFFEBEBEB),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: primaryColor,
+                        ),
+                      ));
+                }
+              }),
             ),
             const SizedBox(
-              height: 45,
+              height: 20,
             ),
             DokterPerawatTable().buildTable(context),
           ],

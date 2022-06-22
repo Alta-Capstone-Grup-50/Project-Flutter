@@ -18,7 +18,7 @@ enum Status {
 }
 
 class LoginProvider extends ChangeNotifier {
-  final formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool obscure = true;
   bool checkBox = false;
@@ -57,12 +57,13 @@ class LoginProvider extends ChangeNotifier {
   getDetailLogin() async {
     DetailLoginModel detailLogin = await (UserPreferences().getLoginDetail());
 
-    usernameController.text = detailLogin.detailEmail!;
-    passwordController.text = detailLogin.detailPassword!;
-    log(detailLogin.detailEmail!);
-    log(detailLogin.detailPassword!);
+    usernameController.text = detailLogin.detailEmail ?? '';
+    passwordController.text = detailLogin.detailPassword ?? '';
 
     notifyListeners();
+    log('============================== User Login ==============================');
+    log('Username : ${detailLogin.detailEmail}');
+    log('Password : ${detailLogin.detailPassword}');
   }
 
   void setUser(UserModel user) {
@@ -75,6 +76,7 @@ class LoginProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  @override
   void dispose() {
     usernameController.dispose();
     passwordController.dispose();
@@ -92,7 +94,7 @@ class LoginProvider extends ChangeNotifier {
     _loggedInStatus = Status.authenticating;
     notifyListeners();
 
-    final form = formKey.currentState;
+    var form = formKey.currentState;
 
     if (form!.validate()) {
       form.save();
@@ -102,6 +104,7 @@ class LoginProvider extends ChangeNotifier {
       } else {
         UserPreferences().removeDetailLogin();
       }
+      print(checkBox);
 
       notifyListeners();
       LoginService().post(loginData).then(
@@ -121,16 +124,22 @@ class LoginProvider extends ChangeNotifier {
               'user': authUser
             };
             SnackBarComponent(
-                context: context, message: 'Login berhasil', type: 'success');
+                context: context,
+                message: 'Login berhasil',
+                type: 'success',
+                duration: const Duration(milliseconds: 1400));
             setUser(authUser);
-            Future.delayed(const Duration(seconds: 3), () async {
+            Future.delayed(const Duration(milliseconds: 1500), () async {
               await Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(
                     builder: ((context) => const HomeScreen()),
                   ),
-                  (route) => true);
-              dispose();
+                  (Route<dynamic> route) => false);
+              if (checkBox == false) {
+                usernameController.text = '';
+                passwordController.text = '';
+              }
             });
           } else {
             _loggedInStatus = Status.notLoggedIn;
@@ -140,7 +149,10 @@ class LoginProvider extends ChangeNotifier {
               'message': 'Username atau Password Salah',
             };
             SnackBarComponent(
-                context: context, message: result['message'], type: 'danger');
+                context: context,
+                message: result['message'],
+                type: 'danger',
+                duration: const Duration(seconds: 4));
           }
         },
       );
@@ -154,14 +166,14 @@ class LoginProvider extends ChangeNotifier {
 
   logout(BuildContext context) {
     UserPreferences().removeUser();
-    Future.delayed(const Duration(seconds: 3), () async {
-      await Navigator.pushAndRemoveUntil(
-          context,
-          MaterialPageRoute(
-            builder: ((context) => const LoginScreen()),
-          ),
-          (route) => true);
-      dispose();
+
+    Future.delayed(const Duration(seconds: 1), () async {
+      await Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: ((context) => const LoginScreen()),
+        ),
+      );
     });
   }
 

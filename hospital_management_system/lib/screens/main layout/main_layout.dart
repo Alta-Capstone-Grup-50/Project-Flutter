@@ -151,10 +151,15 @@ class _MainLayoutState extends State<MainLayout>
                                 ),
                                 InkWell(
                                   borderRadius: BorderRadius.circular(50),
-                                  child: const Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: Colors.white,
-                                  ),
+                                  child: (_menuShown == false)
+                                      ? const Icon(
+                                          Icons.keyboard_arrow_down,
+                                          color: Colors.white,
+                                        )
+                                      : const Icon(
+                                          Icons.keyboard_arrow_up,
+                                          color: Colors.white,
+                                        ),
                                   onTap: () {
                                     setState(() {
                                       _menuShown = !_menuShown;

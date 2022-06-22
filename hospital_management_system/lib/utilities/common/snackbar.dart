@@ -5,6 +5,7 @@ class SnackBarComponent {
     required this.context,
     required this.message,
     required this.type,
+    required this.duration,
   }) {
     init();
   }
@@ -12,6 +13,7 @@ class SnackBarComponent {
   final BuildContext context;
   final String message;
   final String type;
+  final Duration duration;
 
   init() {
     Color color = Colors.white;
@@ -31,7 +33,7 @@ class SnackBarComponent {
     return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         elevation: 4,
-        duration: const Duration(seconds: 3),
+        duration: duration,
         backgroundColor: color,
         padding: const EdgeInsets.all(10),
         behavior: SnackBarBehavior.floating,

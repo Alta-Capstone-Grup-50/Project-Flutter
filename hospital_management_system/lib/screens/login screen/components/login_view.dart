@@ -18,98 +18,104 @@ class LoginView extends StatelessWidget {
   Widget build(BuildContext context) {
     LoginProvider loginValue = context.watch<LoginProvider>();
     LoginProvider loginFunction = context.read<LoginProvider>();
+
+    if (loginValue.checkBox == false) {
+      UserPreferences().removeDetailLogin();
+    }
+
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 56, right: 56),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Welcome Back',
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 32,
-                  color: rocketMetalic),
-            ),
-            Text(
-              'Welcome back! Please enter your details.',
-              style: TextStyle(
-                  fontWeight: FontWeight.w700,
-                  fontSize: 16,
-                  color: rocketMetalic),
-            ),
-            const SizedBox(
-              height: 45,
-            ),
-            formField(loginValue, loginFunction),
-            const SizedBox(
-              height: 35,
-            ),
-            buttonField(loginValue, loginFunction, context),
-            const SizedBox(
-              height: 5,
-            ),
-            anotherButton(loginValue, loginFunction, context),
-          ],
+      child: Form(
+        autovalidateMode: AutovalidateMode.onUserInteraction,
+        key: loginValue.formKey,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 56, right: 56),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Welcome Back',
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 32,
+                    color: rocketMetalic),
+              ),
+              Text(
+                'Welcome back! Please enter your details.',
+                style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                    color: rocketMetalic),
+              ),
+              const SizedBox(
+                height: 45,
+              ),
+              formField(loginValue, loginFunction),
+              const SizedBox(
+                height: 35,
+              ),
+              buttonField(loginValue, loginFunction, context),
+              const SizedBox(
+                height: 5,
+              ),
+              anotherButton(loginValue, loginFunction, context),
+            ],
+          ),
         ),
       ),
     );
   }
 
   Widget formField(LoginProvider loginValue, LoginProvider loginFunction) {
-    return Form(
-      autovalidateMode: AutovalidateMode.disabled,
-      key: loginValue.formKey,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            'Username :',
-            style: TextStyle(fontWeight: FontWeight.w700, color: rocketMetalic),
-          ),
-          const SizedBox(
-            height: 12,
-          ),
-          Input(
-            controller: loginValue.usernameController,
-            hintText: 'Masukan username kamu',
-            onSaved: (value) {},
-            validator: (value) {
-              return validateEmail(value!);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Username :',
+          style: TextStyle(fontWeight: FontWeight.w700, color: rocketMetalic),
+        ),
+        const SizedBox(
+          height: 12,
+        ),
+        Input(
+          controller: loginValue.usernameController,
+          hintText: 'Masukan username kamu',
+          onSaved: (value) {},
+          validator: (value) {
+            return validateEmail(value!);
+          },
+        ),
+        const SizedBox(
+          height: 22,
+        ),
+        Text(
+          'Password :',
+          style: TextStyle(fontWeight: FontWeight.w700, color: rocketMetalic),
+        ),
+        const SizedBox(
+          height: 12,
+        ),
+        Input(
+          controller: loginValue.passwordController,
+          hintText: 'Masukan password kamu',
+          maxLines: 1,
+          keyboardType: TextInputType.visiblePassword,
+          obscureText: loginValue.obscure ? true : false,
+          onSaved: (value) {},
+          validator: (value) {
+            return validatePassword(value!);
+          },
+          suffixIcon: IconButton(
+            splashRadius: 21,
+            icon: loginValue.obscure
+                ? const Icon(Icons.visibility)
+                : const Icon(Icons.visibility_off),
+            onPressed: () {
+              loginFunction.functionObscure();
             },
           ),
-          const SizedBox(
-            height: 22,
-          ),
-          Text(
-            'Password :',
-            style: TextStyle(fontWeight: FontWeight.w700, color: rocketMetalic),
-          ),
-          const SizedBox(
-            height: 12,
-          ),
-          Input(
-            controller: loginValue.passwordController,
-            hintText: 'Masukan password kamu',
-            keyboardType: TextInputType.visiblePassword,
-            obscureText: loginValue.obscure ? true : false,
-            onSaved: (value) {},
-            validator: (value) {
-              return validatePassword(value!);
-            },
-            suffixIcon: IconButton(
-              splashRadius: 21,
-              icon: loginValue.obscure
-                  ? const Icon(Icons.visibility)
-                  : const Icon(Icons.visibility_off),
-              onPressed: () {
-                loginFunction.functionObscure();
-              },
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 

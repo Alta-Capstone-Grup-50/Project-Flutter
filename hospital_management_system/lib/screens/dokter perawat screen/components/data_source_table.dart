@@ -137,7 +137,7 @@ class DokterPerawatDataSourceTable extends DataGridSource {
 
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    int startIndex = newPageIndex * rowsPerPage;
+    startIndex = newPageIndex * rowsPerPage;
     int endIndex = 0;
 
     if (_data.length - startIndex <= rowsPerPage) {
@@ -157,6 +157,15 @@ class DokterPerawatDataSourceTable extends DataGridSource {
     }
 
     return true;
+  }
+
+  @override
+  Future<void> handleRefresh() async {
+    await Future.delayed(const Duration(seconds: 4));
+    buildPaginatedDataGridRows();
+    valProvider!.getDataApiDokter();
+
+    notifyListeners();
   }
 
   void buildPaginatedDataGridRows() {

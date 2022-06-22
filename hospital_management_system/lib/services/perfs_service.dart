@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:hospital_management_system/models/detailLogin_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/openCardDetail_model.dart';
 import '../models/user_model.dart';
 
 class UserPreferences {
@@ -105,8 +106,8 @@ class UserPreferences {
     String? detailPassword = prefs.getString('detailPassword');
 
     return DetailLoginModel(
-      detailEmail: detailEmail,
-      detailPassword: detailPassword,
+      detailEmail: detailEmail ?? '',
+      detailPassword: detailPassword ?? '',
     );
   }
 
@@ -128,5 +129,36 @@ class UserPreferences {
     bool? check = prefs.getBool('checked');
 
     return check;
+  }
+
+  Future<bool> saveOpenCardDetail(
+      String cardPasien, cardDokter, cardRawat) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setString('cardPasien', cardPasien);
+    prefs.setString('cardDokter', cardDokter);
+    prefs.setString('cardRawat', cardRawat);
+
+    return true;
+  }
+
+  Future getOpenCardDetail() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? cardPasien = prefs.getString('cardPasien');
+    String? cardDokter = prefs.getString('cardDokter');
+    String? cardRawat = prefs.getString('cardRawat');
+
+    return OpenCardDetail(
+      cardPasien: cardPasien,
+      cardDokter: cardDokter,
+      cardRawat: cardRawat,
+    );
+  }
+
+  void removeOpenCardDetail() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('cardPasien');
+    prefs.remove('cardDokter');
+    prefs.remove('cardRawat');
   }
 }

@@ -9,6 +9,7 @@ import 'package:hospital_management_system/utilities/constants/color.dart';
 import 'package:provider/provider.dart';
 
 import 'viewModels/dokter perawat viewModel/dokterPerawat_provider.dart';
+import 'viewModels/home provider/home_provider.dart';
 import 'viewModels/login viewModel/login_provider.dart';
 import 'viewModels/pasien viewModel/pasien_provider.dart';
 import 'viewModels/rawat viewModel/rawat_provider.dart';
@@ -43,6 +44,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: ((context) => RawatProvider()),
+        ),
+        ChangeNotifierProvider(
+          create: ((context) => HomeProvider()),
         ),
       ],
       child: MaterialApp(

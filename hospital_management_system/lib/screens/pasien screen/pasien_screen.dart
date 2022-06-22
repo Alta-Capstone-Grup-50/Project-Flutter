@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 
 import 'package:hospital_management_system/screens/pasien%20screen/components/pasien_table.dart';
@@ -47,25 +48,63 @@ class PasienScreen extends StatelessWidget {
             const SizedBox(
               height: 50,
             ),
-            SizedBox(
-              width: 391,
-              height: 40,
-              child: Consumer<PasienProvider>(
-                  builder: ((context, valueProvider, child) => Form(
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        key: valueProvider.formKey,
-                        child: Input(
-                          controller: valueProvider.searchController,
-                          onChanged: valueProvider.onSearch,
-                          hintText: 'Cari di sini',
-                          backgroundColor: const Color(0xFFEBEBEB),
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: primaryColor,
-                          ),
+            Consumer<PasienProvider>(builder: ((context, valueProvider, _) {
+              if (Theme.of(context).platform == TargetPlatform.windows ||
+                  kIsWeb) {
+                return Row(children: [
+                  SizedBox(
+                      width: 391,
+                      height: 40,
+                      child: Input(
+                        controller: valueProvider.searchController,
+                        onChanged: valueProvider.onSearch,
+                        hintText: 'Cari di sini',
+                        backgroundColor: const Color(0xFFEBEBEB),
+                        prefixIcon: Icon(
+                          Icons.search,
+                          color: primaryColor,
                         ),
-                      ))),
-            ),
+                      )),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: Card(
+                      color: primaryColor.shade300,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(12),
+                        child: const Icon(
+                          Icons.refresh,
+                          color: Colors.white,
+                        ),
+                        onTap: () {
+                          valueProvider.keyPasien.currentState!.refresh();
+                        },
+                      ),
+                    ),
+                  ),
+                ]);
+              } else {
+                return SizedBox(
+                    width: 391,
+                    height: 40,
+                    child: Input(
+                      controller: valueProvider.searchController,
+                      onChanged: valueProvider.onSearch,
+                      hintText: 'Cari di sini',
+                      backgroundColor: const Color(0xFFEBEBEB),
+                      prefixIcon: Icon(
+                        Icons.search,
+                        color: primaryColor,
+                      ),
+                    ));
+              }
+            })),
             const SizedBox(
               height: 20,
             ),
