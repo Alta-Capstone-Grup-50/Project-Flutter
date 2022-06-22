@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hospital_management_system/models/dokterPerawat_model.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../services/dokterPerawat_service.dart';
 import '../../utilities/constants/color.dart';
@@ -8,7 +9,11 @@ class DokterPerawatProvider extends ChangeNotifier {
   bool showLoadingIndicator = false;
   bool isLoading = true;
 
+  final GlobalKey<SfDataGridState> keyDokterPerawat =
+      GlobalKey<SfDataGridState>();
+
   List<DataDoktorPerawat> listDokterPerawatData = [];
+  List<DataDoktorPerawat> toReversed = [];
   List<DataDoktorPerawat> _search = [];
 
   List<DataDoktorPerawat> get search => _search;
@@ -27,7 +32,8 @@ class DokterPerawatProvider extends ChangeNotifier {
   }
 
   Future getDataApiDokter() async {
-    listDokterPerawatData = (await service.getDataDokterApi())!;
+    toReversed = (await service.getDataDokterApi())!;
+    listDokterPerawatData = toReversed.reversed.toList();
     isLoading = false;
     notifyListeners();
   }

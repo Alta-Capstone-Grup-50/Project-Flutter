@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -6,6 +8,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../../../../utilities/constants/color.dart';
 import '../../../../viewModels/rawat viewModel/rawat_provider.dart';
 import 'data_source_table.dart';
+import 'detailRawat_dokterPerawat.dart';
 
 class RawatTable {
   Widget buildTable(BuildContext context) {
@@ -41,19 +44,25 @@ class RawatTable {
                   children: [
                     SizedBox(
                       width: constraints.maxWidth,
+                      height: 310,
                       child: SfDataGridTheme(
                         data: SfDataGridThemeData(
                           sortIconColor: Colors.black,
                           headerHoverColor: primaryColor.shade200,
                           headerColor: primaryColor.shade200,
-                          rowHoverColor: primaryColor,
+                          rowHoverColor: green.shade300,
                         ),
                         child: SfDataGrid(
+                          key: value.keyRawat,
                           rowHeight: 40,
                           allowPullToRefresh: true,
                           isScrollbarAlwaysShown: true,
                           source: _dataSource,
                           columnWidthMode: ColumnWidthMode.fill,
+                          onCellTap: (query) {
+                            openDetailRawatDokterPerawat(
+                                context, query, _dataSource.startIndex);
+                          },
                           columns: [
                             GridColumn(
                               columnName: 'No',
@@ -70,7 +79,7 @@ class RawatTable {
                             ),
                             GridColumn(
                               columnName: 'NIK',
-                              width: 160,
+                              width: 180,
                               label: Container(
                                 alignment: Alignment.centerLeft,
                                 child: const Text(
@@ -82,9 +91,10 @@ class RawatTable {
                             ),
                             GridColumn(
                               columnName: 'Nama',
-                              width: 190,
+                              width: 200,
                               label: Container(
                                 alignment: Alignment.centerLeft,
+                                padding: const EdgeInsets.only(left: 16.0),
                                 child: const Text(
                                   'Nama',
                                   style: TextStyle(fontWeight: FontWeight.w700),
@@ -94,9 +104,8 @@ class RawatTable {
                             ),
                             GridColumn(
                               columnName: 'Jenis Kelamin',
-                              width: 130,
                               label: Container(
-                                alignment: Alignment.centerLeft,
+                                alignment: Alignment.center,
                                 child: const Text(
                                   'Jenis Kelamin',
                                   style: TextStyle(fontWeight: FontWeight.w700),
@@ -107,7 +116,7 @@ class RawatTable {
                             GridColumn(
                               columnName: 'Jadwal Rawat Jalan',
                               label: Container(
-                                alignment: Alignment.centerLeft,
+                                alignment: Alignment.center,
                                 child: const Text(
                                   'Jadwal Rawat Jalan',
                                   style: TextStyle(fontWeight: FontWeight.w700),
@@ -116,22 +125,25 @@ class RawatTable {
                               ),
                             ),
                             GridColumn(
+                              width: 60,
                               columnName: 'Nomor Antrian',
                               label: Container(
+                                padding: const EdgeInsets.only(left: 5.0),
                                 alignment: Alignment.center,
                                 child: const Text(
                                   'Nomor Antrian',
+                                  maxLines: 2,
                                   style: TextStyle(fontWeight: FontWeight.w700),
                                   overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ),
                             GridColumn(
-                              columnName: 'Ket. Rawat Jalan',
+                              columnName: 'Jenis Penyakit',
                               label: Container(
                                 alignment: Alignment.center,
                                 child: const Text(
-                                  'Ket. Rawat Jalan',
+                                  'Jenis Penyakit',
                                   style: TextStyle(fontWeight: FontWeight.w700),
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -148,12 +160,10 @@ class RawatTable {
                       padding: const EdgeInsets.symmetric(horizontal: 250),
                       child: SfDataPagerTheme(
                         data: SfDataPagerThemeData(
-                          selectedItemColor: primaryColor.shade200,
+                          selectedItemColor: green.shade300,
                           itemBorderRadius: BorderRadius.circular(11),
                         ),
                         child: SfDataPager(
-                          firstPageItemVisible: false,
-                          lastPageItemVisible: false,
                           pageCount: (value.search.isNotEmpty ||
                                   value.searchController.text.isNotEmpty)
                               ? (value.search.isNotEmpty)

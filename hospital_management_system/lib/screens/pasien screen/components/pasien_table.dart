@@ -6,6 +6,8 @@
 
 // class DokterPerawatTable {
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -15,6 +17,7 @@ import '../../../utilities/constants/color.dart';
 
 import '../../../viewModels/pasien viewModel/pasien_provider.dart';
 import 'data_source_table.dart';
+import '../../rawat screen/dokter perawat screen/components/detailRawat_dokterPerawat.dart';
 
 class PasienTable {
   Widget buildTable(BuildContext context) {
@@ -36,7 +39,8 @@ class PasienTable {
         } else {
           val = value.listPasienData;
         }
-        final PasienDataSourceTable _dataSource = PasienDataSourceTable(val, context);
+        final PasienDataSourceTable _dataSource =
+            PasienDataSourceTable(val, context);
 
         double countPage = _dataSource.data.length / _dataSource.rowsPerPage;
 
@@ -49,19 +53,24 @@ class PasienTable {
           builder: ((context, constraints) => Column(children: [
                 SizedBox(
                     width: constraints.maxWidth,
+                    height: 310,
                     child: SfDataGridTheme(
                         data: SfDataGridThemeData(
                           sortIconColor: Colors.black,
                           headerHoverColor: primaryColor.shade200,
                           headerColor: primaryColor.shade200,
-                          rowHoverColor: primaryColor,
+                          rowHoverColor: green.shade300,
                         ),
                         child: SfDataGrid(
+                            key: value.keyPasien,
                             source: _dataSource,
                             rowHeight: 40,
                             allowPullToRefresh: true,
                             isScrollbarAlwaysShown: true,
                             columnWidthMode: ColumnWidthMode.fill,
+                            onCellTap: (coba) {
+                              log(coba.rowColumnIndex.toString());
+                            },
                             columns: [
                               GridColumn(
                                   width: 60,
@@ -113,6 +122,8 @@ class PasienTable {
                                   width: 150,
                                   label: Container(
                                       alignment: Alignment.centerLeft,
+                                      padding:
+                                          const EdgeInsets.only(right: 16.0),
                                       child: const Text(
                                         'Nomor Telepon',
                                         style: TextStyle(
@@ -120,8 +131,8 @@ class PasienTable {
                                         overflow: TextOverflow.ellipsis,
                                       ))),
                               GridColumn(
+                                  width: 140,
                                   columnName: 'Jenis Kelamin',
-                                  width: 130,
                                   label: Container(
                                       alignment: Alignment.centerLeft,
                                       child: const Text(
@@ -131,7 +142,7 @@ class PasienTable {
                                         overflow: TextOverflow.ellipsis,
                                       ))),
                               GridColumn(
-                                  width: 160,
+                                  width: 170,
                                   columnName: 'Jenis Penyakit',
                                   label: Container(
                                       alignment: Alignment.centerLeft,
@@ -149,12 +160,10 @@ class PasienTable {
                     padding: const EdgeInsets.symmetric(horizontal: 250),
                     child: SfDataPagerTheme(
                         data: SfDataPagerThemeData(
-                          selectedItemColor: primaryColor.shade200,
+                          selectedItemColor: green.shade300,
                           itemBorderRadius: BorderRadius.circular(11),
                         ),
                         child: SfDataPager(
-                          firstPageItemVisible: false,
-                          lastPageItemVisible: false,
                           pageCount: (value.search.isNotEmpty ||
                                   value.searchController.text.isNotEmpty)
                               ? (value.search.isNotEmpty)

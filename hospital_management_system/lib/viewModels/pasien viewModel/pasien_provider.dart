@@ -3,13 +3,15 @@ import 'package:flutter/widgets.dart';
 import 'package:hospital_management_system/models/pasien_data_model.dart';
 import 'package:hospital_management_system/services/pasien_service.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
+import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class PasienProvider extends ChangeNotifier {
-  final formKey = GlobalKey<FormState>();
-
   bool isLoading = true;
 
+  final GlobalKey<SfDataGridState> keyPasien = GlobalKey<SfDataGridState>();
+
   List<DataPasien> listPasienData = [];
+  List<DataPasien> toReversed = [];
   List<DataPasien> _search = [];
 
   List<DataPasien> get search => _search;
@@ -19,11 +21,12 @@ class PasienProvider extends ChangeNotifier {
   TextEditingController searchController = TextEditingController();
 
   PasienProvider() {
-    getDataApiPasien();
+    this.getDataApiPasien();
   }
 
   Future getDataApiPasien() async {
-    listPasienData = (await service.getDataPasienApi())!;
+    toReversed = (await service.getDataPasienApi())!;
+    listPasienData = toReversed.reversed.toList();
 
     isLoading = false;
     notifyListeners();

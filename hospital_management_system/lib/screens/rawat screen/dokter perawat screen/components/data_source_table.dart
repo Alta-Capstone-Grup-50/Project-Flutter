@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/screens/rawat%20screen/dokter%20perawat%20screen/components/detailRawat_dokterPerawat.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
 
 import 'package:hospital_management_system/viewModels/rawat%20viewModel/rawat_provider.dart';
@@ -71,7 +72,7 @@ class RawatDataSourceTable extends DataGridSource {
                 ))));
       } else if (dataGridCell.columnName == 'Nama') {
         return Container(
-            padding: const EdgeInsets.only(right: 16.0),
+            padding: const EdgeInsets.only(left: 16.0),
             color: getRowBackgroundColor(),
             alignment: Alignment.centerLeft,
             child: Text.rich(TextSpan(
@@ -82,7 +83,7 @@ class RawatDataSourceTable extends DataGridSource {
       } else if (dataGridCell.columnName == 'Jenis Kelamin') {
         return Container(
           color: getRowBackgroundColor(),
-          alignment: Alignment.centerLeft,
+          alignment: Alignment.center,
           child: Text(
             dataGridCell.value.toString(),
             overflow: TextOverflow.ellipsis,
@@ -90,9 +91,8 @@ class RawatDataSourceTable extends DataGridSource {
         );
       } else if (dataGridCell.columnName == 'Jadwal Rawat Jalan') {
         return Container(
-          padding: const EdgeInsets.only(right: 16.0),
           color: getRowBackgroundColor(),
-          alignment: Alignment.centerLeft,
+          alignment: Alignment.center,
           child: Text(
             dataGridCell.value.toString(),
             overflow: TextOverflow.ellipsis,
@@ -111,7 +111,10 @@ class RawatDataSourceTable extends DataGridSource {
         return Container(
           color: getRowBackgroundColor(),
           alignment: Alignment.center,
-          child: dataGridCell.value,
+          child: Text(
+            dataGridCell.value.toString(),
+            overflow: TextOverflow.ellipsis,
+          ),
         );
       }
     }).toList());
@@ -119,7 +122,7 @@ class RawatDataSourceTable extends DataGridSource {
 
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    int startIndex = newPageIndex * rowsPerPage;
+    startIndex = newPageIndex * rowsPerPage;
     int endIndex = 0;
     if (_data.length - startIndex <= rowsPerPage) {
       endIndex = _data.length;
@@ -138,6 +141,15 @@ class RawatDataSourceTable extends DataGridSource {
     }
 
     return true;
+  }
+
+  @override
+  Future<void> handleRefresh() async {
+    await Future.delayed(const Duration(seconds: 4));
+    buildPaginatedDataGridRows();
+    valProvider!.getDataApiPasien();
+
+    notifyListeners();
   }
 
   void buildPaginatedDataGridRows() {
@@ -161,14 +173,8 @@ class RawatDataSourceTable extends DataGridSource {
         DataGridCell(
             columnName: 'Nomor Antrian', value: dataGridRow.noAntrian ?? ' '),
         DataGridCell(
-          columnName: 'Ket. Rawat Jalan',
-          value: (MaterialButton(
-            textColor: Colors.white,
-            color: green,
-            onPressed: () {},
-            child: const Text('Keterangan'),
-          )),
-        ),
+            columnName: 'Jenis Penyakit',
+            value: dataGridRow.jenisPenyakit ?? ' '),
       ]);
     }).toList(growable: false);
   }

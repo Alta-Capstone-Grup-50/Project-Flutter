@@ -16,6 +16,15 @@ class Input extends StatelessWidget {
     this.suffix,
     this.suffixIcon,
     this.backgroundColor,
+    this.expands,
+    this.maxLines,
+    this.minLines,
+    this.textAlignVertical,
+    this.contentPadding,
+    this.cursorHeight,
+    this.borderRadius,
+    this.enabled,
+    this.initialValue,
   }) : super(key: key);
 
   TextEditingController? controller;
@@ -31,16 +40,32 @@ class Input extends StatelessWidget {
   Widget? suffix;
   Color? backgroundColor;
   Function(String)? onChanged;
+  bool? expands;
+  int? maxLines;
+  int? minLines;
+  TextAlignVertical? textAlignVertical;
+  EdgeInsetsGeometry? contentPadding;
+  double? cursorHeight;
+  BorderRadius? borderRadius;
+  bool? enabled;
+  String? initialValue;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      maxLines: maxLines,
+      minLines: minLines,
+      initialValue: initialValue,
+      cursorHeight: cursorHeight,
+      textAlignVertical: textAlignVertical,
       validator: validator,
+      expands: expands ?? false,
       onSaved: onSaved,
       obscureText: obscureText,
       keyboardType: keyboardType,
       onChanged: onChanged,
-      controller: controller,
+      enabled: enabled,
+      controller: controller, 
       decoration: InputDecoration(
         filled: true,
         suffixIcon: suffixIcon,
@@ -50,23 +75,27 @@ class Input extends StatelessWidget {
         hintText: hintText,
         prefixIcon: prefixIcon,
         fillColor: backgroundColor,
-        contentPadding: const EdgeInsets.only(left: 10),
+        contentPadding: contentPadding ?? const EdgeInsets.only(left: 10),
         hintStyle: const TextStyle(color: Colors.black45),
-        enabledBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black26),
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.black26),
+          borderRadius:
+              borderRadius ?? const BorderRadius.all(Radius.circular(20)),
         ),
-        focusedBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.black26),
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+        focusedBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.black26),
+          borderRadius:
+              borderRadius ?? const BorderRadius.all(Radius.circular(20)),
         ),
-        errorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red),
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+        errorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.red),
+          borderRadius:
+              borderRadius ?? const BorderRadius.all(Radius.circular(20)),
         ),
-        focusedErrorBorder: const OutlineInputBorder(
-          borderSide: BorderSide(color: Colors.red),
-          borderRadius: BorderRadius.all(Radius.circular(20)),
+        focusedErrorBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.red),
+          borderRadius:
+              borderRadius ?? const BorderRadius.all(Radius.circular(20)),
         ),
       ),
     );

@@ -88,16 +88,15 @@ class PasienDataSourceTable extends DataGridSource {
             ));
       } else if (dataGridCell.columnName == 'Nomor telepon') {
         return Container(
-            padding: const EdgeInsets.only(right: 16.0),
             color: getRowBackgroundColor(),
             alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.only(right: 16.0),
             child: Text(
               dataGridCell.value.toString(),
               overflow: TextOverflow.ellipsis,
             ));
       } else if (dataGridCell.columnName == 'Jenis Kelamin') {
         return Container(
-            padding: const EdgeInsets.only(right: 16.0),
             color: getRowBackgroundColor(),
             alignment: Alignment.centerLeft,
             child: Text(
@@ -107,7 +106,7 @@ class PasienDataSourceTable extends DataGridSource {
       } else {
         return Container(
             color: getRowBackgroundColor(),
-            padding: const EdgeInsets.only(right: 20.0),
+            padding: const EdgeInsets.only(right: 16),
             alignment: Alignment.centerLeft,
             child: Text(
               dataGridCell.value.toString(),
@@ -153,6 +152,15 @@ class PasienDataSourceTable extends DataGridSource {
       _paginatedData = [];
     }
     return true;
+  }
+
+  @override
+  Future<void> handleRefresh() async {
+    await Future.delayed(const Duration(seconds: 4));
+    buildPaginatedDataGridRows();
+    valProvider!.getDataApiPasien();
+
+    notifyListeners();
   }
 
   void buildPaginatedDataGridRows() {

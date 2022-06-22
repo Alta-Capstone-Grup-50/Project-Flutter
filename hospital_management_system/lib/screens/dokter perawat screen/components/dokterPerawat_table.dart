@@ -41,14 +41,16 @@ class DokterPerawatTable {
                 children: [
                   SizedBox(
                     width: constraints.maxWidth,
+                    height: 310,
                     child: SfDataGridTheme(
                       data: SfDataGridThemeData(
                         sortIconColor: Colors.black,
                         headerHoverColor: primaryColor.shade200,
                         headerColor: primaryColor.shade200,
-                        rowHoverColor: primaryColor,
+                        rowHoverColor: green.shade300,
                       ),
                       child: SfDataGrid(
+                        key: value.keyDokterPerawat,
                         isScrollbarAlwaysShown: true,
                         rowHeight: 40,
                         allowPullToRefresh: true,
@@ -188,12 +190,10 @@ class DokterPerawatTable {
                     padding: const EdgeInsets.symmetric(horizontal: 250),
                     child: SfDataPagerTheme(
                       data: SfDataPagerThemeData(
-                        selectedItemColor: primaryColor.shade200,
+                        selectedItemColor: green.shade300,
                         itemBorderRadius: BorderRadius.circular(11),
                       ),
                       child: SfDataPager(
-                        firstPageItemVisible: false,
-                        lastPageItemVisible: false,
                         pageCount: (value.search.isNotEmpty ||
                                 value.searchController.text.isNotEmpty)
                             ? (value.search.isNotEmpty)

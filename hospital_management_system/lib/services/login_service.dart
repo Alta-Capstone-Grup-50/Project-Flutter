@@ -6,7 +6,6 @@ import 'package:dio/dio.dart';
 class LoginService {
   final Dio _dio = Dio();
   Future post(loginData) async {
-    print(loginData);
     try {
       final response = await _dio.post(ApiUrl.login,
           data: loginData,
@@ -15,10 +14,9 @@ class LoginService {
           ));
 
       if (response.statusCode! >= 200 && response.statusCode! <= 300) {
-        print(response.data);
+        print('Get data : ${response.data}');
         return response;
       } else {
-        print(response.statusCode);
         return response;
       }
     } catch (e) {
