@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '/models/user_model.dart';
+import 'models/akun_model.dart';
 import '/screens/home%20screen/home_screen.dart';
 import '/screens/login%20screen/login_screen.dart';
 import '/services/perfs_service.dart';
@@ -29,7 +29,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<UserModel> getUserData() => UserPreferences().getUser();
+    Future<AkunModel> getUserData() => UserPreferences().getUser();
 
     return MultiProvider(
       providers: [
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Projek capstone alta kelompok 50',
         theme: ThemeData(primaryColor: primaryColor),
-        home: FutureBuilder<UserModel>(
+        home: FutureBuilder<AkunModel>(
             future: getUserData(),
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
                 default:
                   if (snapshot.hasError) {
                     return Text('Error ${snapshot.error}');
-                  } else if (snapshot.data!.accessToken == null) {
+                  } else if (snapshot.data!.token == null) {
                     return const LoginScreen();
                   } else {
                     return const HomeScreen();

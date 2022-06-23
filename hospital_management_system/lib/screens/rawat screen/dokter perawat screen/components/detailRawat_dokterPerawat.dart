@@ -51,7 +51,7 @@ class DetailRawatDokterPerawat extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width / 2.1,
+                        width: MediaQuery.of(context).size.width / 2,
                         padding: const EdgeInsets.only(left: 40),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

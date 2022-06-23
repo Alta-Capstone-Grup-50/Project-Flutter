@@ -1,63 +1,59 @@
-// class UserModel {
-//   String? email;
+class AkunModel {
+  int? code;
+  String? expire;
+  String? token;
 
+  AkunModel({this.code, this.expire, this.token});
+
+  AkunModel.fromJson(Map<String, dynamic> json) {
+    code = json['code'];
+    expire = json['expire'];
+    token = json['token'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['code'] = code;
+    data['expire'] = expire;
+    data['token'] = token;
+    return data;
+  }
+}
+
+// class UserModel {
+//   int? id;
+//   String? name;
+//   String? email;
+//   String? profilePic;
 //   String? accessToken;
-//   String? expire;
+//   String? tokenType;
 //   String? message;
 
 //   UserModel({
+//     this.id,
+//     this.name,
 //     this.email,
+//     this.profilePic,
 //     this.accessToken,
-//     this.expire,
+//     this.tokenType,
 //     this.message,
 //   });
 
 //   factory UserModel.fromJson(Map<String, dynamic> json) {
 //     if (json['data'] != null) {
 //       return UserModel(
-//         accessToken: json['data']['token'],
-//         expire: json['data']['expire'],
+//         id: json['data']['id'] ?? 0,
+//         name: json['data']['name'],
+//         email: json['data']['email'],
+//         tokenType: json['token_type'],
+//         accessToken: json['access_token'],
+//         message: json['message'],
 //       );
 //     } else {
 //       return UserModel(message: json['message']);
 //     }
 //   }
 // }
-
-class UserModel {
-  int? id;
-  String? name;
-  String? email;
-  String? profilePic;
-  String? accessToken;
-  String? tokenType;
-  String? message;
-
-  UserModel({
-    this.id,
-    this.name,
-    this.email,
-    this.profilePic,
-    this.accessToken,
-    this.tokenType,
-    this.message,
-  });
-
-  factory UserModel.fromJson(Map<String, dynamic> json) {
-    if (json['data'] != null) {
-      return UserModel(
-        id: json['data']['id'] ?? 0,
-        name: json['data']['name'],
-        email: json['data']['email'],
-        tokenType: json['token_type'],
-        accessToken: json['access_token'],
-        message: json['message'],
-      );
-    } else {
-      return UserModel(message: json['message']);
-    }
-  }
-}
 
 
 // class AkunDoktorPerawatModel {

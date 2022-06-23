@@ -71,7 +71,7 @@ class LoginView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Username :',
+          'Email :',
           style: TextStyle(fontWeight: FontWeight.w700, color: rocketMetalic),
         ),
         const SizedBox(
@@ -132,10 +132,10 @@ class LoginView extends StatelessWidget {
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         onPressed: value.loggedInStatus != Status.authenticating
-            ? () {
-                function.login(context);
-              }
-            : () {},
+            ? () => function.login(context)
+            : () {
+                return;
+              },
         child: FittedBox(
           child: value.loggedInStatus != Status.authenticating
               ? const Text(
