@@ -5,7 +5,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../../../models/dokterPerawat_model.dart';
 import '../../../viewModels/dokter perawat viewModel/dokterPerawat_provider.dart';
 
-class DokterPerawatDataSourceTable extends DataGridSource {
+class DokterDataSourceTable extends DataGridSource {
   List<DataDoktorPerawat> _data;
   List<DataDoktorPerawat> get data => _data;
 
@@ -19,7 +19,7 @@ class DokterPerawatDataSourceTable extends DataGridSource {
 
   final DataPagerController _controller = DataPagerController();
 
-  DokterPerawatDataSourceTable(this._data, BuildContext context) {
+  DokterDataSourceTable(this._data, BuildContext context) {
     valProvider = context.read<DokterPerawatProvider>();
     _paginatedData = _data.getRange(0, _data.length).toList(growable: false);
     restOfPage = _paginatedData.length - startIndex;
@@ -74,28 +74,10 @@ class DokterPerawatDataSourceTable extends DataGridSource {
                 style: const TextStyle(
                   color: Colors.black,
                 ))));
-      } else if (dataGridCell.columnName == 'Jabatan') {
-        return Container(
-          color: getRowBackgroundColor(),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            dataGridCell.value.toString(),
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
       } else if (dataGridCell.columnName == 'Jenis Kelamin') {
         return Container(
           color: getRowBackgroundColor(),
           padding: const EdgeInsets.only(right: 16),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            dataGridCell.value.toString(),
-            overflow: TextOverflow.ellipsis,
-          ),
-        );
-      } else if (dataGridCell.columnName == 'Nomor Telepon') {
-        return Container(
-          color: getRowBackgroundColor(),
           alignment: Alignment.centerLeft,
           child: Text(
             dataGridCell.value.toString(),
@@ -178,7 +160,6 @@ class DokterPerawatDataSourceTable extends DataGridSource {
             columnName: 'Nama',
             value: valProvider!.highlightOccurences(
                 dataGridRow.nama ?? ' ', valProvider!.searchController.text)),
-        DataGridCell(columnName: 'Jabatan', value: dataGridRow.jabatan ?? ' '),
         DataGridCell(
             columnName: 'Jenis Kelamin',
             value: (dataGridRow.jenisKelamin!.isNotEmpty)
@@ -186,8 +167,6 @@ class DokterPerawatDataSourceTable extends DataGridSource {
                     ? 'Laki - laki'
                     : 'Perempuan'
                 : ' '),
-        DataGridCell(
-            columnName: 'Nomor Telepon', value: dataGridRow.nomorTelfon ?? ' '),
         DataGridCell(
             columnName: 'Spesialis', value: dataGridRow.spesialis ?? ' '),
         DataGridCell(

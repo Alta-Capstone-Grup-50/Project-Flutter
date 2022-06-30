@@ -13,25 +13,75 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
         children: [
           SizedBox(
             width: maxWidth / 1.5,
-            height: MediaQuery.of(context).size.height / 1.5,
+            height: (Responsive.isMobile(context))
+                ? MediaQuery.of(context).size.height / 1.3
+                : MediaQuery.of(context).size.height / 1.5,
             child: Padding(
-              padding: const EdgeInsets.only(right: 40),
+              padding: EdgeInsets.only(
+                  right: (Responsive.isMobile(context)) ? 0 : 40),
               child: SingleChildScrollView(
                 child: Center(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 55, bottom: 25, top: 15),
-                        child: Text(
-                          'Keterangan Dokter',
-                          style: TextStyle(
-                              fontSize: 26, fontWeight: FontWeight.w700),
-                        ),
+                      Padding(
+                        padding: EdgeInsets.only(
+                            left: (Responsive.isMobile(context)) ? 0 : 55,
+                            bottom: (Responsive.isMobile(context))
+                                ? MediaQuery.of(context).size.height * 0.04
+                                : 25,
+                            top: 15),
+                        child: (Responsive.isMobile(context))
+                            ? Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      right: 15,
+                                      top: 4,
+                                    ),
+                                    child: IconButton(
+                                        splashRadius: 20,
+                                        icon: const Icon(
+                                          Icons.arrow_back_ios_new,
+                                          size: 19,
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        }),
+                                  ),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 2,
+                                    child: const Text(
+                                      'Detail Pasien Rawat Jalan',
+                                      softWrap: false,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Text(
+                                'Data Detail Pasien Rawat Jalan',
+                                style: TextStyle(
+                                    fontSize: (Responsive.isMobile(context))
+                                        ? 24
+                                        : 26,
+                                    fontWeight: FontWeight.w700),
+                              ),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 55),
-                        height: MediaQuery.of(context).size.height / 2.25,
+                        padding: EdgeInsets.symmetric(
+                            horizontal: (Responsive.isMobile(context))
+                                ? MediaQuery.of(context).size.width * 0.03
+                                : 55),
+                        height: (Responsive.isMobile(context))
+                            ? MediaQuery.of(context).size.height / 1.9
+                            : MediaQuery.of(context).size.height / 2.25,
                         child: Input(
                           expands: true,
                           maxLines: null,
@@ -47,14 +97,20 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
                         height: MediaQuery.of(context).size.height / 20,
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(right: 55, bottom: 25),
+                        padding: EdgeInsets.only(
+                            right: (Responsive.isMobile(context)) ? 20 : 55,
+                            bottom: 25),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             SizedBox(
-                              width: 120,
-                              height: 45,
+                              width: (Responsive.isMobile(context))
+                                  ? MediaQuery.of(context).size.width * 0.5
+                                  : 120,
+                              height: (Responsive.isMobile(context))
+                                  ? MediaQuery.of(context).size.height * 0.04
+                                  : 45,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     primary: Colors.white,
@@ -73,8 +129,12 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
                               width: 15,
                             ),
                             SizedBox(
-                              width: 120,
-                              height: 45,
+                              width: (Responsive.isMobile(context))
+                                  ? MediaQuery.of(context).size.width * 0.3
+                                  : 120,
+                              height: (Responsive.isMobile(context))
+                                  ? MediaQuery.of(context).size.height * 0.04
+                                  : 45,
                               child: ElevatedButton(
                                   onPressed: () {},
                                   child: const Text(
@@ -91,20 +151,22 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
-            right: -5,
-            top: -5,
-            child: InkResponse(
-              radius: 25,
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: const Icon(
-                Icons.close,
-                size: 30,
-              ),
-            ),
-          ),
+          (Responsive.isMobile(context))
+              ? const SizedBox.shrink()
+              : Positioned(
+                  right: -5,
+                  top: -5,
+                  child: InkResponse(
+                    radius: 25,
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Icon(
+                      Icons.close,
+                      size: (Responsive.isMobile(context)) ? 25 : 30,
+                    ),
+                  ),
+                )
         ],
       ),
     );

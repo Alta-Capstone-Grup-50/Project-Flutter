@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 
 import '/models/detailLogin_model.dart';
 import '/models/akun_model.dart';
-import '/screens/home%20screen/home_screen.dart';
-import '/screens/login%20screen/login_screen.dart';
 import '/services/login_service.dart';
 import '/utilities/common/snackbar.dart';
 
@@ -18,8 +16,6 @@ enum Status {
 }
 
 class LoginProvider extends ChangeNotifier {
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
   bool obscure = true;
   bool checkBox = false;
 
@@ -31,16 +27,18 @@ class LoginProvider extends ChangeNotifier {
 
   Status get loggedInStatus => _loggedInStatus;
 
+  set loggedInStatus(Status value) {
+    _loggedInStatus = value;
+  }
+
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   LoginProvider() {
     getCheckBox();
     getDetailLogin();
-  }
-
-  set loggedInStatus(Status value) {
-    _loggedInStatus = value;
   }
 
   functionCheckBox() {
@@ -66,11 +64,6 @@ class LoginProvider extends ChangeNotifier {
     log('Password : ${detailLogin.detailPassword}');
   }
 
-  void setUser(AkunModel user) {
-    _user = user;
-    notifyListeners();
-  }
-
   void functionObscure() {
     obscure = !obscure;
     notifyListeners();
@@ -87,10 +80,8 @@ class LoginProvider extends ChangeNotifier {
     _loggedInStatus = Status.authenticating;
     notifyListeners();
 
-    var form = formKey.currentState;
-
-    if (form!.validate()) {
-      form.save();
+    if (formKey.currentState!.validate()) {
+      formKey.currentState!.save();
       if (checkBox == true) {
         UserPreferences().saveLoginDetail(
           usernameController.text,
@@ -100,11 +91,12 @@ class LoginProvider extends ChangeNotifier {
         UserPreferences().removeDetailLogin();
       }
 
-      notifyListeners();
       LoginService().post(loginData).then(
         (response) {
+          log(response.data.toString());
           if (response.statusCode! >= 200 && response.statusCode! < 300) {
-            var responseData = response.data ?? {};
+            var responseData = response.data;
+            log(responseData.toString());
 
             AkunModel authUser = AkunModel.fromJson(responseData);
             UserPreferences().saveUser(authUser);
@@ -125,21 +117,15 @@ class LoginProvider extends ChangeNotifier {
               duration: const Duration(milliseconds: 1400),
             );
 
-            setUser(authUser);
-
             Future.delayed(
               const Duration(milliseconds: 1500),
               () async {
-                await Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(
-                      builder: ((context) => const HomeScreen()),
-                    ),
-                    (Route<dynamic> route) => false);
                 if (checkBox == false) {
                   usernameController.text = '';
                   passwordController.text = '';
                 }
+                await Navigator.pushNamedAndRemoveUntil(
+                    context, '/home', ModalRoute.withName('/home'));
               },
             );
           } else {
@@ -150,6 +136,8 @@ class LoginProvider extends ChangeNotifier {
               'status': false,
               'message': 'Username atau Password Salah',
             };
+
+            passwordController.text = '';
 
             SnackBarComponent(
               context: context,
@@ -167,6 +155,9 @@ class LoginProvider extends ChangeNotifier {
           'status': false,
           'message': 'Error Response',
         };
+
+        usernameController.text = '';
+        passwordController.text = '';
 
         SnackBarComponent(
           context: context,
@@ -195,12 +186,8 @@ class LoginProvider extends ChangeNotifier {
     UserPreferences().removeUser();
 
     Future.delayed(const Duration(seconds: 1), () async {
-      await Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: ((context) => const LoginScreen()),
-        ),
-      );
+      await Navigator.pushNamedAndRemoveUntil(
+          context, '/login', ModalRoute.withName('/login'));
     });
 
     result = {

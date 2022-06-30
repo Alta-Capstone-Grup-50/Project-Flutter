@@ -1,11 +1,11 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/models/detailLogin_model.dart';
 import 'package:hospital_management_system/services/perfs_service.dart';
 import 'package:hospital_management_system/utilities/constants/validate.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utilities/constants/responsive.dart';
 import '../../../viewModels/login viewModel/login_provider.dart';
 import '/utilities/components/input.dart';
 import '/utilities/constants/color.dart';
@@ -23,14 +23,15 @@ class LoginView extends StatelessWidget {
       UserPreferences().removeDetailLogin();
     }
 
-    return SingleChildScrollView(
-      child: Form(
-        autovalidateMode: AutovalidateMode.onUserInteraction,
-        key: loginValue.formKey,
+    if (Responsive.isDesktop(context) ||
+        Responsive.isTablet(context) &&
+            MediaQuery.of(context).orientation == Orientation.landscape) {
+      return SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.only(left: 56, right: 56),
+          padding: EdgeInsets.only(
+              left: (Responsive.isMobile(context)) ? 20 : 56,
+              right: (Responsive.isMobile(context)) ? 20 : 56),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
@@ -50,7 +51,7 @@ class LoginView extends StatelessWidget {
               const SizedBox(
                 height: 45,
               ),
-              formField(loginValue, loginFunction),
+              formField(loginValue, loginFunction, context),
               const SizedBox(
                 height: 35,
               ),
@@ -62,88 +63,132 @@ class LoginView extends StatelessWidget {
             ],
           ),
         ),
+      );
+    } else {
+      return Padding(
+        padding: EdgeInsets.only(
+          left: (Responsive.isMobile(context))
+              ? MediaQuery.of(context).size.width * 0.01
+              : MediaQuery.of(context).size.width * 0.08,
+          right: (Responsive.isMobile(context))
+              ? MediaQuery.of(context).size.width * 0.01
+              : MediaQuery.of(context).size.width * 0.08,
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text('Welcome Back',
+                style: Theme.of(context).textTheme.headlineMedium),
+            Text('Welcome back! Please enter your details.',
+                style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(
+              height: 45,
+            ),
+            formField(loginValue, loginFunction, context),
+            SizedBox(
+              height: (Responsive.isMobile(context)) ? 20 : 35,
+            ),
+            buttonField(loginValue, loginFunction, context),
+            const SizedBox(
+              height: 5,
+            ),
+            anotherButton(loginValue, loginFunction, context),
+            const SizedBox(
+              height: 20,
+            ),
+          ],
+        ),
+      );
+    }
+  }
+
+  Widget formField(LoginProvider loginValue, LoginProvider loginFunction,
+      BuildContext context) {
+    return Form(
+      key: loginFunction.formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Email :',
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          Input(
+            controller: loginValue.usernameController,
+            hintText: 'Masukan username kamu',
+            maxLines: 1,
+            textInputAction: TextInputAction.next,
+            onSaved: (value) {},
+            validator: (value) {
+              return validateEmail(value!);
+            },
+          ),
+          const SizedBox(
+            height: 22,
+          ),
+          Text(
+            'Password :',
+            style: Theme.of(context).textTheme.bodyText1,
+          ),
+          const SizedBox(
+            height: 12,
+          ),
+          Input(
+              controller: loginValue.passwordController,
+              hintText: 'Masukan password kamu',
+              maxLines: 1,
+              keyboardType: TextInputType.visiblePassword,
+              textInputAction: TextInputAction.done,
+              obscureText: loginValue.obscure ? true : false,
+              onSaved: (value) {},
+              validator: (value) {
+                return validatePassword(value!);
+              },
+              suffixIcon: IconButton(
+                splashRadius: 21,
+                icon: loginValue.obscure
+                    ? const Icon(Icons.visibility)
+                    : const Icon(Icons.visibility_off),
+                onPressed: () {
+                  loginFunction.functionObscure();
+                },
+              )),
+        ],
       ),
     );
   }
 
-  Widget formField(LoginProvider loginValue, LoginProvider loginFunction) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          'Email :',
-          style: TextStyle(fontWeight: FontWeight.w700, color: rocketMetalic),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        Input(
-          controller: loginValue.usernameController,
-          hintText: 'Masukan username kamu',
-          onSaved: (value) {},
-          validator: (value) {
-            return validateEmail(value!);
-          },
-        ),
-        const SizedBox(
-          height: 22,
-        ),
-        Text(
-          'Password :',
-          style: TextStyle(fontWeight: FontWeight.w700, color: rocketMetalic),
-        ),
-        const SizedBox(
-          height: 12,
-        ),
-        Input(
-          controller: loginValue.passwordController,
-          hintText: 'Masukan password kamu',
-          maxLines: 1,
-          keyboardType: TextInputType.visiblePassword,
-          obscureText: loginValue.obscure ? true : false,
-          onSaved: (value) {},
-          validator: (value) {
-            return validatePassword(value!);
-          },
-          suffixIcon: IconButton(
-            splashRadius: 21,
-            icon: loginValue.obscure
-                ? const Icon(Icons.visibility)
-                : const Icon(Icons.visibility_off),
-            onPressed: () {
-              loginFunction.functionObscure();
-            },
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget buttonField(
-      LoginProvider value, LoginProvider function, BuildContext context) {
+  Widget buttonField(LoginProvider buttonValue, LoginProvider buttonFunction,
+      BuildContext context) {
     return AbsorbPointer(
-      absorbing: value.loggedInStatus != Status.authenticating ? false : true,
+      absorbing:
+          buttonValue.loggedInStatus != Status.authenticating ? false : true,
       child: MaterialButton(
         minWidth: double.infinity,
-        height: 60,
-        color: value.loggedInStatus != Status.authenticating
+        height: (Responsive.isMobile(context)) ? 40 : 60,
+        color: buttonValue.loggedInStatus != Status.authenticating
             ? primaryColor
             : grey.shade300,
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
-        onPressed: value.loggedInStatus != Status.authenticating
-            ? () => function.login(context)
+        onPressed: buttonValue.loggedInStatus != Status.authenticating
+            ? () {
+                FocusManager.instance.primaryFocus?.unfocus();
+                buttonFunction.login(context);
+              }
             : () {
                 return;
               },
         child: FittedBox(
-          child: value.loggedInStatus != Status.authenticating
+          child: buttonValue.loggedInStatus != Status.authenticating
               ? const Text(
                   'Login',
                   style: TextStyle(
                     color: Colors.white,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
                   ),
                 )
               : const Text(
@@ -151,7 +196,6 @@ class LoginView extends StatelessWidget {
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w600,
-                    fontSize: 18,
                   ),
                 ),
         ),
@@ -159,16 +203,16 @@ class LoginView extends StatelessWidget {
     );
   }
 
-  Widget anotherButton(LoginProvider checkValue, LoginProvider checkFunction,
-      BuildContext context) {
-    if (checkValue.checkBox == false) {
+  Widget anotherButton(LoginProvider anotherValue,
+      LoginProvider anotherFunction, BuildContext context) {
+    if (anotherValue.checkBox == false) {
       UserPreferences().removeDetailLogin();
     }
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         SizedBox(
-          width: 200,
+          width: (Responsive.isMobile(context)) ? 170 : 164,
           child: CheckboxListTile(
             contentPadding: const EdgeInsets.only(right: 20),
             title: Text(
@@ -178,9 +222,9 @@ class LoginView extends StatelessWidget {
                 fontSize: 14,
               ),
             ),
-            value: checkValue.checkBox,
+            value: anotherValue.checkBox,
             onChanged: (_) {
-              checkFunction.functionCheckBox();
+              anotherFunction.functionCheckBox();
             },
             controlAffinity: ListTileControlAffinity.leading,
           ),

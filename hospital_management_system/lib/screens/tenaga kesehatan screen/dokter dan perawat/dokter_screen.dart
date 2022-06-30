@@ -2,22 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-import '../../viewModels/dokter perawat viewModel/dokterPerawat_provider.dart';
+import '../../../../viewModels/dokter perawat viewModel/dokterPerawat_provider.dart';
+import '../components/dokter_table.dart';
 import '/screens/main%20layout/main_layout.dart';
 import '/utilities/components/input.dart';
 import '/utilities/constants/color.dart';
 
-import 'components/dokterPerawat_table.dart';
-
-class DokterPerawatScreen extends StatelessWidget {
-  const DokterPerawatScreen({Key? key}) : super(key: key);
+class DokterScreen extends StatelessWidget {
+  const DokterScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MainLayout(
       action: true,
       actionRoute: true,
-      keyScreens: 'DokterPerawatScreen',
+      keyScreens: 'DokterScreen',
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 29),
         child: Column(
@@ -26,18 +25,27 @@ class DokterPerawatScreen extends StatelessWidget {
             Row(
               children: [
                 GestureDetector(
+                  onTap: () => Navigator.pushReplacementNamed(context, '/home'),
                   child: const Text(
                     "Home > ",
                     style: TextStyle(color: Colors.grey),
                   ),
                 ),
-                const Text("Data Dokter dan Perawat"),
+                GestureDetector(
+                  onTap: () => Navigator.pushReplacementNamed(
+                      context, '/tenagaKesehatan'),
+                  child: const Text(
+                    "Dokter dan Perawat > ",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ),
+                const Text("Data Dokter"),
               ],
             ),
             const Padding(
               padding: EdgeInsets.only(top: 20),
               child: Text(
-                'Data Dokter dan Perawat',
+                'Data Dokter',
                 style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.w700,
@@ -99,6 +107,7 @@ class DokterPerawatScreen extends StatelessWidget {
                       width: 391,
                       height: 40,
                       child: Input(
+                        textInputAction: TextInputAction.done,
                         controller: valueProvider.searchController,
                         onChanged: valueProvider.onSearch,
                         hintText: 'Cari di sini',
@@ -114,7 +123,7 @@ class DokterPerawatScreen extends StatelessWidget {
             const SizedBox(
               height: 20,
             ),
-            DokterPerawatTable().buildTable(context),
+            DokterTable().buildTable(context),
           ],
         ),
       ),

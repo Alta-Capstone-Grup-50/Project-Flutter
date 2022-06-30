@@ -3,6 +3,8 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
 
+import '../../../utilities/constants/responsive.dart';
+
 class Content extends StatelessWidget {
   Content({Key? key}) : super(key: key);
 
@@ -11,7 +13,13 @@ class Content extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        margin: const EdgeInsets.symmetric(horizontal: 70),
+        margin: EdgeInsets.symmetric(
+            horizontal: (Responsive.isDesktop(context) ||
+                    Responsive.isTablet(context) &&
+                        MediaQuery.of(context).orientation ==
+                            Orientation.landscape)
+                ? 70
+                : 20),
         height: MediaQuery.of(context).size.height * 0.4,
         decoration: BoxDecoration(
           color: grey.shade100.withOpacity(0.6),
@@ -47,18 +55,20 @@ class Content extends StatelessWidget {
                     child: ListView.builder(
                         itemCount: 6,
                         itemBuilder: (context, i) {
-                          return const ListTile(
+                          return ListTile(
                             title: Text(
                               'Kunjungan Pejabat',
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize:
+                                    (Responsive.isMobile(context)) ? 16 : 20,
                                 fontWeight: FontWeight.w700,
                               ),
                             ),
                             subtitle: Text(
                               'Diberitahukan kepada seluruh karyawan rumah sakit health.id, bahwa pada hari senin tanggal 20 juni 2022 akan ada kunjungan dari mentri kesehatan.',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize:
+                                    (Responsive.isMobile(context)) ? 14 : 18,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),

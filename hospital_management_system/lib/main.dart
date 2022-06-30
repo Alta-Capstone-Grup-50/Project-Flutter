@@ -1,12 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+
 import 'models/akun_model.dart';
-import '/screens/home%20screen/home_screen.dart';
-import '/screens/login%20screen/login_screen.dart';
+
 import '/services/perfs_service.dart';
 import '/utilities/constants/color.dart';
 
 import 'package:provider/provider.dart';
+
+import 'screens/home%20screen/home_screen.dart';
+import 'screens/login%20screen/login_screen.dart';
+import 'screens/tenaga kesehatan screen/dokter dan perawat/dokter_screen.dart';
+import 'screens/tenaga kesehatan screen/dokter dan perawat/perawat_screen.dart';
+import 'screens/tenaga%20kesehatan%20screen/dokterPerawat_screen.dart';
+import 'screens/pasien screen/pasien_screen.dart';
+import 'screens/rawat screen/dokter perawat screen/rawat_screen.dart';
 
 import 'viewModels/dokter perawat viewModel/dokterPerawat_provider.dart';
 import 'viewModels/home provider/home_provider.dart';
@@ -19,6 +27,8 @@ void main() {
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeRight,
     DeviceOrientation.landscapeLeft,
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown,
   ]).then((_) {
     runApp(const MyApp());
   });
@@ -70,6 +80,15 @@ class MyApp extends StatelessWidget {
                   }
               }
             }),
+        routes: {
+          '/login': (context) => const LoginScreen(),
+          '/home': (context) => const HomeScreen(),
+          '/pasien': (context) => const PasienScreen(),
+          '/tenagaKesehatan': (context) => const TenagaKesehatanScreen(),
+          '/rawatJalan': (context) => const RawatScreen(),
+          '/tenagaKesehatan/dokter': (context) => const DokterScreen(),
+          '/tenagaKesehatan/perawat': (context) => const PerawatScreen(),
+        },
       ),
     );
   }

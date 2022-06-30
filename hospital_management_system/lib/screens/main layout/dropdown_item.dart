@@ -19,36 +19,68 @@ class ShapedWidget extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.all(padding).copyWith(bottom: padding * 2),
             child: SizedBox(
-              height: 40,
-              width: 150,
-              child: MaterialButton(
-                highlightColor: Colors.transparent,
-                hoverColor: Colors.transparent,
-                splashColor: Colors.transparent,
-                onPressed: () {
-                  logoutFunction.logout(context);
-                },
-                child: Container(
-                  alignment: Alignment.centerLeft,
-                  child: Row(
-                    children: const [
-                      Padding(
-                        padding: EdgeInsets.only(top: 3),
-                        child: Icon(
-                          Icons.logout,
-                          size: 20,
-                        ),
+              height: 80,
+              width: 190,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  MaterialButton(
+                    highlightColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    onPressed: () {},
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.only(top: 3),
+                            child: Icon(
+                              Icons.manage_accounts,
+                              size: 20,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            child: Text(
+                              'Manage Account',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ],
                       ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: Text(
-                          'Log out',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                      ),
-                    ],
+                    ),
                   ),
-                ),
+                  MaterialButton(
+                    highlightColor: Colors.transparent,
+                    hoverColor: Colors.transparent,
+                    splashColor: Colors.transparent,
+                    onPressed: () {
+                      logoutFunction.logout(context);
+                    },
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        children: const [
+                          Padding(
+                            padding: EdgeInsets.only(top: 3),
+                            child: Icon(
+                              Icons.logout,
+                              size: 20,
+                            ),
+                          ),
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 15),
+                            child: Text(
+                              'Log out',
+                              style: TextStyle(fontSize: 16),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           )),

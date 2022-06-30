@@ -31,28 +31,74 @@ class DetailRawatDokterPerawat extends StatelessWidget {
         children: [
           SizedBox(
             width: maxWidth / 1.6,
-            height: MediaQuery.of(context).size.height / 1.4,
+            height: (Responsive.isMobile(context))
+                ? MediaQuery.of(context).size.height / 1.3
+                : MediaQuery.of(context).size.height / 1.4,
             child: Padding(
-              padding: const EdgeInsets.only(right: 40),
+              padding: EdgeInsets.only(
+                  right: (Responsive.isMobile(context)) ? 0 : 40),
               child: Scrollbar(
                 controller: _scrollController,
-                thumbVisibility: true,
+                thumbVisibility: (Responsive.isMobile(context)) ? false : true,
                 child: SingleChildScrollView(
                   controller: _scrollController,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Padding(
-                        padding: EdgeInsets.only(left: 40, bottom: 40, top: 20),
-                        child: Text(
-                          'Data Detail Pasien Rawat Jalan',
-                          style: TextStyle(
-                              fontSize: 26, fontWeight: FontWeight.w700),
+                      Padding(
+                        padding: EdgeInsets.only(
+                          left: (Responsive.isMobile(context)) ? 0 : 40,
+                          bottom: 40,
+                          top: 20,
                         ),
+                        child: (Responsive.isMobile(context))
+                            ? Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.only(
+                                      top: 2,
+                                    ),
+                                    child: IconButton(
+                                        splashRadius: 20,
+                                        icon: const Icon(
+                                          Icons.arrow_back_ios_new,
+                                          size: 19,
+                                        ),
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        }),
+                                  ),
+                                  SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 2,
+                                    child: const Text(
+                                      'Detail Pasien Rawat Jalan',
+                                      softWrap: false,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.w700),
+                                    ),
+                                  ),
+                                ],
+                              )
+                            : Text(
+                                'Data Detail Pasien Rawat Jalan',
+                                style: TextStyle(
+                                    fontSize: (Responsive.isMobile(context))
+                                        ? 24
+                                        : 26,
+                                    fontWeight: FontWeight.w700),
+                              ),
                       ),
                       Container(
-                        width: MediaQuery.of(context).size.width / 2,
-                        padding: const EdgeInsets.only(left: 40),
+                        width: (Responsive.isMobile(context))
+                            ? MediaQuery.of(context).size.width * 0.7
+                            : MediaQuery.of(context).size.width / 2,
+                        padding: EdgeInsets.only(
+                            left: (Responsive.isMobile(context)) ? 5 : 40),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -165,7 +211,9 @@ class DetailRawatDokterPerawat extends StatelessWidget {
                               style: TextStyle(fontWeight: FontWeight.w700),
                             ),
                             Container(
-                              width: MediaQuery.of(context).size.width / 4.75,
+                              width: (Responsive.isMobile(context))
+                                  ? MediaQuery.of(context).size.width
+                                  : MediaQuery.of(context).size.width / 4.75,
                               padding: const EdgeInsets.only(top: 12),
                               child: Input(
                                 initialValue: 'Rawat Jalan',
@@ -181,10 +229,75 @@ class DetailRawatDokterPerawat extends StatelessWidget {
                             const SizedBox(
                               height: 20,
                             ),
-                            Row(
-                              children: [
-                                Flexible(
-                                  child: Column(
+                            (!Responsive.isMobile(context))
+                                ? Row(
+                                    children: [
+                                      Flexible(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text(
+                                              'Tempat Lahir',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 12),
+                                              child: Input(
+                                                initialValue:
+                                                    putDataRawat[indexOfPage]
+                                                        .tempatLahir,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.zero),
+                                                keyboardType:
+                                                    TextInputType.none,
+                                                enabled: false,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 30,
+                                      ),
+                                      Flexible(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text(
+                                              'Tanggal Lahir',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 12),
+                                              child: Input(
+                                                initialValue:
+                                                    putDataRawat[indexOfPage]
+                                                        .tanggalLahir,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.zero),
+                                                keyboardType:
+                                                    TextInputType.none,
+                                                textAlignVertical:
+                                                    TextAlignVertical.center,
+                                                enabled: false,
+                                                suffixIcon: const Icon(
+                                                    Icons.keyboard_arrow_down),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -205,17 +318,9 @@ class DetailRawatDokterPerawat extends StatelessWidget {
                                           enabled: false,
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 30,
-                                ),
-                                Flexible(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
                                       const Text(
                                         'Tanggal Lahir',
                                         style: TextStyle(
@@ -239,16 +344,84 @@ class DetailRawatDokterPerawat extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                ),
-                              ],
-                            ),
                             const SizedBox(
                               height: 20,
                             ),
-                            Row(
-                              children: [
-                                Flexible(
-                                  child: Column(
+                            (!Responsive.isMobile(context))
+                                ? Row(
+                                    children: [
+                                      Flexible(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text(
+                                              'Nomor Antrian',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 12),
+                                              child: Input(
+                                                initialValue:
+                                                    putDataRawat[indexOfPage]
+                                                        .noAntrian
+                                                        .toString(),
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.zero),
+                                                keyboardType:
+                                                    TextInputType.none,
+                                                textAlignVertical:
+                                                    TextAlignVertical.center,
+                                                enabled: false,
+                                                suffixIcon: const Icon(
+                                                    Icons.keyboard_arrow_down),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 30,
+                                      ),
+                                      Flexible(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Text(
+                                              'Jadwal Rawat Jalan',
+                                              overflow: TextOverflow.ellipsis,
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.w700),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 12),
+                                              child: Input(
+                                                initialValue:
+                                                    putDataRawat[indexOfPage]
+                                                        .jadwalRawat,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.zero),
+                                                keyboardType:
+                                                    TextInputType.none,
+                                                textAlignVertical:
+                                                    TextAlignVertical.center,
+                                                enabled: false,
+                                                suffixIcon: const Icon(
+                                                    Icons.keyboard_arrow_down),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                : Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
@@ -274,19 +447,12 @@ class DetailRawatDokterPerawat extends StatelessWidget {
                                               Icons.keyboard_arrow_down),
                                         ),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 30,
-                                ),
-                                Flexible(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
                                       const Text(
                                         'Jadwal Rawat Jalan',
+                                        overflow: TextOverflow.ellipsis,
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700),
                                       ),
@@ -307,28 +473,32 @@ class DetailRawatDokterPerawat extends StatelessWidget {
                                         ),
                                       ),
                                     ],
-                                  ),
-                                ),
-                              ],
-                            ),
+                                  )
                           ],
                         ),
                       ),
                       const SizedBox(
                         height: 40,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(right: 30, bottom: 10),
+                      Container(
+                        alignment: (Responsive.isMobile(context))
+                            ? Alignment.centerLeft
+                            : null,
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.only(
+                            right: (Responsive.isMobile(context)) ? 10 : 30,
+                            bottom: 10),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             SizedBox(
-                              width: 120,
+                              width: (Responsive.isMobile(context))
+                                  ? MediaQuery.of(context).size.width * 0.28
+                                  : 120,
                               height: 40,
                               child: ElevatedButton(
                                   onPressed: () async {
-                                    Navigator.pop(context);
                                     await openKeteranganRawatDokterPerawat(
                                         context);
                                   },
@@ -344,7 +514,9 @@ class DetailRawatDokterPerawat extends StatelessWidget {
                               width: 20,
                             ),
                             SizedBox(
-                              width: 120,
+                              width: (Responsive.isMobile(context))
+                                  ? MediaQuery.of(context).size.width * 0.28
+                                  : 120,
                               height: 40,
                               child: ElevatedButton(
                                   onPressed: () {
@@ -367,20 +539,22 @@ class DetailRawatDokterPerawat extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
-            right: -5,
-            top: -5,
-            child: InkResponse(
-              radius: 25,
-              onTap: () {
-                Navigator.of(context).pop();
-              },
-              child: const Icon(
-                Icons.close,
-                size: 30,
-              ),
-            ),
-          ),
+          (Responsive.isMobile(context))
+              ? const SizedBox.shrink()
+              : Positioned(
+                  right: -5,
+                  top: -5,
+                  child: InkResponse(
+                    radius: 25,
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Icon(
+                      Icons.close,
+                      size: (Responsive.isMobile(context)) ? 25 : 30,
+                    ),
+                  ),
+                )
         ],
       ),
     );

@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:hospital_management_system/screens/rawat%20screen/dokter%20perawat%20screen/components/rawat_table.dart';
 import 'package:provider/provider.dart';
 
+import '../../../utilities/constants/responsive.dart';
 import '../../../viewModels/rawat viewModel/rawat_provider.dart';
 import '/screens/main%20layout/main_layout.dart';
 import '/utilities/components/input.dart';
@@ -18,13 +19,21 @@ class RawatScreen extends StatelessWidget {
       actionRoute: true,
       keyScreens: 'RawatScreen',
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 29),
+        padding: EdgeInsets.symmetric(
+            horizontal: (Responsive.isDesktop(context) ||
+                    Responsive.isTablet(context) &&
+                        MediaQuery.of(context).orientation ==
+                            Orientation.landscape)
+                ? 70
+                : 20,
+            vertical: 29),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 GestureDetector(
+                  onTap: () => Navigator.pushReplacementNamed(context, '/home'),
                   child: const Text(
                     "Home > ",
                     style: TextStyle(color: Colors.grey),
@@ -33,77 +42,123 @@ class RawatScreen extends StatelessWidget {
                 const Text("Data pasien rawat jalan"),
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 20),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
               child: Text(
                 'Data Pasien Rawat Jalan',
                 style: TextStyle(
-                  fontSize: 40,
+                  fontSize: (Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context) &&
+                              MediaQuery.of(context).orientation ==
+                                  Orientation.landscape)
+                      ? 40
+                      : 30,
                   fontWeight: FontWeight.w700,
                   fontFamily: 'Open Sans',
                 ),
               ),
             ),
-            const SizedBox(
-              height: 50,
+            SizedBox(
+              height: (Responsive.isDesktop(context) ||
+                      Responsive.isTablet(context) &&
+                          MediaQuery.of(context).orientation ==
+                              Orientation.landscape)
+                  ? 40
+                  : 25,
             ),
             Consumer<RawatProvider>(builder: ((context, valueProvider, _) {
               if (Theme.of(context).platform == TargetPlatform.windows ||
                   kIsWeb) {
-                return Row(
-                  children: [
-                    SizedBox(
+                return Row(children: [
+                  (Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context) &&
+                              MediaQuery.of(context).orientation ==
+                                  Orientation.landscape)
+                      ? SizedBox(
+                          width: 391,
+                          height: 40,
+                          child: Input(
+                            controller: valueProvider.searchController,
+                            onChanged: valueProvider.onSearch,
+                            hintText: 'Cari di sini',
+                            backgroundColor: const Color(0xFFEBEBEB),
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: primaryColor,
+                            ),
+                          ))
+                      : SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.55,
+                          height: 40,
+                          child: Input(
+                            controller: valueProvider.searchController,
+                            onChanged: valueProvider.onSearch,
+                            hintText: 'Cari di sini',
+                            backgroundColor: const Color(0xFFEBEBEB),
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: primaryColor,
+                            ),
+                          )),
+                  const SizedBox(
+                    width: 20,
+                  ),
+                  SizedBox(
+                    width: 50,
+                    height: 50,
+                    child: Card(
+                      color: primaryColor.shade300,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: InkWell(
+                        borderRadius: BorderRadius.circular(12),
+                        child: const Icon(
+                          Icons.refresh,
+                          color: Colors.white,
+                        ),
+                        onTap: () {
+                          valueProvider.isLoading
+                              ? null
+                              : valueProvider.keyRawat.currentState!.refresh();
+                        },
+                      ),
+                    ),
+                  ),
+                ]);
+              } else {
+                return (Responsive.isDesktop(context) ||
+                        Responsive.isTablet(context) &&
+                            MediaQuery.of(context).orientation ==
+                                Orientation.landscape)
+                    ? SizedBox(
                         width: 391,
                         height: 40,
                         child: Input(
-                          hintText: 'Cari di sini',
+                          textInputAction: TextInputAction.done,
                           controller: valueProvider.searchController,
                           onChanged: valueProvider.onSearch,
+                          hintText: 'Cari di sini',
                           backgroundColor: const Color(0xFFEBEBEB),
                           prefixIcon: Icon(
                             Icons.search,
                             color: primaryColor,
                           ),
-                        )),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: Card(
-                        color: primaryColor.shade300,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(12),
-                          child: const Icon(
-                            Icons.refresh_rounded,
-                            color: Colors.white,
+                        ))
+                    : SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.55,
+                        height: 40,
+                        child: Input(
+                          textInputAction: TextInputAction.done,
+                          controller: valueProvider.searchController,
+                          onChanged: valueProvider.onSearch,
+                          hintText: 'Cari di sini',
+                          backgroundColor: const Color(0xFFEBEBEB),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: primaryColor,
                           ),
-                          onTap: () {
-                            valueProvider.keyRawat.currentState!.refresh();
-                          },
-                        ),
-                      ),
-                    ),
-                  ],
-                );
-              } else {
-                return SizedBox(
-                    width: 391,
-                    height: 40,
-                    child: Input(
-                      hintText: 'Cari di sini',
-                      controller: valueProvider.searchController,
-                      onChanged: valueProvider.onSearch,
-                      backgroundColor: const Color(0xFFEBEBEB),
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: primaryColor,
-                      ),
-                    ));
+                        ));
               }
             })),
             const SizedBox(

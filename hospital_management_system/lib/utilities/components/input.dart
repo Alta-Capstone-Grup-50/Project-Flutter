@@ -25,6 +25,7 @@ class Input extends StatelessWidget {
     this.borderRadius,
     this.enabled,
     this.initialValue,
+    this.textInputAction,
   }) : super(key: key);
 
   TextEditingController? controller;
@@ -49,6 +50,7 @@ class Input extends StatelessWidget {
   BorderRadius? borderRadius;
   bool? enabled;
   String? initialValue;
+  TextInputAction? textInputAction;
 
   @override
   Widget build(BuildContext context) {
@@ -63,9 +65,10 @@ class Input extends StatelessWidget {
       onSaved: onSaved,
       obscureText: obscureText,
       keyboardType: keyboardType,
+      textInputAction: textInputAction,
       onChanged: onChanged,
       enabled: enabled,
-      controller: controller, 
+      controller: controller,
       decoration: InputDecoration(
         filled: true,
         suffixIcon: suffixIcon,

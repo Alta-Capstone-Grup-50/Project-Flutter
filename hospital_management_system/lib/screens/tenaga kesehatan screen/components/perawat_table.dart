@@ -3,11 +3,12 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../../screens/dokter%20perawat%20screen/components/data_source_table.dart';
 import '../../../utilities/constants/color.dart';
 import '../../../viewModels/dokter perawat viewModel/dokterPerawat_provider.dart';
 
-class DokterPerawatTable {
+import 'dataPerawat_source_table.dart';
+
+class PerawatTable {
   Widget buildTable(BuildContext context) {
     return Consumer<DokterPerawatProvider>(builder: (context, value, _) {
       if (value.isLoading) {
@@ -29,8 +30,8 @@ class DokterPerawatTable {
         } else {
           val = value.listDokterPerawatData;
         }
-        final DokterPerawatDataSourceTable _dataSource =
-            DokterPerawatDataSourceTable(val, context);
+        final PerawatDataSourceTable _dataSource =
+            PerawatDataSourceTable(val, context);
 
         double countPage = _dataSource.data.length / _dataSource.rowsPerPage;
 
@@ -55,10 +56,9 @@ class DokterPerawatTable {
                         rowHeight: 40,
                         allowPullToRefresh: true,
                         source: _dataSource,
-                        columnWidthMode: ColumnWidthMode.fill,
+                        columnWidthMode: ColumnWidthMode.lastColumnFill,
                         columns: [
                           GridColumn(
-                            width: 60,
                             columnName: 'No',
                             label: Container(
                               color: primaryColor.shade200,
@@ -73,7 +73,6 @@ class DokterPerawatTable {
                           ),
                           GridColumn(
                             columnName: 'SIP/SIPP',
-                            width: 140,
                             label: Container(
                               padding: const EdgeInsets.only(right: 16),
                               color: primaryColor.shade200,
@@ -86,7 +85,6 @@ class DokterPerawatTable {
                             ),
                           ),
                           GridColumn(
-                            width: 160,
                             columnName: 'Nama',
                             label: Container(
                               color: primaryColor.shade200,
@@ -99,21 +97,7 @@ class DokterPerawatTable {
                             ),
                           ),
                           GridColumn(
-                            columnName: 'Jabatan',
-                            width: 80,
-                            label: Container(
-                              color: primaryColor.shade200,
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                'Jabatan',
-                                style: TextStyle(fontWeight: FontWeight.w700),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
-                          GridColumn(
                             columnName: 'Jenis Kelamin',
-                            width: 120,
                             label: Container(
                               color: primaryColor.shade200,
                               padding: const EdgeInsets.only(right: 16),
@@ -126,59 +110,30 @@ class DokterPerawatTable {
                             ),
                           ),
                           GridColumn(
-                            width: 150,
-                            columnName: 'Nomor Telepon',
+                            columnName: 'Bagian Kerja',
                             label: Container(
                               color: primaryColor.shade200,
                               alignment: Alignment.centerLeft,
                               child: const Text(
-                                'Nomor Telepon',
+                                'Bagian Kerja',
                                 style: TextStyle(fontWeight: FontWeight.w700),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ),
                           GridColumn(
-                            width: 150,
-                            columnName: 'Spesialis',
-                            label: Container(
-                              color: primaryColor.shade200,
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                'Spesialis',
-                                style: TextStyle(fontWeight: FontWeight.w700),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
-                          GridColumn(
-                            width: 250,
-                            columnName: 'Jadwal Praktek',
+                            columnName: 'Jadwal Kerja',
                             label: Container(
                               color: primaryColor.shade200,
                               padding: const EdgeInsets.only(right: 16),
                               alignment: Alignment.centerLeft,
                               child: const Text(
-                                'Jadwal Praktek',
+                                'Jadwal Kerja',
                                 style: TextStyle(fontWeight: FontWeight.w700),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ),
-                          GridColumn(
-                            width: 150,
-                            columnName: 'STR',
-                            label: Container(
-                              padding: const EdgeInsets.only(right: 16),
-                              color: primaryColor.shade200,
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                'STR',
-                                style: TextStyle(fontWeight: FontWeight.w700),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          )
                         ],
                       ),
                     ),

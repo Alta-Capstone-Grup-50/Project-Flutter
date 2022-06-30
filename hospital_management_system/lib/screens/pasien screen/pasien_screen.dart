@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:hospital_management_system/screens/pasien%20screen/components/pasien_table.dart';
 import 'package:provider/provider.dart';
 
+import '../../utilities/constants/responsive.dart';
 import '../../viewModels/pasien viewModel/pasien_provider.dart';
 import '/screens/main%20layout/main_layout.dart';
 import '/utilities/components/input.dart';
@@ -19,13 +20,21 @@ class PasienScreen extends StatelessWidget {
       actionRoute: true,
       keyScreens: 'PasienScreen',
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 29),
+        padding: EdgeInsets.symmetric(
+            horizontal: (Responsive.isDesktop(context) ||
+                    Responsive.isTablet(context) &&
+                        MediaQuery.of(context).orientation ==
+                            Orientation.landscape)
+                ? 70
+                : 20,
+            vertical: 29),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 GestureDetector(
+                  onTap: () => Navigator.pushReplacementNamed(context, '/home'),
                   child: const Text(
                     "Home > ",
                     style: TextStyle(color: Colors.grey),
@@ -34,37 +43,64 @@ class PasienScreen extends StatelessWidget {
                 const Text("Data Pasien"),
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 20),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
               child: Text(
                 'Data Pasien',
                 style: TextStyle(
-                  fontSize: 40,
+                  fontSize: (Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context) &&
+                              MediaQuery.of(context).orientation ==
+                                  Orientation.landscape)
+                      ? 40
+                      : 30,
                   fontWeight: FontWeight.w700,
                   fontFamily: 'Open Sans',
                 ),
               ),
             ),
-            const SizedBox(
-              height: 50,
+            SizedBox(
+              height: (Responsive.isDesktop(context) ||
+                      Responsive.isTablet(context) &&
+                          MediaQuery.of(context).orientation ==
+                              Orientation.landscape)
+                  ? 40
+                  : 25,
             ),
             Consumer<PasienProvider>(builder: ((context, valueProvider, _) {
               if (Theme.of(context).platform == TargetPlatform.windows ||
                   kIsWeb) {
                 return Row(children: [
-                  SizedBox(
-                      width: 391,
-                      height: 40,
-                      child: Input(
-                        controller: valueProvider.searchController,
-                        onChanged: valueProvider.onSearch,
-                        hintText: 'Cari di sini',
-                        backgroundColor: const Color(0xFFEBEBEB),
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: primaryColor,
-                        ),
-                      )),
+                  (Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context) &&
+                              MediaQuery.of(context).orientation ==
+                                  Orientation.landscape)
+                      ? SizedBox(
+                          width: 391,
+                          height: 40,
+                          child: Input(
+                            controller: valueProvider.searchController,
+                            onChanged: valueProvider.onSearch,
+                            hintText: 'Cari di sini',
+                            backgroundColor: const Color(0xFFEBEBEB),
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: primaryColor,
+                            ),
+                          ))
+                      : SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.55,
+                          height: 40,
+                          child: Input(
+                            controller: valueProvider.searchController,
+                            onChanged: valueProvider.onSearch,
+                            hintText: 'Cari di sini',
+                            backgroundColor: const Color(0xFFEBEBEB),
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: primaryColor,
+                            ),
+                          )),
                   const SizedBox(
                     width: 20,
                   ),
@@ -83,26 +119,47 @@ class PasienScreen extends StatelessWidget {
                           color: Colors.white,
                         ),
                         onTap: () {
-                          valueProvider.keyPasien.currentState!.refresh();
+                          valueProvider.isLoading
+                              ? null
+                              : valueProvider.keyPasien.currentState!.refresh();
                         },
                       ),
                     ),
                   ),
                 ]);
               } else {
-                return SizedBox(
-                    width: 391,
-                    height: 40,
-                    child: Input(
-                      controller: valueProvider.searchController,
-                      onChanged: valueProvider.onSearch,
-                      hintText: 'Cari di sini',
-                      backgroundColor: const Color(0xFFEBEBEB),
-                      prefixIcon: Icon(
-                        Icons.search,
-                        color: primaryColor,
-                      ),
-                    ));
+                return (Responsive.isDesktop(context) ||
+                        Responsive.isTablet(context) &&
+                            MediaQuery.of(context).orientation ==
+                                Orientation.landscape)
+                    ? SizedBox(
+                        width: 391,
+                        height: 40,
+                        child: Input(
+                          controller: valueProvider.searchController,
+                          onChanged: valueProvider.onSearch,
+                          textInputAction: TextInputAction.done,
+                          hintText: 'Cari di sini',
+                          backgroundColor: const Color(0xFFEBEBEB),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: primaryColor,
+                          ),
+                        ))
+                    : SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.55,
+                        height: 40,
+                        child: Input(
+                          textInputAction: TextInputAction.done,
+                          controller: valueProvider.searchController,
+                          onChanged: valueProvider.onSearch,
+                          hintText: 'Cari di sini',
+                          backgroundColor: const Color(0xFFEBEBEB),
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: primaryColor,
+                          ),
+                        ));
               }
             })),
             const SizedBox(

@@ -6,6 +6,7 @@ import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../../utilities/constants/color.dart';
+import '../../../../utilities/constants/responsive.dart';
 import '../../../../viewModels/rawat viewModel/rawat_provider.dart';
 import 'data_source_table.dart';
 import 'detailRawat_dokterPerawat.dart';
@@ -58,7 +59,7 @@ class RawatTable {
                           allowPullToRefresh: true,
                           isScrollbarAlwaysShown: true,
                           source: _dataSource,
-                          columnWidthMode: ColumnWidthMode.fill,
+                          columnWidthMode: ColumnWidthMode.lastColumnFill,
                           onCellTap: (query) {
                             openDetailRawatDokterPerawat(
                                 context, query, _dataSource.startIndex);
@@ -78,8 +79,8 @@ class RawatTable {
                               ),
                             ),
                             GridColumn(
+                              width: 140,
                               columnName: 'NIK',
-                              width: 180,
                               label: Container(
                                 alignment: Alignment.centerLeft,
                                 child: const Text(
@@ -90,8 +91,8 @@ class RawatTable {
                               ),
                             ),
                             GridColumn(
+                              width: 170,
                               columnName: 'Nama',
-                              width: 200,
                               label: Container(
                                 alignment: Alignment.centerLeft,
                                 padding: const EdgeInsets.only(left: 16.0),
@@ -103,6 +104,7 @@ class RawatTable {
                               ),
                             ),
                             GridColumn(
+                              width: 140,
                               columnName: 'Jenis Kelamin',
                               label: Container(
                                 alignment: Alignment.center,
@@ -125,7 +127,7 @@ class RawatTable {
                               ),
                             ),
                             GridColumn(
-                              width: 60,
+                              width: 120,
                               columnName: 'Nomor Antrian',
                               label: Container(
                                 padding: const EdgeInsets.only(left: 5.0),
@@ -139,9 +141,11 @@ class RawatTable {
                               ),
                             ),
                             GridColumn(
+                              width: 150,
                               columnName: 'Jenis Penyakit',
                               label: Container(
-                                alignment: Alignment.center,
+                                padding: const EdgeInsets.only(left: 20.0),
+                                alignment: Alignment.centerLeft,
                                 child: const Text(
                                   'Jenis Penyakit',
                                   style: TextStyle(fontWeight: FontWeight.w700),
@@ -157,7 +161,13 @@ class RawatTable {
                       height: 20,
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 250),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: (Responsive.isDesktop(context) ||
+                                  Responsive.isTablet(context) &&
+                                      MediaQuery.of(context).orientation ==
+                                          Orientation.landscape)
+                              ? 200
+                              : 0),
                       child: SfDataPagerTheme(
                         data: SfDataPagerThemeData(
                           selectedItemColor: green.shade300,

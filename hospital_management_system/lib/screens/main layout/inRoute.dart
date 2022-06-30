@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../dokter perawat screen/dokterPerawat_screen.dart';
 import '../pasien screen/pasien_screen.dart';
 import '../rawat screen/dokter perawat screen/rawat_screen.dart';
+import '../tenaga kesehatan screen/dokterPerawat_screen.dart';
 
 class InRoute {
   List<Widget> route(BuildContext context, String keyScreens) {
@@ -11,7 +11,7 @@ class InRoute {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () => Navigator.pop(context),
+            onTap: () => Navigator.popAndPushNamed(context, '/home'),
             child: const Text(
               'Home',
               style: TextStyle(
@@ -22,8 +22,7 @@ class InRoute {
           ),
         ),
         InkWell(
-          onTap: () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const RawatScreen())),
+          onTap: () => Navigator.pushReplacementNamed(context, '/rawatJalan'),
           child: const Text(
             'Data Rawat Jalan',
             style: TextStyle(
@@ -33,10 +32,8 @@ class InRoute {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const DokterPerawatScreen())),
+            onTap: () =>
+                Navigator.pushReplacementNamed(context, '/tenagaKesehatan'),
             child: const Text(
               'Data Tenaga Kesehatan',
               style: TextStyle(
@@ -53,7 +50,7 @@ class InRoute {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () => Navigator.pop(context),
+            onTap: () => Navigator.popAndPushNamed(context, '/home'),
             child: const Text(
               'Home',
               style: TextStyle(
@@ -64,8 +61,7 @@ class InRoute {
           ),
         ),
         InkWell(
-          onTap: () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const PasienScreen())),
+          onTap: () => Navigator.pushReplacementNamed(context, '/pasien'),
           child: const Text(
             'Data Pasien',
             style: TextStyle(
@@ -75,10 +71,8 @@ class InRoute {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const DokterPerawatScreen())),
+            onTap: () =>
+                Navigator.pushReplacementNamed(context, '/tenagaKesehatan'),
             child: const Text(
               'Data Tenaga Kesehatan',
               style: TextStyle(
@@ -95,7 +89,7 @@ class InRoute {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () => Navigator.pop(context),
+            onTap: () => Navigator.popAndPushNamed(context, '/home'),
             child: const Text(
               'Home',
               style: TextStyle(
@@ -106,8 +100,7 @@ class InRoute {
           ),
         ),
         InkWell(
-          onTap: () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const PasienScreen())),
+          onTap: () => Navigator.pushReplacementNamed(context, '/pasien'),
           child: const Text(
             'Data Pasien',
             style: TextStyle(
@@ -117,8 +110,7 @@ class InRoute {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () => Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const RawatScreen())),
+            onTap: () => Navigator.pushReplacementNamed(context, '/rawatJalan'),
             child: const Text(
               'Data Rawat Jalan',
               style: TextStyle(
@@ -135,8 +127,7 @@ class InRoute {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () => Navigator.pushReplacement(context,
-                MaterialPageRoute(builder: (context) => const PasienScreen())),
+            onTap: () => Navigator.pushReplacementNamed(context, '/pasien'),
             child: const Text(
               'Data Pasien',
               style: TextStyle(
@@ -147,8 +138,7 @@ class InRoute {
           ),
         ),
         InkWell(
-          onTap: () => Navigator.pushReplacement(context,
-              MaterialPageRoute(builder: (context) => const RawatScreen())),
+          onTap: () => Navigator.pushReplacementNamed(context, '/rawatJalan'),
           child: const Text(
             'Data Rawat Jalan',
             style: TextStyle(
@@ -158,10 +148,8 @@ class InRoute {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const DokterPerawatScreen())),
+            onTap: () =>
+                Navigator.pushReplacementNamed(context, '/tenagaKesehatan'),
             child: const Text(
               'Data Tenaga Kesehatan',
               style: TextStyle(
@@ -176,33 +164,39 @@ class InRoute {
     } else {
       List<Widget> widgets = [
         InkWell(
-          onTap: () => Navigator.pop(context),
+          onTap: () => () => Navigator.popAndPushNamed(context, '/home'),
           child: const Text(
             'Home',
             style: TextStyle(
                 color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 40),
-          child: Text(
-            'Data Pasien',
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 40),
+          child: InkWell(
+            onTap: () => Navigator.pushReplacementNamed(context, '/pasien'),
+            child: const Text(
+              'Data Pasien',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 14,
+                  fontWeight: FontWeight.w700),
+            ),
+          ),
+        ),
+        InkWell(
+          onTap: () => Navigator.pushReplacementNamed(context, '/rawatJalan'),
+          child: const Text(
+            'Data Rawat Jalan',
             style: TextStyle(
                 color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
           ),
         ),
-        const Text(
-          'Data Rawat Jalan',
-          style: TextStyle(
-              color: Colors.black, fontSize: 14, fontWeight: FontWeight.w700),
-        ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => const DokterPerawatScreen())),
+            onTap: () =>
+                Navigator.pushReplacementNamed(context, '/tenagaKesehatan'),
             child: const Text(
               'Data Tenaga Kesehatan',
               style: TextStyle(

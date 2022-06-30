@@ -1,23 +1,14 @@
-// import 'package:flutter/material.dart';
-
-// import 'package:hospital_management_system/view%20model/dokter%20perawat%20provider/dokterPerawat_provider.dart';
-
-// import 'package:provider/provider.dart';
-
-// class DokterPerawatTable {
-
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/screens/pasien%20screen/components/detailPasien.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../utilities/constants/color.dart';
 
+import '../../../utilities/constants/responsive.dart';
 import '../../../viewModels/pasien viewModel/pasien_provider.dart';
 import 'data_source_table.dart';
-import '../../rawat screen/dokter perawat screen/components/detailRawat_dokterPerawat.dart';
 
 class PasienTable {
   Widget buildTable(BuildContext context) {
@@ -68,8 +59,9 @@ class PasienTable {
                             allowPullToRefresh: true,
                             isScrollbarAlwaysShown: true,
                             columnWidthMode: ColumnWidthMode.fill,
-                            onCellTap: (coba) {
-                              log(coba.rowColumnIndex.toString());
+                            onCellTap: (query) {
+                              openDetailPasien(
+                                  context, query, _dataSource.startIndex);
                             },
                             columns: [
                               GridColumn(
@@ -142,7 +134,7 @@ class PasienTable {
                                         overflow: TextOverflow.ellipsis,
                                       ))),
                               GridColumn(
-                                  width: 170,
+                                  width: 140,
                                   columnName: 'Jenis Penyakit',
                                   label: Container(
                                       alignment: Alignment.centerLeft,
@@ -157,7 +149,13 @@ class PasienTable {
                   height: 20,
                 ),
                 Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 250),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: (Responsive.isDesktop(context) ||
+                                Responsive.isTablet(context) &&
+                                    MediaQuery.of(context).orientation ==
+                                        Orientation.landscape)
+                            ? 200
+                            : 0),
                     child: SfDataPagerTheme(
                         data: SfDataPagerThemeData(
                           selectedItemColor: green.shade300,
