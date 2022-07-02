@@ -8,7 +8,7 @@ import 'package:dio/dio.dart';
 class LoginService {
   final Dio _dio = Dio();
 
-  Future post(Map<String, dynamic> loginData) async {
+  Future post(loginData) async {
     try {
       Response response = await _dio.post(
         ApiUrl.login,
@@ -24,20 +24,11 @@ class LoginService {
         return response;
       } else {
         print("Request failed with status : ${response.statusCode}");
+        return response;
       }
-    } on DioError catch (exception) {
+    } catch (exception) {
       log('============================== Dio Exception ==============================');
       log(exception.toString());
-
-      if (exception.response!.statusCode != null) {
-        log('========================== Another Dio Exception ==========================');
-        log("Request failed with status : ${exception.response!.statusCode}");
-      } else {
-        log('========================== Another Dio Exception ==========================');
-        log(exception.message);
-        log(exception.response.toString());
-      }
-      throw Exception(exception.message);
     }
   }
 }

@@ -85,38 +85,41 @@ class HomeScreen extends StatelessWidget {
                           ),
                         ],
                       )
-                    : Column(
-                        children: [
-                          ChoseCard(
-                            title: 'Data Pasien',
-                            openHistory:
-                                valueProvider.lastOpenDataPasien ?? '...',
-                            image: 'assets/contents/data_pasien.png',
-                            page: '/pasien',
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          ChoseCard(
-                            title: 'Data Tenaga Kesehatan',
-                            openHistory:
-                                valueProvider.lastOpenDataDokterPerawat ??
-                                    '...',
-                            image: 'assets/contents/data_dokter.png',
-                            page: '',
-                            color: Colors.red,
-                          ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          ChoseCard(
-                            title: 'Data Pasien Rawat Jalan',
-                            openHistory:
-                                valueProvider.lastOpenDataRawatJalan ?? '...',
-                            image: 'assets/contents/data_rawat.png',
-                            page: '/rawatJalan',
-                          ),
-                        ],
+                    : SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(
+                          children: [
+                            ChoseCard(
+                              title: 'Data Pasien',
+                              openHistory:
+                                  valueProvider.lastOpenDataPasien ?? '...',
+                              image: 'assets/contents/data_pasien.png',
+                              page: '/pasien',
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            ChoseCard(
+                              title: 'Data Tenaga Kesehatan',
+                              openHistory:
+                                  valueProvider.lastOpenDataDokterPerawat ??
+                                      '...',
+                              image: 'assets/contents/data_dokter.png',
+                              page: '',
+                              color: Colors.red,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            ChoseCard(
+                              title: 'Data Pasien Rawat Jalan',
+                              openHistory:
+                                  valueProvider.lastOpenDataRawatJalan ?? '...',
+                              image: 'assets/contents/data_rawat.png',
+                              page: '/rawatJalan',
+                            ),
+                          ],
+                        ),
                       )),
           ],
         ),

@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../pasien screen/pasien_screen.dart';
-import '../rawat screen/dokter perawat screen/rawat_screen.dart';
-import '../tenaga kesehatan screen/dokterPerawat_screen.dart';
-
 class InRoute {
   List<Widget> route(BuildContext context, String keyScreens) {
     if (keyScreens == 'PasienScreen') {
@@ -11,7 +7,8 @@ class InRoute {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () => Navigator.popAndPushNamed(context, '/home'),
+            onTap: () async => await Navigator.pushNamedAndRemoveUntil(
+                context, '/home', ModalRoute.withName('/home')),
             child: const Text(
               'Home',
               style: TextStyle(
@@ -22,7 +19,8 @@ class InRoute {
           ),
         ),
         InkWell(
-          onTap: () => Navigator.pushReplacementNamed(context, '/rawatJalan'),
+          onTap: () async => await Navigator.pushNamedAndRemoveUntil(
+              context, '/rawatJalan', ModalRoute.withName('/rawatJalan')),
           child: const Text(
             'Data Rawat Jalan',
             style: TextStyle(
@@ -32,8 +30,8 @@ class InRoute {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () =>
-                Navigator.pushReplacementNamed(context, '/tenagaKesehatan'),
+            onTap: () async => await Navigator.pushNamedAndRemoveUntil(context,
+                '/tenagaKesehatan', ModalRoute.withName('/tenagaKesehatan')),
             child: const Text(
               'Data Tenaga Kesehatan',
               style: TextStyle(
@@ -50,7 +48,8 @@ class InRoute {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () => Navigator.popAndPushNamed(context, '/home'),
+            onTap: () async => await Navigator.pushNamedAndRemoveUntil(
+                context, '/home', ModalRoute.withName('/home')),
             child: const Text(
               'Home',
               style: TextStyle(
@@ -61,7 +60,8 @@ class InRoute {
           ),
         ),
         InkWell(
-          onTap: () => Navigator.pushReplacementNamed(context, '/pasien'),
+          onTap: () async => await Navigator.pushNamedAndRemoveUntil(
+              context, '/pasien', ModalRoute.withName('/pasien')),
           child: const Text(
             'Data Pasien',
             style: TextStyle(
@@ -71,8 +71,8 @@ class InRoute {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () =>
-                Navigator.pushReplacementNamed(context, '/tenagaKesehatan'),
+            onTap: () async => await Navigator.pushNamedAndRemoveUntil(context,
+                '/tenagaKesehatan', ModalRoute.withName('/tenagaKesehatan')),
             child: const Text(
               'Data Tenaga Kesehatan',
               style: TextStyle(
@@ -89,7 +89,8 @@ class InRoute {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () => Navigator.popAndPushNamed(context, '/home'),
+            onTap: () async => await Navigator.pushNamedAndRemoveUntil(
+                context, '/home', ModalRoute.withName('/home')),
             child: const Text(
               'Home',
               style: TextStyle(
@@ -100,7 +101,8 @@ class InRoute {
           ),
         ),
         InkWell(
-          onTap: () => Navigator.pushReplacementNamed(context, '/pasien'),
+          onTap: () async => await Navigator.pushNamedAndRemoveUntil(
+              context, '/pasien', ModalRoute.withName('/pasien')),
           child: const Text(
             'Data Pasien',
             style: TextStyle(
@@ -110,7 +112,8 @@ class InRoute {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () => Navigator.pushReplacementNamed(context, '/rawatJalan'),
+            onTap: () async => await Navigator.pushNamedAndRemoveUntil(
+                context, '/rawatJalan', ModalRoute.withName('/rawatJalan')),
             child: const Text(
               'Data Rawat Jalan',
               style: TextStyle(
@@ -127,7 +130,8 @@ class InRoute {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () => Navigator.pushReplacementNamed(context, '/pasien'),
+            onTap: () async => await Navigator.pushNamedAndRemoveUntil(
+                context, '/pasien', ModalRoute.withName('/pasien')),
             child: const Text(
               'Data Pasien',
               style: TextStyle(
@@ -138,7 +142,8 @@ class InRoute {
           ),
         ),
         InkWell(
-          onTap: () => Navigator.pushReplacementNamed(context, '/rawatJalan'),
+          onTap: () async => await Navigator.pushNamedAndRemoveUntil(
+              context, '/rawatJalan', ModalRoute.withName('/rawatJalan')),
           child: const Text(
             'Data Rawat Jalan',
             style: TextStyle(
@@ -148,8 +153,8 @@ class InRoute {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () =>
-                Navigator.pushReplacementNamed(context, '/tenagaKesehatan'),
+            onTap: () async => await Navigator.pushNamedAndRemoveUntil(context,
+                '/tenagaKesehatan', ModalRoute.withName('/tenagaKesehatan')),
             child: const Text(
               'Data Tenaga Kesehatan',
               style: TextStyle(
@@ -164,7 +169,8 @@ class InRoute {
     } else {
       List<Widget> widgets = [
         InkWell(
-          onTap: () => () => Navigator.popAndPushNamed(context, '/home'),
+          onTap: () async => await Navigator.pushNamedAndRemoveUntil(
+              context, '/home', ModalRoute.withName('/home')),
           child: const Text(
             'Home',
             style: TextStyle(
@@ -174,7 +180,8 @@ class InRoute {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () => Navigator.pushReplacementNamed(context, '/pasien'),
+            onTap: () async => await Navigator.pushNamedAndRemoveUntil(
+                context, '/pasien', ModalRoute.withName('/pasien')),
             child: const Text(
               'Data Pasien',
               style: TextStyle(
@@ -185,7 +192,8 @@ class InRoute {
           ),
         ),
         InkWell(
-          onTap: () => Navigator.pushReplacementNamed(context, '/rawatJalan'),
+          onTap: () async => await Navigator.pushNamedAndRemoveUntil(
+              context, '/rawatJalan', ModalRoute.withName('/rawatJalan')),
           child: const Text(
             'Data Rawat Jalan',
             style: TextStyle(
@@ -195,8 +203,8 @@ class InRoute {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 40),
           child: InkWell(
-            onTap: () =>
-                Navigator.pushReplacementNamed(context, '/tenagaKesehatan'),
+            onTap: () async => await Navigator.pushNamedAndRemoveUntil(context,
+                '/tenagaKesehatan', ModalRoute.withName('/tenagaKesehatan')),
             child: const Text(
               'Data Tenaga Kesehatan',
               style: TextStyle(

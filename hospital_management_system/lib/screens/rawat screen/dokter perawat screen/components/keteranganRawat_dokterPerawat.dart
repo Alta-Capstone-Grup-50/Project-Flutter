@@ -98,18 +98,20 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
                       ),
                       Padding(
                         padding: EdgeInsets.only(
-                            right: (Responsive.isMobile(context)) ? 20 : 55,
+                            right: (Responsive.isMobile(context)) ? 0 : 55,
                             bottom: 25),
                         child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisAlignment: (Responsive.isMobile(context))
+                              ? MainAxisAlignment.center
+                              : MainAxisAlignment.end,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
                             SizedBox(
                               width: (Responsive.isMobile(context))
-                                  ? MediaQuery.of(context).size.width * 0.5
+                                  ? MediaQuery.of(context).size.width * 0.25
                                   : 120,
                               height: (Responsive.isMobile(context))
-                                  ? MediaQuery.of(context).size.height * 0.04
+                                  ? MediaQuery.of(context).size.height * 0.05
                                   : 45,
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
@@ -130,10 +132,10 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
                             ),
                             SizedBox(
                               width: (Responsive.isMobile(context))
-                                  ? MediaQuery.of(context).size.width * 0.3
+                                  ? MediaQuery.of(context).size.width * 0.25
                                   : 120,
                               height: (Responsive.isMobile(context))
-                                  ? MediaQuery.of(context).size.height * 0.04
+                                  ? MediaQuery.of(context).size.height * 0.05
                                   : 45,
                               child: ElevatedButton(
                                   onPressed: () {},

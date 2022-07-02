@@ -33,7 +33,10 @@ class RawatScreen extends StatelessWidget {
             Row(
               children: [
                 GestureDetector(
-                  onTap: () => Navigator.pushReplacementNamed(context, '/home'),
+                  onTap: () async {
+                    await Navigator.pushNamedAndRemoveUntil(
+                        context, '/home', ModalRoute.withName('/home'));
+                  },
                   child: const Text(
                     "Home > ",
                     style: TextStyle(color: Colors.grey),

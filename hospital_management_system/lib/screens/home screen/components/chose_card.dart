@@ -170,16 +170,16 @@ class ChoseCard extends StatelessWidget {
                       ))),
             ),
           )
-        : Container(
-            margin: const EdgeInsets.only(bottom: 20),
-            width: MediaQuery.of(context).size.width,
-            height: MediaQuery.of(context).size.width * 0.3,
+        : SizedBox(
+            width: MediaQuery.of(context).size.width * 0.6,
+            height: MediaQuery.of(context).size.width * 0.2,
             child: Card(
                 semanticContainer: true,
+                color: primaryColor.shade300,
                 clipBehavior: Clip.antiAliasWithSaveLayer,
                 shape: RoundedRectangleBorder(
-                  side: const BorderSide(color: Colors.black38, width: 2),
-                  borderRadius: BorderRadius.circular(30),
+                  side: const BorderSide(color: Colors.black26, width: 1),
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 child: Consumer<HomeProvider>(
                   builder: ((context, functionProvider, child) => InkWell(
@@ -196,70 +196,19 @@ class ChoseCard extends StatelessWidget {
                           }
                           ;
                         },
-                        child: Row(children: [
-                          Flexible(
-                            child: Container(
-                                color: Colors.grey,
-                                constraints: BoxConstraints(
-                                    minHeight:
-                                        MediaQuery.of(context).size.height),
-                                child: (color != null)
-                                    ? BackdropFilter(
-                                        filter: ImageFilter.blur(
-                                            sigmaX: 25, sigmaY: 10),
-                                        child: const Align(
-                                          alignment: Alignment.center,
-                                          child: Text(
-                                            'maintenance :)',
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        ),
-                                      )
-                                    : BackdropFilter(
-                                        filter: ImageFilter.blur(
-                                            sigmaX: 25, sigmaY: 10),
-                                        child: Stack(
-                                            fit: StackFit.expand,
-                                            children: [
-                                              Image.asset(
-                                                image,
-                                                fit: BoxFit.fill,
-                                              ),
-                                              Container(
-                                                decoration: BoxDecoration(
-                                                    color: Colors.black
-                                                        .withOpacity(0.2)),
-                                                child: BackdropFilter(
-                                                  filter: ImageFilter.blur(
-                                                      sigmaX: 2, sigmaY: 2),
-                                                  child: Container(
-                                                    decoration: BoxDecoration(
-                                                        color: Colors.white
-                                                            .withOpacity(0.0)),
-                                                  ),
-                                                ),
-                                              ),
-                                            ]),
-                                      )),
+                        child: Center(
+                          child: Text(
+                            title,
+                            overflow: TextOverflow.fade,
+                            maxLines: 1,
+                            softWrap: false,
+                            style: const TextStyle(
+                                fontFamily: 'Open Sans',
+                                fontSize: 16.0,
+                                color: Colors.white,
+                                fontWeight: FontWeight.w700),
                           ),
-                          const SizedBox(
-                            width: 25,
-                          ),
-                          Flexible(
-                            flex: 2,
-                            child: Text(
-                              title,
-                              overflow: TextOverflow.fade,
-                              maxLines: 1,
-                              softWrap: false,
-                              style: const TextStyle(
-                                  fontFamily: 'Open Sans',
-                                  fontSize: 16.0,
-                                  fontWeight: FontWeight.w700),
-                            ),
-                          )
-                        ]),
+                        ),
                       )),
                 )),
           );

@@ -17,6 +17,6 @@ class ApiUrl {
 
   static const String login = '$baseUrlLogin/login';
 
-  static const String baseUrlTesting =
+  static const String urlTesting =
       'https://api-capstone-heroku.herokuapp.com/data_pasien';
 }

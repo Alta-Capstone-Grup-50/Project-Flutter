@@ -1,7 +1,8 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 
-import '/models/detailLogin_model.dart';
+import '../../models/detailAkun_model.dart';
 import '/models/akun_model.dart';
 import '/services/login_service.dart';
 import '/utilities/common/snackbar.dart';
@@ -53,15 +54,15 @@ class LoginProvider extends ChangeNotifier {
   }
 
   getDetailLogin() async {
-    DetailLoginModel detailLogin = await (UserPreferences().getLoginDetail());
+    DetailAkunModel detailLogin = await (UserPreferences().getLoginDetail());
 
-    usernameController.text = detailLogin.detailEmail ?? '';
-    passwordController.text = detailLogin.detailPassword ?? '';
+    usernameController.text = detailLogin.email ?? '';
+    passwordController.text = detailLogin.password ?? '';
 
     notifyListeners();
     log('============================= User Login =============================');
-    log('Username : ${detailLogin.detailEmail}');
-    log('Password : ${detailLogin.detailPassword}');
+    log('Username : ${detailLogin.email}');
+    log('Password : ${detailLogin.password}');
   }
 
   void functionObscure() {
@@ -76,6 +77,8 @@ class LoginProvider extends ChangeNotifier {
       'email': usernameController.text,
       'password': passwordController.text,
     };
+
+    log(jsonEncode(loginData));
 
     _loggedInStatus = Status.authenticating;
     notifyListeners();
@@ -93,41 +96,57 @@ class LoginProvider extends ChangeNotifier {
 
       LoginService().post(loginData).then(
         (response) {
-          log(response.data.toString());
           if (response.statusCode! >= 200 && response.statusCode! < 300) {
             var responseData = response.data;
             log(responseData.toString());
 
             AkunModel authUser = AkunModel.fromJson(responseData);
-            UserPreferences().saveUser(authUser);
+            if (authUser.level == 'dokter' || authUser.level == 'perawat') {
+              UserPreferences().saveUser(authUser);
 
-            _loggedInStatus = Status.loggedIn;
-            notifyListeners();
+              _loggedInStatus = Status.loggedIn;
+              notifyListeners();
 
-            result = {
-              'status': true,
-              'message': 'Login Berhasil',
-              'user': authUser
-            };
+              result = {
+                'status': true,
+                'message': 'Login Berhasil',
+                'user': authUser
+              };
 
-            SnackBarComponent(
-              context: context,
-              message: result['message'],
-              type: 'success',
-              duration: const Duration(milliseconds: 1400),
-            );
+              SnackBarComponent(
+                context: context,
+                message: result['message'],
+                type: 'success',
+                duration: const Duration(milliseconds: 1400),
+              );
 
-            Future.delayed(
-              const Duration(milliseconds: 1500),
-              () async {
-                if (checkBox == false) {
-                  usernameController.text = '';
-                  passwordController.text = '';
-                }
-                await Navigator.pushNamedAndRemoveUntil(
-                    context, '/home', ModalRoute.withName('/home'));
-              },
-            );
+              Future.delayed(
+                const Duration(milliseconds: 1500),
+                () async {
+                  if (checkBox == false) {
+                    usernameController.text = '';
+                    passwordController.text = '';
+                  }
+                  await Navigator.pushNamedAndRemoveUntil(
+                      context, '/home', ModalRoute.withName('/home'));
+                },
+              );
+            } else {
+              _loggedInStatus = Status.notLoggedIn;
+              notifyListeners();
+
+              result = {
+                'status': false,
+                'message': 'Hak akses terkunci',
+              };
+
+              SnackBarComponent(
+                context: context,
+                message: result['message'],
+                type: 'warning',
+                duration: const Duration(milliseconds: 1400),
+              );
+            }
           } else {
             _loggedInStatus = Status.notLoggedIn;
             notifyListeners();
@@ -162,7 +181,7 @@ class LoginProvider extends ChangeNotifier {
         SnackBarComponent(
           context: context,
           message: result['message'],
-          type: 'danger',
+          type: 'warning',
           duration: const Duration(seconds: 4),
         );
       });
@@ -190,14 +209,7 @@ class LoginProvider extends ChangeNotifier {
           context, '/login', ModalRoute.withName('/login'));
     });
 
-    result = {
-      'status': false,
-      'message': 'Not Validate',
-    };
-
     _loggedInStatus = Status.loggedOut;
     notifyListeners();
-
-    return result;
   }
 }

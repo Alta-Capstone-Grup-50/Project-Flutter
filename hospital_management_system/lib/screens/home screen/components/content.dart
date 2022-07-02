@@ -20,7 +20,9 @@ class Content extends StatelessWidget {
                             Orientation.landscape)
                 ? 70
                 : 20),
-        height: MediaQuery.of(context).size.height * 0.4,
+        height: (Responsive.isMobile(context))
+            ? MediaQuery.of(context).size.height * 0.5
+            : MediaQuery.of(context).size.height * 0.4,
         decoration: BoxDecoration(
           color: grey.shade100.withOpacity(0.6),
           borderRadius: const BorderRadius.only(

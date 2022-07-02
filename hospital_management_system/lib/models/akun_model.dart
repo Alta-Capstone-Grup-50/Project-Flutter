@@ -1,21 +1,21 @@
 class AkunModel {
   int? code;
-  String? expire;
-  String? token;
+  int? id;
+  String? level;
 
-  AkunModel({this.code, this.expire, this.token});
+  AkunModel({this.code, this.id, this.level});
 
   AkunModel.fromJson(Map<String, dynamic> json) {
     code = json['code'];
-    expire = json['expire'];
-    token = json['token'];
+    id = json['id'];
+    level = json['level'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['code'] = code;
-    data['expire'] = expire;
-    data['token'] = token;
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['code'] = this.code;
+    data['id'] = this.id;
+    data['level'] = this.level;
     return data;
   }
 }

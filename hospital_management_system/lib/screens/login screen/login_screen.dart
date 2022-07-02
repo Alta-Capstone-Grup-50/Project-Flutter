@@ -16,7 +16,7 @@ class LoginScreen extends StatelessWidget {
 
     return MainLayout(
       action: false,
-      keyScreens: '',
+      keyScreens: 'login',
       child: Column(
         children: [
           loginValue.loggedInStatus == Status.authenticating

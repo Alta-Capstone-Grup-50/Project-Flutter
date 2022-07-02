@@ -27,10 +27,6 @@ class CustomDrawer extends StatelessWidget {
             height: 30,
           ),
           _drawerItem2(
-              icon: Icons.manage_accounts,
-              text: 'Manage Account',
-              onTap: () {}),
-          _drawerItem2(
             icon: Icons.logout,
             text: 'Logout',
             onTap: () {

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -19,6 +21,7 @@ import 'screens/rawat screen/dokter perawat screen/rawat_screen.dart';
 import 'viewModels/dokter perawat viewModel/dokterPerawat_provider.dart';
 import 'viewModels/home provider/home_provider.dart';
 import 'viewModels/login viewModel/login_provider.dart';
+import 'viewModels/main layout provider/mainLayout_provider.dart';
 import 'viewModels/pasien viewModel/pasien_provider.dart';
 import 'viewModels/rawat viewModel/rawat_provider.dart';
 
@@ -58,6 +61,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: ((context) => HomeProvider()),
         ),
+        ChangeNotifierProvider(
+          create: ((context) => MainLayoutProvider()),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -73,7 +79,7 @@ class MyApp extends StatelessWidget {
                 default:
                   if (snapshot.hasError) {
                     return Text('Error ${snapshot.error}');
-                  } else if (snapshot.data!.token == null) {
+                  } else if (snapshot.data!.id == null) {
                     return const LoginScreen();
                   } else {
                     return const HomeScreen();
@@ -89,6 +95,14 @@ class MyApp extends StatelessWidget {
           '/tenagaKesehatan/dokter': (context) => const DokterScreen(),
           '/tenagaKesehatan/perawat': (context) => const PerawatScreen(),
         },
+        scrollBehavior: const MaterialScrollBehavior().copyWith(
+          dragDevices: {
+            PointerDeviceKind.mouse,
+            PointerDeviceKind.touch,
+            PointerDeviceKind.stylus,
+            PointerDeviceKind.unknown
+          },
+        ),
       ),
     );
   }
