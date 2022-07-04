@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../../utilities/constants/color.dart';
-import '../../../viewModels/dokter perawat viewModel/dokterPerawat_provider.dart';
+import '/utilities/constants/color.dart';
+import '/viewModels/dokter perawat viewModel/dokterPerawat_viewModel.dart';
 
 import 'dataPerawat_source_table.dart';
 

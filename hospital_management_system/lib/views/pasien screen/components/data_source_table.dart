@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/viewModels/pasien%20viewModel/pasien_provider.dart';
+import '/viewModels/pasien%20viewModel/pasien_viewModel.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 

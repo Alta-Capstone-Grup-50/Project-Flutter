@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../utilities/constants/responsive.dart';
+import '/utilities/constants/responsive.dart';
 import '/Views/home%20screen/components/chose_card.dart';
 import '/Views/home%20screen/components/content.dart';
 import '/Views/main%20layout/main_layout.dart';
-import '/viewModels/home%20viewModel/home_provider.dart';
+import '/viewModels/home viewModel/home_viewModel.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);

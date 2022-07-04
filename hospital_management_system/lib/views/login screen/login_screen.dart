@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import '../../utilities/constants/responsive.dart';
-import '../../viewModels/login viewModel/login_provider.dart';
+import '/utilities/constants/responsive.dart';
+import '/viewModels/login viewModel/login_viewModel.dart';
 import '../main layout/main_layout.dart';
 import 'components/login_view.dart';
 

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 
-import '/viewModels/rawat viewModel/rawat_provider.dart';
+import '/viewModels/rawat viewModel/rawat_viewModel.dart';
 import '/views/main%20layout/main_layout.dart';
 import '/views/rawat%20screen/dokter%20perawat%20screen/components/rawat_table.dart';
 
 import '/utilities/constants/responsive.dart';
-import '../../../utilities/common/input.dart';
+import '/utilities/common/input.dart';
 import '/utilities/constants/color.dart';
 
 class RawatScreen extends StatelessWidget {

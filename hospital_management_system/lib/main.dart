@@ -17,12 +17,12 @@ import 'views/tenaga%20kesehatan%20screen/dokterPerawat_screen.dart';
 import 'views/pasien screen/pasien_screen.dart';
 import 'views/rawat screen/dokter perawat screen/rawat_screen.dart';
 
-import 'viewModels/dokter perawat viewModel/dokterPerawat_provider.dart';
-import 'viewModels/home viewModel/home_provider.dart';
-import 'viewModels/login viewModel/login_provider.dart';
-import 'viewModels/main layout viewModel/mainLayout_provider.dart';
-import 'viewModels/pasien viewModel/pasien_provider.dart';
-import 'viewModels/rawat viewModel/rawat_provider.dart';
+import 'viewModels/dokter perawat viewModel/dokterPerawat_viewModel.dart';
+import 'viewModels/home viewModel/home_viewModel.dart';
+import 'viewModels/login viewModel/login_viewModel.dart';
+import 'viewModels/main layout viewModel/mainLayout_viewModel.dart';
+import 'viewModels/pasien viewModel/pasien_viewModel.dart';
+import 'viewModels/rawat viewModel/rawat_viewModel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -70,22 +70,23 @@ class MyApp extends StatelessWidget {
         title: 'Projek capstone alta kelompok 50',
         theme: ThemeData(primaryColor: primaryColor),
         home: FutureBuilder<AkunModel>(
-            future: getUserData(),
-            builder: (context, snapshot) {
-              switch (snapshot.connectionState) {
-                case ConnectionState.none:
-                case ConnectionState.waiting:
-                  return const CircularProgressIndicator();
-                default:
-                  if (snapshot.hasError) {
-                    return Text('Error ${snapshot.error}');
-                  } else if (snapshot.data!.id == null) {
-                    return const LoginScreen();
-                  } else {
-                    return const HomeScreen();
-                  }
-              }
-            }),
+          future: getUserData(),
+          builder: (context, snapshot) {
+            switch (snapshot.connectionState) {
+              case ConnectionState.none:
+              case ConnectionState.waiting:
+                return const CircularProgressIndicator();
+              default:
+                if (snapshot.hasError) {
+                  return Text('Error ${snapshot.error}');
+                } else if (snapshot.data!.id == null) {
+                  return const LoginScreen();
+                } else {
+                  return const HomeScreen();
+                }
+            }
+          },
+        ),
         routes: {
           '/login': (context) => const LoginScreen(),
           '/home': (context) => const HomeScreen(),

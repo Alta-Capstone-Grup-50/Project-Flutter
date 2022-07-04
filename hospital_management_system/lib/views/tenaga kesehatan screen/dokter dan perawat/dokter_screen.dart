@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-import '/viewModels/dokter perawat viewModel/dokterPerawat_provider.dart';
+import '/viewModels/dokter perawat viewModel/dokterPerawat_viewModel.dart';
 import '../components/dokter_table.dart';
 import '/views/main%20layout/main_layout.dart';
 import '/utilities/common/input.dart';

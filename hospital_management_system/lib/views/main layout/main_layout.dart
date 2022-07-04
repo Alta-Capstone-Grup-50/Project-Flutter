@@ -1,7 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../viewModels/main layout viewModel/mainLayout_provider.dart';
+import '../../viewModels/main layout viewModel/mainLayout_viewModel.dart';
 import '../drawer/drawer.dart';
 import '/Views/main%20layout/inRoute.dart';
 

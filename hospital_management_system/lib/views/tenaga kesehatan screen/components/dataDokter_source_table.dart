@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../../models/dokterPerawat_model.dart';
-import '../../../viewModels/dokter perawat viewModel/dokterPerawat_provider.dart';
+import '/models/dokterPerawat_model.dart';
+import '/viewModels/dokter perawat viewModel/dokterPerawat_viewModel.dart';
 
 class DokterDataSourceTable extends DataGridSource {
   List<DataDoktorPerawat> _data;

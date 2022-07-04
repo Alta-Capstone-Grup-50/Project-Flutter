@@ -4,7 +4,7 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '/models/pasien_data_model.dart';
 
-import '/viewModels/rawat%20viewModel/rawat_provider.dart';
+import '/viewModels/rawat viewModel/rawat_viewModel.dart';
 import '/views/rawat%20screen/dokter%20perawat%20screen/components/keteranganRawat_dokterPerawat.dart';
 import '../../../../utilities/common/input.dart';
 import '/utilities/constants/color.dart';

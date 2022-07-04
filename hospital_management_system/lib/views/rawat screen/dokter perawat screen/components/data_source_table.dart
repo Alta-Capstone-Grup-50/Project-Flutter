@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:hospital_management_system/viewModels/rawat%20viewModel/rawat_provider.dart';
+import '/viewModels/rawat%20viewModel/rawat_viewModel.dart';
 import 'package:provider/provider.dart';
 
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../../../models/pasien_data_model.dart';
+import '/models/pasien_data_model.dart';
 
 class RawatDataSourceTable extends DataGridSource {
   List<DataPasien> _data;

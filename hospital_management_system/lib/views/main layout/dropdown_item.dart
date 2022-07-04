@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/viewModels/login%20viewModel/login_provider.dart';
+import '/viewModels/main layout viewModel/mainLayout_viewModel.dart';
+import '/viewModels/login%20viewModel/login_viewModel.dart';
 import 'package:provider/provider.dart';
-
-import '../../viewModels/main layout viewModel/mainLayout_provider.dart';
 
 class ShapedWidget extends StatelessWidget {
   const ShapedWidget();

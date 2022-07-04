@@ -7,7 +7,7 @@ import '/utilities/constants/responsive.dart';
 import '/utilities/common/input.dart';
 import '/utilities/constants/color.dart';
 
-import '/viewModels/login viewModel/login_provider.dart';
+import '/viewModels/login viewModel/login_viewModel.dart';
 
 // ignore: must_be_immutable
 class LoginView extends StatelessWidget {

@@ -3,9 +3,9 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../../utilities/constants/color.dart';
-import '../../../utilities/constants/responsive.dart';
-import '../../../viewModels/pasien viewModel/pasien_provider.dart';
+import '/utilities/constants/color.dart';
+import '/utilities/constants/responsive.dart';
+import '/viewModels/pasien viewModel/pasien_viewModel.dart';
 
 import 'data_source_table.dart';
 

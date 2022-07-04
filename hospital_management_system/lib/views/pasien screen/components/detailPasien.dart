@@ -6,7 +6,7 @@ import '/models/pasien_data_model.dart';
 import '/utilities/common/input.dart';
 import '/utilities/constants/color.dart';
 import '/utilities/constants/responsive.dart';
-import '/viewModels/pasien viewModel/pasien_provider.dart';
+import '/viewModels/pasien viewModel/pasien_viewModel.dart';
 
 class DetailPasien extends StatelessWidget {
   DetailPasien({Key? key, required this.query, required this.queryPage})

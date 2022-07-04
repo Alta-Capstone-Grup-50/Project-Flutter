@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '/viewModels/home%20viewModel/home_provider.dart';
+import '/viewModels/home viewModel/home_viewModel.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utilities/constants/responsive.dart';
