@@ -21,7 +21,7 @@ class PasienProvider extends ChangeNotifier {
   TextEditingController searchController = TextEditingController();
 
   PasienProvider() {
-    this.getDataApiPasien();
+    getDataApiPasien();
   }
 
   Future getDataApiPasien() async {

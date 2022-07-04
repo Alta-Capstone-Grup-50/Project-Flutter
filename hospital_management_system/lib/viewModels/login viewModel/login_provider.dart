@@ -9,7 +9,7 @@ import '/utilities/common/snackbar.dart';
 
 import '../../services/perfs_service.dart';
 
-enum Status {
+enum StatusAuth {
   notLoggedIn,
   loggedIn,
   authenticating,
@@ -17,25 +17,20 @@ enum Status {
 }
 
 class LoginProvider extends ChangeNotifier {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool obscure = true;
   bool checkBox = false;
-
-  AkunModel _user = AkunModel();
-
-  AkunModel get user => _user;
-
-  Status _loggedInStatus = Status.notLoggedIn;
-
-  Status get loggedInStatus => _loggedInStatus;
-
-  set loggedInStatus(Status value) {
-    _loggedInStatus = value;
-  }
-
+  final AkunModel _user = AkunModel();
+  StatusAuth _loggedInStatusAuth = StatusAuth.notLoggedIn;
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  AkunModel get user => _user;
+  StatusAuth get loggedInStatusAuth => _loggedInStatusAuth;
+
+  set loggedInStatus(StatusAuth value) {
+    _loggedInStatusAuth = value;
+  }
 
   LoginProvider() {
     getCheckBox();
@@ -48,21 +43,18 @@ class LoginProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  getCheckBox() async {
+  void getCheckBox() async {
     checkBox = await (UserPreferences().getCheck()) ?? false;
     notifyListeners();
   }
 
-  getDetailLogin() async {
+  void getDetailLogin() async {
     DetailAkunModel detailLogin = await (UserPreferences().getLoginDetail());
 
     usernameController.text = detailLogin.email ?? '';
     passwordController.text = detailLogin.password ?? '';
 
     notifyListeners();
-    log('============================= User Login =============================');
-    log('Username : ${detailLogin.email}');
-    log('Password : ${detailLogin.password}');
   }
 
   void functionObscure() {
@@ -80,7 +72,7 @@ class LoginProvider extends ChangeNotifier {
 
     log(jsonEncode(loginData));
 
-    _loggedInStatus = Status.authenticating;
+    _loggedInStatusAuth = StatusAuth.authenticating;
     notifyListeners();
 
     if (formKey.currentState!.validate()) {
@@ -104,7 +96,7 @@ class LoginProvider extends ChangeNotifier {
             if (authUser.level == 'dokter' || authUser.level == 'perawat') {
               UserPreferences().saveUser(authUser);
 
-              _loggedInStatus = Status.loggedIn;
+              _loggedInStatusAuth = StatusAuth.loggedIn;
               notifyListeners();
 
               result = {
@@ -132,7 +124,7 @@ class LoginProvider extends ChangeNotifier {
                 },
               );
             } else {
-              _loggedInStatus = Status.notLoggedIn;
+              _loggedInStatusAuth = StatusAuth.notLoggedIn;
               notifyListeners();
 
               result = {
@@ -148,7 +140,7 @@ class LoginProvider extends ChangeNotifier {
               );
             }
           } else {
-            _loggedInStatus = Status.notLoggedIn;
+            _loggedInStatusAuth = StatusAuth.notLoggedIn;
             notifyListeners();
 
             result = {
@@ -167,7 +159,7 @@ class LoginProvider extends ChangeNotifier {
           }
         },
       ).onError((error, stackTrace) {
-        _loggedInStatus = Status.notLoggedIn;
+        _loggedInStatusAuth = StatusAuth.notLoggedIn;
         notifyListeners();
 
         result = {
@@ -193,7 +185,7 @@ class LoginProvider extends ChangeNotifier {
         'message': 'Not Validate',
       };
 
-      _loggedInStatus = Status.notLoggedIn;
+      _loggedInStatusAuth = StatusAuth.notLoggedIn;
       notifyListeners();
 
       return result;
@@ -201,7 +193,6 @@ class LoginProvider extends ChangeNotifier {
   }
 
   logout(BuildContext context) {
-    Map<String, dynamic> result = {};
     UserPreferences().removeUser();
 
     Future.delayed(const Duration(seconds: 1), () async {
@@ -209,7 +200,7 @@ class LoginProvider extends ChangeNotifier {
           context, '/login', ModalRoute.withName('/login'));
     });
 
-    _loggedInStatus = Status.loggedOut;
+    _loggedInStatusAuth = StatusAuth.loggedOut;
     notifyListeners();
   }
 }
