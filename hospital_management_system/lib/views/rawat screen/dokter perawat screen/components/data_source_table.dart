@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
 
-import '/viewModels/rawat%20viewModel/rawat_viewModel.dart';
 import 'package:provider/provider.dart';
 
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../../../models/rawatJalan_data_model.dart';
+import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
 import '/models/pasien_data_model.dart';
 
 class RawatDataSourceTable extends DataGridSource {
-  List<DataPasien> _data;
-  List<DataPasien> get data => _data;
+  List<DataRawatJalan> _data;
+  List<DataRawatJalan> get data => _data;
 
-  List<DataPasien> _paginatedData = [];
+  List<DataRawatJalan> _paginatedData = [];
 
   int rowsPerPage = 6;
   int restOfPage = 0;
   int startIndex = 0;
 
-  RawatProvider? valProvider;
+  RawatJalanViewModel? valProvider;
 
   final DataPagerController _controller = DataPagerController();
 
   RawatDataSourceTable(this._data, BuildContext context) {
-    valProvider = context.read<RawatProvider>();
+    valProvider = context.read<RawatJalanViewModel>();
 
     _paginatedData = _data.getRange(0, _data.length).toList(growable: false);
     restOfPage = _paginatedData.length - startIndex;
@@ -152,7 +153,7 @@ class RawatDataSourceTable extends DataGridSource {
   Future<void> handleRefresh() async {
     await Future.delayed(const Duration(seconds: 4));
     buildPaginatedDataGridRows();
-    valProvider!.getDataApiPasien();
+    valProvider!.getDataApiRawatJalan();
 
     notifyListeners();
   }
@@ -160,26 +161,27 @@ class RawatDataSourceTable extends DataGridSource {
   void buildPaginatedDataGridRows() {
     dataGridRows = _paginatedData.map<DataGridRow>((dataGridRow) {
       return DataGridRow(cells: [
-        const DataGridCell(columnName: 'No', value: ' '),
+        const DataGridCell(columnName: 'No', value: '-'),
         DataGridCell(
             columnName: 'NIK',
             value: valProvider!.highlightOccurences(
-                dataGridRow.nik ?? ' ', valProvider!.searchController.text)),
+                dataGridRow.nik ?? '-', valProvider!.searchController.text)),
         DataGridCell(
             columnName: 'Nama',
             value: valProvider!.highlightOccurences(
-                dataGridRow.nama ?? ' ', valProvider!.searchController.text)),
+                dataGridRow.nama ?? '-', valProvider!.searchController.text)),
         DataGridCell(
             columnName: 'Jenis Kelamin',
-            value: dataGridRow.jenisKelamin ?? ' '),
+            value: dataGridRow.jenisKelamin ?? '-'),
         DataGridCell(
             columnName: 'Jadwal Rawat Jalan',
-            value: dataGridRow.jadwalRawat ?? ' '),
+            value: dataGridRow.jadwalRawatJalan ?? '-'),
         DataGridCell(
-            columnName: 'Nomor Antrian', value: dataGridRow.noAntrian ?? ' '),
+            columnName: 'Nomor Antrian',
+            value: dataGridRow.nomerAntrian ?? '-'),
         DataGridCell(
-            columnName: 'Jenis Penyakit',
-            value: dataGridRow.jenisPenyakit ?? ' '),
+            columnName: 'Jenis Penanganan',
+            value: dataGridRow.jenisPenanganan ?? '-'),
       ]);
     }).toList(growable: false);
   }

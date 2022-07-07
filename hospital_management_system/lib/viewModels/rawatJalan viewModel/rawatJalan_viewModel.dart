@@ -1,39 +1,37 @@
-import 'package:flutter/cupertino.dart';
-import 'package:hospital_management_system/models/dokterPerawat_model.dart';
+import 'dart:developer';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:hospital_management_system/utilities/constants/color.dart';
+
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../services/dokterPerawat_service.dart';
-import '../../utilities/constants/color.dart';
+import '../../models/akun_model.dart';
+import '../../models/rawatJalan_data_model.dart';
+import '../../services/rawatJalan_service.dart';
 
-class DokterPerawatProvider extends ChangeNotifier {
-  bool showLoadingIndicator = false;
+class RawatJalanViewModel extends ChangeNotifier {
+  final GlobalKey<SfDataGridState> keyRawat = GlobalKey<SfDataGridState>();
   bool isLoading = true;
 
-  final GlobalKey<SfDataGridState> keyDokterPerawat =
-      GlobalKey<SfDataGridState>();
+  List<DataRawatJalan> listRawatJalanData = [];
+  List<DataRawatJalan> toReversed = [];
+  List<DataRawatJalan> _search = [];
 
-  List<DataDoktorPerawat> listDokterPerawatData = [];
-  List<DataDoktorPerawat> toReversed = [];
-  List<DataDoktorPerawat> _search = [];
+  List<DataRawatJalan> get search => _search;
 
-  List<DataDoktorPerawat> get search => _search;
-
-  DokterPerawatService service = DokterPerawatService();
+  RawatJalanService service = RawatJalanService();
 
   TextEditingController searchController = TextEditingController();
 
-  DokterPerawatProvider() {
-    getDataApiDokter();
+  RawatJalanViewModel() {
+    getDataApiRawatJalan();
   }
 
-  changeLoadingIndicator() {
-    showLoadingIndicator = !showLoadingIndicator;
-    notifyListeners();
-  }
+  Future getDataApiRawatJalan() async {
+    toReversed = (await service.getDataRawatJalanApi('gigi'))!;
+    listRawatJalanData = toReversed.reversed.toList();
 
-  Future getDataApiDokter() async {
-    toReversed = (await service.getDataDokterApi())!;
-    listDokterPerawatData = toReversed.reversed.toList();
     isLoading = false;
     notifyListeners();
   }
@@ -44,9 +42,10 @@ class DokterPerawatProvider extends ChangeNotifier {
       notifyListeners();
     }
 
-    _search = listDokterPerawatData
-        .where((DataDoktorPerawat element) =>
-            (element.nama!.toLowerCase().contains(query.toLowerCase())))
+    _search = listRawatJalanData
+        .where((DataRawatJalan element) =>
+            (element.nama!.toLowerCase().contains(query.toLowerCase())) ||
+            (element.nik!.toLowerCase().contains(query.toLowerCase())))
         .toList();
 
     notifyListeners();

@@ -2,25 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '/models/dokterPerawat_model.dart';
-import '/viewModels/dokter perawat viewModel/dokterPerawat_viewModel.dart';
+import '../../../models/perawat_data_model.dart';
+import '../../../viewModels/dokter perawat viewModel/perawat_viewModel.dart';
 
 class PerawatDataSourceTable extends DataGridSource {
-  List<DataDoktorPerawat> _data;
-  List<DataDoktorPerawat> get data => _data;
+  List<DataPerawat> _data;
+  List<DataPerawat> get data => _data;
 
-  late List<DataDoktorPerawat> _paginatedData;
+  late List<DataPerawat> _paginatedData;
 
   int rowsPerPage = 6;
   int restOfPage = 0;
   int startIndex = 0;
 
-  DokterPerawatProvider? valProvider;
+  PerawatViewModel? valProvider;
 
   final DataPagerController _controller = DataPagerController();
 
   PerawatDataSourceTable(this._data, BuildContext context) {
-    valProvider = context.read<DokterPerawatProvider>();
+    valProvider = context.read<PerawatViewModel>();
     _paginatedData = _data.getRange(0, _data.length).toList(growable: false);
     restOfPage = _paginatedData.length - startIndex;
 
@@ -135,7 +135,7 @@ class PerawatDataSourceTable extends DataGridSource {
   Future<void> handleRefresh() async {
     await Future.delayed(const Duration(seconds: 4));
     buildPaginatedDataGridRows();
-    valProvider!.getDataApiDokter();
+    valProvider!.getDataApiPerawat();
 
     notifyListeners();
   }
@@ -143,25 +143,25 @@ class PerawatDataSourceTable extends DataGridSource {
   void buildPaginatedDataGridRows() {
     dataGridRows = _paginatedData.map<DataGridRow>((dataGridRow) {
       return DataGridRow(cells: [
-        const DataGridCell(columnName: 'No', value: ' '),
-        DataGridCell(
-            columnName: 'SIP/SIPP', value: dataGridRow.nomorSIP ?? ' '),
+        const DataGridCell(columnName: 'No', value: '-'),
+        DataGridCell(columnName: 'SIP/SIPP', value: dataGridRow.sip ?? '-'),
         DataGridCell(
             columnName: 'Nama',
             value: valProvider!.highlightOccurences(
-                dataGridRow.nama ?? ' ', valProvider!.searchController.text)),
+                dataGridRow.namaPerawat ?? '-',
+                valProvider!.searchController.text)),
         DataGridCell(
             columnName: 'Jenis Kelamin',
             value: (dataGridRow.jenisKelamin!.isNotEmpty)
                 ? (dataGridRow.jenisKelamin == 'L')
                     ? 'Laki - laki'
                     : 'Perempuan'
-                : ' '),
+                : '-'),
         DataGridCell(
-            columnName: 'Bagian Kerja', value: dataGridRow.spesialis ?? ' '),
+            columnName: 'Bagian Kerja', value: dataGridRow.bagianKerja ?? '-'),
         DataGridCell(
-            columnName: 'Jadwal Kerja',
-            value: dataGridRow.jadwalPraktek ?? ' '),
+            columnName: 'Jadwal Kerja', value: dataGridRow.jadwalKerja ?? '-'),
+        DataGridCell(columnName: 'Jabatan', value: dataGridRow.jabatan ?? '-'),
       ]);
     }).toList(growable: false);
   }

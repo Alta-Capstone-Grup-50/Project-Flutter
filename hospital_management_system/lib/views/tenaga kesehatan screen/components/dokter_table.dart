@@ -3,13 +3,13 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../../viewModels/dokter perawat viewModel/dokter_viewModel.dart';
 import '/utilities/constants/color.dart';
-import '/viewModels/dokter perawat viewModel/dokterPerawat_viewModel.dart';
 import 'dataDokter_source_table.dart';
 
 class DokterTable {
   Widget buildTable(BuildContext context) {
-    return Consumer<DokterPerawatProvider>(builder: (context, value, _) {
+    return Consumer<DokterViewModel>(builder: (context, value, _) {
       if (value.isLoading) {
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.5,
@@ -27,7 +27,7 @@ class DokterTable {
         if (value.search.isNotEmpty || value.searchController.text.isNotEmpty) {
           val = value.search;
         } else {
-          val = value.listDokterPerawatData;
+          val = value.listDokterData;
         }
         final DokterDataSourceTable _dataSource =
             DokterDataSourceTable(val, context);
@@ -50,7 +50,7 @@ class DokterTable {
                         rowHoverColor: green.shade300,
                       ),
                       child: SfDataGrid(
-                        key: value.keyDokterPerawat,
+                        key: value.keyDokter,
                         isScrollbarAlwaysShown: true,
                         rowHeight: 40,
                         allowPullToRefresh: true,
@@ -147,7 +147,7 @@ class DokterTable {
                               color: primaryColor.shade200,
                               alignment: Alignment.centerLeft,
                               child: const Text(
-                                'STR',
+                                'Nomor STR',
                                 style: TextStyle(fontWeight: FontWeight.w700),
                                 overflow: TextOverflow.ellipsis,
                               ),

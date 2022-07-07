@@ -3,14 +3,14 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../../viewModels/dokter perawat viewModel/perawat_viewModel.dart';
 import '/utilities/constants/color.dart';
-import '/viewModels/dokter perawat viewModel/dokterPerawat_viewModel.dart';
 
 import 'dataPerawat_source_table.dart';
 
 class PerawatTable {
   Widget buildTable(BuildContext context) {
-    return Consumer<DokterPerawatProvider>(builder: (context, value, _) {
+    return Consumer<PerawatViewModel>(builder: (context, value, _) {
       if (value.isLoading) {
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.5,
@@ -28,7 +28,7 @@ class PerawatTable {
         if (value.search.isNotEmpty || value.searchController.text.isNotEmpty) {
           val = value.search;
         } else {
-          val = value.listDokterPerawatData;
+          val = value.listPerawatData;
         }
         final PerawatDataSourceTable _dataSource =
             PerawatDataSourceTable(val, context);
@@ -51,7 +51,7 @@ class PerawatTable {
                         rowHoverColor: green.shade300,
                       ),
                       child: SfDataGrid(
-                        key: value.keyDokterPerawat,
+                        key: value.keyPerawat,
                         isScrollbarAlwaysShown: true,
                         rowHeight: 40,
                         allowPullToRefresh: true,
@@ -129,6 +129,19 @@ class PerawatTable {
                               alignment: Alignment.centerLeft,
                               child: const Text(
                                 'Jadwal Kerja',
+                                style: TextStyle(fontWeight: FontWeight.w700),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                          GridColumn(
+                            columnName: 'Jabatan',
+                            label: Container(
+                              color: primaryColor.shade200,
+                              padding: const EdgeInsets.only(right: 16),
+                              alignment: Alignment.centerLeft,
+                              child: const Text(
+                                'Jabatan',
                                 style: TextStyle(fontWeight: FontWeight.w700),
                                 overflow: TextOverflow.ellipsis,
                               ),

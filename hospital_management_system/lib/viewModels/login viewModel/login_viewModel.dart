@@ -1,8 +1,13 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../models/detailAkun_model.dart';
+import '../../models/dokter_data_model.dart';
+import '../../models/perawat_data_model.dart';
+import '../dokter perawat viewModel/dokter_viewModel.dart';
+import '../dokter perawat viewModel/perawat_viewModel.dart';
 import '/models/akun_model.dart';
 import '/services/login_service.dart';
 import '/utilities/common/snackbar.dart';
@@ -20,6 +25,7 @@ class LoginProvider extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool obscure = true;
   bool checkBox = false;
+  String? matchData;
   final AkunModel _user = AkunModel();
   StatusAuth _loggedInStatusAuth = StatusAuth.notLoggedIn;
   TextEditingController usernameController = TextEditingController();
@@ -62,8 +68,11 @@ class LoginProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Object> login(BuildContext context) async {
+  Future<Map<String, dynamic>> login(BuildContext context) async {
     Map<String, dynamic> result = {};
+
+    DokterViewModel dokteViewModel = context.read<DokterViewModel>();
+    PerawatViewModel perawatViewModel = context.read<PerawatViewModel>();
 
     final Map<String, dynamic> loginData = {
       'email': usernameController.text,
@@ -90,7 +99,6 @@ class LoginProvider extends ChangeNotifier {
         (response) {
           if (response.statusCode! >= 200 && response.statusCode! < 300) {
             var responseData = response.data;
-            log(responseData.toString());
 
             AkunModel authUser = AkunModel.fromJson(responseData);
             if (authUser.level == 'dokter' || authUser.level == 'perawat') {
@@ -98,6 +106,21 @@ class LoginProvider extends ChangeNotifier {
 
               _loggedInStatusAuth = StatusAuth.loggedIn;
               notifyListeners();
+
+              if (authUser.level == 'dokter') {
+                DataDokter data = dokteViewModel.listDokterData
+                    .firstWhere((element) => element.idUser == authUser.id);
+                matchData = data.spesialis;
+                notifyListeners();
+                log(data.namaDokter.toString());
+              }
+              if (authUser.level == 'perawat') {
+                DataPerawat data = perawatViewModel.listPerawatData
+                    .firstWhere((element) => element.idUser == authUser.id);
+                matchData = data.bagianKerja;
+                notifyListeners();
+                log(data.namaPerawat.toString());
+              }
 
               result = {
                 'status': true,

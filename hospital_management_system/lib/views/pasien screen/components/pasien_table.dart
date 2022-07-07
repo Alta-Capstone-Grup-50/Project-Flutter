@@ -13,7 +13,7 @@ import '/views/pasien%20screen/components/detailPasien.dart';
 
 class PasienTable {
   Widget buildTable(BuildContext context) {
-    return Consumer<PasienProvider>(builder: (context, value, _) {
+    return Consumer<PasienViewModel>(builder: (context, value, _) {
       if (value.isLoading) {
         return SizedBox(
             height: MediaQuery.of(context).size.height * 0.5,
@@ -100,32 +100,8 @@ class PasienTable {
                                         overflow: TextOverflow.ellipsis,
                                       ))),
                               GridColumn(
-                                  columnName: 'Alamat',
-                                  width: 300,
-                                  label: Container(
-                                      alignment: Alignment.centerLeft,
-                                      child: const Text(
-                                        'Alamat',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700),
-                                        overflow: TextOverflow.ellipsis,
-                                      ))),
-                              GridColumn(
-                                  columnName: 'Nomor Telepon',
-                                  width: 150,
-                                  label: Container(
-                                      alignment: Alignment.centerLeft,
-                                      padding:
-                                          const EdgeInsets.only(right: 16.0),
-                                      child: const Text(
-                                        'Nomor Telepon',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700),
-                                        overflow: TextOverflow.ellipsis,
-                                      ))),
-                              GridColumn(
-                                  width: 140,
                                   columnName: 'Jenis Kelamin',
+                                  width: 300,
                                   label: Container(
                                       alignment: Alignment.centerLeft,
                                       child: const Text(
@@ -135,12 +111,36 @@ class PasienTable {
                                         overflow: TextOverflow.ellipsis,
                                       ))),
                               GridColumn(
+                                  columnName: 'Alamat',
+                                  width: 150,
+                                  label: Container(
+                                      alignment: Alignment.centerLeft,
+                                      padding:
+                                          const EdgeInsets.only(right: 16.0),
+                                      child: const Text(
+                                        'Alamat',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700),
+                                        overflow: TextOverflow.ellipsis,
+                                      ))),
+                              GridColumn(
                                   width: 140,
-                                  columnName: 'Jenis Penyakit',
+                                  columnName: 'Poli',
                                   label: Container(
                                       alignment: Alignment.centerLeft,
                                       child: const Text(
-                                        'Jenis Penyakit',
+                                        'Poli',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700),
+                                        overflow: TextOverflow.ellipsis,
+                                      ))),
+                              GridColumn(
+                                  width: 140,
+                                  columnName: 'Nomor Telepon',
+                                  label: Container(
+                                      alignment: Alignment.centerLeft,
+                                      child: const Text(
+                                        'Nomor Telepon',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700),
                                         overflow: TextOverflow.ellipsis,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/viewModels/dokter%20perawat%20viewModel/dokter_viewModel.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-import '/viewModels/dokter perawat viewModel/dokterPerawat_viewModel.dart';
 import '../components/dokter_table.dart';
 import '/views/main%20layout/main_layout.dart';
 import '/utilities/common/input.dart';
@@ -56,7 +56,7 @@ class DokterScreen extends StatelessWidget {
             const SizedBox(
               height: 50,
             ),
-            Consumer<DokterPerawatProvider>(
+            Consumer<DokterViewModel>(
               builder: ((context, valueProvider, _) {
                 if (Theme.of(context).platform == TargetPlatform.windows ||
                     kIsWeb) {
@@ -94,8 +94,7 @@ class DokterScreen extends StatelessWidget {
                               color: Colors.white,
                             ),
                             onTap: () {
-                              valueProvider.keyDokterPerawat.currentState!
-                                  .refresh();
+                              valueProvider.keyDokter.currentState!.refresh();
                             },
                           ),
                         ),

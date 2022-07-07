@@ -1,32 +1,39 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:hospital_management_system/models/pasien_data_model.dart';
-import 'package:hospital_management_system/services/pasien_service.dart';
-import 'package:hospital_management_system/utilities/constants/color.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-class RawatProvider extends ChangeNotifier {
+import '../../models/dokter_data_model.dart';
+import '../../models/perawat_data_model.dart';
+import '../../services/perawat_service.dart';
+import '../../utilities/constants/color.dart';
+
+class PerawatViewModel extends ChangeNotifier {
+  bool showLoadingIndicator = false;
   bool isLoading = true;
-  final GlobalKey<SfDataGridState> keyRawat = GlobalKey<SfDataGridState>();
 
-  List<DataPasien> listPasienData = [];
-  List<DataPasien> toReversed = [];
-  List<DataPasien> _search = [];
+  final GlobalKey<SfDataGridState> keyPerawat = GlobalKey<SfDataGridState>();
 
-  List<DataPasien> get search => _search;
+  List<DataPerawat> listPerawatData = [];
+  List<DataPerawat> toReversed = [];
+  List<DataPerawat> _search = [];
 
-  PasienService service = PasienService();
+  List<DataPerawat> get search => _search;
+
+  PerawatService service = PerawatService();
 
   TextEditingController searchController = TextEditingController();
 
-  RawatProvider() {
-    getDataApiPasien();
+  PerawatViewModel() {
+    getDataApiPerawat();
   }
 
-  Future getDataApiPasien() async {
-    toReversed = (await service.getDataPasienApi())!;
-    listPasienData = toReversed.reversed.toList();
+  changeLoadingIndicator() {
+    showLoadingIndicator = !showLoadingIndicator;
+    notifyListeners();
+  }
 
+  Future getDataApiPerawat() async {
+    toReversed = (await service.getDataPerawatApi())!;
+    listPerawatData = toReversed.reversed.toList();
     isLoading = false;
     notifyListeners();
   }
@@ -37,10 +44,9 @@ class RawatProvider extends ChangeNotifier {
       notifyListeners();
     }
 
-    _search = listPasienData
-        .where((DataPasien element) =>
-            (element.nama!.toLowerCase().contains(query.toLowerCase())) ||
-            (element.nik!.toLowerCase().contains(query.toLowerCase())))
+    _search = listPerawatData
+        .where((DataPerawat element) =>
+            (element.namaPerawat!.toLowerCase().contains(query.toLowerCase())))
         .toList();
 
     notifyListeners();

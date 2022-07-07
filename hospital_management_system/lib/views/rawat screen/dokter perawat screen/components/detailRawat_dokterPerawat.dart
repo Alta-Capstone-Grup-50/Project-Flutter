@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../../../models/rawatJalan_data_model.dart';
+import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
 import '/models/pasien_data_model.dart';
 
-import '/viewModels/rawat viewModel/rawat_viewModel.dart';
 import '/views/rawat%20screen/dokter%20perawat%20screen/components/keteranganRawat_dokterPerawat.dart';
 import '../../../../utilities/common/input.dart';
 import '/utilities/constants/color.dart';
@@ -25,8 +26,8 @@ class DetailRawatDokterPerawat extends StatelessWidget {
     int index = query!.rowColumnIndex.rowIndex - 1;
     int indexOfPage = index + (queryPage + 1) - 1;
 
-    RawatProvider valueProvider = context.read<RawatProvider>();
-    List<DataPasien> putDataRawat = valueProvider.listPasienData;
+    RawatJalanViewModel valueProvider = context.read<RawatJalanViewModel>();
+    List<DataRawatJalan> putDataRawat = valueProvider.listRawatJalanData;
     return AlertDialog(
       content: Stack(children: [
         SizedBox(
@@ -64,8 +65,8 @@ class DetailRawatDokterPerawat extends StatelessWidget {
     );
   }
 
-  Widget showDetail(
-      BuildContext context, List<DataPasien> putDataRawat, int indexOfPage) {
+  Widget showDetail(BuildContext context, List<DataRawatJalan> putDataRawat,
+      int indexOfPage) {
     return Stack(children: [
       SingleChildScrollView(
         controller: _scrollController,
@@ -167,7 +168,7 @@ class DetailRawatDokterPerawat extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Input(
-                      initialValue: putDataRawat[indexOfPage].noTelp,
+                      initialValue: putDataRawat[indexOfPage].noHp,
                       borderRadius: const BorderRadius.all(Radius.zero),
                       keyboardType: TextInputType.none,
                       enabled: false,
@@ -331,7 +332,7 @@ class DetailRawatDokterPerawat extends StatelessWidget {
                                     padding: const EdgeInsets.only(top: 12),
                                     child: Input(
                                       initialValue: putDataRawat[indexOfPage]
-                                          .noAntrian
+                                          .nomerAntrian
                                           .toString(),
                                       borderRadius:
                                           const BorderRadius.all(Radius.zero),
@@ -362,8 +363,8 @@ class DetailRawatDokterPerawat extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 12),
                                     child: Input(
-                                      initialValue:
-                                          putDataRawat[indexOfPage].jadwalRawat,
+                                      initialValue: putDataRawat[indexOfPage]
+                                          .jadwalRawatJalan,
                                       borderRadius:
                                           const BorderRadius.all(Radius.zero),
                                       keyboardType: TextInputType.none,
@@ -390,7 +391,7 @@ class DetailRawatDokterPerawat extends StatelessWidget {
                               padding: const EdgeInsets.only(top: 12),
                               child: Input(
                                 initialValue: putDataRawat[indexOfPage]
-                                    .noAntrian
+                                    .nomerAntrian
                                     .toString(),
                                 borderRadius:
                                     const BorderRadius.all(Radius.zero),
@@ -413,7 +414,7 @@ class DetailRawatDokterPerawat extends StatelessWidget {
                               padding: const EdgeInsets.only(top: 12),
                               child: Input(
                                 initialValue:
-                                    putDataRawat[indexOfPage].jadwalRawat,
+                                    putDataRawat[indexOfPage].jadwalRawatJalan,
                                 borderRadius:
                                     const BorderRadius.all(Radius.zero),
                                 keyboardType: TextInputType.none,

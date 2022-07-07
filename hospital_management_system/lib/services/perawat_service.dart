@@ -3,24 +3,25 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:hospital_management_system/utilities/constants/api_url.dart';
 
-import '../models/pasien_data_model.dart';
+import '../models/perawat_data_model.dart';
 
-class PasienService {
+class PerawatService {
   final Dio _dio = Dio();
 
-  Future<List<DataPasien>?> getDataPasienApi() async {
-    List<DataPasien>? listData = [];
+  Future<List<DataPerawat>?> getDataPerawatApi() async {
     try {
       var response = await _dio.get(
-        ApiUrl.getDataPasien,
+        ApiUrl.getDataPerawat,
       );
       if (response.statusCode! >= 200 && response.statusCode! <= 300) {
-        var _model = PasienDataModel.fromJson(response.data);
-        listData = _model.dataPasien;
+        var _model = PerawatDataModel.fromJson(response.data);
+        var listData = _model.dataPerawat;
+
+        return listData;
       }
     } catch (e) {
       log(e.toString());
     }
-    return listData;
+    return null;
   }
 }

@@ -41,14 +41,6 @@ class UserPreferences {
     prefs.remove('level');
   }
 
-  // Future<String?> getToken() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String? token = prefs.getString("token");
-  //   return token;
-  // }
-
-  // Preference Login Detail
-
   Future<bool> saveLoginDetail(String email, String password) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 

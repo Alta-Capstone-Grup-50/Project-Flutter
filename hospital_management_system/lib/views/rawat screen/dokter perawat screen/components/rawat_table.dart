@@ -3,15 +3,15 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
 import '/utilities/constants/color.dart';
 import '/utilities/constants/responsive.dart';
-import '/viewModels/rawat viewModel/rawat_viewModel.dart';
 import 'data_source_table.dart';
 import 'detailRawat_dokterPerawat.dart';
 
 class RawatTable {
   Widget buildTable(BuildContext context) {
-    return Consumer<RawatProvider>(builder: (context, value, _) {
+    return Consumer<RawatJalanViewModel>(builder: (context, value, _) {
       if (value.isLoading) {
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.5,
@@ -29,7 +29,7 @@ class RawatTable {
         if (value.search.isNotEmpty || value.searchController.text.isNotEmpty) {
           val = value.search;
         } else {
-          val = value.listPasienData;
+          val = value.listRawatJalanData;
         }
         final RawatDataSourceTable _dataSource =
             RawatDataSourceTable(val, context);
@@ -140,12 +140,12 @@ class RawatTable {
                             ),
                             GridColumn(
                               width: 150,
-                              columnName: 'Jenis Penyakit',
+                              columnName: 'Jenis Penanganan',
                               label: Container(
                                 padding: const EdgeInsets.only(left: 20.0),
                                 alignment: Alignment.centerLeft,
                                 child: const Text(
-                                  'Jenis Penyakit',
+                                  'Jenis Penanganan',
                                   style: TextStyle(fontWeight: FontWeight.w700),
                                   overflow: TextOverflow.ellipsis,
                                 ),

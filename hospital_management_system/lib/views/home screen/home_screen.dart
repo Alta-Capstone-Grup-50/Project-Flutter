@@ -70,8 +70,7 @@ class HomeScreen extends StatelessWidget {
                                 valueProvider.lastOpenDataDokterPerawat ??
                                     '...',
                             image: 'assets/contents/data_dokter.png',
-                            page: '',
-                            color: Colors.red,
+                            page: '/tenagaKesehatan',
                           ),
                           const SizedBox(
                             width: 20,

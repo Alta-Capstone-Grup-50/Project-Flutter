@@ -2,25 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '/models/dokterPerawat_model.dart';
-import '/viewModels/dokter perawat viewModel/dokterPerawat_viewModel.dart';
+import '../../../models/dokter_data_model.dart';
+import '../../../viewModels/dokter perawat viewModel/dokter_viewModel.dart';
 
 class DokterDataSourceTable extends DataGridSource {
-  List<DataDoktorPerawat> _data;
-  List<DataDoktorPerawat> get data => _data;
+  List<DataDokter> _data;
+  List<DataDokter> get data => _data;
 
-  late List<DataDoktorPerawat> _paginatedData;
+  late List<DataDokter> _paginatedData;
 
   int rowsPerPage = 6;
   int restOfPage = 0;
   int startIndex = 0;
 
-  DokterPerawatProvider? valProvider;
+  DokterViewModel? valProvider;
 
   final DataPagerController _controller = DataPagerController();
 
   DokterDataSourceTable(this._data, BuildContext context) {
-    valProvider = context.read<DokterPerawatProvider>();
+    valProvider = context.read<DokterViewModel>();
     _paginatedData = _data.getRange(0, _data.length).toList(growable: false);
     restOfPage = _paginatedData.length - startIndex;
 
@@ -154,12 +154,12 @@ class DokterDataSourceTable extends DataGridSource {
     dataGridRows = _paginatedData.map<DataGridRow>((dataGridRow) {
       return DataGridRow(cells: [
         const DataGridCell(columnName: 'No', value: ' '),
-        DataGridCell(
-            columnName: 'SIP/SIPP', value: dataGridRow.nomorSIP ?? ' '),
+        DataGridCell(columnName: 'SIP/SIPP', value: dataGridRow.sip ?? ' '),
         DataGridCell(
             columnName: 'Nama',
             value: valProvider!.highlightOccurences(
-                dataGridRow.nama ?? ' ', valProvider!.searchController.text)),
+                dataGridRow.namaDokter ?? ' ',
+                valProvider!.searchController.text)),
         DataGridCell(
             columnName: 'Jenis Kelamin',
             value: (dataGridRow.jenisKelamin!.isNotEmpty)
@@ -172,7 +172,7 @@ class DokterDataSourceTable extends DataGridSource {
         DataGridCell(
             columnName: 'Jadwal Praktek',
             value: dataGridRow.jadwalPraktek ?? ' '),
-        DataGridCell(columnName: 'STR', value: dataGridRow.nomorSTR ?? ' '),
+        DataGridCell(columnName: 'STR', value: dataGridRow.nomorStr ?? ' '),
       ]);
     }).toList(growable: false);
   }

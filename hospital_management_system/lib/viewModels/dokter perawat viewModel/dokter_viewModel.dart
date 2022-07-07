@@ -1,34 +1,38 @@
-import 'dart:developer';
-
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:hospital_management_system/models/pasien_data_model.dart';
-import 'package:hospital_management_system/services/pasien_service.dart';
-import 'package:hospital_management_system/utilities/constants/color.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-class PasienViewModel extends ChangeNotifier {
+import '../../models/dokter_data_model.dart';
+import '../../services/dokter_service.dart';
+import '../../utilities/constants/color.dart';
+
+class DokterViewModel extends ChangeNotifier {
+  bool showLoadingIndicator = false;
   bool isLoading = true;
 
-  final GlobalKey<SfDataGridState> keyPasien = GlobalKey<SfDataGridState>();
+  final GlobalKey<SfDataGridState> keyDokter = GlobalKey<SfDataGridState>();
 
-  List<DataPasien> listPasienData = [];
-  List<DataPasien> toReversedPasienData = [];
-  List<DataPasien> _search = [];
-  List<DataPasien> get search => _search;
+  List<DataDokter> listDokterData = [];
+  List<DataDokter> toReversed = [];
+  List<DataDokter> _search = [];
 
-  PasienService service = PasienService();
+  List<DataDokter> get search => _search;
+
+  DokterService service = DokterService();
 
   TextEditingController searchController = TextEditingController();
 
-  PasienViewModel() {
-    getDataApiPasien();
+  DokterViewModel() {
+    getDataApiDokter();
   }
 
-  Future getDataApiPasien() async {
-    toReversedPasienData = (await service.getDataPasienApi())!;
-    listPasienData = toReversedPasienData.reversed.toList();
+  changeLoadingIndicator() {
+    showLoadingIndicator = !showLoadingIndicator;
+    notifyListeners();
+  }
 
+  Future getDataApiDokter() async {
+    toReversed = (await service.getDataDokterApi())!;
+    listDokterData = toReversed.reversed.toList();
     isLoading = false;
     notifyListeners();
   }
@@ -39,10 +43,9 @@ class PasienViewModel extends ChangeNotifier {
       notifyListeners();
     }
 
-    _search = listPasienData
-        .where((DataPasien element) =>
-            (element.nama!.toLowerCase().contains(query.toLowerCase())) ||
-            (element.nik!.toLowerCase().contains(query.toLowerCase())))
+    _search = listDokterData
+        .where((DataDokter element) =>
+            (element.namaDokter!.toLowerCase().contains(query.toLowerCase())))
         .toList();
 
     notifyListeners();

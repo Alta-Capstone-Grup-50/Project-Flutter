@@ -22,7 +22,7 @@ class DetailPasien extends StatelessWidget {
     int index = query!.rowColumnIndex.rowIndex - 1;
     int indexOfPage = index + (queryPage + 1) - 1;
 
-    PasienProvider valueProvider = context.read<PasienProvider>();
+    PasienViewModel valueProvider = context.read<PasienViewModel>();
     List<DataPasien> putDataPasien = valueProvider.listPasienData;
 
     return AlertDialog(
@@ -129,22 +129,6 @@ class DetailPasien extends StatelessWidget {
                     height: 20,
                   ),
                   const Text(
-                    'Alamat',
-                    style: TextStyle(fontWeight: FontWeight.w700),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: Input(
-                      initialValue: putDataPasien[indexOfPage].alamat,
-                      borderRadius: const BorderRadius.all(Radius.zero),
-                      keyboardType: TextInputType.none,
-                      enabled: false,
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Text(
                     'Jenis Kelamin',
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
@@ -161,13 +145,48 @@ class DetailPasien extends StatelessWidget {
                     height: 20,
                   ),
                   const Text(
+                    'Jenis Poli',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: Input(
+                      initialValue: putDataPasien[indexOfPage]
+                              .rekamMedis![indexOfPage]
+                              .poli ??
+                          '-',
+                      borderRadius: const BorderRadius.all(Radius.zero),
+                      keyboardType: TextInputType.none,
+                      enabled: false,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    'Alamt',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: Input(
+                      initialValue: putDataPasien[indexOfPage].alamat,
+                      borderRadius: const BorderRadius.all(Radius.zero),
+                      keyboardType: TextInputType.none,
+                      enabled: false,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
                     'Nomor Telpon',
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Input(
-                      initialValue: putDataPasien[indexOfPage].noTelp,
+                      initialValue: putDataPasien[indexOfPage].noHp,
                       borderRadius: const BorderRadius.all(Radius.zero),
                       keyboardType: TextInputType.none,
                       enabled: false,
@@ -279,13 +298,16 @@ class DetailPasien extends StatelessWidget {
                     height: 20,
                   ),
                   const Text(
-                    'Jenis Penyakit',
+                    'Jadwal Rawat Jalan',
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Input(
-                      initialValue: putDataPasien[indexOfPage].jenisPenyakit,
+                      initialValue: putDataPasien[indexOfPage]
+                              .rekamMedis![indexOfPage]
+                              .tanggal ??
+                          '-',
                       borderRadius: const BorderRadius.all(Radius.zero),
                       keyboardType: TextInputType.none,
                       enabled: false,
@@ -304,7 +326,10 @@ class DetailPasien extends StatelessWidget {
                         : MediaQuery.of(context).size.width / 4.75,
                     padding: const EdgeInsets.only(top: 12),
                     child: Input(
-                      initialValue: 'Rawat Jalan',
+                      initialValue: putDataPasien[indexOfPage]
+                              .rekamMedis![indexOfPage]
+                              .jenisPenanganan ??
+                          '-',
                       borderRadius: const BorderRadius.all(Radius.zero),
                       keyboardType: TextInputType.none,
                       textAlignVertical: TextAlignVertical.center,

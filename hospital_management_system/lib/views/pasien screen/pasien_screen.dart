@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '/viewModels/pasien viewModel/pasien_viewModel.dart';
+import '../../viewModels/pasien viewModel/pasien_viewModel.dart';
 import '/utilities/constants/responsive.dart';
 import '/utilities/common/input.dart';
 import '/utilities/constants/color.dart';
@@ -70,7 +70,7 @@ class PasienScreen extends StatelessWidget {
                   ? 40
                   : 25,
             ),
-            Consumer<PasienProvider>(builder: ((context, valueProvider, _) {
+            Consumer<PasienViewModel>(builder: ((context, valueProvider, _) {
               if (Theme.of(context).platform == TargetPlatform.windows ||
                   kIsWeb) {
                 return Row(children: [

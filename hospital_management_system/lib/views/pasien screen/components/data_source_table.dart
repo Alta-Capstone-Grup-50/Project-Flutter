@@ -15,12 +15,12 @@ class PasienDataSourceTable extends DataGridSource {
   int restOfPage = 0;
   int startIndex = 0;
 
-  PasienProvider? valProvider;
+  PasienViewModel? valProvider;
 
   final DataPagerController _controller = DataPagerController();
 
   PasienDataSourceTable(this._data, BuildContext context) {
-    valProvider = context.read<PasienProvider>();
+    valProvider = context.read<PasienViewModel>();
 
     _paginatedData = _data.getRange(0, _data.length).toList(growable: false);
     restOfPage = _paginatedData.length - startIndex;
@@ -77,17 +77,17 @@ class PasienDataSourceTable extends DataGridSource {
                 style: const TextStyle(
                   color: Colors.black,
                 ))));
+      } else if (dataGridCell.columnName == 'Jenis Kelamin') {
+        return Container(
+            padding: const EdgeInsets.only(right: 16.0),
+            color: getRowBackgroundColor(),
+            alignment: Alignment.centerLeft,
+            child: Text(
+              dataGridCell.value.toString(),
+              overflow: TextOverflow.ellipsis,
+            ));
       } else if (dataGridCell.columnName == 'Alamat') {
         return Container(
-            padding: const EdgeInsets.only(right: 16.0),
-            color: getRowBackgroundColor(),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              dataGridCell.value.toString(),
-              overflow: TextOverflow.ellipsis,
-            ));
-      } else if (dataGridCell.columnName == 'Nomor telepon') {
-        return Container(
             color: getRowBackgroundColor(),
             alignment: Alignment.centerLeft,
             padding: const EdgeInsets.only(right: 16.0),
@@ -95,7 +95,7 @@ class PasienDataSourceTable extends DataGridSource {
               dataGridCell.value.toString(),
               overflow: TextOverflow.ellipsis,
             ));
-      } else if (dataGridCell.columnName == 'Jenis Kelamin') {
+      } else if (dataGridCell.columnName == 'Poli') {
         return Container(
             color: getRowBackgroundColor(),
             alignment: Alignment.centerLeft,
@@ -113,36 +113,21 @@ class PasienDataSourceTable extends DataGridSource {
               overflow: TextOverflow.ellipsis,
             ));
       }
-    }).toList());
+    }).toList(growable: false));
   }
 
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    // print("oldPageIndex =  ${oldPageIndex}");
-    // print("newPageIndex = ${newPageIndex}");
-
-    // print("restOfPage = $restOfPage");
-
-    // print("paginatedData = ${_paginatedData.length}");
-
-    // print("Data = ${_data.length}");
-
     startIndex = newPageIndex * rowsPerPage;
-    // print("startIndex = $startIndex");
-
     int endIndex = 0;
 
     if (_data.length - startIndex <= rowsPerPage) {
       endIndex = _data.length;
-      // print('oke');
     } else {
       endIndex = startIndex + rowsPerPage;
     }
 
-    // print("endIndex = $endIndex");
     if (startIndex < _data.length && endIndex <= _data.length) {
-      // print("Masuk");
-
       _paginatedData =
           _data.getRange(startIndex, endIndex).toList(growable: false);
       buildPaginatedDataGridRows();
@@ -165,27 +150,23 @@ class PasienDataSourceTable extends DataGridSource {
 
   void buildPaginatedDataGridRows() {
     dataGridRows = _paginatedData.map<DataGridRow>((dataGridRow) {
-      // print(valProvider!.highlightOccurences(
-      //     dataGridRow.nama!, valProvider!.searchController.text));
       return DataGridRow(cells: [
-        const DataGridCell(columnName: 'No', value: ' '),
+        const DataGridCell(columnName: 'No', value: '-'),
         DataGridCell(
             columnName: 'NIK',
             value: valProvider!.highlightOccurences(
-                dataGridRow.nik ?? ' ', valProvider!.searchController.text)),
+                dataGridRow.nik ?? '-', valProvider!.searchController.text)),
         DataGridCell(
             columnName: 'Nama',
             value: valProvider!.highlightOccurences(
-                dataGridRow.nama ?? ' ', valProvider!.searchController.text)),
-        DataGridCell(columnName: 'Alamat', value: dataGridRow.alamat ?? ' '),
-        DataGridCell(
-            columnName: 'Nomor telepon', value: dataGridRow.noTelp ?? ' '),
+                dataGridRow.nama ?? '-', valProvider!.searchController.text)),
         DataGridCell(
             columnName: 'Jenis Kelamin',
-            value: dataGridRow.jenisKelamin ?? ' '),
+            value: dataGridRow.jenisKelamin ?? '-'),
+        DataGridCell(columnName: 'Alamat', value: dataGridRow.alamat ?? '-'),
+        DataGridCell(columnName: 'Poli', value: dataGridRow.rekamMedis!.length),
         DataGridCell(
-            columnName: 'Jenis Penyakit',
-            value: dataGridRow.jenisPenyakit ?? ' '),
+            columnName: 'Nomor Telepon', value: dataGridRow.noHp ?? '-'),
       ]);
     }).toList(growable: false);
   }
