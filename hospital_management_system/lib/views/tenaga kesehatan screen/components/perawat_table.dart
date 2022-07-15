@@ -3,15 +3,17 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../../utilities/constants/responsive.dart';
 import '../../../viewModels/dokter perawat viewModel/perawat_viewModel.dart';
 import '/utilities/constants/color.dart';
 
 import 'dataPerawat_source_table.dart';
+import 'detailData_perawat.dart';
 
 class PerawatTable {
   Widget buildTable(BuildContext context) {
     return Consumer<PerawatViewModel>(builder: (context, value, _) {
-      if (value.isLoading) {
+      if (value.fetchStatusPerawat == StatusFetchPerawat.isLoading) {
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.5,
           child: const Center(
@@ -22,7 +24,7 @@ class PerawatTable {
             ),
           ),
         );
-      } else {
+      } else if (value.fetchStatusPerawat == StatusFetchPerawat.letsGo) {
         var val;
 
         if (value.search.isNotEmpty || value.searchController.text.isNotEmpty) {
@@ -42,7 +44,11 @@ class PerawatTable {
                 children: [
                   SizedBox(
                     width: constraints.maxWidth,
-                    height: 310,
+                    height: (_dataSource.data.length <= 2)
+                        ? 160
+                        : (_dataSource.data.length <= 4)
+                            ? 240
+                            : 320,
                     child: SfDataGridTheme(
                       data: SfDataGridThemeData(
                         sortIconColor: Colors.black,
@@ -56,9 +62,18 @@ class PerawatTable {
                         rowHeight: 40,
                         allowPullToRefresh: true,
                         source: _dataSource,
-                        columnWidthMode: ColumnWidthMode.lastColumnFill,
+                        columnWidthMode: ColumnWidthMode.fill,
+                        onCellTap: (query) {
+                          if (query.rowColumnIndex.rowIndex > 0) {
+                            openDetailPerawat(
+                                context, query, _dataSource.startIndex);
+                          } else {
+                            return;
+                          }
+                        },
                         columns: [
                           GridColumn(
+                            width: 60,
                             columnName: 'No',
                             label: Container(
                               color: primaryColor.shade200,
@@ -73,6 +88,7 @@ class PerawatTable {
                           ),
                           GridColumn(
                             columnName: 'SIP/SIPP',
+                            width: 140,
                             label: Container(
                               padding: const EdgeInsets.only(right: 16),
                               color: primaryColor.shade200,
@@ -86,6 +102,7 @@ class PerawatTable {
                           ),
                           GridColumn(
                             columnName: 'Nama',
+                            width: 210,
                             label: Container(
                               color: primaryColor.shade200,
                               alignment: Alignment.centerLeft,
@@ -98,6 +115,7 @@ class PerawatTable {
                           ),
                           GridColumn(
                             columnName: 'Jenis Kelamin',
+                            width: 150,
                             label: Container(
                               color: primaryColor.shade200,
                               padding: const EdgeInsets.only(right: 16),
@@ -110,12 +128,13 @@ class PerawatTable {
                             ),
                           ),
                           GridColumn(
-                            columnName: 'Bagian Kerja',
+                            columnName: 'Poli',
                             label: Container(
                               color: primaryColor.shade200,
+                              padding: const EdgeInsets.only(right: 16),
                               alignment: Alignment.centerLeft,
                               child: const Text(
-                                'Bagian Kerja',
+                                'Poli',
                                 style: TextStyle(fontWeight: FontWeight.w700),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -123,6 +142,7 @@ class PerawatTable {
                           ),
                           GridColumn(
                             columnName: 'Jadwal Kerja',
+                            width: 250,
                             label: Container(
                               color: primaryColor.shade200,
                               padding: const EdgeInsets.only(right: 16),
@@ -136,6 +156,7 @@ class PerawatTable {
                           ),
                           GridColumn(
                             columnName: 'Jabatan',
+                            width: 130,
                             label: Container(
                               color: primaryColor.shade200,
                               padding: const EdgeInsets.only(right: 16),
@@ -155,7 +176,13 @@ class PerawatTable {
                     height: 20,
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 250),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: (Responsive.isDesktop(context) ||
+                                Responsive.isTablet(context) &&
+                                    MediaQuery.of(context).orientation ==
+                                        Orientation.landscape)
+                            ? 200
+                            : 0),
                     child: SfDataPagerTheme(
                       data: SfDataPagerThemeData(
                         selectedItemColor: green.shade300,
@@ -176,6 +203,8 @@ class PerawatTable {
                 ],
               )),
         );
+      } else {
+        return const SizedBox.shrink();
       }
     });
   }

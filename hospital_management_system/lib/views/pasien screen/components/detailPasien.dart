@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -37,10 +39,10 @@ class DetailPasien extends StatelessWidget {
               padding: EdgeInsets.only(
                   right: (Responsive.isMobile(context)) ? 0 : 40),
               child: Scrollbar(
-                  controller: _scrollController,
-                  thumbVisibility:
-                      (Responsive.isMobile(context)) ? false : true,
-                  child: showDetail(context, putDataPasien, indexOfPage)),
+                controller: _scrollController,
+                thumbVisibility: (Responsive.isMobile(context)) ? false : true,
+                child: showDetail(context, putDataPasien, indexOfPage),
+              ),
             ),
           ),
           (Responsive.isMobile(context))
@@ -135,7 +137,12 @@ class DetailPasien extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Input(
-                      initialValue: putDataPasien[indexOfPage].jenisKelamin,
+                      initialValue:
+                          (putDataPasien[indexOfPage].jenisKelamin!.isNotEmpty)
+                              ? (putDataPasien[indexOfPage].jenisKelamin == 'L')
+                                  ? 'Laki - laki'
+                                  : 'Perempuan'
+                              : ' ',
                       borderRadius: const BorderRadius.all(Radius.zero),
                       keyboardType: TextInputType.none,
                       enabled: false,
@@ -151,10 +158,7 @@ class DetailPasien extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Input(
-                      initialValue: putDataPasien[indexOfPage]
-                              .rekamMedis![indexOfPage]
-                              .poli ??
-                          '-',
+                      initialValue: putDataPasien[indexOfPage].poli ?? '-',
                       borderRadius: const BorderRadius.all(Radius.zero),
                       keyboardType: TextInputType.none,
                       enabled: false,
@@ -164,7 +168,7 @@ class DetailPasien extends StatelessWidget {
                     height: 20,
                   ),
                   const Text(
-                    'Alamt',
+                    'Alamat',
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
                   Padding(
@@ -298,47 +302,18 @@ class DetailPasien extends StatelessWidget {
                     height: 20,
                   ),
                   const Text(
-                    'Jadwal Rawat Jalan',
+                    'Nama Dokter',
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Input(
-                      initialValue: putDataPasien[indexOfPage]
-                              .rekamMedis![indexOfPage]
-                              .tanggal ??
-                          '-',
+                      initialValue:
+                          putDataPasien[indexOfPage].namaDokter ?? '-',
                       borderRadius: const BorderRadius.all(Radius.zero),
                       keyboardType: TextInputType.none,
                       enabled: false,
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  const Text(
-                    'Jenis Penanganan',
-                    style: TextStyle(fontWeight: FontWeight.w700),
-                  ),
-                  Container(
-                    width: (Responsive.isMobile(context))
-                        ? MediaQuery.of(context).size.width
-                        : MediaQuery.of(context).size.width / 4.75,
-                    padding: const EdgeInsets.only(top: 12),
-                    child: Input(
-                      initialValue: putDataPasien[indexOfPage]
-                              .rekamMedis![indexOfPage]
-                              .jenisPenanganan ??
-                          '-',
-                      borderRadius: const BorderRadius.all(Radius.zero),
-                      keyboardType: TextInputType.none,
-                      textAlignVertical: TextAlignVertical.center,
-                      enabled: false,
-                      suffixIcon: const Icon(Icons.keyboard_arrow_down),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
                   ),
                 ],
               ),

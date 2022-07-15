@@ -4,7 +4,7 @@ import '/viewModels/login%20viewModel/login_viewModel.dart';
 import 'package:provider/provider.dart';
 
 class ShapedWidget extends StatelessWidget {
-  const ShapedWidget();
+  const ShapedWidget({Key? key}) : super(key: key);
   final double padding = 4;
 
   @override

@@ -3,14 +3,16 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../../utilities/constants/responsive.dart';
 import '../../../viewModels/dokter perawat viewModel/dokter_viewModel.dart';
 import '/utilities/constants/color.dart';
 import 'dataDokter_source_table.dart';
+import 'detailData_dokter.dart';
 
 class DokterTable {
   Widget buildTable(BuildContext context) {
     return Consumer<DokterViewModel>(builder: (context, value, _) {
-      if (value.isLoading) {
+      if (value.fetchStatusDokter == StatusFetchDokter.isLoading) {
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.5,
           child: const Center(
@@ -21,7 +23,7 @@ class DokterTable {
             ),
           ),
         );
-      } else {
+      } else if (value.fetchStatusDokter == StatusFetchDokter.letsGo) {
         var val;
 
         if (value.search.isNotEmpty || value.searchController.text.isNotEmpty) {
@@ -41,7 +43,11 @@ class DokterTable {
                 children: [
                   SizedBox(
                     width: constraints.maxWidth,
-                    height: 310,
+                    height: (_dataSource.data.length <= 2)
+                        ? 160
+                        : (_dataSource.data.length <= 4)
+                            ? 240
+                            : 320,
                     child: SfDataGridTheme(
                       data: SfDataGridThemeData(
                         sortIconColor: Colors.black,
@@ -56,6 +62,14 @@ class DokterTable {
                         allowPullToRefresh: true,
                         source: _dataSource,
                         columnWidthMode: ColumnWidthMode.fill,
+                        onCellTap: (query) {
+                          if (query.rowColumnIndex.rowIndex > 0) {
+                            openDetailDokter(
+                                context, query, _dataSource.startIndex);
+                          } else {
+                            return;
+                          }
+                        },
                         columns: [
                           GridColumn(
                             width: 60,
@@ -86,7 +100,7 @@ class DokterTable {
                             ),
                           ),
                           GridColumn(
-                            width: 160,
+                            width: 210,
                             columnName: 'Nama',
                             label: Container(
                               color: primaryColor.shade200,
@@ -100,7 +114,7 @@ class DokterTable {
                           ),
                           GridColumn(
                             columnName: 'Jenis Kelamin',
-                            width: 120,
+                            width: 150,
                             label: Container(
                               color: primaryColor.shade200,
                               padding: const EdgeInsets.only(right: 16),
@@ -113,13 +127,13 @@ class DokterTable {
                             ),
                           ),
                           GridColumn(
-                            width: 150,
-                            columnName: 'Spesialis',
+                            columnName: 'Poli',
                             label: Container(
                               color: primaryColor.shade200,
+                              padding: const EdgeInsets.only(right: 16),
                               alignment: Alignment.centerLeft,
                               child: const Text(
-                                'Spesialis',
+                                'Poli',
                                 style: TextStyle(fontWeight: FontWeight.w700),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -161,7 +175,13 @@ class DokterTable {
                     height: 20,
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 250),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: (Responsive.isDesktop(context) ||
+                                Responsive.isTablet(context) &&
+                                    MediaQuery.of(context).orientation ==
+                                        Orientation.landscape)
+                            ? 200
+                            : 0),
                     child: SfDataPagerTheme(
                       data: SfDataPagerThemeData(
                         selectedItemColor: green.shade300,
@@ -182,6 +202,8 @@ class DokterTable {
                 ],
               )),
         );
+      } else {
+        return const SizedBox.shrink();
       }
     });
   }

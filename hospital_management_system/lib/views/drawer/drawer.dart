@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/utilities/constants/color.dart';
 import 'package:provider/provider.dart';
 
 import '../../viewModels/login viewModel/login_viewModel.dart';
 
 class CustomDrawer extends StatelessWidget {
-  CustomDrawer({Key? key}) : super(key: key);
+  CustomDrawer({Key? key, required this.keyScreens}) : super(key: key);
   late final Widget divider = _divider();
+  final keyScreens;
 
   @override
   Widget build(BuildContext context) {
@@ -15,18 +17,38 @@ class CustomDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           _drawerHeader(),
-          _drawerItem(text: 'Home'),
+          _drawerItem(
+            context,
+            text: 'Home',
+            route: '/home',
+            keyScreen: 'HomeScreen',
+          ),
           divider,
-          _drawerItem(text: 'Data Pasien'),
+          _drawerItem(
+            context,
+            text: 'Data Pasien',
+            route: '/pasien',
+            keyScreen: 'PasienScreen',
+          ),
           divider,
-          _drawerItem(text: 'Data Rawat Jalan'),
+          _drawerItem(
+            context,
+            text: 'Data Rawat Jalan',
+            route: '/rawatJalan',
+            keyScreen: 'RawatScreen',
+          ),
           divider,
-          _drawerItem(text: 'Data Tenaga Kesehatan'),
+          _drawerItem(
+            context,
+            text: 'Data Tenaga Kesehatan',
+            route: '/tenagaKesehatan',
+            keyScreen: 'DokterPerawatScreen',
+          ),
           divider,
           const SizedBox(
             height: 30,
           ),
-          _drawerItem2(
+          _logOut(
             icon: Icons.logout,
             text: 'Logout',
             onTap: () {
@@ -59,7 +81,12 @@ class CustomDrawer extends StatelessWidget {
     );
   }
 
-  Widget _drawerItem({String? text, GestureTapCallback? onTap}) {
+  Widget _drawerItem(
+    BuildContext context, {
+    String? text,
+    String? route,
+    String? keyScreen,
+  }) {
     return ListTile(
       title: Row(
         children: [
@@ -67,19 +94,28 @@ class CustomDrawer extends StatelessWidget {
             padding: const EdgeInsets.only(left: 25.0),
             child: Text(
               text!,
-              style: const TextStyle(
+              style: TextStyle(
                 fontWeight: FontWeight.bold,
+                color:
+                    (keyScreen != keyScreens) ? Colors.black : green.shade300,
               ),
             ),
           ),
         ],
       ),
-      onTap: () {},
+      onTap: () {
+        if (keyScreen != keyScreens) {
+          Navigator.pushNamedAndRemoveUntil(
+              context, route!, ModalRoute.withName(route));
+        } else {
+          print('Route Off');
+          null;
+        }
+      },
     );
   }
 
-  Widget _drawerItem2(
-      {IconData? icon, String? text, GestureTapCallback? onTap}) {
+  Widget _logOut({IconData? icon, String? text, GestureTapCallback? onTap}) {
     return ListTile(
       title: Row(
         children: [

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '/services/perfs_service.dart';
 import '/utilities/constants/validate.dart';
@@ -168,7 +169,7 @@ class LoginView extends StatelessWidget {
           : true,
       child: MaterialButton(
         minWidth: double.infinity,
-        height: (Responsive.isMobile(context)) ? 40 : 60,
+        height: (Responsive.isMobile(context)) ? 45 : 50,
         color: buttonValue.loggedInStatusAuth != StatusAuth.authenticating
             ? primaryColor
             : grey.shade300,
@@ -233,7 +234,19 @@ class LoginView extends StatelessWidget {
           highlightColor: Colors.transparent,
           hoverColor: Colors.transparent,
           splashColor: Colors.transparent,
-          onTap: () {},
+          onTap: () async {
+            final url = Uri(
+              scheme: 'mailto',
+              path: 'admin@healthid.ac.id',
+              query: 'subject=Forgot Password&body=Keterangan : ',
+            );
+            if (await canLaunchUrl(url)) {
+              launchUrl(url);
+            } else {
+              // ignore: avoid_print
+              print("Can't launch $url");
+            }
+          },
           child: Text(
             'Forgot Password?',
             style: TextStyle(color: primaryColor),

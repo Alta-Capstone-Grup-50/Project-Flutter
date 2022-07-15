@@ -12,10 +12,10 @@ class AkunModel {
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['code'] = this.code;
-    data['id'] = this.id;
-    data['level'] = this.level;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['code'] = code;
+    data['id'] = id;
+    data['level'] = level;
     return data;
   }
 }

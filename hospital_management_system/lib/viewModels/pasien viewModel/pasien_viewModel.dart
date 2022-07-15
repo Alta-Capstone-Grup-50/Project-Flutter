@@ -7,8 +7,14 @@ import 'package:hospital_management_system/services/pasien_service.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+enum StatusFetchPasien {
+  idle,
+  isLoading,
+  letsGo,
+}
+
 class PasienViewModel extends ChangeNotifier {
-  bool isLoading = true;
+  StatusFetchPasien fetchStatusPasien = StatusFetchPasien.idle;
 
   final GlobalKey<SfDataGridState> keyPasien = GlobalKey<SfDataGridState>();
 
@@ -26,10 +32,13 @@ class PasienViewModel extends ChangeNotifier {
   }
 
   Future getDataApiPasien() async {
+    fetchStatusPasien = StatusFetchPasien.isLoading;
+    notifyListeners();
+
     toReversedPasienData = (await service.getDataPasienApi())!;
     listPasienData = toReversedPasienData.reversed.toList();
 
-    isLoading = false;
+    fetchStatusPasien = StatusFetchPasien.letsGo;
     notifyListeners();
   }
 

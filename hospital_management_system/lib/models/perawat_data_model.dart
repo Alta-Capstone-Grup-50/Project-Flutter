@@ -29,7 +29,7 @@ class DataPerawat {
   String? sip;
   String? namaPerawat;
   String? jenisKelamin;
-  String? bagianKerja;
+  String? poli;
   String? jadwalKerja;
   String? jabatan;
   String? nomorTelfon;
@@ -40,7 +40,7 @@ class DataPerawat {
       this.sip,
       this.namaPerawat,
       this.jenisKelamin,
-      this.bagianKerja,
+      this.poli,
       this.jadwalKerja,
       this.jabatan,
       this.nomorTelfon,
@@ -51,7 +51,7 @@ class DataPerawat {
     sip = json['sip'];
     namaPerawat = json['nama_perawat'];
     jenisKelamin = json['jenis_kelamin'];
-    bagianKerja = json['bagian_kerja'];
+    poli = json['poli'];
     jadwalKerja = json['jadwal_kerja'];
     jabatan = json['jabatan'];
     nomorTelfon = json['nomor_telfon'];
@@ -64,7 +64,7 @@ class DataPerawat {
     data['sip'] = sip;
     data['nama_perawat'] = namaPerawat;
     data['jenis_kelamin'] = jenisKelamin;
-    data['bagian_kerja'] = bagianKerja;
+    data['poli'] = poli;
     data['jadwal_kerja'] = jadwalKerja;
     data['jabatan'] = jabatan;
     data['nomor_telfon'] = nomorTelfon;

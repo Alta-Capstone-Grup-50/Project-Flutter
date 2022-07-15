@@ -5,9 +5,15 @@ import '../../models/dokter_data_model.dart';
 import '../../services/dokter_service.dart';
 import '../../utilities/constants/color.dart';
 
+enum StatusFetchDokter {
+  idle,
+  isLoading,
+  letsGo,
+}
+
 class DokterViewModel extends ChangeNotifier {
   bool showLoadingIndicator = false;
-  bool isLoading = true;
+  StatusFetchDokter fetchStatusDokter = StatusFetchDokter.idle;
 
   final GlobalKey<SfDataGridState> keyDokter = GlobalKey<SfDataGridState>();
 
@@ -31,9 +37,11 @@ class DokterViewModel extends ChangeNotifier {
   }
 
   Future getDataApiDokter() async {
+    fetchStatusDokter = StatusFetchDokter.isLoading;
+    notifyListeners();
     toReversed = (await service.getDataDokterApi())!;
     listDokterData = toReversed.reversed.toList();
-    isLoading = false;
+    fetchStatusDokter = StatusFetchDokter.letsGo;
     notifyListeners();
   }
 

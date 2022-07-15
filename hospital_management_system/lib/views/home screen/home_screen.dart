@@ -69,7 +69,7 @@ class HomeScreen extends StatelessWidget {
                             openHistory:
                                 valueProvider.lastOpenDataDokterPerawat ??
                                     '...',
-                            image: 'assets/contents/data_dokter.png',
+                            image: 'assets/contents/data_perawat.png',
                             page: '/tenagaKesehatan',
                           ),
                           const SizedBox(
@@ -85,9 +85,19 @@ class HomeScreen extends StatelessWidget {
                         ],
                       )
                     : SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
+                            Text(
+                              'Pilih Data',
+                              style: TextStyle(
+                                  fontSize:
+                                      (Responsive.isMobile(context)) ? 22 : 28,
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            const SizedBox(
+                              width: 6,
+                            ),
                             ChoseCard(
                               title: 'Data Pasien',
                               openHistory:
@@ -95,20 +105,13 @@ class HomeScreen extends StatelessWidget {
                               image: 'assets/contents/data_pasien.png',
                               page: '/pasien',
                             ),
-                            const SizedBox(
-                              width: 20,
-                            ),
                             ChoseCard(
                               title: 'Data Tenaga Kesehatan',
                               openHistory:
                                   valueProvider.lastOpenDataDokterPerawat ??
                                       '...',
-                              image: 'assets/contents/data_dokter.png',
-                              page: '',
-                              color: Colors.red,
-                            ),
-                            const SizedBox(
-                              width: 20,
+                              image: 'assets/contents/data_perawat.png',
+                              page: '/tenagaKesehatan',
                             ),
                             ChoseCard(
                               title: 'Data Pasien Rawat Jalan',

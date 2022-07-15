@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -15,6 +17,8 @@ class PasienScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
+    log('REBUILD');
     return MainLayout(
       action: true,
       actionRoute: true,
@@ -122,9 +126,16 @@ class PasienScreen extends StatelessWidget {
                           color: Colors.white,
                         ),
                         onTap: () {
-                          valueProvider.isLoading
-                              ? null
-                              : valueProvider.keyPasien.currentState!.refresh();
+                          if (valueProvider.fetchStatusPasien ==
+                                  StatusFetchPasien.isLoading ||
+                              valueProvider.fetchStatusPasien ==
+                                  StatusFetchPasien.idle) {
+                            null;
+                          }
+                          if (valueProvider.fetchStatusPasien ==
+                              StatusFetchPasien.letsGo) {
+                            valueProvider.keyPasien.currentState!.refresh();
+                          }
                         },
                       ),
                     ),
@@ -150,7 +161,7 @@ class PasienScreen extends StatelessWidget {
                           ),
                         ))
                     : SizedBox(
-                        width: MediaQuery.of(context).size.width * 0.55,
+                        width: MediaQuery.of(context).size.width * 0.60,
                         height: 40,
                         child: Input(
                           textInputAction: TextInputAction.done,

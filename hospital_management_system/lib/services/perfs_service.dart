@@ -7,6 +7,38 @@ import '../models/akun_model.dart';
 import '../models/openCardDetail_model.dart';
 
 class UserPreferences {
+  Future<void> saveId(int id) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('id', id);
+  }
+
+  Future<int?> getId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? id = prefs.getInt('id');
+    return id;
+  }
+
+  void removeId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('id');
+  }
+
+  Future<void> savePoli(String poli) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('poli', poli);
+  }
+
+  Future<String?> getPoli() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? poli = prefs.getString('poli');
+    return poli;
+  }
+
+  void removePoli() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('poli');
+  }
+
   Future<bool> saveUser(AkunModel user) async {
     // Preference Authentication User Akun Model
 

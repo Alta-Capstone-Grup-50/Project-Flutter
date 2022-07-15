@@ -10,23 +10,23 @@ import '/models/pasien_data_model.dart';
 
 class RawatDataSourceTable extends DataGridSource {
   List<DataRawatJalan> _data;
-  List<DataRawatJalan> get data => _data;
-
   List<DataRawatJalan> _paginatedData = [];
-
-  int rowsPerPage = 6;
-  int restOfPage = 0;
-  int startIndex = 0;
-
   RawatJalanViewModel? valProvider;
-
   final DataPagerController _controller = DataPagerController();
+
+  final int _rowsPerPage = 6;
+  int _restOfPage = 0;
+  int _startIndex = 0;
+
+  List<DataRawatJalan> get data => _data;
+  int get rowsPerPage => _rowsPerPage;
+  int get startIndex => _startIndex;
 
   RawatDataSourceTable(this._data, BuildContext context) {
     valProvider = context.read<RawatJalanViewModel>();
 
     _paginatedData = _data.getRange(0, _data.length).toList(growable: false);
-    restOfPage = _paginatedData.length - startIndex;
+    _restOfPage = _paginatedData.length - _startIndex;
 
     buildPaginatedDataGridRows();
   }
@@ -39,7 +39,7 @@ class RawatDataSourceTable extends DataGridSource {
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
     final int index = effectiveRows.indexOf(row);
-    int indexOfNumber = effectiveRows.indexOf(row) + (startIndex + 1);
+    int indexOfNumber = effectiveRows.indexOf(row) + (_startIndex + 1);
     Color getRowBackgroundColor() {
       if (index % 2 != 1) {
         return const Color(0xFFE2E2E2).withOpacity(0.47);
@@ -115,12 +115,9 @@ class RawatDataSourceTable extends DataGridSource {
       } else {
         return Container(
           color: getRowBackgroundColor(),
-          padding: const EdgeInsets.only(left: 20.0),
-          alignment: Alignment.centerLeft,
-          child: Text(
-            dataGridCell.value.toString(),
-            overflow: TextOverflow.ellipsis,
-          ),
+          padding: const EdgeInsets.only(right: 20.0),
+          alignment: Alignment.center,
+          child: dataGridCell.value,
         );
       }
     }).toList());
@@ -128,17 +125,17 @@ class RawatDataSourceTable extends DataGridSource {
 
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
-    startIndex = newPageIndex * rowsPerPage;
+    _startIndex = newPageIndex * _rowsPerPage;
     int endIndex = 0;
-    if (_data.length - startIndex <= rowsPerPage) {
+    if (_data.length - _startIndex <= _rowsPerPage) {
       endIndex = _data.length;
       // print('oke');
     } else {
-      endIndex = startIndex + rowsPerPage;
+      endIndex = _startIndex + _rowsPerPage;
     }
-    if (startIndex < _data.length && endIndex <= _data.length) {
+    if (_startIndex < _data.length && endIndex <= _data.length) {
       _paginatedData =
-          _data.getRange(startIndex, endIndex).toList(growable: false);
+          _data.getRange(_startIndex, endIndex).toList(growable: false);
       buildPaginatedDataGridRows();
       _controller.dispose();
       notifyListeners();
@@ -172,7 +169,11 @@ class RawatDataSourceTable extends DataGridSource {
                 dataGridRow.nama ?? '-', valProvider!.searchController.text)),
         DataGridCell(
             columnName: 'Jenis Kelamin',
-            value: dataGridRow.jenisKelamin ?? '-'),
+            value: (dataGridRow.jenisKelamin!.isNotEmpty)
+                ? (dataGridRow.jenisKelamin == 'L')
+                    ? 'Laki - laki'
+                    : 'Perempuan'
+                : ' '),
         DataGridCell(
             columnName: 'Jadwal Rawat Jalan',
             value: dataGridRow.jadwalRawatJalan ?? '-'),
@@ -180,8 +181,22 @@ class RawatDataSourceTable extends DataGridSource {
             columnName: 'Nomor Antrian',
             value: dataGridRow.nomerAntrian ?? '-'),
         DataGridCell(
-            columnName: 'Jenis Penanganan',
-            value: dataGridRow.jenisPenanganan ?? '-'),
+            columnName: 'Proses',
+            value: Checkbox(
+                value: dataGridRow.proses ?? false,
+                onChanged: (bool? newValue) {
+                  if (dataGridRow.proses == false) {
+                    dataGridRow.proses = newValue;
+                    valProvider!
+                        .putProsesAntrian(dataGridRow.id!, dataGridRow.proses!);
+                    valProvider!.listRawatJalanData.sort((a, b) =>
+                        a.proses.toString().compareTo(b.proses.toString()));
+                    valProvider!.getCurrentAntrian();
+                    notifyListeners();
+                  } else {
+                    return;
+                  }
+                })),
       ]);
     }).toList(growable: false);
   }

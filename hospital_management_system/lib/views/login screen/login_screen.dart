@@ -12,7 +12,6 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LoginProvider loginValue = context.watch<LoginProvider>();
-    LoginProvider loginFunction = context.read<LoginProvider>();
 
     return MainLayout(
       action: false,

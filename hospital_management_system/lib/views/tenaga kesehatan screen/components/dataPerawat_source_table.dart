@@ -84,10 +84,11 @@ class PerawatDataSourceTable extends DataGridSource {
             overflow: TextOverflow.ellipsis,
           ),
         );
-      } else if (dataGridCell.columnName == 'Bagian Kerja') {
+      } else if (dataGridCell.columnName == 'Poli') {
         return Container(
           color: getRowBackgroundColor(),
           alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.only(right: 16),
           child: Text(
             dataGridCell.value.toString(),
             overflow: TextOverflow.ellipsis,
@@ -157,8 +158,7 @@ class PerawatDataSourceTable extends DataGridSource {
                     ? 'Laki - laki'
                     : 'Perempuan'
                 : '-'),
-        DataGridCell(
-            columnName: 'Bagian Kerja', value: dataGridRow.bagianKerja ?? '-'),
+        DataGridCell(columnName: 'Poli', value: dataGridRow.poli ?? '-'),
         DataGridCell(
             columnName: 'Jadwal Kerja', value: dataGridRow.jadwalKerja ?? '-'),
         DataGridCell(columnName: 'Jabatan', value: dataGridRow.jabatan ?? '-'),

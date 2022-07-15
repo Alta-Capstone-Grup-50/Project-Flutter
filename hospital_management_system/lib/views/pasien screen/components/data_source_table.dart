@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import '/viewModels/pasien%20viewModel/pasien_viewModel.dart';
 import 'package:provider/provider.dart';
@@ -81,7 +83,7 @@ class PasienDataSourceTable extends DataGridSource {
         return Container(
             padding: const EdgeInsets.only(right: 16.0),
             color: getRowBackgroundColor(),
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.center,
             child: Text(
               dataGridCell.value.toString(),
               overflow: TextOverflow.ellipsis,
@@ -98,7 +100,7 @@ class PasienDataSourceTable extends DataGridSource {
       } else if (dataGridCell.columnName == 'Poli') {
         return Container(
             color: getRowBackgroundColor(),
-            alignment: Alignment.centerLeft,
+            alignment: Alignment.center,
             child: Text(
               dataGridCell.value.toString(),
               overflow: TextOverflow.ellipsis,
@@ -150,6 +152,11 @@ class PasienDataSourceTable extends DataGridSource {
 
   void buildPaginatedDataGridRows() {
     dataGridRows = _paginatedData.map<DataGridRow>((dataGridRow) {
+      // var lastRekamMedis = null;
+      // lastRekamMedis = dataGridRow.rekamMedis!.isNotEmpty
+      //     ? (dataGridRow.rekamMedis!.last.poli)
+      //     : '-';
+
       return DataGridRow(cells: [
         const DataGridCell(columnName: 'No', value: '-'),
         DataGridCell(
@@ -162,9 +169,13 @@ class PasienDataSourceTable extends DataGridSource {
                 dataGridRow.nama ?? '-', valProvider!.searchController.text)),
         DataGridCell(
             columnName: 'Jenis Kelamin',
-            value: dataGridRow.jenisKelamin ?? '-'),
+            value: (dataGridRow.jenisKelamin!.isNotEmpty)
+                ? (dataGridRow.jenisKelamin == 'L')
+                    ? 'Laki - laki'
+                    : 'Perempuan'
+                : ' '),
         DataGridCell(columnName: 'Alamat', value: dataGridRow.alamat ?? '-'),
-        DataGridCell(columnName: 'Poli', value: dataGridRow.rekamMedis!.length),
+        DataGridCell(columnName: 'Poli', value: dataGridRow.poli ?? '-'),
         DataGridCell(
             columnName: 'Nomor Telepon', value: dataGridRow.noHp ?? '-'),
       ]);

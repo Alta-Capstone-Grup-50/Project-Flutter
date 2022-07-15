@@ -3,6 +3,7 @@ import 'package:hospital_management_system/viewModels/dokter%20perawat%20viewMod
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+import '../../../utilities/constants/responsive.dart';
 import '../components/dokter_table.dart';
 import '/views/main%20layout/main_layout.dart';
 import '/utilities/common/input.dart';
@@ -18,22 +19,32 @@ class DokterScreen extends StatelessWidget {
       actionRoute: true,
       keyScreens: 'DokterScreen',
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 70, vertical: 29),
+        padding: EdgeInsets.symmetric(
+            horizontal: (Responsive.isDesktop(context) ||
+                    Responsive.isTablet(context) &&
+                        MediaQuery.of(context).orientation ==
+                            Orientation.landscape)
+                ? 70
+                : 20,
+            vertical: 29),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
                 GestureDetector(
-                  onTap: () => Navigator.pushReplacementNamed(context, '/home'),
+                  onTap: () => Navigator.pushNamedAndRemoveUntil(
+                      context, '/home', ModalRoute.withName('/home')),
                   child: const Text(
                     "Home > ",
                     style: TextStyle(color: Colors.grey),
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => Navigator.pushReplacementNamed(
-                      context, '/tenagaKesehatan'),
+                  onTap: () => Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/tenagaKesehatan',
+                      ModalRoute.withName('/tenagaKesehatan')),
                   child: const Text(
                     "Dokter dan Perawat > ",
                     style: TextStyle(color: Colors.grey),
@@ -42,19 +53,29 @@ class DokterScreen extends StatelessWidget {
                 const Text("Data Dokter"),
               ],
             ),
-            const Padding(
-              padding: EdgeInsets.only(top: 20),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
               child: Text(
                 'Data Dokter',
                 style: TextStyle(
-                  fontSize: 40,
+                  fontSize: (Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context) &&
+                              MediaQuery.of(context).orientation ==
+                                  Orientation.landscape)
+                      ? 40
+                      : 30,
                   fontWeight: FontWeight.w700,
                   fontFamily: 'Open Sans',
                 ),
               ),
             ),
-            const SizedBox(
-              height: 50,
+            SizedBox(
+              height: (Responsive.isDesktop(context) ||
+                      Responsive.isTablet(context) &&
+                          MediaQuery.of(context).orientation ==
+                              Orientation.landscape)
+                  ? 40
+                  : 25,
             ),
             Consumer<DokterViewModel>(
               builder: ((context, valueProvider, _) {
@@ -62,20 +83,37 @@ class DokterScreen extends StatelessWidget {
                     kIsWeb) {
                   return Row(
                     children: [
-                      SizedBox(
-                        width: 391,
-                        height: 40,
-                        child: Input(
-                          hintText: 'Cari di sini',
-                          controller: valueProvider.searchController,
-                          onChanged: valueProvider.onSearch,
-                          backgroundColor: const Color(0xFFEBEBEB),
-                          prefixIcon: Icon(
-                            Icons.search,
-                            color: primaryColor,
-                          ),
-                        ),
-                      ),
+                      (Responsive.isDesktop(context) ||
+                              Responsive.isTablet(context) &&
+                                  MediaQuery.of(context).orientation ==
+                                      Orientation.landscape)
+                          ? SizedBox(
+                              width: 391,
+                              height: 40,
+                              child: Input(
+                                hintText: 'Cari di sini',
+                                controller: valueProvider.searchController,
+                                onChanged: valueProvider.onSearch,
+                                backgroundColor: const Color(0xFFEBEBEB),
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  color: primaryColor,
+                                ),
+                              ),
+                            )
+                          : SizedBox(
+                              width: MediaQuery.of(context).size.width * 0.55,
+                              height: 40,
+                              child: Input(
+                                controller: valueProvider.searchController,
+                                onChanged: valueProvider.onSearch,
+                                hintText: 'Cari di sini',
+                                backgroundColor: const Color(0xFFEBEBEB),
+                                prefixIcon: Icon(
+                                  Icons.search,
+                                  color: primaryColor,
+                                ),
+                              )),
                       const SizedBox(
                         width: 20,
                       ),
@@ -102,20 +140,38 @@ class DokterScreen extends StatelessWidget {
                     ],
                   );
                 } else {
-                  return SizedBox(
-                      width: 391,
-                      height: 40,
-                      child: Input(
-                        textInputAction: TextInputAction.done,
-                        controller: valueProvider.searchController,
-                        onChanged: valueProvider.onSearch,
-                        hintText: 'Cari di sini',
-                        backgroundColor: const Color(0xFFEBEBEB),
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: primaryColor,
-                        ),
-                      ));
+                  return (Responsive.isDesktop(context) ||
+                          Responsive.isTablet(context) &&
+                              MediaQuery.of(context).orientation ==
+                                  Orientation.landscape)
+                      ? SizedBox(
+                          width: 391,
+                          height: 40,
+                          child: Input(
+                            textInputAction: TextInputAction.done,
+                            controller: valueProvider.searchController,
+                            onChanged: valueProvider.onSearch,
+                            hintText: 'Cari di sini',
+                            backgroundColor: const Color(0xFFEBEBEB),
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: primaryColor,
+                            ),
+                          ))
+                      : SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.60,
+                          height: 40,
+                          child: Input(
+                            textInputAction: TextInputAction.done,
+                            controller: valueProvider.searchController,
+                            onChanged: valueProvider.onSearch,
+                            hintText: 'Cari di sini',
+                            backgroundColor: const Color(0xFFEBEBEB),
+                            prefixIcon: Icon(
+                              Icons.search,
+                              color: primaryColor,
+                            ),
+                          ));
                 }
               }),
             ),

@@ -84,10 +84,11 @@ class DokterDataSourceTable extends DataGridSource {
             overflow: TextOverflow.ellipsis,
           ),
         );
-      } else if (dataGridCell.columnName == 'Spesialis') {
+      } else if (dataGridCell.columnName == 'Poli') {
         return Container(
           color: getRowBackgroundColor(),
           alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.only(right: 16),
           child: Text(
             dataGridCell.value.toString(),
             overflow: TextOverflow.ellipsis,
@@ -167,8 +168,7 @@ class DokterDataSourceTable extends DataGridSource {
                     ? 'Laki - laki'
                     : 'Perempuan'
                 : ' '),
-        DataGridCell(
-            columnName: 'Spesialis', value: dataGridRow.spesialis ?? ' '),
+        DataGridCell(columnName: 'Poli', value: dataGridRow.poli ?? ' '),
         DataGridCell(
             columnName: 'Jadwal Praktek',
             value: dataGridRow.jadwalPraktek ?? ' '),

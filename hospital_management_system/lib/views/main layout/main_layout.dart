@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -67,7 +69,9 @@ class _MainLayoutState extends State<MainLayout>
           ? null
           : widget.keyScreens == 'login'
               ? null
-              : CustomDrawer(),
+              : CustomDrawer(
+                  keyScreens: widget.keyScreens,
+                ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

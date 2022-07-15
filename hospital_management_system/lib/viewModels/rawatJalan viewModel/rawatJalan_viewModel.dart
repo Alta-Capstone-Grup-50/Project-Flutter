@@ -2,22 +2,40 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:hospital_management_system/models/keterangan_model.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
 
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../models/akun_model.dart';
 import '../../models/rawatJalan_data_model.dart';
+import '../../services/perfs_service.dart';
+import '../../services/rawatJalan_proses/rawatJalan_change_service.dart';
 import '../../services/rawatJalan_service.dart';
+import '../../utilities/common/dialog_alert.dart';
+import '../../utilities/common/progress_dialog.dart';
+
+enum StatusFetchRawat {
+  idle,
+  isLoading,
+  letsGo,
+}
+
+enum StatusPostKeterangan {
+  idle,
+  isLoading,
+  letsGo,
+}
 
 class RawatJalanViewModel extends ChangeNotifier {
   final GlobalKey<SfDataGridState> keyRawat = GlobalKey<SfDataGridState>();
-  bool isLoading = true;
-
+  StatusFetchRawat fetchStatusRawat = StatusFetchRawat.idle;
+  StatusPostKeterangan postStatusKeterangan = StatusPostKeterangan.idle;
+  int? hasMatchId;
+  String? hasMatchPoli;
+  String? noAntrian;
   List<DataRawatJalan> listRawatJalanData = [];
-  List<DataRawatJalan> toReversed = [];
+  List<DataKeterangan> listKeterangan = [];
   List<DataRawatJalan> _search = [];
-
   List<DataRawatJalan> get search => _search;
 
   RawatJalanService service = RawatJalanService();
@@ -25,14 +43,81 @@ class RawatJalanViewModel extends ChangeNotifier {
   TextEditingController searchController = TextEditingController();
 
   RawatJalanViewModel() {
-    getDataApiRawatJalan();
+    initialFun();
+  }
+
+  initialFun() async {
+    await getDataApiRawatJalan();
+    await getCurrentAntrian();
+  }
+
+  Future<void> createKeterangan(
+      context, DataKeterangan? keterangan, ProgressDialog progress) async {
+    postStatusKeterangan = StatusPostKeterangan.isLoading;
+    notifyListeners();
+    await Future.delayed(
+      const Duration(seconds: 2),
+      () {
+        listKeterangan.add(keterangan!);
+        notifyListeners();
+      },
+    );
+    progress.hide();
+    Navigator.pop(context);
+    Navigator.pop(context);
+    openDialogSuccess(context, label: "Keterangan Dokter Berhasil Tersimpan");
+    log(listKeterangan.toString());
+    postStatusKeterangan = StatusPostKeterangan.letsGo;
+    notifyListeners();
+  }
+
+  getCurrentAntrian() {
+    int countSelected = 0;
+    listRawatJalanData.reversed.forEach((element) {
+      if (!element.proses!) {
+        noAntrian = element.nomerAntrian;
+      }
+      if (element.proses!) {
+        countSelected++;
+      }
+    });
+    if (countSelected == listRawatJalanData.length) {
+      noAntrian = null;
+    }
+    notifyListeners();
+  }
+
+  Future<Map<String, dynamic>> putProsesAntrian(int id, bool proses) async {
+    Map<String, dynamic> result = {};
+    final Map<String, dynamic> prosesAntrian = {"proses": proses};
+    RawatJalanChangeService()
+        .putDataRawatJalanApi(id, prosesAntrian)
+        .then((response) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        var responseData = response.data;
+        result = responseData;
+      } else {
+        result = {
+          'status': response.statusCode,
+          'message': 'Gagal',
+        };
+      }
+    });
+    return result;
   }
 
   Future getDataApiRawatJalan() async {
-    toReversed = (await service.getDataRawatJalanApi('gigi'))!;
-    listRawatJalanData = toReversed.reversed.toList();
+    print('dari function getDataApiRawatJalan');
+    fetchStatusRawat = StatusFetchRawat.isLoading;
+    hasMatchId = await (UserPreferences().getId());
+    hasMatchPoli = await (UserPreferences().getPoli());
 
-    isLoading = false;
+    listRawatJalanData = (await service.getDataRawatJalanApi(hasMatchId!))!;
+
+    listRawatJalanData
+        .sort((a, b) => a.proses.toString().compareTo(b.proses.toString()));
+
+    fetchStatusRawat = StatusFetchRawat.letsGo;
     notifyListeners();
   }
 

@@ -36,7 +36,8 @@ class ChoseCard extends StatelessWidget {
                   builder: ((context, functionProvider, child) => InkWell(
                         onTap: () {
                           if (page != '') {
-                            Navigator.pushReplacementNamed(context, page);
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, page, ModalRoute.withName(page));
                           }
                           if (title == 'Data Pasien') {
                             functionProvider.actionChoseCardPasien();
@@ -49,17 +50,9 @@ class ChoseCard extends StatelessWidget {
                         },
                         child: Column(
                           children: [
-                            Container(
-                              color: Colors.grey,
-                              constraints: BoxConstraints(
-                                minHeight: (Responsive.isDesktop(context) ||
-                                        Responsive.isTablet(context) &&
-                                            MediaQuery.of(context)
-                                                    .orientation ==
-                                                Orientation.landscape)
-                                    ? MediaQuery.of(context).size.height / 5
-                                    : MediaQuery.of(context).size.height / 10,
-                              ),
+                            SizedBox(
+                              height: MediaQuery.of(context).size.height * 0.2,
+                              width: MediaQuery.of(context).size.width,
                               child: (color != null)
                                   ? const Align(
                                       alignment: Alignment.center,
@@ -70,7 +63,7 @@ class ChoseCard extends StatelessWidget {
                                     )
                                   : Image.asset(
                                       image,
-                                      fit: BoxFit.fill,
+                                      fit: BoxFit.cover,
                                     ),
                             ),
                             Container(
@@ -170,8 +163,8 @@ class ChoseCard extends StatelessWidget {
                       ))),
             ),
           )
-        : SizedBox(
-            width: MediaQuery.of(context).size.width * 0.6,
+        : Container(
+            margin: const EdgeInsets.symmetric(vertical: 10),
             height: MediaQuery.of(context).size.width * 0.2,
             child: Card(
                 semanticContainer: true,

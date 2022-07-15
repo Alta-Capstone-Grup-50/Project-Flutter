@@ -32,7 +32,7 @@ class DataRawatJalan {
   String? jenisKelamin;
   String? jadwalRawatJalan;
   String? nomerAntrian;
-  String? proses;
+  bool? proses;
   String? keterangan;
   String? noHp;
   String? tempatLahir;
@@ -40,21 +40,22 @@ class DataRawatJalan {
   String? jenisPenyakit;
   String? jenisPenanganan;
 
-  DataRawatJalan(
-      {this.id,
-      this.nik,
-      this.nama,
-      this.alamat,
-      this.jenisKelamin,
-      this.jadwalRawatJalan,
-      this.nomerAntrian,
-      this.proses,
-      this.keterangan,
-      this.noHp,
-      this.tempatLahir,
-      this.tanggalLahir,
-      this.jenisPenyakit,
-      this.jenisPenanganan});
+  DataRawatJalan({
+    this.id,
+    this.nik,
+    this.nama,
+    this.alamat,
+    this.jenisKelamin,
+    this.jadwalRawatJalan,
+    this.nomerAntrian,
+    this.proses,
+    this.keterangan,
+    this.noHp,
+    this.tempatLahir,
+    this.tanggalLahir,
+    this.jenisPenyakit,
+    this.jenisPenanganan,
+  });
 
   DataRawatJalan.fromJson(Map<String, dynamic> json) {
     id = json['id'];

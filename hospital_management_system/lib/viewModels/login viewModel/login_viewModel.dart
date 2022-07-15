@@ -25,7 +25,8 @@ class LoginProvider extends ChangeNotifier {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool obscure = true;
   bool checkBox = false;
-  String? matchData;
+  int? matchDataId;
+  String? matchDataPoli;
   final AkunModel _user = AkunModel();
   StatusAuth _loggedInStatusAuth = StatusAuth.notLoggedIn;
   TextEditingController usernameController = TextEditingController();
@@ -110,15 +111,25 @@ class LoginProvider extends ChangeNotifier {
               if (authUser.level == 'dokter') {
                 DataDokter data = dokteViewModel.listDokterData
                     .firstWhere((element) => element.idUser == authUser.id);
-                matchData = data.spesialis;
+                matchDataId = data.idUser;
+                matchDataPoli = data.poli;
+                log(matchDataId.toString());
+                log(matchDataPoli.toString());
                 notifyListeners();
+                UserPreferences().saveId(matchDataId!);
+                UserPreferences().savePoli(matchDataPoli!);
                 log(data.namaDokter.toString());
               }
               if (authUser.level == 'perawat') {
                 DataPerawat data = perawatViewModel.listPerawatData
                     .firstWhere((element) => element.idUser == authUser.id);
-                matchData = data.bagianKerja;
+                matchDataId = data.idUser;
+                matchDataPoli = data.poli;
+                log(matchDataId.toString());
+                log(matchDataPoli.toString());
                 notifyListeners();
+                UserPreferences().saveId(matchDataId!);
+                UserPreferences().savePoli(matchDataPoli!);
                 log(data.namaPerawat.toString());
               }
 
@@ -143,7 +154,7 @@ class LoginProvider extends ChangeNotifier {
                     passwordController.text = '';
                   }
                   await Navigator.pushNamedAndRemoveUntil(
-                      context, '/home', ModalRoute.withName('/home'));
+                      context, '/home', (Route<dynamic> route) => false);
                 },
               );
             } else {
@@ -215,12 +226,20 @@ class LoginProvider extends ChangeNotifier {
     }
   }
 
-  logout(BuildContext context) {
+  void removePrefereces() {
     UserPreferences().removeUser();
+    UserPreferences().removeId();
+    UserPreferences().removePoli();
+  }
 
+  void logout(BuildContext context) {
+    removePrefereces();
     Future.delayed(const Duration(seconds: 1), () async {
       await Navigator.pushNamedAndRemoveUntil(
-          context, '/login', ModalRoute.withName('/login'));
+        context,
+        '/login',
+        (Route<dynamic> route) => false,
+      );
     });
 
     _loggedInStatusAuth = StatusAuth.loggedOut;

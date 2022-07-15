@@ -1,14 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../models/dokter_data_model.dart';
 import '../../models/perawat_data_model.dart';
 import '../../services/perawat_service.dart';
 import '../../utilities/constants/color.dart';
 
+enum StatusFetchPerawat {
+  idle,
+  isLoading,
+  letsGo,
+}
+
 class PerawatViewModel extends ChangeNotifier {
   bool showLoadingIndicator = false;
-  bool isLoading = true;
+  StatusFetchPerawat fetchStatusPerawat = StatusFetchPerawat.idle;
 
   final GlobalKey<SfDataGridState> keyPerawat = GlobalKey<SfDataGridState>();
 
@@ -32,9 +37,11 @@ class PerawatViewModel extends ChangeNotifier {
   }
 
   Future getDataApiPerawat() async {
+    fetchStatusPerawat = StatusFetchPerawat.isLoading;
+    notifyListeners();
     toReversed = (await service.getDataPerawatApi())!;
     listPerawatData = toReversed.reversed.toList();
-    isLoading = false;
+    fetchStatusPerawat = StatusFetchPerawat.letsGo;
     notifyListeners();
   }
 

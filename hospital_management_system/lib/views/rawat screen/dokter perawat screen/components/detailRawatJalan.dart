@@ -4,16 +4,14 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../../models/rawatJalan_data_model.dart';
 import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
-import '/models/pasien_data_model.dart';
 
 import '/views/rawat%20screen/dokter%20perawat%20screen/components/keteranganRawat_dokterPerawat.dart';
 import '../../../../utilities/common/input.dart';
 import '/utilities/constants/color.dart';
 import '/utilities/constants/responsive.dart';
 
-class DetailRawatDokterPerawat extends StatelessWidget {
-  DetailRawatDokterPerawat(
-      {Key? key, required this.query, required this.queryPage})
+class DetailRawatJalan extends StatelessWidget {
+  DetailRawatJalan({Key? key, required this.query, required this.queryPage})
       : super(key: key);
 
   DataGridCellTapDetails? query;
@@ -152,7 +150,12 @@ class DetailRawatDokterPerawat extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Input(
-                      initialValue: putDataRawat[indexOfPage].jenisKelamin,
+                      initialValue:
+                          (putDataRawat[indexOfPage].jenisKelamin!.isNotEmpty)
+                              ? (putDataRawat[indexOfPage].jenisKelamin == 'L')
+                                  ? 'Laki - laki'
+                                  : 'Perempuan'
+                              : ' ',
                       borderRadius: const BorderRadius.all(Radius.zero),
                       keyboardType: TextInputType.none,
                       enabled: false,
@@ -451,7 +454,10 @@ class DetailRawatDokterPerawat extends StatelessWidget {
                     height: 40,
                     child: ElevatedButton(
                         onPressed: () async {
-                          await openKeteranganRawatDokterPerawat(context);
+                          await openKeteranganRawatDokterPerawat(
+                              context,
+                              putDataRawat[indexOfPage].id ?? 0,
+                              putDataRawat[indexOfPage].nama ?? '-');
                         },
                         style: ElevatedButton.styleFrom(
                           primary: green.shade300,
@@ -533,11 +539,11 @@ class DetailRawatDokterPerawat extends StatelessWidget {
   }
 }
 
-Future openDetailRawatDokterPerawat(BuildContext context, query, queryPage) {
+Future openDetailRawatJalan(BuildContext context, query, queryPage) {
   return showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (context) => DetailRawatDokterPerawat(
+      builder: (context) => DetailRawatJalan(
             query: query,
             queryPage: queryPage,
           ));

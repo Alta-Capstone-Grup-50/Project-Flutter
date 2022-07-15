@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/viewModels/rawatJalan%20viewModel/rawatJalan_viewModel.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -14,16 +15,18 @@ import '/views/pasien%20screen/components/detailPasien.dart';
 class PasienTable {
   Widget buildTable(BuildContext context) {
     return Consumer<PasienViewModel>(builder: (context, value, _) {
-      if (value.isLoading) {
+      if (value.fetchStatusPasien == StatusFetchPasien.isLoading) {
         return SizedBox(
-            height: MediaQuery.of(context).size.height * 0.5,
-            child: const Center(
-                child: SizedBox(
+          height: MediaQuery.of(context).size.height * 0.5,
+          child: const Center(
+            child: SizedBox(
               width: 60,
               height: 60,
               child: CircularProgressIndicator(),
-            )));
-      } else {
+            ),
+          ),
+        );
+      } else if (value.fetchStatusPasien == StatusFetchPasien.letsGo) {
         var val;
 
         if (value.search.isNotEmpty || value.searchController.text.isNotEmpty) {
@@ -45,7 +48,11 @@ class PasienTable {
           builder: ((context, constraints) => Column(children: [
                 SizedBox(
                     width: constraints.maxWidth,
-                    height: 310,
+                    height: (_dataSource.data.length <= 2)
+                        ? 160
+                        : (_dataSource.data.length <= 4)
+                            ? 240
+                            : 320,
                     child: SfDataGridTheme(
                         data: SfDataGridThemeData(
                           sortIconColor: Colors.black,
@@ -61,8 +68,12 @@ class PasienTable {
                             isScrollbarAlwaysShown: true,
                             columnWidthMode: ColumnWidthMode.fill,
                             onCellTap: (query) {
-                              openDetailPasien(
-                                  context, query, _dataSource.startIndex);
+                              if (query.rowColumnIndex.rowIndex > 0) {
+                                openDetailPasien(
+                                    context, query, _dataSource.startIndex);
+                              } else {
+                                return;
+                              }
                             },
                             columns: [
                               GridColumn(
@@ -90,7 +101,7 @@ class PasienTable {
                                       ))),
                               GridColumn(
                                   columnName: 'Nama',
-                                  width: 190,
+                                  width: 150,
                                   label: Container(
                                       alignment: Alignment.centerLeft,
                                       child: const Text(
@@ -101,18 +112,20 @@ class PasienTable {
                                       ))),
                               GridColumn(
                                   columnName: 'Jenis Kelamin',
-                                  width: 300,
+                                  width: 150,
                                   label: Container(
-                                      alignment: Alignment.centerLeft,
+                                      alignment: Alignment.center,
                                       child: const Text(
                                         'Jenis Kelamin',
+                                        textAlign: TextAlign.center,
+                                        maxLines: 2,
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700),
                                         overflow: TextOverflow.ellipsis,
                                       ))),
                               GridColumn(
                                   columnName: 'Alamat',
-                                  width: 150,
+                                  width: 200,
                                   label: Container(
                                       alignment: Alignment.centerLeft,
                                       padding:
@@ -124,10 +137,9 @@ class PasienTable {
                                         overflow: TextOverflow.ellipsis,
                                       ))),
                               GridColumn(
-                                  width: 140,
                                   columnName: 'Poli',
                                   label: Container(
-                                      alignment: Alignment.centerLeft,
+                                      alignment: Alignment.center,
                                       child: const Text(
                                         'Poli',
                                         style: TextStyle(
@@ -174,6 +186,8 @@ class PasienTable {
                         )))
               ])),
         );
+      } else {
+        return const SizedBox.shrink();
       }
     });
   }

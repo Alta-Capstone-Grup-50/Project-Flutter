@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
@@ -7,12 +9,12 @@ import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
 import '/utilities/constants/color.dart';
 import '/utilities/constants/responsive.dart';
 import 'data_source_table.dart';
-import 'detailRawat_dokterPerawat.dart';
+import 'detailRawatJalan.dart';
 
 class RawatTable {
   Widget buildTable(BuildContext context) {
     return Consumer<RawatJalanViewModel>(builder: (context, value, _) {
-      if (value.isLoading) {
+      if (value.fetchStatusRawat == StatusFetchRawat.isLoading) {
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.5,
           child: const Center(
@@ -23,7 +25,7 @@ class RawatTable {
             ),
           ),
         );
-      } else {
+      } else if (value.fetchStatusRawat == StatusFetchRawat.letsGo) {
         var val;
 
         if (value.search.isNotEmpty || value.searchController.text.isNotEmpty) {
@@ -43,7 +45,11 @@ class RawatTable {
                   children: [
                     SizedBox(
                       width: constraints.maxWidth,
-                      height: 310,
+                      height: (_dataSource.data.length <= 2)
+                          ? 160
+                          : (_dataSource.data.length <= 4)
+                              ? 240
+                              : 320,
                       child: SfDataGridTheme(
                         data: SfDataGridThemeData(
                           sortIconColor: Colors.black,
@@ -59,8 +65,12 @@ class RawatTable {
                           source: _dataSource,
                           columnWidthMode: ColumnWidthMode.lastColumnFill,
                           onCellTap: (query) {
-                            openDetailRawatDokterPerawat(
-                                context, query, _dataSource.startIndex);
+                            if (query.rowColumnIndex.rowIndex > 0) {
+                              openDetailRawatJalan(
+                                  context, query, _dataSource.startIndex);
+                            } else {
+                              return;
+                            }
                           },
                           columns: [
                             GridColumn(
@@ -125,7 +135,7 @@ class RawatTable {
                               ),
                             ),
                             GridColumn(
-                              width: 120,
+                              width: 150,
                               columnName: 'Nomor Antrian',
                               label: Container(
                                 padding: const EdgeInsets.only(left: 5.0),
@@ -139,13 +149,13 @@ class RawatTable {
                               ),
                             ),
                             GridColumn(
-                              width: 150,
-                              columnName: 'Jenis Penanganan',
+                              width: 120,
+                              columnName: 'Proses',
                               label: Container(
-                                padding: const EdgeInsets.only(left: 20.0),
-                                alignment: Alignment.centerLeft,
+                                padding: const EdgeInsets.only(right: 20.0),
+                                alignment: Alignment.center,
                                 child: const Text(
-                                  'Jenis Penanganan',
+                                  'Proses',
                                   style: TextStyle(fontWeight: FontWeight.w700),
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -160,12 +170,13 @@ class RawatTable {
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(
-                          horizontal: (Responsive.isDesktop(context) ||
-                                  Responsive.isTablet(context) &&
-                                      MediaQuery.of(context).orientation ==
-                                          Orientation.landscape)
-                              ? 200
-                              : 0),
+                        horizontal: (Responsive.isDesktop(context) ||
+                                Responsive.isTablet(context) &&
+                                    MediaQuery.of(context).orientation ==
+                                        Orientation.landscape)
+                            ? 200
+                            : 0,
+                      ),
                       child: SfDataPagerTheme(
                         data: SfDataPagerThemeData(
                           selectedItemColor: green.shade300,
@@ -185,6 +196,8 @@ class RawatTable {
                     ),
                   ],
                 )));
+      } else {
+        return const SizedBox.shrink();
       }
     });
   }
