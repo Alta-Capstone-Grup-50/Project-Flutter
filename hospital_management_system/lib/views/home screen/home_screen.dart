@@ -22,14 +22,15 @@ class HomeScreen extends StatelessWidget {
           children: [
             Container(
               alignment: Alignment.centerLeft,
-              padding: EdgeInsets.only(
-                  left: (Responsive.isDesktop(context) ||
-                          Responsive.isTablet(context) &&
+              padding: EdgeInsets.symmetric(
+                  horizontal: Responsive.isDesktop(context)
+                      ? MediaQuery.of(context).size.width * 0.1
+                      : (Responsive.isTablet(context) &&
                               MediaQuery.of(context).orientation ==
                                   Orientation.landscape)
-                      ? 70
-                      : 20,
-                  bottom: 16),
+                          ? 70
+                          : 20,
+                  vertical: 16),
               child: Text(
                 'Info Terkini',
                 style: TextStyle(
@@ -43,12 +44,13 @@ class HomeScreen extends StatelessWidget {
             ),
             Padding(
                 padding: EdgeInsets.symmetric(
-                  horizontal: (Responsive.isDesktop(context) ||
-                          Responsive.isTablet(context) &&
+                  horizontal: Responsive.isDesktop(context)
+                      ? MediaQuery.of(context).size.width * 0.1
+                      : (Responsive.isTablet(context) &&
                               MediaQuery.of(context).orientation ==
                                   Orientation.landscape)
-                      ? 70
-                      : 20,
+                          ? 70
+                          : 20,
                 ),
                 child: (!Responsive.isMobile(context))
                     ? Row(

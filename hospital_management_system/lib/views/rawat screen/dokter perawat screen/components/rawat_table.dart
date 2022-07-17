@@ -112,10 +112,9 @@ class RawatTable {
                               ),
                             ),
                             GridColumn(
-                              width: 140,
                               columnName: 'Jenis Kelamin',
                               label: Container(
-                                alignment: Alignment.center,
+                                alignment: Alignment.centerLeft,
                                 child: const Text(
                                   'Jenis Kelamin',
                                   style: TextStyle(fontWeight: FontWeight.w700),
@@ -125,8 +124,10 @@ class RawatTable {
                             ),
                             GridColumn(
                               columnName: 'Jadwal Rawat Jalan',
+                              width: 250,
                               label: Container(
-                                alignment: Alignment.center,
+                                alignment: Alignment.centerLeft,
+                                padding: const EdgeInsets.only(left: 25.0),
                                 child: const Text(
                                   'Jadwal Rawat Jalan',
                                   style: TextStyle(fontWeight: FontWeight.w700),

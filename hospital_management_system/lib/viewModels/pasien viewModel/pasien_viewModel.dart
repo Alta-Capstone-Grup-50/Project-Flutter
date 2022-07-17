@@ -28,12 +28,15 @@ class PasienViewModel extends ChangeNotifier {
   TextEditingController searchController = TextEditingController();
 
   PasienViewModel() {
-    getDataApiPasien();
+    initialFun();
+  }
+
+  initialFun() async {
+    await getDataApiPasien();
   }
 
   Future getDataApiPasien() async {
     fetchStatusPasien = StatusFetchPasien.isLoading;
-    notifyListeners();
 
     toReversedPasienData = (await service.getDataPasienApi())!;
     listPasienData = toReversedPasienData.reversed.toList();

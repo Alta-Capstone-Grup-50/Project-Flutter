@@ -25,7 +25,13 @@ class DetailDataDokter extends StatelessWidget {
     int indexOfPage = index + (queryPage + 1) - 1;
 
     DokterViewModel valueProvider = context.read<DokterViewModel>();
-    List<DataDokter> putDataDokter = valueProvider.listDokterData;
+    List<DataDokter>? putDataDokter;
+    if (valueProvider.search.isNotEmpty ||
+        valueProvider.searchController.text.isNotEmpty) {
+      putDataDokter = valueProvider.search;
+    } else {
+      putDataDokter = valueProvider.listDokterData;
+    }
 
     return AlertDialog(
       content: Stack(

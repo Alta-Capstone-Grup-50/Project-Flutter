@@ -92,7 +92,7 @@ class PasienDataSourceTable extends DataGridSource {
         return Container(
             color: getRowBackgroundColor(),
             alignment: Alignment.centerLeft,
-            padding: const EdgeInsets.only(right: 16.0),
+            padding: const EdgeInsets.only(right: 20.0),
             child: Text(
               dataGridCell.value.toString(),
               overflow: TextOverflow.ellipsis,
@@ -100,7 +100,8 @@ class PasienDataSourceTable extends DataGridSource {
       } else if (dataGridCell.columnName == 'Poli') {
         return Container(
             color: getRowBackgroundColor(),
-            alignment: Alignment.center,
+            alignment: Alignment.centerLeft,
+            padding: const EdgeInsets.only(right: 16.0, left: 20.0),
             child: Text(
               dataGridCell.value.toString(),
               overflow: TextOverflow.ellipsis,

@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 
-import '../models/rawatJalan_data_model.dart';
-import '../utilities/constants/api_url.dart';
+import '../../models/rawatJalan_data_model.dart';
+import '../../utilities/constants/api_url.dart';
 
 class RawatJalanService {
   final Dio _dio = Dio();

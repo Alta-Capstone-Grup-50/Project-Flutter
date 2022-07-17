@@ -1,19 +1,23 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/utilities/common/case_dialog.dart';
 
 import 'package:provider/provider.dart';
 
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../../models/rawatJalan_data_model.dart';
+import '../../../../utilities/common/progress_dialog.dart';
 import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
-import '/models/pasien_data_model.dart';
 
 class RawatDataSourceTable extends DataGridSource {
   List<DataRawatJalan> _data;
   List<DataRawatJalan> _paginatedData = [];
   RawatJalanViewModel? valProvider;
   final DataPagerController _controller = DataPagerController();
-
+  var contexts;
+  ProgressDialog? loadingWidget;
   final int _rowsPerPage = 6;
   int _restOfPage = 0;
   int _startIndex = 0;
@@ -23,7 +27,15 @@ class RawatDataSourceTable extends DataGridSource {
   int get startIndex => _startIndex;
 
   RawatDataSourceTable(this._data, BuildContext context) {
+    contexts = context;
     valProvider = context.read<RawatJalanViewModel>();
+    loadingWidget = ProgressDialog(
+      context,
+      isDismissible: false,
+    );
+
+    loadingWidget!.style(
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30));
 
     _paginatedData = _data.getRange(0, _data.length).toList(growable: false);
     _restOfPage = _paginatedData.length - _startIndex;
@@ -88,7 +100,7 @@ class RawatDataSourceTable extends DataGridSource {
       } else if (dataGridCell.columnName == 'Jenis Kelamin') {
         return Container(
           color: getRowBackgroundColor(),
-          alignment: Alignment.center,
+          alignment: Alignment.centerLeft,
           child: Text(
             dataGridCell.value.toString(),
             overflow: TextOverflow.ellipsis,
@@ -97,7 +109,8 @@ class RawatDataSourceTable extends DataGridSource {
       } else if (dataGridCell.columnName == 'Jadwal Rawat Jalan') {
         return Container(
           color: getRowBackgroundColor(),
-          alignment: Alignment.center,
+          alignment: Alignment.centerLeft,
+          padding: const EdgeInsets.only(left: 25.0),
           child: Text(
             dataGridCell.value.toString(),
             overflow: TextOverflow.ellipsis,
@@ -181,22 +194,37 @@ class RawatDataSourceTable extends DataGridSource {
             columnName: 'Nomor Antrian',
             value: dataGridRow.nomerAntrian ?? '-'),
         DataGridCell(
-            columnName: 'Proses',
-            value: Checkbox(
-                value: dataGridRow.proses ?? false,
-                onChanged: (bool? newValue) {
-                  if (dataGridRow.proses == false) {
-                    dataGridRow.proses = newValue;
-                    valProvider!
-                        .putProsesAntrian(dataGridRow.id!, dataGridRow.proses!);
-                    valProvider!.listRawatJalanData.sort((a, b) =>
-                        a.proses.toString().compareTo(b.proses.toString()));
-                    valProvider!.getCurrentAntrian();
-                    notifyListeners();
-                  } else {
-                    return;
-                  }
-                })),
+          columnName: 'Proses',
+          value: Checkbox(
+              value: dataGridRow.proses ?? false,
+              onChanged: (bool? newValue) {
+                if (dataGridRow.proses == false) {
+                  log('check');
+                  showCaseDialog(contexts,
+                      label:
+                          "Apa anda sudah yakin untuk menyelesaikan rawat jalan\npasien ini pada hari ini?",
+                      onPressed: () async {
+                    Navigator.of(contexts).pop();
+                    loadingWidget!.show();
+                    await Future.delayed(
+                      const Duration(seconds: 2),
+                      () {
+                        dataGridRow.proses = newValue;
+                        valProvider!.putProsesAntrian(
+                            dataGridRow.id!, dataGridRow.proses!);
+                        valProvider!.listRawatJalanData.sort((a, b) =>
+                            a.proses.toString().compareTo(b.proses.toString()));
+                        valProvider!.getCurrentAntrian();
+                        notifyListeners();
+                      },
+                    );
+                    loadingWidget!.hide();
+                  });
+                } else {
+                  return;
+                }
+              }),
+        ),
       ]);
     }).toList(growable: false);
   }

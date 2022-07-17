@@ -25,19 +25,18 @@ class RawatScreen extends StatelessWidget {
       action: true,
       actionRoute: true,
       keyScreens: 'RawatScreen',
-      child: Padding(
-        padding: EdgeInsets.symmetric(
-            horizontal: (Responsive.isDesktop(context) ||
-                    Responsive.isTablet(context) &&
-                        MediaQuery.of(context).orientation ==
-                            Orientation.landscape)
-                ? 70
-                : 20,
-            vertical: 29),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
+      child: Column(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(
+                left: (Responsive.isDesktop(context) ||
+                        Responsive.isTablet(context) &&
+                            MediaQuery.of(context).orientation ==
+                                Orientation.landscape)
+                    ? 70
+                    : 20,
+                top: 25),
+            child: Row(
               children: [
                 GestureDetector(
                   onTap: () async {
@@ -52,198 +51,221 @@ class RawatScreen extends StatelessWidget {
                 const Text("Data pasien rawat jalan"),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: Text(
-                'Data Pasien Rawat Jalan',
-                style: TextStyle(
-                  fontSize: (Responsive.isDesktop(context) ||
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(
+                horizontal: Responsive.isDesktop(context)
+                    ? MediaQuery.of(context).size.width * 0.1
+                    : (Responsive.isTablet(context) &&
+                            MediaQuery.of(context).orientation ==
+                                Orientation.landscape)
+                        ? 70
+                        : 20,
+                vertical: 29),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Text(
+                    'Data Pasien Rawat Jalan',
+                    style: TextStyle(
+                      fontSize: (Responsive.isDesktop(context) ||
+                              Responsive.isTablet(context) &&
+                                  MediaQuery.of(context).orientation ==
+                                      Orientation.landscape)
+                          ? 40
+                          : 30,
+                      fontWeight: FontWeight.w700,
+                      fontFamily: 'Open Sans',
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: (Responsive.isDesktop(context) ||
                           Responsive.isTablet(context) &&
                               MediaQuery.of(context).orientation ==
                                   Orientation.landscape)
                       ? 40
-                      : 30,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'Open Sans',
+                      : 25,
                 ),
-              ),
-            ),
-            SizedBox(
-              height: (Responsive.isDesktop(context) ||
-                      Responsive.isTablet(context) &&
-                          MediaQuery.of(context).orientation ==
-                              Orientation.landscape)
-                  ? 40
-                  : 25,
-            ),
-            Consumer<RawatJalanViewModel>(
-              builder: ((context, valueProvider, _) {
-                if (Theme.of(context).platform == TargetPlatform.windows ||
-                    kIsWeb) {
-                  return Row(children: [
-                    (Responsive.isDesktop(context) ||
-                            Responsive.isTablet(context) &&
-                                MediaQuery.of(context).orientation ==
-                                    Orientation.landscape)
-                        ? SizedBox(
-                            width: 391,
-                            height: 40,
-                            child: Input(
-                              controller: valueProvider.searchController,
-                              onChanged: valueProvider.onSearch,
-                              hintText: 'Cari di sini',
-                              backgroundColor: const Color(0xFFEBEBEB),
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: primaryColor,
-                              ),
-                            ))
-                        : SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.55,
-                            height: 40,
-                            child: Input(
-                              controller: valueProvider.searchController,
-                              onChanged: valueProvider.onSearch,
-                              hintText: 'Cari di sini',
-                              backgroundColor: const Color(0xFFEBEBEB),
-                              prefixIcon: Icon(
-                                Icons.search,
-                                color: primaryColor,
-                              ),
-                            )),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    SizedBox(
-                      width: 50,
-                      height: 50,
-                      child: Card(
-                        color: primaryColor.shade300,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                Consumer<RawatJalanViewModel>(
+                  builder: ((context, valueProvider, _) {
+                    if (Theme.of(context).platform == TargetPlatform.windows ||
+                        kIsWeb) {
+                      return Row(children: [
+                        (Responsive.isDesktop(context) ||
+                                Responsive.isTablet(context) &&
+                                    MediaQuery.of(context).orientation ==
+                                        Orientation.landscape)
+                            ? SizedBox(
+                                width: 391,
+                                height: 40,
+                                child: Input(
+                                  controller: valueProvider.searchController,
+                                  onChanged: valueProvider.onSearch,
+                                  hintText: 'Cari di sini',
+                                  backgroundColor: const Color(0xFFEBEBEB),
+                                  prefixIcon: Icon(
+                                    Icons.search,
+                                    color: primaryColor,
+                                  ),
+                                ))
+                            : SizedBox(
+                                width: MediaQuery.of(context).size.width * 0.55,
+                                height: 40,
+                                child: Input(
+                                  controller: valueProvider.searchController,
+                                  onChanged: valueProvider.onSearch,
+                                  hintText: 'Cari di sini',
+                                  backgroundColor: const Color(0xFFEBEBEB),
+                                  prefixIcon: Icon(
+                                    Icons.search,
+                                    color: primaryColor,
+                                  ),
+                                )),
+                        const SizedBox(
+                          width: 20,
                         ),
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(12),
-                          child: const Icon(
-                            Icons.refresh,
-                            color: Colors.white,
-                          ),
-                          onTap: () {
-                            if (valueProvider.fetchStatusRawat ==
-                                    StatusFetchRawat.isLoading ||
-                                valueProvider.fetchStatusRawat ==
-                                    StatusFetchRawat.idle) {
-                              null;
-                            }
-                            if (valueProvider.fetchStatusRawat ==
-                                StatusFetchRawat.letsGo) {
-                              valueProvider.keyRawat.currentState!.refresh();
-                            }
-                          },
-                        ),
-                      ),
-                    ),
-                    const Spacer(),
-                    SizedBox(
-                      height: 65,
-                      child: Card(
-                        color: primaryColor.shade600,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                valueProvider.noAntrian ?? 'Done',
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              Text(
-                                'Poli : ${valueProvider.hasMatchPoli ?? '-'}',
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
-                  ]);
-                } else {
-                  return Row(
-                    children: [
-                      (Responsive.isDesktop(context) ||
-                              Responsive.isTablet(context) &&
-                                  MediaQuery.of(context).orientation ==
-                                      Orientation.landscape)
-                          ? SizedBox(
-                              width: 391,
-                              height: 40,
-                              child: Input(
-                                textInputAction: TextInputAction.done,
-                                controller: valueProvider.searchController,
-                                onChanged: valueProvider.onSearch,
-                                hintText: 'Cari di sini',
-                                backgroundColor: const Color(0xFFEBEBEB),
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  color: primaryColor,
-                                ),
-                              ),
-                            )
-                          : SizedBox(
-                              width: MediaQuery.of(context).size.width * 0.60,
-                              height: 40,
-                              child: Input(
-                                textInputAction: TextInputAction.done,
-                                controller: valueProvider.searchController,
-                                onChanged: valueProvider.onSearch,
-                                hintText: 'Cari di sini',
-                                backgroundColor: const Color(0xFFEBEBEB),
-                                prefixIcon: Icon(
-                                  Icons.search,
-                                  color: primaryColor,
-                                ),
-                              ),
+                        SizedBox(
+                          width: 50,
+                          height: 50,
+                          child: Card(
+                            color: primaryColor.shade300,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(12),
                             ),
-                      const Spacer(),
-                      SizedBox(
-                        height: 50,
-                        child: Card(
-                          color: primaryColor.shade600,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  valueProvider.noAntrian ?? 'Done',
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                Text(
-                                  'Poli : ${valueProvider.hasMatchPoli ?? '-'}',
-                                  style: const TextStyle(color: Colors.white),
-                                ),
-                              ],
+                            child: InkWell(
+                              borderRadius: BorderRadius.circular(12),
+                              child: const Icon(
+                                Icons.refresh,
+                                color: Colors.white,
+                              ),
+                              onTap: () {
+                                if (valueProvider.fetchStatusRawat ==
+                                        StatusFetchRawat.isLoading ||
+                                    valueProvider.fetchStatusRawat ==
+                                        StatusFetchRawat.idle) {
+                                  null;
+                                }
+                                if (valueProvider.fetchStatusRawat ==
+                                    StatusFetchRawat.letsGo) {
+                                  valueProvider.keyRawat.currentState!
+                                      .refresh();
+                                }
+                              },
                             ),
                           ),
                         ),
-                      )
-                    ],
-                  );
-                }
-              }),
+                        const Spacer(),
+                        SizedBox(
+                          height: 65,
+                          child: Card(
+                            color: primaryColor.shade600,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceEvenly,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    valueProvider.noAntrian ?? 'Done',
+                                    style: const TextStyle(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Text(
+                                    'Poli : ${valueProvider.hasMatchPoli ?? '-'}',
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ]);
+                    } else {
+                      return Row(
+                        children: [
+                          (Responsive.isDesktop(context) ||
+                                  Responsive.isTablet(context) &&
+                                      MediaQuery.of(context).orientation ==
+                                          Orientation.landscape)
+                              ? SizedBox(
+                                  width: 391,
+                                  height: 40,
+                                  child: Input(
+                                    textInputAction: TextInputAction.done,
+                                    controller: valueProvider.searchController,
+                                    onChanged: valueProvider.onSearch,
+                                    hintText: 'Cari di sini',
+                                    backgroundColor: const Color(0xFFEBEBEB),
+                                    prefixIcon: Icon(
+                                      Icons.search,
+                                      color: primaryColor,
+                                    ),
+                                  ),
+                                )
+                              : SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.60,
+                                  height: 40,
+                                  child: Input(
+                                    textInputAction: TextInputAction.done,
+                                    controller: valueProvider.searchController,
+                                    onChanged: valueProvider.onSearch,
+                                    hintText: 'Cari di sini',
+                                    backgroundColor: const Color(0xFFEBEBEB),
+                                    prefixIcon: Icon(
+                                      Icons.search,
+                                      color: primaryColor,
+                                    ),
+                                  ),
+                                ),
+                          const Spacer(),
+                          SizedBox(
+                            height: 50,
+                            child: Card(
+                              color: primaryColor.shade600,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 10),
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      valueProvider.noAntrian ?? 'Done',
+                                      style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      'Poli : ${valueProvider.hasMatchPoli ?? '-'}',
+                                      style:
+                                          const TextStyle(color: Colors.white),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          )
+                        ],
+                      );
+                    }
+                  }),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                RawatTable().buildTable(context),
+              ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
-            RawatTable().buildTable(context),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

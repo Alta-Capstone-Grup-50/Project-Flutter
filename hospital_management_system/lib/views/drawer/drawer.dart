@@ -96,8 +96,7 @@ class CustomDrawer extends StatelessWidget {
               text!,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color:
-                    (keyScreen != keyScreens) ? Colors.black : green.shade300,
+                color: (keyScreen != keyScreens) ? Colors.black : grey,
               ),
             ),
           ),

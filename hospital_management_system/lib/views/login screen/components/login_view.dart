@@ -9,6 +9,7 @@ import '/utilities/common/input.dart';
 import '/utilities/constants/color.dart';
 
 import '/viewModels/login viewModel/login_viewModel.dart';
+import 'warning_dialog.dart';
 
 // ignore: must_be_immutable
 class LoginView extends StatelessWidget {
@@ -235,17 +236,7 @@ class LoginView extends StatelessWidget {
           hoverColor: Colors.transparent,
           splashColor: Colors.transparent,
           onTap: () async {
-            final url = Uri(
-              scheme: 'mailto',
-              path: 'admin@healthid.ac.id',
-              query: 'subject=Forgot Password&body=Keterangan : ',
-            );
-            if (await canLaunchUrl(url)) {
-              launchUrl(url);
-            } else {
-              // ignore: avoid_print
-              print("Can't launch $url");
-            }
+            showNotion(context);
           },
           child: Text(
             'Forgot Password?',

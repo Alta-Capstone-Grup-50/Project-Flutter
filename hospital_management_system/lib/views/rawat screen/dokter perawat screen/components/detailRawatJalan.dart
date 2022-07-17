@@ -25,7 +25,14 @@ class DetailRawatJalan extends StatelessWidget {
     int indexOfPage = index + (queryPage + 1) - 1;
 
     RawatJalanViewModel valueProvider = context.read<RawatJalanViewModel>();
-    List<DataRawatJalan> putDataRawat = valueProvider.listRawatJalanData;
+    List<DataRawatJalan>? putDataRawat;
+    if (valueProvider.search.isNotEmpty ||
+        valueProvider.searchController.text.isNotEmpty) {
+      putDataRawat = valueProvider.search;
+    } else {
+      putDataRawat = valueProvider.listRawatJalanData;
+    }
+
     return AlertDialog(
       content: Stack(children: [
         SizedBox(

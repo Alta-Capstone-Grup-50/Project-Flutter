@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../utilities/common/case_dialog.dart';
 import '/viewModels/main layout viewModel/mainLayout_viewModel.dart';
 import '/viewModels/login%20viewModel/login_viewModel.dart';
 import 'package:provider/provider.dart';
@@ -30,10 +31,18 @@ class ShapedWidget extends StatelessWidget {
                         hoverColor: Colors.transparent,
                         splashColor: Colors.transparent,
                         onPressed: () async {
-                          logoutFunction.logout(context);
-                          Future.delayed(const Duration(seconds: 1), () async {
-                            mainLayoutFunction.changeMenuShown();
-                          });
+                          showCaseDialog(
+                            context,
+                            label: 'Apakah anda yakin ingin logout?',
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              logoutFunction.logout(context);
+                              Future.delayed(const Duration(seconds: 1),
+                                  () async {
+                                mainLayoutFunction.changeMenuShown();
+                              });
+                            },
+                          );
                         },
                         child: Align(
                           alignment: Alignment.centerLeft,

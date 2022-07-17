@@ -38,6 +38,7 @@ flutter:
   assets:
     - assets/icons/success.svg
     - assets/icons/failed.svg
+    - assets/icons/warning.svg
     - assets/icons/logo.png
     - assets/icons/iconTable.png
     - assets/icons/accountCircle.png

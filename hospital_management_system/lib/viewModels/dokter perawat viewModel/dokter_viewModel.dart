@@ -28,7 +28,11 @@ class DokterViewModel extends ChangeNotifier {
   TextEditingController searchController = TextEditingController();
 
   DokterViewModel() {
-    getDataApiDokter();
+    initialFun();
+  }
+
+  initialFun() async {
+    await getDataApiDokter();
   }
 
   changeLoadingIndicator() {
@@ -38,7 +42,7 @@ class DokterViewModel extends ChangeNotifier {
 
   Future getDataApiDokter() async {
     fetchStatusDokter = StatusFetchDokter.isLoading;
-    notifyListeners();
+
     toReversed = (await service.getDataDokterApi())!;
     listDokterData = toReversed.reversed.toList();
     fetchStatusDokter = StatusFetchDokter.letsGo;

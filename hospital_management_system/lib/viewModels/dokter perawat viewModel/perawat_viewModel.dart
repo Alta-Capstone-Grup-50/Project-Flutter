@@ -28,7 +28,11 @@ class PerawatViewModel extends ChangeNotifier {
   TextEditingController searchController = TextEditingController();
 
   PerawatViewModel() {
-    getDataApiPerawat();
+    initialFun();
+  }
+
+  initialFun() async {
+    await getDataApiPerawat();
   }
 
   changeLoadingIndicator() {
@@ -38,7 +42,7 @@ class PerawatViewModel extends ChangeNotifier {
 
   Future getDataApiPerawat() async {
     fetchStatusPerawat = StatusFetchPerawat.isLoading;
-    notifyListeners();
+
     toReversed = (await service.getDataPerawatApi())!;
     listPerawatData = toReversed.reversed.toList();
     fetchStatusPerawat = StatusFetchPerawat.letsGo;

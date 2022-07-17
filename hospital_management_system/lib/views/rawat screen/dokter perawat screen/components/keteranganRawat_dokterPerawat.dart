@@ -1,6 +1,7 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
+import 'package:hospital_management_system/views/rawat%20screen/dokter%20perawat%20screen/components/history_keterangan.dart';
 import 'package:provider/provider.dart';
 import '../../../../models/keterangan_model.dart';
 import '../../../../utilities/common/progress_dialog.dart';
@@ -8,6 +9,7 @@ import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
 import '/utilities/common/input.dart';
 
 import '/utilities/constants/responsive.dart';
+import '../../../../utilities/common/case_dialog.dart';
 
 class KeteranganRawatDokterPerawat extends StatelessWidget {
   KeteranganRawatDokterPerawat(
@@ -164,7 +166,9 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
                         style: ElevatedButton.styleFrom(
                             primary: Colors.white,
                             side: BorderSide(color: green.shade800)),
-                        onPressed: () {},
+                        onPressed: () {
+                          openHistoryKeterangan(context);
+                        },
                         child: Text(
                           'History',
                           style: TextStyle(color: green.shade800, fontSize: 15),
@@ -182,8 +186,12 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
                       child: Consumer<RawatJalanViewModel>(
                         builder: ((context, value, child) => ElevatedButton(
                               onPressed: () {
-                                functionProvider.createKeterangan(
-                                    context,
+                                showCaseDialog(context,
+                                    label:
+                                        "Apa anda sudah yakin untuk menyimpan keterangan\ntersebut?",
+                                    onPressed: () async {
+                                  Navigator.of(context).pop();
+                                  functionProvider.createKeterangan(
                                     DataKeterangan(
                                         id: id,
                                         namaPasien: namePasien,
@@ -192,11 +200,17 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
                                             [dd, ' ', MM, ' ', yyyy, ' '],
                                             locale:
                                                 const IndonesianDateLocale())),
-                                    loadingProgres);
-                                if (value.postStatusKeterangan ==
-                                    StatusPostKeterangan.isLoading) {
-                                  loadingProgres.show();
-                                }
+                                  );
+                                  await functionProvider.putProsesKeterangan(
+                                      context,
+                                      id,
+                                      _keteranganController.text,
+                                      loadingProgres);
+                                  if (value.postStatusKeterangan ==
+                                      StatusPostKeterangan.isLoading) {
+                                    loadingProgres.show();
+                                  }
+                                });
                               },
                               child: const Text(
                                 'Simpan',

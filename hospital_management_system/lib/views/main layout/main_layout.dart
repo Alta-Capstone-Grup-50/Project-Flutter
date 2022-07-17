@@ -32,7 +32,7 @@ class MainLayout extends StatefulWidget {
 
 class _MainLayoutState extends State<MainLayout>
     with SingleTickerProviderStateMixin {
-  late AnimationController animationController;
+  AnimationController? animationController;
 
   final String assetLogo = 'assets/icons/logo.png';
 
@@ -209,11 +209,11 @@ class _MainLayoutState extends State<MainLayout>
   Widget body(BuildContext context, MainLayoutProvider provideValue,
       MainLayoutProvider provideFunction) {
     Animation<double> opacityAnimation =
-        Tween(begin: 0.0, end: 1.0).animate(animationController);
+        Tween(begin: 0.0, end: 1.0).animate(animationController!);
     if (provideValue.menuShown) {
-      animationController.forward();
+      animationController!.forward();
     } else {
-      animationController.reverse();
+      animationController!.reverse();
     }
     return Expanded(
       child: Stack(alignment: AlignmentDirectional.topCenter, children: [

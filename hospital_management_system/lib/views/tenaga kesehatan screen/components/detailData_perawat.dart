@@ -1,9 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/models/dokter_data_model.dart';
 import 'package:hospital_management_system/models/perawat_data_model.dart';
-import 'package:hospital_management_system/viewModels/dokter%20perawat%20viewModel/dokter_viewModel.dart';
 import 'package:hospital_management_system/viewModels/dokter%20perawat%20viewModel/perawat_viewModel.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -26,8 +24,17 @@ class DetailDataPerawat extends StatelessWidget {
     int index = query!.rowColumnIndex.rowIndex - 1;
     int indexOfPage = index + (queryPage + 1) - 1;
 
+    log(indexOfPage.toString());
+
     PerawatViewModel valueProvider = context.read<PerawatViewModel>();
-    List<DataPerawat> putDataPerawat = valueProvider.listPerawatData;
+
+    List<DataPerawat>? putDataPerawat;
+    if (valueProvider.search.isNotEmpty ||
+        valueProvider.searchController.text.isNotEmpty) {
+      putDataPerawat = valueProvider.search;
+    } else {
+      putDataPerawat = valueProvider.listPerawatData;
+    }
 
     return AlertDialog(
       content: Stack(

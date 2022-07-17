@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hospital_management_system/utilities/constants/responsive.dart';
 
-class DialogAlert extends StatelessWidget {
-  DialogAlert({Key? key, required this.isSuccess, required this.label})
+class NotificationDialog extends StatelessWidget {
+  NotificationDialog({Key? key, required this.isSuccess, required this.label})
       : super(key: key);
 
   final bool isSuccess;
@@ -57,21 +57,21 @@ class DialogAlert extends StatelessWidget {
   }
 }
 
-Future openDialogSuccess(BuildContext context, {required label}) {
+Future showNotifSuccess(BuildContext context, {required label}) {
   return showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (context) => DialogAlert(
+      builder: (context) => NotificationDialog(
             isSuccess: true,
             label: label,
           ));
 }
 
-Future openDialogFailed(BuildContext context, {required label}) {
+Future showNotifFailed(BuildContext context, {required label}) {
   return showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (context) => DialogAlert(
+      builder: (context) => NotificationDialog(
             isSuccess: false,
             label: label,
           ));

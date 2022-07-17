@@ -25,7 +25,13 @@ class DetailPasien extends StatelessWidget {
     int indexOfPage = index + (queryPage + 1) - 1;
 
     PasienViewModel valueProvider = context.read<PasienViewModel>();
-    List<DataPasien> putDataPasien = valueProvider.listPasienData;
+    List<DataPasien>? putDataPasien;
+    if (valueProvider.search.isNotEmpty ||
+        valueProvider.searchController.text.isNotEmpty) {
+      putDataPasien = valueProvider.search;
+    } else {
+      putDataPasien = valueProvider.listPasienData;
+    }
 
     return AlertDialog(
       content: Stack(

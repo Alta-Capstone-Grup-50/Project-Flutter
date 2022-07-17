@@ -9,9 +9,9 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../models/rawatJalan_data_model.dart';
 import '../../services/perfs_service.dart';
-import '../../services/rawatJalan_proses/rawatJalan_change_service.dart';
-import '../../services/rawatJalan_service.dart';
-import '../../utilities/common/dialog_alert.dart';
+import '../../services/rawat jalan/rawatJalan_change_service.dart';
+import '../../services/rawat jalan/rawatJalan_service.dart';
+import '../../views/rawat screen/dokter perawat screen/components/notification_dialog.dart';
 import '../../utilities/common/progress_dialog.dart';
 
 enum StatusFetchRawat {
@@ -33,6 +33,7 @@ class RawatJalanViewModel extends ChangeNotifier {
   int? hasMatchId;
   String? hasMatchPoli;
   String? noAntrian;
+
   List<DataRawatJalan> listRawatJalanData = [];
   List<DataKeterangan> listKeterangan = [];
   List<DataRawatJalan> _search = [];
@@ -51,23 +52,8 @@ class RawatJalanViewModel extends ChangeNotifier {
     await getCurrentAntrian();
   }
 
-  Future<void> createKeterangan(
-      context, DataKeterangan? keterangan, ProgressDialog progress) async {
-    postStatusKeterangan = StatusPostKeterangan.isLoading;
-    notifyListeners();
-    await Future.delayed(
-      const Duration(seconds: 2),
-      () {
-        listKeterangan.add(keterangan!);
-        notifyListeners();
-      },
-    );
-    progress.hide();
-    Navigator.pop(context);
-    Navigator.pop(context);
-    openDialogSuccess(context, label: "Keterangan Dokter Berhasil Tersimpan");
-    log(listKeterangan.toString());
-    postStatusKeterangan = StatusPostKeterangan.letsGo;
+  Future<void> createKeterangan(DataKeterangan? keterangan) async {
+    listKeterangan.add(keterangan!);
     notifyListeners();
   }
 
@@ -87,9 +73,63 @@ class RawatJalanViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<Map<String, dynamic>> putProsesKeterangan(
+      context, int id, String keterangan, ProgressDialog progress) async {
+    bool? proses;
+    Map<String, dynamic> result = {};
+
+    postStatusKeterangan = StatusPostKeterangan.isLoading;
+    notifyListeners();
+
+    listRawatJalanData.forEach((element) {
+      if (element.id == id) {
+        proses = element.proses;
+      }
+    });
+
+    final Map<String, dynamic> prosesAntrian = {
+      "proses": proses,
+      "keterangan": keterangan
+    };
+
+    RawatJalanChangeService()
+        .putDataRawatJalanApi(id, prosesAntrian)
+        .then((response) {
+      if (response.statusCode >= 200 && response.statusCode < 300) {
+        var responseData = response.data;
+        result = responseData;
+      } else {
+        result = {
+          'status': response.statusCode,
+          'message': 'Gagal',
+        };
+      }
+    });
+    progress.hide();
+    Navigator.pop(context);
+    Navigator.pop(context);
+    showNotifSuccess(context, label: "Keterangan Dokter Berhasil Tersimpan");
+    log(listKeterangan.toString());
+    postStatusKeterangan = StatusPostKeterangan.letsGo;
+    notifyListeners();
+    return result;
+  }
+
   Future<Map<String, dynamic>> putProsesAntrian(int id, bool proses) async {
     Map<String, dynamic> result = {};
-    final Map<String, dynamic> prosesAntrian = {"proses": proses};
+    String? keterangan;
+
+    listKeterangan.forEach((element) {
+      if (element.id == id) {
+        keterangan = element.keterangan;
+      }
+    });
+
+    final Map<String, dynamic> prosesAntrian = {
+      "proses": proses,
+      "keterangan": keterangan
+    };
+
     RawatJalanChangeService()
         .putDataRawatJalanApi(id, prosesAntrian)
         .then((response) {
@@ -113,7 +153,8 @@ class RawatJalanViewModel extends ChangeNotifier {
     hasMatchPoli = await (UserPreferences().getPoli());
 
     listRawatJalanData = (await service.getDataRawatJalanApi(hasMatchId!))!;
-
+    listRawatJalanData.sort((a, b) =>
+        a.nomerAntrian!.toString().compareTo(b.nomerAntrian!.toString()));
     listRawatJalanData
         .sort((a, b) => a.proses.toString().compareTo(b.proses.toString()));
 

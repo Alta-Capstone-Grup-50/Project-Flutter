@@ -47,7 +47,6 @@ class PasienTable {
         return LayoutBuilder(
           builder: ((context, constraints) => Column(children: [
                 SizedBox(
-                    width: constraints.maxWidth,
                     height: (_dataSource.data.length <= 2)
                         ? 160
                         : (_dataSource.data.length <= 4)
@@ -125,11 +124,11 @@ class PasienTable {
                                       ))),
                               GridColumn(
                                   columnName: 'Alamat',
-                                  width: 200,
+                                  width: 250,
                                   label: Container(
                                       alignment: Alignment.centerLeft,
                                       padding:
-                                          const EdgeInsets.only(right: 16.0),
+                                          const EdgeInsets.only(right: 20.0),
                                       child: const Text(
                                         'Alamat',
                                         style: TextStyle(
@@ -139,7 +138,9 @@ class PasienTable {
                               GridColumn(
                                   columnName: 'Poli',
                                   label: Container(
-                                      alignment: Alignment.center,
+                                      alignment: Alignment.centerLeft,
+                                      padding: const EdgeInsets.only(
+                                          right: 16.0, left: 20.0),
                                       child: const Text(
                                         'Poli',
                                         style: TextStyle(
