@@ -1,17 +1,8 @@
-import 'dart:developer';
-import 'dart:ffi';
-
-import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/utilities/constants/color.dart';
 import 'package:provider/provider.dart';
-import '../../../../models/keterangan_model.dart';
 import '../../../../utilities/common/progress_dialog.dart';
 import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
-import '/utilities/common/input.dart';
-
 import '/utilities/constants/responsive.dart';
-import '../../../../utilities/common/case_dialog.dart';
 
 class HistoryKeterangan extends StatelessWidget {
   const HistoryKeterangan({Key? key}) : super(key: key);
