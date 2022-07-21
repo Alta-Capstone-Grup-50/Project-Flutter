@@ -34,8 +34,7 @@ class ChoseCard extends StatelessWidget {
                 child: Consumer<HomeProvider>(
                     builder: ((context, functionProvider, child) => InkWell(
                           onTap: () {
-                            Navigator.pushNamedAndRemoveUntil(
-                                context, page, ModalRoute.withName(page));
+                            Navigator.pushReplacementNamed(context, page);
 
                             functionProvider.actionChoseCardDokter();
                           },

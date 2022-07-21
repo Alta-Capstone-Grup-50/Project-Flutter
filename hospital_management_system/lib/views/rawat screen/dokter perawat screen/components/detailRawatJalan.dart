@@ -1,5 +1,10 @@
+import 'dart:developer';
+
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/viewModels/login%20viewModel/login_viewModel.dart';
 import 'package:provider/provider.dart';
+
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../../models/rawatJalan_data_model.dart';
@@ -24,7 +29,9 @@ class DetailRawatJalan extends StatelessWidget {
     int index = query!.rowColumnIndex.rowIndex - 1;
     int indexOfPage = index + (queryPage + 1) - 1;
 
-    RawatJalanViewModel valueProvider = context.read<RawatJalanViewModel>();
+    RawatJalanViewModel functionProvider = context.read<RawatJalanViewModel>();
+    RawatJalanViewModel valueProvider = context.watch<RawatJalanViewModel>();
+    LoginProvider loginValue = context.watch<LoginProvider>();
     List<DataRawatJalan>? putDataRawat;
     if (valueProvider.search.isNotEmpty ||
         valueProvider.searchController.text.isNotEmpty) {
@@ -46,7 +53,8 @@ class DetailRawatJalan extends StatelessWidget {
             child: Scrollbar(
               controller: _scrollController,
               thumbVisibility: (Responsive.isMobile(context)) ? false : true,
-              child: showDetail(context, putDataRawat, indexOfPage),
+              child: showDetail(context, putDataRawat, indexOfPage,
+                  functionProvider, valueProvider, loginValue),
             ),
           ),
         ),
@@ -57,6 +65,10 @@ class DetailRawatJalan extends StatelessWidget {
                 child: InkResponse(
                   radius: 25,
                   onTap: () {
+                    if (valueProvider.hEdit == true) {
+                      functionProvider.changeEditStatus();
+                    }
+
                     Navigator.of(context).pop();
                   },
                   child: Icon(
@@ -70,8 +82,25 @@ class DetailRawatJalan extends StatelessWidget {
     );
   }
 
-  Widget showDetail(BuildContext context, List<DataRawatJalan> putDataRawat,
-      int indexOfPage) {
+  Widget showDetail(
+      BuildContext context,
+      List<DataRawatJalan> putDataRawat,
+      int indexOfPage,
+      RawatJalanViewModel functionProvider,
+      RawatJalanViewModel valueProvider,
+      LoginProvider loginValue) {
+    final List<String> jenisKelamin = [
+      'Laki - laki',
+      'Perempuan',
+    ];
+
+    final List<String> jenisPenanganan = [
+      'Rawat Jalan',
+    ];
+
+    final List<String> noAntrian = ['G-', 'K-', 'T-', 'U-'];
+    String selected = putDataRawat[indexOfPage].nomerAntrian!.substring(0, 1);
+
     return Stack(children: [
       SingleChildScrollView(
         controller: _scrollController,
@@ -111,8 +140,7 @@ class DetailRawatJalan extends StatelessWidget {
                     child: Input(
                       initialValue: putDataRawat[indexOfPage].nik,
                       borderRadius: const BorderRadius.all(Radius.zero),
-                      keyboardType: TextInputType.none,
-                      enabled: false,
+                      enabled: valueProvider.hEdit,
                     ),
                   ),
                   const SizedBox(
@@ -128,7 +156,7 @@ class DetailRawatJalan extends StatelessWidget {
                       initialValue: putDataRawat[indexOfPage].nama,
                       borderRadius: const BorderRadius.all(Radius.zero),
                       keyboardType: TextInputType.none,
-                      enabled: false,
+                      enabled: valueProvider.hEdit,
                     ),
                   ),
                   const SizedBox(
@@ -143,8 +171,7 @@ class DetailRawatJalan extends StatelessWidget {
                     child: Input(
                       initialValue: putDataRawat[indexOfPage].alamat,
                       borderRadius: const BorderRadius.all(Radius.zero),
-                      keyboardType: TextInputType.none,
-                      enabled: false,
+                      enabled: valueProvider.hEdit,
                     ),
                   ),
                   const SizedBox(
@@ -156,16 +183,36 @@ class DetailRawatJalan extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
-                    child: Input(
-                      initialValue:
+                    child: DropdownButtonFormField2(
+                      value:
                           (putDataRawat[indexOfPage].jenisKelamin!.isNotEmpty)
                               ? (putDataRawat[indexOfPage].jenisKelamin == 'L')
                                   ? 'Laki - laki'
                                   : 'Perempuan'
                               : ' ',
-                      borderRadius: const BorderRadius.all(Radius.zero),
-                      keyboardType: TextInputType.none,
-                      enabled: false,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.zero,
+                        filled: true,
+                        enabled: valueProvider.hEdit,
+                        fillColor: grey.shade100.withAlpha(65),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.zero,
+                          borderSide: BorderSide(color: grey.shade300),
+                        ),
+                        disabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                                width: 0, color: Colors.transparent)),
+                      ),
+                      buttonPadding: const EdgeInsets.only(left: 10),
+                      items: jenisKelamin
+                          .map((item) =>
+                              DropdownMenuItem(value: item, child: Text(item)))
+                          .toList(),
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      iconSize: 30,
+                      buttonHeight: 50,
+                      onChanged:
+                          (valueProvider.hEdit == true) ? (value) {} : null,
                     ),
                   ),
                   const SizedBox(
@@ -180,8 +227,8 @@ class DetailRawatJalan extends StatelessWidget {
                     child: Input(
                       initialValue: putDataRawat[indexOfPage].noHp,
                       borderRadius: const BorderRadius.all(Radius.zero),
-                      keyboardType: TextInputType.none,
-                      enabled: false,
+                      keyboardType: TextInputType.phone,
+                      enabled: valueProvider.hEdit,
                     ),
                   ),
                   const SizedBox(
@@ -196,8 +243,7 @@ class DetailRawatJalan extends StatelessWidget {
                     child: Input(
                       initialValue: putDataRawat[indexOfPage].jenisPenyakit,
                       borderRadius: const BorderRadius.all(Radius.zero),
-                      keyboardType: TextInputType.none,
-                      enabled: false,
+                      enabled: valueProvider.hEdit,
                     ),
                   ),
                   const SizedBox(
@@ -210,15 +256,42 @@ class DetailRawatJalan extends StatelessWidget {
                   Container(
                     width: (Responsive.isMobile(context))
                         ? MediaQuery.of(context).size.width
-                        : MediaQuery.of(context).size.width / 4.75,
+                        : MediaQuery.of(context).size.width / 4.50,
                     padding: const EdgeInsets.only(top: 12),
-                    child: Input(
-                      initialValue: 'Rawat Jalan',
-                      borderRadius: const BorderRadius.all(Radius.zero),
-                      keyboardType: TextInputType.none,
-                      textAlignVertical: TextAlignVertical.center,
-                      enabled: false,
-                      suffixIcon: const Icon(Icons.keyboard_arrow_down),
+                    child: DropdownButtonFormField2(
+                      value: putDataRawat[indexOfPage].jenisPenanganan,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.zero,
+                        filled: true,
+                        enabled: valueProvider.hEdit,
+                        fillColor: grey.shade100.withAlpha(65),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.zero,
+                          borderSide: BorderSide(color: grey.shade300),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.zero,
+                          borderSide: BorderSide(color: grey.shade300),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.zero,
+                          borderSide: BorderSide(color: grey.shade300),
+                        ),
+                        disabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                                width: 0, color: Colors.transparent)),
+                      ),
+                      buttonPadding: const EdgeInsets.only(left: 10),
+                      items: jenisPenanganan
+                          .map((item) => DropdownMenuItem(
+                              value: putDataRawat[indexOfPage].jenisPenanganan,
+                              child: Text(item)))
+                          .toList(),
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      iconSize: 30,
+                      buttonHeight: 50,
+                      onChanged:
+                          (valueProvider.hEdit == true) ? (value) {} : null,
                     ),
                   ),
                   const SizedBox(
@@ -243,8 +316,7 @@ class DetailRawatJalan extends StatelessWidget {
                                           putDataRawat[indexOfPage].tempatLahir,
                                       borderRadius:
                                           const BorderRadius.all(Radius.zero),
-                                      keyboardType: TextInputType.none,
-                                      enabled: false,
+                                      enabled: valueProvider.hEdit,
                                     ),
                                   ),
                                 ],
@@ -272,9 +344,10 @@ class DetailRawatJalan extends StatelessWidget {
                                       keyboardType: TextInputType.none,
                                       textAlignVertical:
                                           TextAlignVertical.center,
-                                      enabled: false,
-                                      suffixIcon:
-                                          const Icon(Icons.keyboard_arrow_down),
+                                      enabled: valueProvider.hEdit,
+                                      onTap: () {},
+                                      readOnly: true,
+                                      suffixIcon: const Icon(Icons.date_range),
                                     ),
                                   ),
                                 ],
@@ -296,8 +369,7 @@ class DetailRawatJalan extends StatelessWidget {
                                     putDataRawat[indexOfPage].tempatLahir,
                                 borderRadius:
                                     const BorderRadius.all(Radius.zero),
-                                keyboardType: TextInputType.none,
-                                enabled: false,
+                                enabled: valueProvider.hEdit,
                               ),
                             ),
                             const SizedBox(
@@ -316,9 +388,12 @@ class DetailRawatJalan extends StatelessWidget {
                                     const BorderRadius.all(Radius.zero),
                                 keyboardType: TextInputType.none,
                                 textAlignVertical: TextAlignVertical.center,
-                                enabled: false,
-                                suffixIcon:
-                                    const Icon(Icons.keyboard_arrow_down),
+                                enabled: valueProvider.hEdit,
+                                onTap: () {
+                                  functionProvider.dateTimeTanggal(context);
+                                },
+                                readOnly: true,
+                                suffixIcon: const Icon(Icons.date_range),
                               ),
                             ),
                           ],
@@ -347,11 +422,7 @@ class DetailRawatJalan extends StatelessWidget {
                                       borderRadius:
                                           const BorderRadius.all(Radius.zero),
                                       keyboardType: TextInputType.none,
-                                      textAlignVertical:
-                                          TextAlignVertical.center,
-                                      enabled: false,
-                                      suffixIcon:
-                                          const Icon(Icons.keyboard_arrow_down),
+                                      enabled: valueProvider.hEdit,
                                     ),
                                   ),
                                 ],
@@ -380,9 +451,13 @@ class DetailRawatJalan extends StatelessWidget {
                                       keyboardType: TextInputType.none,
                                       textAlignVertical:
                                           TextAlignVertical.center,
-                                      enabled: false,
-                                      suffixIcon:
-                                          const Icon(Icons.keyboard_arrow_down),
+                                      enabled: valueProvider.hEdit,
+                                      onTap: () {
+                                        functionProvider
+                                            .dateTimeJadwal(context);
+                                      },
+                                      readOnly: true,
+                                      suffixIcon: const Icon(Icons.date_range),
                                     ),
                                   ),
                                 ],
@@ -407,7 +482,11 @@ class DetailRawatJalan extends StatelessWidget {
                                     const BorderRadius.all(Radius.zero),
                                 keyboardType: TextInputType.none,
                                 textAlignVertical: TextAlignVertical.center,
-                                enabled: false,
+                                enabled: valueProvider.hEdit,
+                                onTap: () {
+                                  log('Hello World');
+                                },
+                                readOnly: true,
                                 suffixIcon:
                                     const Icon(Icons.keyboard_arrow_down),
                               ),
@@ -429,9 +508,12 @@ class DetailRawatJalan extends StatelessWidget {
                                     const BorderRadius.all(Radius.zero),
                                 keyboardType: TextInputType.none,
                                 textAlignVertical: TextAlignVertical.center,
-                                enabled: false,
-                                suffixIcon:
-                                    const Icon(Icons.keyboard_arrow_down),
+                                enabled: valueProvider.hEdit,
+                                onTap: () {
+                                  functionProvider.dateTimeJadwal(context);
+                                },
+                                readOnly: true,
+                                suffixIcon: const Icon(Icons.date_range),
                               ),
                             ),
                           ],
@@ -443,65 +525,200 @@ class DetailRawatJalan extends StatelessWidget {
               height: 40,
             ),
             Container(
-              alignment:
-                  (Responsive.isMobile(context)) ? Alignment.centerLeft : null,
-              width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(
-                  right: (Responsive.isMobile(context)) ? 0 : 30, bottom: 10),
-              child: Row(
-                mainAxisAlignment: (Responsive.isMobile(context))
-                    ? MainAxisAlignment.center
-                    : MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  SizedBox(
-                    width: (Responsive.isMobile(context))
-                        ? MediaQuery.of(context).size.width * 0.28
-                        : 120,
-                    height: 40,
-                    child: ElevatedButton(
-                        onPressed: () async {
-                          await openKeteranganRawatDokterPerawat(
-                              context,
-                              putDataRawat[indexOfPage].id ?? 0,
-                              putDataRawat[indexOfPage].nama ?? '-');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: green.shade300,
-                        ),
-                        child: Text(
-                          'Keterangan',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize:
-                                  (Responsive.isMobile(context)) ? 14 : 15),
-                        )),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  SizedBox(
-                    width: (Responsive.isMobile(context))
-                        ? MediaQuery.of(context).size.width * 0.28
-                        : 120,
-                    height: 40,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: primaryColor,
-                        ),
-                        child: Text(
-                          'Kembali',
-                          style: TextStyle(
-                              fontSize:
-                                  (Responsive.isMobile(context)) ? 14 : 15),
-                        )),
-                  )
-                ],
-              ),
-            )
+                alignment: (Responsive.isMobile(context))
+                    ? Alignment.centerLeft
+                    : null,
+                width: MediaQuery.of(context).size.width,
+                padding: EdgeInsets.only(
+                    right: (Responsive.isMobile(context)) ? 0 : 30, bottom: 10),
+                child: !(Responsive.isMobile(context) ||
+                        Responsive.isTablet(context) &&
+                            MediaQuery.of(context).orientation ==
+                                Orientation.landscape)
+                    ? Row(
+                        mainAxisAlignment: (Responsive.isMobile(context))
+                            ? MainAxisAlignment.center
+                            : MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          (functionProvider.hEdit == true)
+                              ? const SizedBox.shrink()
+                              : SizedBox(
+                                  width: (Responsive.isMobile(context))
+                                      ? MediaQuery.of(context).size.width * 0.28
+                                      : 120,
+                                  height: 40,
+                                  child: ElevatedButton(
+                                      onPressed: () async {
+                                        await openKeteranganRawatDokterPerawat(
+                                            context,
+                                            putDataRawat[indexOfPage].id ?? 0,
+                                            putDataRawat[indexOfPage].nama ??
+                                                '-');
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        primary: green.shade300,
+                                      ),
+                                      child: Text(
+                                        'Keterangan',
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontSize:
+                                                (Responsive.isMobile(context))
+                                                    ? 14
+                                                    : 15),
+                                      )),
+                                ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          (loginValue.result['role'] != 'dokter' ||
+                                  loginValue.result['role'] != 'perawat')
+                              ? SizedBox(
+                                  width: (Responsive.isMobile(context))
+                                      ? MediaQuery.of(context).size.width * 0.28
+                                      : 120,
+                                  height: 40,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      functionProvider.changeEditStatus();
+                                    },
+                                    style:
+                                        ElevatedButton.styleFrom(primary: grey),
+                                    child: Text(
+                                      (valueProvider.hEdit == true)
+                                          ? 'Cancel'
+                                          : 'Edit',
+                                      style: TextStyle(
+                                          fontSize:
+                                              (Responsive.isMobile(context))
+                                                  ? 14
+                                                  : 15),
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          SizedBox(
+                            width: (Responsive.isMobile(context))
+                                ? MediaQuery.of(context).size.width * 0.28
+                                : 120,
+                            height: 40,
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  if (valueProvider.hEdit == true) {
+                                    functionProvider.changeEditStatus();
+                                    Navigator.pop(context);
+                                  } else {
+                                    Navigator.pop(context);
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: (valueProvider.hEdit == true)
+                                      ? green
+                                      : primaryColor,
+                                ),
+                                child: Text(
+                                  (valueProvider.hEdit == true)
+                                      ? 'Simpan'
+                                      : 'Kembali',
+                                  style: TextStyle(
+                                      fontSize: (Responsive.isMobile(context))
+                                          ? 14
+                                          : 15),
+                                )),
+                          )
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          (valueProvider.hEdit == true)
+                              ? const SizedBox.shrink()
+                              : SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 40,
+                                  child: ElevatedButton(
+                                      onPressed: () async {
+                                        await openKeteranganRawatDokterPerawat(
+                                            context,
+                                            putDataRawat[indexOfPage].id ?? 0,
+                                            putDataRawat[indexOfPage].nama ??
+                                                '-');
+                                      },
+                                      style: ElevatedButton.styleFrom(
+                                        primary: green.shade300,
+                                      ),
+                                      child: Text(
+                                        'Keterangan',
+                                        overflow: TextOverflow.ellipsis,
+                                        style: TextStyle(
+                                            fontSize:
+                                                (Responsive.isMobile(context))
+                                                    ? 14
+                                                    : 15),
+                                      )),
+                                ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          (loginValue.result['role'] != 'dokter' ||
+                                  loginValue.result['role'] != 'perawat')
+                              ? SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 40,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      functionProvider.changeEditStatus();
+                                    },
+                                    style:
+                                        ElevatedButton.styleFrom(primary: grey),
+                                    child: Text(
+                                      (valueProvider.hEdit == true)
+                                          ? 'Cancel'
+                                          : 'Edit',
+                                      style: TextStyle(
+                                          fontSize:
+                                              (Responsive.isMobile(context))
+                                                  ? 14
+                                                  : 15),
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: 40,
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  if (valueProvider.hEdit == true) {
+                                    functionProvider.changeEditStatus();
+                                    Navigator.pop(context);
+                                  } else {
+                                    Navigator.pop(context);
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: (valueProvider.hEdit == true)
+                                      ? green
+                                      : primaryColor,
+                                ),
+                                child: Text(
+                                  (valueProvider.hEdit == true)
+                                      ? 'Simpan'
+                                      : 'Kembali',
+                                  style: TextStyle(
+                                      fontSize: (Responsive.isMobile(context))
+                                          ? 14
+                                          : 15),
+                                )),
+                          )
+                        ],
+                      ))
           ],
         ),
       ),
@@ -526,6 +743,8 @@ class DetailRawatJalan extends StatelessWidget {
                             size: 19,
                           ),
                           onPressed: () {
+                            functionProvider.changeEditStatus();
+
                             Navigator.of(context).pop();
                           }),
                     ),

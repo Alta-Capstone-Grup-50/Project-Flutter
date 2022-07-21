@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hospital_management_system/viewModels/manage%20viewModel/manage_viewModel.dart';
+import 'package:hospital_management_system/views/manage%20account%20screen/manage_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'models/akun_model.dart';
@@ -68,6 +70,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: ((context) => MainLayoutProvider()),
         ),
+        ChangeNotifierProvider(
+          create: ((context) => ManageViewModel()),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -99,6 +104,7 @@ class MyApp extends StatelessWidget {
           '/rawatJalan': (context) => const RawatScreen(),
           '/tenagaKesehatan/dokter': (context) => const DokterScreen(),
           '/tenagaKesehatan/perawat': (context) => const PerawatScreen(),
+          '/manage': (context) => const ManageScreen()
         },
         scrollBehavior: const MaterialScrollBehavior().copyWith(
           dragDevices: {

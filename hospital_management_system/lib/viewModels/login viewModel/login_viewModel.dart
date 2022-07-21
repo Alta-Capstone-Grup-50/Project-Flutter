@@ -32,6 +32,7 @@ class LoginProvider extends ChangeNotifier {
   int? matchDataId;
   Timer? authTimer;
   String? matchDataPoli;
+
   final AkunModel _user = AkunModel();
   StatusAuth _loggedInStatusAuth = StatusAuth.notLoggedIn;
   Map<String, dynamic> _result = {};
@@ -40,6 +41,7 @@ class LoginProvider extends ChangeNotifier {
   TextEditingController passwordController = TextEditingController();
 
   AkunModel get user => _user;
+  Map<String, dynamic> get result => _result;
   StatusAuth get loggedInStatusAuth => _loggedInStatusAuth;
 
   set loggedInStatus(StatusAuth value) {
@@ -76,8 +78,7 @@ class LoginProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void validasiUserData(BuildContext context,
-      {required AkunModel authUser}) async {
+  validasiUserData(BuildContext context, {required AkunModel authUser}) async {
     DokterViewModel dokteViewModel = context.read<DokterViewModel>();
     PerawatViewModel perawatViewModel = context.read<PerawatViewModel>();
     await dokteViewModel.getDataApiDokter();
@@ -86,14 +87,12 @@ class LoginProvider extends ChangeNotifier {
     DataDokter? dataDokter;
     DataPerawat? dataPerawat;
 
-    UserPreferences().saveId();
-    UserPreferences().savePoli();
-
     if (authUser.level == 'dokter') {
       dataDokter = dokteViewModel.listDokterData
           .firstWhere((element) => element.idUser == authUser.id);
       matchDataId = dataDokter.idUser ?? 0;
       matchDataPoli = dataDokter.poli ?? '';
+
       notifyListeners();
     }
     if (authUser.level == 'perawat') {
@@ -101,6 +100,7 @@ class LoginProvider extends ChangeNotifier {
           .firstWhere((element) => element.idUser == authUser.id);
       matchDataId = dataPerawat.idUser ?? 0;
       matchDataPoli = dataPerawat.poli ?? '';
+
       notifyListeners();
     }
 
@@ -139,10 +139,9 @@ class LoginProvider extends ChangeNotifier {
             var responseData = response.data;
 
             AkunModel authUser = AkunModel.fromJson(responseData);
+            UserPreferences().saveUser(authUser);
 
             if (authUser.level == 'dokter' || authUser.level == 'perawat') {
-              UserPreferences().saveUser(authUser);
-
               validasiUserData(context, authUser: authUser);
 
               _loggedInStatusAuth = StatusAuth.loggedIn;
@@ -151,7 +150,8 @@ class LoginProvider extends ChangeNotifier {
               _result = {
                 'status': true,
                 'message': 'Login Berhasil',
-                'user': authUser
+                'user': authUser,
+                'role': authUser.level
               };
 
               if (_result['status'] == true) {
@@ -174,19 +174,33 @@ class LoginProvider extends ChangeNotifier {
                 );
               }
             } else {
-              _loggedInStatusAuth = StatusAuth.notLoggedIn;
+              _loggedInStatusAuth = StatusAuth.loggedIn;
               notifyListeners();
 
               _result = {
-                'status': false,
-                'message': 'Hak akses terkunci',
+                'status': true,
+                'message': 'Login Berhasil, Welcome Admin',
+                'user': authUser,
+                'role': authUser.level
               };
 
               SnackBarComponent(
                 context: context,
                 message: _result['message'],
-                type: 'warning',
+                type: 'success',
                 duration: const Duration(milliseconds: 1400),
+              );
+
+              Future.delayed(
+                const Duration(milliseconds: 1500),
+                () async {
+                  if (checkBox == false) {
+                    usernameController.text = '';
+                    passwordController.text = '';
+                  }
+                  await Navigator.pushNamedAndRemoveUntil(
+                      context, '/home', (Route<dynamic> route) => false);
+                },
               );
             }
           } else {
@@ -245,8 +259,10 @@ class LoginProvider extends ChangeNotifier {
 
   void removePrefereces() {
     UserPreferences().removeUser();
-    UserPreferences().removeId();
-    UserPreferences().removePoli();
+    if (_result['role'] == 'dokter' || _result['role'] == 'perawat') {
+      UserPreferences().removeId();
+      UserPreferences().removePoli();
+    }
   }
 
   Future<void> autologout(BuildContext context) async {
@@ -267,15 +283,15 @@ class LoginProvider extends ChangeNotifier {
   }
 
   void logout(BuildContext context) {
-    removePrefereces();
     if (authTimer != null) {
       authTimer!.cancel();
       authTimer = null;
     }
 
-    SchedulerBinding.instance.addPostFrameCallback((_) {
-      Future.delayed(const Duration(seconds: 1), () {
-        Navigator.pushNamedAndRemoveUntil(
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      await Future.delayed(const Duration(seconds: 1), () async {
+        removePrefereces();
+        await Navigator.pushNamedAndRemoveUntil(
           context,
           '/login',
           (Route<dynamic> route) => false,

@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hospital_management_system/models/keterangan_model.dart';
+import 'package:hospital_management_system/services/rawat%20jalan/rawatJalan_serviceAdmin.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
+import 'package:hospital_management_system/viewModels/login%20viewModel/login_viewModel.dart';
 
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -38,13 +40,18 @@ class RawatJalanViewModel extends ChangeNotifier {
   List<DataRawatJalan> _tempData = [];
   final List<DataKeterangan> _listKeterangan = [];
   List<DataRawatJalan> _search = [];
+  bool hEdit = false;
+  DateTime? dateTimeT;
+  DateTime? dateTimeJ;
 
   String? get hasMatchPoli => _hasMatchPoli;
   String? get noAntrian => _noAntrian;
+  LoginProvider? valueProvide;
   List<DataRawatJalan> get search => _search;
   List<DataRawatJalan> get listRawatJalanData => _listRawatJalanData;
 
   RawatJalanService service = RawatJalanService();
+  RawatJalanServiceAdmin serviceForAdmin = RawatJalanServiceAdmin();
 
   TextEditingController searchController = TextEditingController();
 
@@ -53,8 +60,36 @@ class RawatJalanViewModel extends ChangeNotifier {
   }
 
   initialFun() async {
-    await getDataApiRawatJalan();
     await getCurrentAntrian();
+  }
+
+  changeEditStatus() {
+    hEdit = !hEdit;
+    notifyListeners();
+  }
+
+  void dateTimeTanggal(BuildContext context) {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(1901),
+            lastDate: DateTime(2023))
+        .then((date) {
+      dateTimeT = date;
+    });
+    notifyListeners();
+  }
+
+  void dateTimeJadwal(BuildContext context) {
+    showDatePicker(
+            context: context,
+            initialDate: DateTime.now(),
+            firstDate: DateTime(1901),
+            lastDate: DateTime(2023))
+        .then((date) {
+      dateTimeJ = date;
+    });
+    notifyListeners();
   }
 
   Future<void> createKeterangan(DataKeterangan? keterangan) async {
@@ -157,6 +192,26 @@ class RawatJalanViewModel extends ChangeNotifier {
     _hasMatchPoli = await (UserPreferences().getPoli());
 
     _tempData = (await service.getDataRawatJalanApi(_hasMatchId!))!;
+
+    _listRawatJalanData = _tempData
+        .where((element) => element.nik != '' && element.nama != '')
+        .toList();
+
+    _listRawatJalanData.sort((a, b) =>
+        a.nomerAntrian!.toString().compareTo(b.nomerAntrian!.toString()));
+    _listRawatJalanData
+        .sort((a, b) => a.proses.toString().compareTo(b.proses.toString()));
+
+    fetchStatusRawat = StatusFetchRawat.letsGo;
+    notifyListeners();
+  }
+
+  Future getDataApiRawatJalanAdmin() async {
+    fetchStatusRawat = StatusFetchRawat.isLoading;
+    _hasMatchId = await (UserPreferences().getId());
+    _hasMatchPoli = await (UserPreferences().getPoli());
+
+    _tempData = (await serviceForAdmin.getDataRawatJalanApiAdmin())!;
 
     _listRawatJalanData = _tempData
         .where((element) => element.nik != '' && element.nama != '')

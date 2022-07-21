@@ -47,7 +47,7 @@ class RawatTable {
                           ? 160
                           : (_dataSource.data.length <= 4)
                               ? 240
-                              : 320,
+                              : 305,
                       child: SfDataGridTheme(
                         data: SfDataGridThemeData(
                           sortIconColor: Colors.black,
@@ -163,9 +163,6 @@ class RawatTable {
                           ],
                         ),
                       ),
-                    ),
-                    const SizedBox(
-                      height: 20,
                     ),
                     Container(
                       padding: EdgeInsets.symmetric(

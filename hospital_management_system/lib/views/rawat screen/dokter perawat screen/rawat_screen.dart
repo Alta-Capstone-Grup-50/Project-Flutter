@@ -19,7 +19,14 @@ class RawatScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     RawatJalanViewModel init = context.read<RawatJalanViewModel>();
-    init.getDataApiRawatJalan();
+    LoginProvider valueProvide = context.watch<LoginProvider>();
+
+    if (valueProvide.result['role'] == 'dokter' ||
+        valueProvide.result['role'] == 'perawat') {
+      init.getDataApiRawatJalan();
+    } else {
+      init.getDataApiRawatJalanAdmin();
+    }
 
     return MainLayout(
       action: true,
@@ -159,33 +166,38 @@ class RawatScreen extends StatelessWidget {
                                 ),
                               ),
                         const Spacer(),
-                        SizedBox(
-                          height: 65,
-                          child: Card(
-                            color: primaryColor.shade600,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              child: Column(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceEvenly,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    valueProvider.noAntrian ?? 'Done',
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.bold),
+                        (valueProvide.result['role'] == 'dokter' ||
+                                valueProvide.result['role'] == 'perawat')
+                            ? SizedBox(
+                                height: 65,
+                                child: Card(
+                                  color: primaryColor.shade600,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10),
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceEvenly,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          valueProvider.noAntrian ?? 'Done',
+                                          style: const TextStyle(
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          'Poli : ${valueProvider.hasMatchPoli ?? '-'}',
+                                          style: const TextStyle(
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  Text(
-                                    'Poli : ${valueProvider.hasMatchPoli ?? '-'}',
-                                    style: const TextStyle(color: Colors.white),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
+                                ),
+                              )
+                            : const SizedBox.shrink()
                       ]);
                     } else {
                       return Row(
@@ -226,34 +238,38 @@ class RawatScreen extends StatelessWidget {
                                   ),
                                 ),
                           const Spacer(),
-                          SizedBox(
-                            height: 50,
-                            child: Card(
-                              color: primaryColor.shade600,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(horizontal: 10),
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      valueProvider.noAntrian ?? 'Done',
-                                      style: const TextStyle(
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold),
+                          (valueProvide.result['role'] == 'dokter' ||
+                                  valueProvide.result['role'] == 'perawat')
+                              ? SizedBox(
+                                  height: 50,
+                                  child: Card(
+                                    color: primaryColor.shade600,
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            valueProvider.noAntrian ?? 'Done',
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Text(
+                                            'Poli : ${valueProvider.hasMatchPoli ?? '-'}',
+                                            style: const TextStyle(
+                                                color: Colors.white),
+                                          ),
+                                        ],
+                                      ),
                                     ),
-                                    Text(
-                                      'Poli : ${valueProvider.hasMatchPoli ?? '-'}',
-                                      style:
-                                          const TextStyle(color: Colors.white),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          )
+                                  ),
+                                )
+                              : const SizedBox.shrink()
                         ],
                       );
                     }

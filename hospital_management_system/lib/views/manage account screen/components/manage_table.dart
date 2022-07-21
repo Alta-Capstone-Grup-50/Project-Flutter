@@ -4,16 +4,16 @@ import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../utilities/constants/responsive.dart';
-import '../../../viewModels/dokter perawat viewModel/perawat_viewModel.dart';
+import '../../../viewModels/dokter perawat viewModel/dokter_viewModel.dart';
+import '../../../viewModels/manage viewModel/manage_viewModel.dart';
 import '/utilities/constants/color.dart';
+import 'dataManage_source_table.dart';
+import 'detailData_manage.dart';
 
-import 'dataPerawat_source_table.dart';
-import 'detailData_perawat.dart';
-
-class PerawatTable {
+class ManageAccountTable {
   Widget buildTable(BuildContext context) {
-    return Consumer<PerawatViewModel>(builder: (context, value, _) {
-      if (value.fetchStatusPerawat == StatusFetchPerawat.isLoading) {
+    return Consumer<ManageViewModel>(builder: (context, value, _) {
+      if (value.fetchStatusManage == StatusFetchManage.isLoading) {
         return SizedBox(
           height: MediaQuery.of(context).size.height * 0.5,
           child: const Center(
@@ -24,16 +24,16 @@ class PerawatTable {
             ),
           ),
         );
-      } else if (value.fetchStatusPerawat == StatusFetchPerawat.letsGo) {
+      } else if (value.fetchStatusManage == StatusFetchManage.letsGo) {
         var val;
 
         if (value.search.isNotEmpty || value.searchController.text.isNotEmpty) {
           val = value.search;
         } else {
-          val = value.listPerawatData;
+          val = value.listManageData;
         }
-        final PerawatDataSourceTable _dataSource =
-            PerawatDataSourceTable(val, context);
+        final ManageDataSourceTable _dataSource =
+            ManageDataSourceTable(val, context);
 
         double countPage = _dataSource.data.length / _dataSource.rowsPerPage;
 
@@ -48,7 +48,7 @@ class PerawatTable {
                         ? 160
                         : (_dataSource.data.length <= 4)
                             ? 240
-                            : 305,
+                            : 300,
                     child: SfDataGridTheme(
                       data: SfDataGridThemeData(
                         sortIconColor: Colors.black,
@@ -57,7 +57,7 @@ class PerawatTable {
                         rowHoverColor: green.shade300,
                       ),
                       child: SfDataGrid(
-                        key: value.keyPerawat,
+                        key: value.keyManage,
                         isScrollbarAlwaysShown: true,
                         rowHeight: 40,
                         allowPullToRefresh: true,
@@ -65,7 +65,7 @@ class PerawatTable {
                         columnWidthMode: ColumnWidthMode.fill,
                         onCellTap: (query) {
                           if (query.rowColumnIndex.rowIndex > 0) {
-                            openDetailPerawat(
+                            openDetailManage(
                                 context, query, _dataSource.startIndex);
                           } else {
                             return;
@@ -87,7 +87,7 @@ class PerawatTable {
                           ),
                           GridColumn(
                             columnName: 'SIP/SIPP',
-                            width: 140,
+                            columnWidthMode: ColumnWidthMode.fitByCellValue,
                             label: Container(
                               padding: const EdgeInsets.only(right: 16),
                               alignment: Alignment.centerLeft,
@@ -99,8 +99,8 @@ class PerawatTable {
                             ),
                           ),
                           GridColumn(
-                            columnName: 'Nama',
                             width: 210,
+                            columnName: 'Nama',
                             label: Container(
                               alignment: Alignment.centerLeft,
                               child: const Text(
@@ -111,8 +111,8 @@ class PerawatTable {
                             ),
                           ),
                           GridColumn(
+                            width: 160,
                             columnName: 'Jenis Kelamin',
-                            width: 150,
                             label: Container(
                               padding: const EdgeInsets.only(right: 16),
                               alignment: Alignment.centerLeft,
@@ -124,38 +124,26 @@ class PerawatTable {
                             ),
                           ),
                           GridColumn(
-                            columnName: 'Poli',
+                            columnWidthMode: ColumnWidthMode.fitByCellValue,
+                            columnName: 'Email',
                             label: Container(
                               padding: const EdgeInsets.only(right: 16),
                               alignment: Alignment.centerLeft,
                               child: const Text(
-                                'Poli',
+                                'Email',
                                 style: TextStyle(fontWeight: FontWeight.w700),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ),
                           GridColumn(
-                            columnName: 'Jadwal Kerja',
-                            width: 250,
+                            columnWidthMode: ColumnWidthMode.lastColumnFill,
+                            columnName: 'Password',
                             label: Container(
                               padding: const EdgeInsets.only(right: 16),
                               alignment: Alignment.centerLeft,
                               child: const Text(
-                                'Jadwal Kerja',
-                                style: TextStyle(fontWeight: FontWeight.w700),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          ),
-                          GridColumn(
-                            columnName: 'Jabatan',
-                            width: 130,
-                            label: Container(
-                              padding: const EdgeInsets.only(right: 16),
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                'Jabatan',
+                                'Password',
                                 style: TextStyle(fontWeight: FontWeight.w700),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -181,8 +169,6 @@ class PerawatTable {
                         selectedItemColor: primaryColor.shade200,
                         selectedItemTextStyle:
                             const TextStyle(color: Colors.black),
-                        itemTextStyle: TextStyle(
-                            color: grey.shade800, fontWeight: FontWeight.bold),
                         itemBorderRadius: BorderRadius.circular(11),
                       ),
                       child: SfDataPager(

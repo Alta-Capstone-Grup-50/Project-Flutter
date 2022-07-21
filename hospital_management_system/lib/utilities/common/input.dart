@@ -11,6 +11,7 @@ class Input extends StatelessWidget {
     this.keyboardType,
     this.onSaved,
     this.onChanged,
+    this.onTap,
     this.validator,
     this.prefixIcon,
     this.suffix,
@@ -24,6 +25,7 @@ class Input extends StatelessWidget {
     this.cursorHeight,
     this.borderRadius,
     this.enabled,
+    this.readOnly,
     this.initialValue,
     this.textInputAction,
   }) : super(key: key);
@@ -35,6 +37,7 @@ class Input extends StatelessWidget {
   String? errorText;
   TextInputType? keyboardType;
   Function(String?)? onSaved;
+  Function()? onTap;
   String? Function(String?)? validator;
   Widget? prefixIcon;
   Widget? suffixIcon;
@@ -49,6 +52,7 @@ class Input extends StatelessWidget {
   double? cursorHeight;
   BorderRadius? borderRadius;
   bool? enabled;
+  bool? readOnly;
   String? initialValue;
   TextInputAction? textInputAction;
 
@@ -67,6 +71,8 @@ class Input extends StatelessWidget {
       keyboardType: keyboardType,
       textInputAction: textInputAction,
       onChanged: onChanged,
+      readOnly: readOnly ?? false,
+      onTap: onTap,
       enabled: enabled,
       controller: controller,
       decoration: InputDecoration(
