@@ -1,93 +1,76 @@
 import 'dart:async';
 
-import 'package:hospital_management_system/models/detailLogin_model.dart';
+import 'package:hospital_management_system/models/detailAkun_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/akun_model.dart';
 import '../models/openCardDetail_model.dart';
-import '../models/user_model.dart';
 
 class UserPreferences {
-  // Future<bool> saveUser(UserModel user) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  Future<void> saveId({int? id}) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('id', id ?? 0);
+  }
 
-  //   prefs.setString('email', user.email ?? '');
-  //   prefs.setString('token', user.accessToken ?? '');
-  //   prefs.setString('expire', user.expire ?? '');
+  Future<int?> getId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    int? id = prefs.getInt('id');
+    return id;
+  }
 
-  //   return true;
-  // }
+  void removeId() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('id');
+  }
 
-  // Future<UserModel> getUser() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  Future<void> savePoli({String? poli}) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('poli', poli ?? 'no data');
+  }
 
-  //   String? email = prefs.getString("email");
-  //   String? token = prefs.getString("token");
-  //   String? expire = prefs.getString("expire");
+  Future<String?> getPoli() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? poli = prefs.getString('poli');
+    return poli;
+  }
 
-  //   return UserModel(
-  //     email: email,
-  //     accessToken: token,
-  //     expire: expire,
-  //   );
-  // }
+  void removePoli() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove('poli');
+  }
 
-  // void removeUser() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
+  Future<bool> saveUser(AkunModel user) async {
+    // Preference Authentication User Akun Model
 
-  //   prefs.remove('email');
-  //   prefs.remove('token');
-  //   prefs.remove('expire');
-  // }
-
-  // Future<String?> getToken() async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String? token = prefs.getString("token");
-  //   return token;
-  // }
-
-  Future<bool> saveUser(UserModel user) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    prefs.setInt('userId', user.id ?? 0);
-    prefs.setString('name', user.name ?? '');
-    prefs.setString('email', user.email ?? '');
-    prefs.setString('type', user.tokenType ?? '');
-    prefs.setString('token', user.accessToken ?? '');
+    prefs.setInt('id', user.id!);
+    prefs.setInt('code', user.code!);
+    prefs.setString('level', user.level!);
+
     return true;
   }
 
-  Future<UserModel> getUser() async {
+  Future<AkunModel> getUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    int? userId = prefs.getInt("userId");
-    String? name = prefs.getString("name");
-    String? email = prefs.getString("email");
-    String? type = prefs.getString("type");
-    String? token = prefs.getString("token");
+    int? id = prefs.getInt('id');
+    int? code = prefs.getInt('code');
+    String? level = prefs.getString('level');
 
-    return UserModel(
-      id: userId,
-      name: name,
-      email: email,
-      tokenType: type,
-      accessToken: token,
+    return AkunModel(
+      id: id,
+      code: code,
+      level: level,
     );
   }
 
   void removeUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    prefs.remove('userId');
-    prefs.remove('name');
-    prefs.remove('email');
-    prefs.remove('type');
-    prefs.remove('token');
-  }
-
-  Future<String?> getToken() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? token = prefs.getString("token");
-    return token;
+    prefs.remove('id');
+    prefs.remove('code');
+    prefs.remove('level');
   }
 
   Future<bool> saveLoginDetail(String email, String password) async {
@@ -105,9 +88,9 @@ class UserPreferences {
     String? detailEmail = prefs.getString('detailEmail');
     String? detailPassword = prefs.getString('detailPassword');
 
-    return DetailLoginModel(
-      detailEmail: detailEmail ?? '',
-      detailPassword: detailPassword ?? '',
+    return DetailAkunModel(
+      email: detailEmail ?? '',
+      password: detailPassword ?? '',
     );
   }
 
@@ -117,6 +100,8 @@ class UserPreferences {
     prefs.remove('detailEmail');
     prefs.remove('detailPassword');
   }
+
+  // Preference Checked to Save Login Detail
 
   Future checked(bool checked) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -130,6 +115,8 @@ class UserPreferences {
 
     return check;
   }
+
+  // Preference Card Detail
 
   Future<bool> saveOpenCardDetail(
       String cardPasien, cardDokter, cardRawat) async {

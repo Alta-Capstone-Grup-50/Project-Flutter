@@ -1,12 +1,14 @@
 class PasienDataModel {
+  int? code;
   List<DataPasien>? dataPasien;
 
-  PasienDataModel({this.dataPasien});
+  PasienDataModel({this.code, this.dataPasien});
 
   PasienDataModel.fromJson(Map<String, dynamic> json) {
-    if (json['data_pasien'] != null) {
+    code = json['code'];
+    if (json['data'] != null) {
       dataPasien = <DataPasien>[];
-      json['data_pasien'].forEach((v) {
+      json['data'].forEach((v) {
         dataPasien!.add(DataPasien.fromJson(v));
       });
     }
@@ -14,63 +16,64 @@ class PasienDataModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
+    data['code'] = code;
     if (dataPasien != null) {
-      data['data_pasien'] = dataPasien!.map((v) => v.toJson()).toList();
+      data['data'] = dataPasien!.map((v) => v.toJson()).toList();
     }
     return data;
   }
 }
 
 class DataPasien {
+  int? id;
   String? nik;
   String? nama;
-  String? alamat;
   String? jenisKelamin;
-  String? noTelp;
+  String? poli;
+  String? namaDokter;
+  String? alamat;
+  String? noHp;
   String? tempatLahir;
   String? tanggalLahir;
-  String? jenisPenyakit;
-  String? jadwalRawat;
-  int? noAntrian;
 
-  DataPasien({
-    this.nik,
-    this.nama,
-    this.alamat,
-    this.jenisKelamin,
-    this.noTelp,
-    this.tempatLahir,
-    this.tanggalLahir,
-    this.jenisPenyakit,
-    // this.jadwalRawat,
-    // this.noAntrian,
-  });
+  DataPasien(
+      {this.id,
+      this.nik,
+      this.nama,
+      this.jenisKelamin,
+      this.poli,
+      this.namaDokter,
+      this.alamat,
+      this.noHp,
+      this.tempatLahir,
+      this.tanggalLahir});
 
   DataPasien.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
     nik = json['nik'];
     nama = json['nama'];
-    alamat = json['alamat'];
     jenisKelamin = json['jenis_kelamin'];
-    noTelp = json['no_telp'];
+    poli = json['poli'];
+    namaDokter = json['nama_dokter'];
+    alamat = json['alamat'];
+    noHp = json['no_hp'];
     tempatLahir = json['tempat_lahir'];
     tanggalLahir = json['tanggal_lahir'];
-    jenisPenyakit = json['jenis_penyakit'];
-    jadwalRawat = json['jadwal_rawat'];
-    noAntrian = json['no_antrian'];
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
+    final Map<String, dynamic> data = new Map<String, dynamic>();
+    data['id'] = id;
     data['nik'] = nik;
     data['nama'] = nama;
-    data['alamat'] = alamat;
     data['jenis_kelamin'] = jenisKelamin;
-    data['no_telp'] = noTelp;
+    data['poli'] = poli;
+    data['nama_dokter'] = namaDokter;
+    data['alamat'] = alamat;
+    data['no_hp'] = noHp;
     data['tempat_lahir'] = tempatLahir;
     data['tanggal_lahir'] = tanggalLahir;
-    data['jenis_penyakit'] = jenisPenyakit;
-    data['jadwal_rawat'] = jadwalRawat;
-    data['no_antrian'] = noAntrian;
     return data;
   }
 }
+

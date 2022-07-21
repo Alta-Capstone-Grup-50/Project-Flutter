@@ -13,10 +13,6 @@ class PasienService {
     try {
       var response = await _dio.get(
         ApiUrl.getDataPasien,
-        options: Options(headers: {
-          "x-hasura-admin-secret":
-              "WxgA2zHO3k5x78XJHimGkWwFWEGS7KrseH9PyY9ljNbY6mvsIszBEQHgUh6X84y4"
-        }),
       );
       if (response.statusCode! >= 200 && response.statusCode! <= 300) {
         var _model = PasienDataModel.fromJson(response.data);

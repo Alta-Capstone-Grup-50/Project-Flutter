@@ -1,26 +1,32 @@
-import 'dart:math';
+import 'dart:developer';
 
 import 'package:hospital_management_system/utilities/constants/api_url.dart';
 import 'package:dio/dio.dart';
 
 class LoginService {
   final Dio _dio = Dio();
+
   Future post(loginData) async {
     try {
-      final response = await _dio.post(ApiUrl.login,
-          data: loginData,
-          options: Options(
-            validateStatus: (_) => true,
-          ));
+      Response response = await _dio.post(
+        ApiUrl.login,
+        data: loginData,
+        options: Options(
+          validateStatus: (status) {
+            return status! < 500;
+          },
+        ),
+      );
 
       if (response.statusCode! >= 200 && response.statusCode! <= 300) {
-        print('Get data : ${response.data}');
         return response;
       } else {
+        print("Request failed with status : ${response.statusCode}");
         return response;
       }
-    } catch (e) {
-      print('error');
+    } catch (exception) {
+      log('============================== Dio Exception ==============================');
+      log(exception.toString());
     }
   }
 }
