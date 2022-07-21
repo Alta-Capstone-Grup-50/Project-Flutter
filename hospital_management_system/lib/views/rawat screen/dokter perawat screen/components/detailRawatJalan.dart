@@ -74,10 +74,9 @@ class DetailRawatJalan extends StatelessWidget {
       int indexOfPage) {
     return Stack(children: [
       SingleChildScrollView(
-        controller: _scrollController,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          controller: _scrollController,
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Padding(
               padding: EdgeInsets.only(
                 left: (Responsive.isMobile(context)) ? 0 : 40,
@@ -448,63 +447,85 @@ class DetailRawatJalan extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               padding: EdgeInsets.only(
                   right: (Responsive.isMobile(context)) ? 0 : 30, bottom: 10),
-              child: Row(
-                mainAxisAlignment: (Responsive.isMobile(context))
-                    ? MainAxisAlignment.center
-                    : MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  SizedBox(
-                    width: (Responsive.isMobile(context))
-                        ? MediaQuery.of(context).size.width * 0.28
-                        : 120,
-                    height: 40,
-                    child: ElevatedButton(
-                        onPressed: () async {
-                          await openKeteranganRawatDokterPerawat(
-                              context,
-                              putDataRawat[indexOfPage].id ?? 0,
-                              putDataRawat[indexOfPage].nama ?? '-');
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: green.shade300,
+              child: !(Responsive.isMobile(context))
+                  ? Row(
+                      mainAxisAlignment: (Responsive.isMobile(context))
+                          ? MainAxisAlignment.center
+                          : MainAxisAlignment.end,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        SizedBox(
+                          width: (Responsive.isMobile(context))
+                              ? MediaQuery.of(context).size.width * 0.28
+                              : 120,
+                          height: 40,
+                          child: ElevatedButton(
+                              onPressed: () async {
+                                await openKeteranganRawatDokterPerawat(
+                                    context,
+                                    putDataRawat[indexOfPage].id ?? 0,
+                                    putDataRawat[indexOfPage].nama ?? '-');
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: green.shade300,
+                              ),
+                              child: Text(
+                                'Keterangan',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                    fontSize: (Responsive.isMobile(context))
+                                        ? 14
+                                        : 15),
+                              )),
                         ),
-                        child: Text(
-                          'Keterangan',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                              fontSize:
-                                  (Responsive.isMobile(context)) ? 14 : 15),
-                        )),
-                  ),
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  SizedBox(
-                    width: (Responsive.isMobile(context))
-                        ? MediaQuery.of(context).size.width * 0.28
-                        : 120,
-                    height: 40,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: primaryColor,
+                        const SizedBox(
+                          width: 20,
                         ),
-                        child: Text(
-                          'Kembali',
-                          style: TextStyle(
-                              fontSize:
-                                  (Responsive.isMobile(context)) ? 14 : 15),
-                        )),
-                  )
-                ],
-              ),
-            )
-          ],
-        ),
-      ),
+                        SizedBox(
+                          width: (Responsive.isMobile(context))
+                              ? MediaQuery.of(context).size.width * 0.28
+                              : 120,
+                          height: 40,
+                          child: ElevatedButton(
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                              style: ElevatedButton.styleFrom(
+                                primary: primaryColor,
+                              ),
+                              child: Text(
+                                'Kembali',
+                                style: TextStyle(
+                                    fontSize: (Responsive.isMobile(context))
+                                        ? 14
+                                        : 15),
+                              )),
+                        )
+                      ],
+                    )
+                  : SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.7,
+                      height: 40,
+                      child: ElevatedButton(
+                          onPressed: () async {
+                            await openKeteranganRawatDokterPerawat(
+                                context,
+                                putDataRawat[indexOfPage].id ?? 0,
+                                putDataRawat[indexOfPage].nama ?? '-');
+                          },
+                          style: ElevatedButton.styleFrom(
+                            primary: green.shade300,
+                          ),
+                          child: Text(
+                            'Keterangan',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize:
+                                    (Responsive.isMobile(context)) ? 14 : 15),
+                          )),
+                    ),
+            ),
+          ])),
       (Responsive.isMobile(context))
           ? Positioned(
               left: -15,
