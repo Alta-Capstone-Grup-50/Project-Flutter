@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kDebugMode, kIsWeb;
 import 'package:provider/provider.dart';
 
+import '../../../viewModels/login viewModel/login_viewModel.dart';
 import '../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
 import '/views/main%20layout/main_layout.dart';
 import '/views/rawat%20screen/dokter%20perawat%20screen/components/rawat_table.dart';
@@ -20,7 +21,6 @@ class RawatScreen extends StatelessWidget {
     RawatJalanViewModel init = context.read<RawatJalanViewModel>();
     init.getDataApiRawatJalan();
 
-    log('REBUILD');
     return MainLayout(
       action: true,
       actionRoute: true,
@@ -39,9 +39,8 @@ class RawatScreen extends StatelessWidget {
             child: Row(
               children: [
                 GestureDetector(
-                  onTap: () async {
-                    await Navigator.pushNamedAndRemoveUntil(
-                        context, '/home', ModalRoute.withName('/home'));
+                  onTap: () {
+                    Navigator.pop(context);
                   },
                   child: const Text(
                     "Home > ",
@@ -127,36 +126,38 @@ class RawatScreen extends StatelessWidget {
                         const SizedBox(
                           width: 20,
                         ),
-                        SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: Card(
-                            color: primaryColor.shade300,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: InkWell(
-                              borderRadius: BorderRadius.circular(12),
-                              child: const Icon(
-                                Icons.refresh,
-                                color: Colors.white,
+                        (Responsive.isMobile(context))
+                            ? const SizedBox.shrink()
+                            : SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: Card(
+                                  color: primaryColor.shade300,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: InkWell(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: const Icon(
+                                      Icons.refresh,
+                                      color: Colors.white,
+                                    ),
+                                    onTap: () {
+                                      if (valueProvider.fetchStatusRawat ==
+                                              StatusFetchRawat.isLoading ||
+                                          valueProvider.fetchStatusRawat ==
+                                              StatusFetchRawat.idle) {
+                                        null;
+                                      }
+                                      if (valueProvider.fetchStatusRawat ==
+                                          StatusFetchRawat.letsGo) {
+                                        valueProvider.keyRawat.currentState!
+                                            .refresh();
+                                      }
+                                    },
+                                  ),
+                                ),
                               ),
-                              onTap: () {
-                                if (valueProvider.fetchStatusRawat ==
-                                        StatusFetchRawat.isLoading ||
-                                    valueProvider.fetchStatusRawat ==
-                                        StatusFetchRawat.idle) {
-                                  null;
-                                }
-                                if (valueProvider.fetchStatusRawat ==
-                                    StatusFetchRawat.letsGo) {
-                                  valueProvider.keyRawat.currentState!
-                                      .refresh();
-                                }
-                              },
-                            ),
-                          ),
-                        ),
                         const Spacer(),
                         SizedBox(
                           height: 65,

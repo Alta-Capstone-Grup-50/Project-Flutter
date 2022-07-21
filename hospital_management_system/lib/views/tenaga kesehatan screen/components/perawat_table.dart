@@ -52,8 +52,8 @@ class PerawatTable {
                     child: SfDataGridTheme(
                       data: SfDataGridThemeData(
                         sortIconColor: Colors.black,
-                        headerHoverColor: primaryColor.shade200,
-                        headerColor: primaryColor.shade200,
+                        headerHoverColor: grey.shade100,
+                        headerColor: grey.shade100,
                         rowHoverColor: green.shade300,
                       ),
                       child: SfDataGrid(
@@ -76,7 +76,6 @@ class PerawatTable {
                             width: 60,
                             columnName: 'No',
                             label: Container(
-                              color: primaryColor.shade200,
                               padding: const EdgeInsets.only(right: 10),
                               alignment: Alignment.center,
                               child: const Text(
@@ -91,7 +90,6 @@ class PerawatTable {
                             width: 140,
                             label: Container(
                               padding: const EdgeInsets.only(right: 16),
-                              color: primaryColor.shade200,
                               alignment: Alignment.centerLeft,
                               child: const Text(
                                 'SIP/SIPP',
@@ -104,7 +102,6 @@ class PerawatTable {
                             columnName: 'Nama',
                             width: 210,
                             label: Container(
-                              color: primaryColor.shade200,
                               alignment: Alignment.centerLeft,
                               child: const Text(
                                 'Nama',
@@ -117,7 +114,6 @@ class PerawatTable {
                             columnName: 'Jenis Kelamin',
                             width: 150,
                             label: Container(
-                              color: primaryColor.shade200,
                               padding: const EdgeInsets.only(right: 16),
                               alignment: Alignment.centerLeft,
                               child: const Text(
@@ -130,7 +126,6 @@ class PerawatTable {
                           GridColumn(
                             columnName: 'Poli',
                             label: Container(
-                              color: primaryColor.shade200,
                               padding: const EdgeInsets.only(right: 16),
                               alignment: Alignment.centerLeft,
                               child: const Text(
@@ -144,7 +139,6 @@ class PerawatTable {
                             columnName: 'Jadwal Kerja',
                             width: 250,
                             label: Container(
-                              color: primaryColor.shade200,
                               padding: const EdgeInsets.only(right: 16),
                               alignment: Alignment.centerLeft,
                               child: const Text(
@@ -158,7 +152,6 @@ class PerawatTable {
                             columnName: 'Jabatan',
                             width: 130,
                             label: Container(
-                              color: primaryColor.shade200,
                               padding: const EdgeInsets.only(right: 16),
                               alignment: Alignment.centerLeft,
                               child: const Text(
@@ -185,7 +178,11 @@ class PerawatTable {
                             : 0),
                     child: SfDataPagerTheme(
                       data: SfDataPagerThemeData(
-                        selectedItemColor: green.shade300,
+                        selectedItemColor: primaryColor.shade200,
+                        selectedItemTextStyle:
+                            const TextStyle(color: Colors.black),
+                        itemTextStyle: TextStyle(
+                            color: grey.shade800, fontWeight: FontWeight.bold),
                         itemBorderRadius: BorderRadius.circular(11),
                       ),
                       child: SfDataPager(

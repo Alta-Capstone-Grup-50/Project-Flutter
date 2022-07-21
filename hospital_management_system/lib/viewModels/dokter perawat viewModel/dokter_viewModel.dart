@@ -17,22 +17,19 @@ class DokterViewModel extends ChangeNotifier {
 
   final GlobalKey<SfDataGridState> keyDokter = GlobalKey<SfDataGridState>();
 
-  List<DataDokter> listDokterData = [];
-  List<DataDokter> toReversed = [];
+  List<DataDokter> _listDokterData = [];
+  List<DataDokter> _tempData = [];
   List<DataDokter> _search = [];
 
   List<DataDokter> get search => _search;
+  List<DataDokter> get listDokterData => _listDokterData;
 
   DokterService service = DokterService();
 
   TextEditingController searchController = TextEditingController();
 
   DokterViewModel() {
-    initialFun();
-  }
-
-  initialFun() async {
-    await getDataApiDokter();
+    getDataApiDokter();
   }
 
   changeLoadingIndicator() {
@@ -43,8 +40,10 @@ class DokterViewModel extends ChangeNotifier {
   Future getDataApiDokter() async {
     fetchStatusDokter = StatusFetchDokter.isLoading;
 
-    toReversed = (await service.getDataDokterApi())!;
-    listDokterData = toReversed.reversed.toList();
+    _tempData = (await service.getDataDokterApi())!;
+    _listDokterData = _tempData.reversed
+        .where((element) => element.sip != '' && element.namaDokter != null)
+        .toList();
     fetchStatusDokter = StatusFetchDokter.letsGo;
     notifyListeners();
   }

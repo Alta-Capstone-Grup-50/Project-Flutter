@@ -17,22 +17,19 @@ class PerawatViewModel extends ChangeNotifier {
 
   final GlobalKey<SfDataGridState> keyPerawat = GlobalKey<SfDataGridState>();
 
-  List<DataPerawat> listPerawatData = [];
-  List<DataPerawat> toReversed = [];
+  List<DataPerawat> _listPerawatData = [];
+  List<DataPerawat> _tempData = [];
   List<DataPerawat> _search = [];
 
   List<DataPerawat> get search => _search;
+  List<DataPerawat> get listPerawatData => _listPerawatData;
 
   PerawatService service = PerawatService();
 
   TextEditingController searchController = TextEditingController();
 
   PerawatViewModel() {
-    initialFun();
-  }
-
-  initialFun() async {
-    await getDataApiPerawat();
+    getDataApiPerawat();
   }
 
   changeLoadingIndicator() {
@@ -43,8 +40,10 @@ class PerawatViewModel extends ChangeNotifier {
   Future getDataApiPerawat() async {
     fetchStatusPerawat = StatusFetchPerawat.isLoading;
 
-    toReversed = (await service.getDataPerawatApi())!;
-    listPerawatData = toReversed.reversed.toList();
+    _tempData = (await service.getDataPerawatApi())!;
+    _listPerawatData = _tempData.reversed
+        .where((element) => element.sip != '' && element.namaPerawat != '')
+        .toList();
     fetchStatusPerawat = StatusFetchPerawat.letsGo;
     notifyListeners();
   }

@@ -12,17 +12,19 @@ class PasienDataSourceTable extends DataGridSource {
   List<DataPasien> get data => _data;
 
   List<DataPasien> _paginatedData = [];
+  List<DataPasien> get paginatedData => _paginatedData;
 
   int rowsPerPage = 6;
   int restOfPage = 0;
   int startIndex = 0;
+  int endIndex = 0;
 
-  PasienViewModel? valProvider;
+  PasienViewModel? _valProvider;
 
   final DataPagerController _controller = DataPagerController();
 
   PasienDataSourceTable(this._data, BuildContext context) {
-    valProvider = context.read<PasienViewModel>();
+    _valProvider = context.read<PasienViewModel>();
 
     _paginatedData = _data.getRange(0, _data.length).toList(growable: false);
     restOfPage = _paginatedData.length - startIndex;
@@ -122,7 +124,6 @@ class PasienDataSourceTable extends DataGridSource {
   @override
   Future<bool> handlePageChange(int oldPageIndex, int newPageIndex) async {
     startIndex = newPageIndex * rowsPerPage;
-    int endIndex = 0;
 
     if (_data.length - startIndex <= rowsPerPage) {
       endIndex = _data.length;
@@ -135,10 +136,12 @@ class PasienDataSourceTable extends DataGridSource {
           _data.getRange(startIndex, endIndex).toList(growable: false);
       buildPaginatedDataGridRows();
       _controller.dispose();
+
       notifyListeners();
     } else {
       _paginatedData = [];
     }
+
     return true;
   }
 
@@ -146,7 +149,7 @@ class PasienDataSourceTable extends DataGridSource {
   Future<void> handleRefresh() async {
     await Future.delayed(const Duration(seconds: 4));
     buildPaginatedDataGridRows();
-    valProvider!.getDataApiPasien();
+    _valProvider!.getDataApiPasien();
 
     notifyListeners();
   }
@@ -162,12 +165,12 @@ class PasienDataSourceTable extends DataGridSource {
         const DataGridCell(columnName: 'No', value: '-'),
         DataGridCell(
             columnName: 'NIK',
-            value: valProvider!.highlightOccurences(
-                dataGridRow.nik ?? '-', valProvider!.searchController.text)),
+            value: _valProvider!.highlightOccurences(
+                dataGridRow.nik ?? '-', _valProvider!.searchController.text)),
         DataGridCell(
             columnName: 'Nama',
-            value: valProvider!.highlightOccurences(
-                dataGridRow.nama ?? '-', valProvider!.searchController.text)),
+            value: _valProvider!.highlightOccurences(
+                dataGridRow.nama ?? '-', _valProvider!.searchController.text)),
         DataGridCell(
             columnName: 'Jenis Kelamin',
             value: (dataGridRow.jenisKelamin!.isNotEmpty)

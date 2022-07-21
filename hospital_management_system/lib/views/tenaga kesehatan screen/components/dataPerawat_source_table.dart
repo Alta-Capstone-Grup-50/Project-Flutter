@@ -15,12 +15,12 @@ class PerawatDataSourceTable extends DataGridSource {
   int restOfPage = 0;
   int startIndex = 0;
 
-  PerawatViewModel? valProvider;
+  PerawatViewModel? _valProvider;
 
   final DataPagerController _controller = DataPagerController();
 
   PerawatDataSourceTable(this._data, BuildContext context) {
-    valProvider = context.read<PerawatViewModel>();
+    _valProvider = context.read<PerawatViewModel>();
     _paginatedData = _data.getRange(0, _data.length).toList(growable: false);
     restOfPage = _paginatedData.length - startIndex;
 
@@ -136,7 +136,7 @@ class PerawatDataSourceTable extends DataGridSource {
   Future<void> handleRefresh() async {
     await Future.delayed(const Duration(seconds: 4));
     buildPaginatedDataGridRows();
-    valProvider!.getDataApiPerawat();
+    _valProvider!.getDataApiPerawat();
 
     notifyListeners();
   }
@@ -148,9 +148,9 @@ class PerawatDataSourceTable extends DataGridSource {
         DataGridCell(columnName: 'SIP/SIPP', value: dataGridRow.sip ?? '-'),
         DataGridCell(
             columnName: 'Nama',
-            value: valProvider!.highlightOccurences(
+            value: _valProvider!.highlightOccurences(
                 dataGridRow.namaPerawat ?? '-',
-                valProvider!.searchController.text)),
+                _valProvider!.searchController.text)),
         DataGridCell(
             columnName: 'Jenis Kelamin',
             value: (dataGridRow.jenisKelamin!.isNotEmpty)

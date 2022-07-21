@@ -34,18 +34,15 @@ class PerawatScreen extends StatelessWidget {
             child: Row(
               children: [
                 GestureDetector(
-                  onTap: () => Navigator.pushNamedAndRemoveUntil(
-                      context, '/home', ModalRoute.withName('/home')),
+                  onTap: () => Navigator.pop(context),
                   child: const Text(
                     "Home > ",
                     style: TextStyle(color: Colors.grey),
                   ),
                 ),
                 GestureDetector(
-                  onTap: () => Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      '/tenagaKesehatan',
-                      ModalRoute.withName('/tenagaKesehatan')),
+                  onTap: () => Navigator.pushReplacementNamed(
+                      context, '/tenagaKesehatan'),
                   child: const Text(
                     "Dokter dan Perawat > ",
                     style: TextStyle(color: Colors.grey),

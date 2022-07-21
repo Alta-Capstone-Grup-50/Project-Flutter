@@ -8,6 +8,7 @@ class HomeProvider extends ChangeNotifier {
   String? lastOpenDataPasien;
   String? lastOpenDataDokterPerawat;
   String? lastOpenDataRawatJalan;
+  bool expansionTile = false;
 
   HomeProvider() {
     getChoseCard();
@@ -52,6 +53,11 @@ class HomeProvider extends ChangeNotifier {
         ])}';
     UserPreferences().saveOpenCardDetail(lastOpenDataPasien ?? '...',
         lastOpenDataDokterPerawat ?? '...', lastOpenDataRawatJalan ?? '...');
+    notifyListeners();
+  }
+
+  expansionTileVisible() {
+    expansionTile = !expansionTile;
     notifyListeners();
   }
 

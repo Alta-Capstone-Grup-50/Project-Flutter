@@ -7,9 +7,9 @@ import '../models/akun_model.dart';
 import '../models/openCardDetail_model.dart';
 
 class UserPreferences {
-  Future<void> saveId(int id) async {
+  Future<void> saveId({int? id}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('id', id);
+    prefs.setInt('id', id ?? 0);
   }
 
   Future<int?> getId() async {
@@ -23,9 +23,9 @@ class UserPreferences {
     prefs.remove('id');
   }
 
-  Future<void> savePoli(String poli) async {
+  Future<void> savePoli({String? poli}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('poli', poli);
+    prefs.setString('poli', poli ?? 'no data');
   }
 
   Future<String?> getPoli() async {

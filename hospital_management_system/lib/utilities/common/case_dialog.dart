@@ -2,11 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class CaseDialog extends StatelessWidget {
-  CaseDialog({Key? key, required this.label, required this.onPressed})
+  CaseDialog(
+      {Key? key,
+      required this.title,
+      required this.label,
+      required this.onPressed,
+      this.confirmLabel,
+      this.cancelLabel,
+      this.cancelVisible})
       : super(key: key);
 
+  String? title;
   String? label;
+  String? confirmLabel;
+  String? cancelLabel;
   void Function()? onPressed;
+  bool? cancelVisible;
 
   @override
   Widget build(BuildContext context) {
@@ -18,22 +29,24 @@ class CaseDialog extends StatelessWidget {
           height: 35,
           fit: BoxFit.cover,
         ),
-        const Padding(
-          padding: EdgeInsets.only(left: 20),
-          child: Text('Konfirmasi'),
+        Padding(
+          padding: const EdgeInsets.only(left: 20),
+          child: Text(title!),
         )
       ]),
       content: Text(label!),
       actions: [
-        TextButton(
-          child: const Text("Batal"),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
+        (cancelVisible == true)
+            ? TextButton(
+                child: Text(cancelLabel!),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              )
+            : const SizedBox.shrink(),
         TextButton(
           onPressed: onPressed,
-          child: const Text("Yakin"),
+          child: Text(confirmLabel!),
         ),
       ],
       actionsPadding: const EdgeInsets.only(bottom: 10),
@@ -43,14 +56,22 @@ class CaseDialog extends StatelessWidget {
 
 Future showCaseDialog(
   BuildContext context, {
+  required String title,
   required String label,
+  String? confirmLabel = 'Yakin',
+  String? cancelLabel = 'batal',
+  bool? cancelVisible = true,
   required void Function()? onPressed,
 }) {
   return showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) => CaseDialog(
+            title: title,
             label: label,
             onPressed: onPressed,
+            confirmLabel: confirmLabel,
+            cancelLabel: cancelLabel,
+            cancelVisible: cancelVisible,
           ));
 }

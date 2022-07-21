@@ -30,14 +30,19 @@ class RawatJalanViewModel extends ChangeNotifier {
   final GlobalKey<SfDataGridState> keyRawat = GlobalKey<SfDataGridState>();
   StatusFetchRawat fetchStatusRawat = StatusFetchRawat.idle;
   StatusPostKeterangan postStatusKeterangan = StatusPostKeterangan.idle;
-  int? hasMatchId;
-  String? hasMatchPoli;
-  String? noAntrian;
+  int? _hasMatchId;
+  String? _hasMatchPoli;
+  String? _noAntrian;
 
-  List<DataRawatJalan> listRawatJalanData = [];
-  List<DataKeterangan> listKeterangan = [];
+  List<DataRawatJalan> _listRawatJalanData = [];
+  List<DataRawatJalan> _tempData = [];
+  final List<DataKeterangan> _listKeterangan = [];
   List<DataRawatJalan> _search = [];
+
+  String? get hasMatchPoli => _hasMatchPoli;
+  String? get noAntrian => _noAntrian;
   List<DataRawatJalan> get search => _search;
+  List<DataRawatJalan> get listRawatJalanData => _listRawatJalanData;
 
   RawatJalanService service = RawatJalanService();
 
@@ -53,22 +58,22 @@ class RawatJalanViewModel extends ChangeNotifier {
   }
 
   Future<void> createKeterangan(DataKeterangan? keterangan) async {
-    listKeterangan.add(keterangan!);
+    _listKeterangan.add(keterangan!);
     notifyListeners();
   }
 
   getCurrentAntrian() {
     int countSelected = 0;
-    listRawatJalanData.reversed.forEach((element) {
+    _listRawatJalanData.reversed.forEach((element) {
       if (!element.proses!) {
-        noAntrian = element.nomerAntrian;
+        _noAntrian = element.nomerAntrian;
       }
       if (element.proses!) {
         countSelected++;
       }
     });
-    if (countSelected == listRawatJalanData.length) {
-      noAntrian = null;
+    if (countSelected == _listRawatJalanData.length) {
+      _noAntrian = null;
     }
     notifyListeners();
   }
@@ -81,7 +86,7 @@ class RawatJalanViewModel extends ChangeNotifier {
     postStatusKeterangan = StatusPostKeterangan.isLoading;
     notifyListeners();
 
-    listRawatJalanData.forEach((element) {
+    _listRawatJalanData.forEach((element) {
       if (element.id == id) {
         proses = element.proses;
       }
@@ -109,7 +114,7 @@ class RawatJalanViewModel extends ChangeNotifier {
     Navigator.pop(context);
     Navigator.pop(context);
     showNotifSuccess(context, label: "Keterangan Dokter Berhasil Tersimpan");
-    log(listKeterangan.toString());
+
     postStatusKeterangan = StatusPostKeterangan.letsGo;
     notifyListeners();
     return result;
@@ -119,7 +124,7 @@ class RawatJalanViewModel extends ChangeNotifier {
     Map<String, dynamic> result = {};
     String? keterangan;
 
-    listKeterangan.forEach((element) {
+    _listKeterangan.forEach((element) {
       if (element.id == id) {
         keterangan = element.keterangan;
       }
@@ -147,15 +152,19 @@ class RawatJalanViewModel extends ChangeNotifier {
   }
 
   Future getDataApiRawatJalan() async {
-    print('dari function getDataApiRawatJalan');
     fetchStatusRawat = StatusFetchRawat.isLoading;
-    hasMatchId = await (UserPreferences().getId());
-    hasMatchPoli = await (UserPreferences().getPoli());
+    _hasMatchId = await (UserPreferences().getId());
+    _hasMatchPoli = await (UserPreferences().getPoli());
 
-    listRawatJalanData = (await service.getDataRawatJalanApi(hasMatchId!))!;
-    listRawatJalanData.sort((a, b) =>
+    _tempData = (await service.getDataRawatJalanApi(_hasMatchId!))!;
+
+    _listRawatJalanData = _tempData
+        .where((element) => element.nik != '' && element.nama != '')
+        .toList();
+
+    _listRawatJalanData.sort((a, b) =>
         a.nomerAntrian!.toString().compareTo(b.nomerAntrian!.toString()));
-    listRawatJalanData
+    _listRawatJalanData
         .sort((a, b) => a.proses.toString().compareTo(b.proses.toString()));
 
     fetchStatusRawat = StatusFetchRawat.letsGo;
@@ -168,7 +177,7 @@ class RawatJalanViewModel extends ChangeNotifier {
       notifyListeners();
     }
 
-    _search = listRawatJalanData
+    _search = _listRawatJalanData
         .where((DataRawatJalan element) =>
             (element.nama!.toLowerCase().contains(query.toLowerCase())) ||
             (element.nik!.toLowerCase().contains(query.toLowerCase())))

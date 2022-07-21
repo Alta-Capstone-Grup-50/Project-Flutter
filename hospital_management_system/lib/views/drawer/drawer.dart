@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
 import 'package:provider/provider.dart';
 
+import '../../utilities/common/case_dialog.dart';
 import '../../viewModels/login viewModel/login_viewModel.dart';
 
 class CustomDrawer extends StatelessWidget {
@@ -52,7 +53,16 @@ class CustomDrawer extends StatelessWidget {
             icon: Icons.logout,
             text: 'Logout',
             onTap: () {
-              logoutFunction.logout(context);
+              showCaseDialog(
+                context,
+                title: 'Konfirmasi',
+                label: 'Apakah anda yakin ingin logout?',
+                cancelVisible: true,
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  logoutFunction.logout(context);
+                },
+              );
             },
           ),
         ],
@@ -88,6 +98,7 @@ class CustomDrawer extends StatelessWidget {
     String? keyScreen,
   }) {
     return ListTile(
+      enabled: (keyScreen != keyScreens) ? true : false,
       title: Row(
         children: [
           Padding(
@@ -96,18 +107,18 @@ class CustomDrawer extends StatelessWidget {
               text!,
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                color: (keyScreen != keyScreens) ? Colors.black : grey,
+                color: (keyScreen != keyScreens) ? Colors.black : grey.shade200,
               ),
             ),
           ),
         ],
       ),
       onTap: () {
-        if (keyScreen != keyScreens) {
-          Navigator.pushNamedAndRemoveUntil(
-              context, route!, ModalRoute.withName(route));
+        if (keyScreen != keyScreens && keyScreens != 'HomeScreen') {
+          Navigator.pushReplacementNamed(context, route!);
+        } else if (keyScreen != keyScreens && keyScreens == 'HomeScreen') {
+          Navigator.pop(context);
         } else {
-          print('Route Off');
           null;
         }
       },

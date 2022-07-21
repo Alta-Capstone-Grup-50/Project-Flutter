@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/viewModels/rawatJalan%20viewModel/rawatJalan_viewModel.dart';
 import 'package:provider/provider.dart';
@@ -42,8 +44,6 @@ class PasienTable {
         double countPageOfSearch =
             value.search.length / _dataSource.rowsPerPage;
 
-        // print("countPageOfSearch = $countPageOfSearch");
-
         return LayoutBuilder(
           builder: ((context, constraints) => Column(children: [
                 SizedBox(
@@ -55,8 +55,8 @@ class PasienTable {
                     child: SfDataGridTheme(
                         data: SfDataGridThemeData(
                           sortIconColor: Colors.black,
-                          headerHoverColor: primaryColor.shade200,
-                          headerColor: primaryColor.shade200,
+                          headerHoverColor: grey.shade100,
+                          headerColor: grey.shade100,
                           rowHoverColor: green.shade300,
                         ),
                         child: SfDataGrid(
@@ -172,7 +172,9 @@ class PasienTable {
                             : 0),
                     child: SfDataPagerTheme(
                         data: SfDataPagerThemeData(
-                          selectedItemColor: green.shade300,
+                          selectedItemColor: primaryColor.shade200,
+                          selectedItemTextStyle:
+                              const TextStyle(color: Colors.black),
                           itemBorderRadius: BorderRadius.circular(11),
                         ),
                         child: SfDataPager(

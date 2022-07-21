@@ -1,17 +1,18 @@
+import 'dart:async';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../utilities/common/case_dialog.dart';
+import '../../viewModels/login viewModel/login_viewModel.dart';
 import '../../viewModels/main layout viewModel/mainLayout_viewModel.dart';
 import '../drawer/drawer.dart';
 import '/Views/main%20layout/inRoute.dart';
 
-import '/utilities/constants/color.dart';
 import '/utilities/constants/responsive.dart';
 
-import 'dropdown_item.dart';
-
 class MainLayout extends StatefulWidget {
-  const MainLayout({
+  MainLayout({
     Key? key,
     required this.action,
     this.actionRoute = false,
@@ -19,7 +20,7 @@ class MainLayout extends StatefulWidget {
     this.keyScreens,
   }) : super(key: key);
 
-  final bool action;
+  bool action;
   final bool? actionRoute;
   final Widget child;
   final keyScreens;
@@ -28,27 +29,43 @@ class MainLayout extends StatefulWidget {
   State<MainLayout> createState() => _MainLayoutState();
 }
 
-class _MainLayoutState extends State<MainLayout>
-    with SingleTickerProviderStateMixin {
-  AnimationController? animationController;
-
+class _MainLayoutState extends State<MainLayout> with WidgetsBindingObserver {
   final String assetLogo = 'assets/icons/logo.png';
+
+  void handleUserInteraction([_]) {
+    if (widget.keyScreens != 'login') {
+      final loginValue = context.read<LoginProvider>();
+      loginValue.autologout(context);
+    }
+  }
 
   @override
   void initState() {
     super.initState();
 
+    // WidgetsBinding.instance.addObserver(this);
+
     final mainProvider = context.read<MainLayoutProvider>();
     mainProvider.checkConnection();
 
-    animationController = AnimationController(
-        duration: const Duration(milliseconds: 150), vsync: this);
+    if (widget.keyScreens != 'login') {
+      final loginFunction = context.read<LoginProvider>();
+
+      loginFunction.autologout(context);
+    }
   }
+
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   WidgetsBinding.instance.removeObserver(this);
+  // }
 
   @override
   Widget build(BuildContext context) {
     final provideValue = context.watch<MainLayoutProvider>();
     final provideFunction = context.read<MainLayoutProvider>();
+    final loginFunction = context.read<LoginProvider>();
 
     if (provideValue.connected == true) {
       Future.delayed(const Duration(seconds: 2), () async {
@@ -60,23 +77,35 @@ class _MainLayoutState extends State<MainLayout>
       });
     }
 
-    return Scaffold(
-      endDrawer: (Responsive.isDesktop(context) ||
-              Responsive.isTablet(context) &&
-                  MediaQuery.of(context).orientation == Orientation.landscape)
-          ? null
-          : widget.keyScreens == 'login'
-              ? null
-              : CustomDrawer(
-                  keyScreens: widget.keyScreens,
-                ),
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            appBar(context, provideValue, provideFunction),
-            body(context, provideValue, provideFunction),
-          ],
+    if (provideValue.connected == false) {
+      widget.action = false;
+    }
+
+    return Listener(
+      behavior: HitTestBehavior.translucent,
+      onPointerDown: handleUserInteraction,
+      onPointerMove: handleUserInteraction,
+      onPointerUp: handleUserInteraction,
+      onPointerSignal: handleUserInteraction,
+      onPointerHover: handleUserInteraction,
+      child: Scaffold(
+        endDrawer: (Responsive.isDesktop(context) ||
+                Responsive.isTablet(context) &&
+                    MediaQuery.of(context).orientation == Orientation.landscape)
+            ? null
+            : widget.keyScreens == 'login'
+                ? null
+                : CustomDrawer(
+                    keyScreens: widget.keyScreens,
+                  ),
+        body: SafeArea(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              appBar(context, provideValue, provideFunction),
+              body(context, provideValue, provideFunction),
+            ],
+          ),
         ),
       ),
     );
@@ -84,9 +113,10 @@ class _MainLayoutState extends State<MainLayout>
 
   Widget appBar(BuildContext context, MainLayoutProvider provideValue,
       MainLayoutProvider provideFunction) {
+    LoginProvider logoutFunction = context.read<LoginProvider>();
     return Material(
       elevation: 5,
-      child: Container(
+      child: SizedBox(
         height: (Responsive.isDesktop(context) || Responsive.isTablet(context))
             ? AppBar().preferredSize.height * 1.3
             : AppBar().preferredSize.height,
@@ -103,11 +133,10 @@ class _MainLayoutState extends State<MainLayout>
                       : 20,
                   top: 5),
               child: GestureDetector(
-                onTap: () async {
+                onTap: () {
                   if (widget.keyScreens != 'HomeScreen' &&
                       widget.keyScreens != 'login') {
-                    await Navigator.pushNamedAndRemoveUntil(
-                        context, '/home', ModalRoute.withName('/home'));
+                    Navigator.pop(context);
                   } else {
                     return;
                   }
@@ -136,42 +165,53 @@ class _MainLayoutState extends State<MainLayout>
                                       .route(context, widget.keyScreens),
                                 )
                               : const SizedBox.shrink(),
-                          SizedBox(
-                            width: 70,
-                            height: 52,
-                            child: Card(
-                              color: primaryColor.shade500,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const CircleAvatar(
-                                    backgroundColor: Colors.transparent,
-                                    radius: 16,
-                                    child: ImageIcon(
-                                      AssetImage(
-                                          'assets/icons/accountCircle.png'),
-                                      color: Colors.white,
+                          InkWell(
+                            borderRadius: BorderRadius.circular(16),
+                            onTap: () {
+                              showCaseDialog(
+                                context,
+                                title: 'Konfirmasi',
+                                label: 'Apakah anda yakin ingin logout?',
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  logoutFunction.logout(context);
+                                },
+                              );
+                            },
+                            child: SizedBox(
+                              width: 110,
+                              height: 40,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(16),
+                                  border: Border.all(
+                                    color: Colors.red,
+                                    width: 2,
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Padding(
+                                      padding: EdgeInsets.only(left: 5.0),
+                                      child: Icon(
+                                        Icons.logout,
+                                        color: Colors.red,
+                                      ),
                                     ),
-                                  ),
-                                  InkWell(
-                                    borderRadius: BorderRadius.circular(50),
-                                    child: (provideValue.menuShown == false)
-                                        ? const Icon(
-                                            Icons.keyboard_arrow_down,
-                                            color: Colors.white,
-                                          )
-                                        : const Icon(
-                                            Icons.keyboard_arrow_up,
-                                            color: Colors.white,
-                                          ),
-                                    onTap: () {
-                                      provideFunction.changeMenuShown();
-                                    },
-                                  ),
-                                ],
+                                    Padding(
+                                      padding:
+                                          EdgeInsets.only(right: 5.0, left: 10),
+                                      child: Text(
+                                        'Log out',
+                                        style: TextStyle(
+                                            fontSize: 15,
+                                            color: Colors.red,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
                           ),
@@ -206,13 +246,6 @@ class _MainLayoutState extends State<MainLayout>
 
   Widget body(BuildContext context, MainLayoutProvider provideValue,
       MainLayoutProvider provideFunction) {
-    Animation<double> opacityAnimation =
-        Tween(begin: 0.0, end: 1.0).animate(animationController!);
-    if (provideValue.menuShown) {
-      animationController!.forward();
-    } else {
-      animationController!.reverse();
-    }
     return Expanded(
       child: Stack(alignment: AlignmentDirectional.topCenter, children: [
         if (Responsive.isDesktop(context) ||
@@ -243,14 +276,6 @@ class _MainLayoutState extends State<MainLayout>
                     ),
                   ),
           ),
-        Positioned(
-          right: 70,
-          top: 5,
-          child: FadeTransition(
-            opacity: opacityAnimation,
-            child: const ShapedWidget(),
-          ),
-        ),
         Visibility(
           visible: provideValue.isVisible,
           child: Positioned(
@@ -296,4 +321,50 @@ class _MainLayoutState extends State<MainLayout>
       ]),
     );
   }
+
+  // @override
+  // void didChangeAppLifecycleState(AppLifecycleState state) {
+  //   super.didChangeAppLifecycleState(state);
+  //   switch (state) {
+  //     case AppLifecycleState.inactive:
+  //       print('appLifeCycleState inactive');
+
+  //       if (widget.keyScreens != 'login') {
+  //         final loginFunction = context.read<LoginProvider>();
+
+  //         loginFunction.autologout(context);
+  //       }
+  //       final mainProvider = context.read<MainLayoutProvider>();
+  //       mainProvider.stopConnection();
+  //       break;
+  //     case AppLifecycleState.resumed:
+  //       print('appLifeCycleState resumed');
+  //       if (widget.keyScreens != 'login') {
+  //         final loginFunction = context.read<LoginProvider>();
+
+  //         loginFunction.autologout(context);
+  //       }
+  //       final mainProvider = context.read<MainLayoutProvider>();
+  //       mainProvider.checkConnection();
+  //       break;
+  //     case AppLifecycleState.paused:
+  //       print('appLifeCycleState paused');
+  //       if (widget.keyScreens != 'login') {
+  //         final loginFunction = context.read<LoginProvider>();
+
+  //         loginFunction.autologout(context);
+  //       }
+  //       break;
+  //     case AppLifecycleState.detached:
+  //       print('appLifeCycleState suspending');
+  //       if (widget.keyScreens != 'login') {
+  //         final loginFunction = context.read<LoginProvider>();
+
+  //         loginFunction.autologout(context);
+  //       }
+  //       final mainProvider = context.read<MainLayoutProvider>();
+  //       mainProvider.stopConnection();
+  //       break;
+  //   }
+  // }
 }

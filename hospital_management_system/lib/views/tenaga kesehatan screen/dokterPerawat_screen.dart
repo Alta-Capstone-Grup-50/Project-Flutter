@@ -28,8 +28,7 @@ class TenagaKesehatanScreen extends StatelessWidget {
             child: Row(
               children: [
                 GestureDetector(
-                  onTap: () => Navigator.pushNamedAndRemoveUntil(
-                      context, '/home', ModalRoute.withName('/home')),
+                  onTap: () => Navigator.pop(context),
                   child: const Text(
                     "Home > ",
                     style: TextStyle(color: Colors.grey),
@@ -58,8 +57,8 @@ class TenagaKesehatanScreen extends StatelessWidget {
               children: [
                 Padding(
                   padding: EdgeInsets.only(
-                      top: (!Responsive.isMobile(context)) ? 53.5 : 40,
-                      bottom: (!Responsive.isMobile(context)) ? 53 : 40),
+                      top: (!Responsive.isMobile(context)) ? 30.5 : 40,
+                      bottom: (!Responsive.isMobile(context)) ? 53 : 10),
                   child: const Text(
                     'Data Tenaga Kesehatan',
                     style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),

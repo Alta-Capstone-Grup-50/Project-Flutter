@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
@@ -82,6 +84,7 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
 
   Widget showDetail(BuildContext context, RawatJalanViewModel functionProvider,
       ProgressDialog loadingProgres) {
+    log("ID : $id");
     return Stack(
       children: [
         SingleChildScrollView(
@@ -105,12 +108,10 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
               ),
               Padding(
                 padding: EdgeInsets.only(
-                  left: (Responsive.isMobile(context)) ? 0 : 40,
-                ),
+                    left: (Responsive.isMobile(context)) ? 0 : 40, top: 12),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("ID : $id"),
                     Text("Nama Pasien : $namePasien"),
                     Text("Tanggal : ${formatDate(DateTime.now(), [
                           dd,
@@ -129,7 +130,7 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
                     left: (Responsive.isMobile(context)) ? 0 : 40,
                     right: 20),
                 height: (Responsive.isMobile(context))
-                    ? MediaQuery.of(context).size.height / 1.8
+                    ? MediaQuery.of(context).size.height / 1.9
                     : MediaQuery.of(context).size.height / 2.45,
                 child: Input(
                   controller: _keteranganController,
@@ -143,12 +144,9 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
                 ),
               ),
               Container(
-                alignment: (Responsive.isMobile(context))
-                    ? Alignment.centerLeft
-                    : null,
                 width: MediaQuery.of(context).size.width,
                 padding: EdgeInsets.only(
-                    right: (Responsive.isMobile(context)) ? 0 : 30,
+                    right: (Responsive.isMobile(context)) ? 30 : 30,
                     bottom: 10,
                     top: 25),
                 child: Row(
@@ -187,6 +185,7 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
                         builder: ((context, value, child) => ElevatedButton(
                               onPressed: () {
                                 showCaseDialog(context,
+                                    title: 'Konfirmasi',
                                     label:
                                         "Apa anda sudah yakin untuk menyimpan keterangan\ntersebut?",
                                     onPressed: () async {

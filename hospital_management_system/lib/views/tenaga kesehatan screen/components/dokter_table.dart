@@ -51,8 +51,8 @@ class DokterTable {
                     child: SfDataGridTheme(
                       data: SfDataGridThemeData(
                         sortIconColor: Colors.black,
-                        headerHoverColor: primaryColor.shade200,
-                        headerColor: primaryColor.shade200,
+                        headerHoverColor: grey.shade100,
+                        headerColor: grey.shade100,
                         rowHoverColor: green.shade300,
                       ),
                       child: SfDataGrid(
@@ -75,7 +75,6 @@ class DokterTable {
                             width: 60,
                             columnName: 'No',
                             label: Container(
-                              color: primaryColor.shade200,
                               padding: const EdgeInsets.only(right: 10),
                               alignment: Alignment.center,
                               child: const Text(
@@ -90,7 +89,6 @@ class DokterTable {
                             width: 140,
                             label: Container(
                               padding: const EdgeInsets.only(right: 16),
-                              color: primaryColor.shade200,
                               alignment: Alignment.centerLeft,
                               child: const Text(
                                 'SIP/SIPP',
@@ -103,7 +101,6 @@ class DokterTable {
                             width: 210,
                             columnName: 'Nama',
                             label: Container(
-                              color: primaryColor.shade200,
                               alignment: Alignment.centerLeft,
                               child: const Text(
                                 'Nama',
@@ -116,7 +113,6 @@ class DokterTable {
                             columnName: 'Jenis Kelamin',
                             width: 150,
                             label: Container(
-                              color: primaryColor.shade200,
                               padding: const EdgeInsets.only(right: 16),
                               alignment: Alignment.centerLeft,
                               child: const Text(
@@ -129,7 +125,6 @@ class DokterTable {
                           GridColumn(
                             columnName: 'Poli',
                             label: Container(
-                              color: primaryColor.shade200,
                               padding: const EdgeInsets.only(right: 16),
                               alignment: Alignment.centerLeft,
                               child: const Text(
@@ -143,7 +138,6 @@ class DokterTable {
                             width: 250,
                             columnName: 'Jadwal Praktek',
                             label: Container(
-                              color: primaryColor.shade200,
                               padding: const EdgeInsets.only(right: 16),
                               alignment: Alignment.centerLeft,
                               child: const Text(
@@ -158,7 +152,6 @@ class DokterTable {
                             columnName: 'STR',
                             label: Container(
                               padding: const EdgeInsets.only(right: 16),
-                              color: primaryColor.shade200,
                               alignment: Alignment.centerLeft,
                               child: const Text(
                                 'Nomor STR',
@@ -184,7 +177,9 @@ class DokterTable {
                             : 0),
                     child: SfDataPagerTheme(
                       data: SfDataPagerThemeData(
-                        selectedItemColor: green.shade300,
+                        selectedItemColor: primaryColor.shade200,
+                        selectedItemTextStyle:
+                            const TextStyle(color: Colors.black),
                         itemBorderRadius: BorderRadius.circular(11),
                       ),
                       child: SfDataPager(

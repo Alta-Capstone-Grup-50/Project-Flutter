@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hospital_management_system/models/pasien_data_model.dart';
@@ -18,10 +16,11 @@ class PasienViewModel extends ChangeNotifier {
 
   final GlobalKey<SfDataGridState> keyPasien = GlobalKey<SfDataGridState>();
 
-  List<DataPasien> listPasienData = [];
-  List<DataPasien> toReversedPasienData = [];
+  List<DataPasien> _listPasienData = [];
+  List<DataPasien> _tempData = [];
   List<DataPasien> _search = [];
   List<DataPasien> get search => _search;
+  List<DataPasien> get listPasienData => _listPasienData;
 
   PasienService service = PasienService();
 
@@ -38,8 +37,10 @@ class PasienViewModel extends ChangeNotifier {
   Future getDataApiPasien() async {
     fetchStatusPasien = StatusFetchPasien.isLoading;
 
-    toReversedPasienData = (await service.getDataPasienApi())!;
-    listPasienData = toReversedPasienData.reversed.toList();
+    _tempData = (await service.getDataPasienApi())!;
+    _listPasienData = _tempData.reversed
+        .where((element) => element.nik != '' && element.nama != '')
+        .toList();
 
     fetchStatusPasien = StatusFetchPasien.letsGo;
     notifyListeners();
@@ -51,7 +52,7 @@ class PasienViewModel extends ChangeNotifier {
       notifyListeners();
     }
 
-    _search = listPasienData
+    _search = _listPasienData
         .where((DataPasien element) =>
             (element.nama!.toLowerCase().contains(query.toLowerCase())) ||
             (element.nik!.toLowerCase().contains(query.toLowerCase())))

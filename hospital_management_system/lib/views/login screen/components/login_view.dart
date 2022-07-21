@@ -1,6 +1,7 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 import '/services/perfs_service.dart';
 import '/utilities/constants/validate.dart';
@@ -177,8 +178,7 @@ class LoginView extends StatelessWidget {
         elevation: 0,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
         onPressed: buttonValue.loggedInStatusAuth != StatusAuth.authenticating
-            ? () {
-                FocusManager.instance.primaryFocus?.unfocus();
+            ? () async {
                 buttonFunction.login(context);
               }
             : () {

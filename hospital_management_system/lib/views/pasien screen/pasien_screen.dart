@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +18,6 @@ class PasienScreen extends StatelessWidget {
     PasienViewModel init = context.read<PasienViewModel>();
     init.getDataApiPasien();
 
-    log('REBUILD');
     return MainLayout(
       action: true,
       actionRoute: true,
@@ -39,9 +36,8 @@ class PasienScreen extends StatelessWidget {
             child: Row(
               children: [
                 GestureDetector(
-                  onTap: () async {
-                    await Navigator.pushNamedAndRemoveUntil(
-                        context, '/home', ModalRoute.withName('/home'));
+                  onTap: () {
+                    Navigator.pop(context);
                   },
                   child: const Text(
                     "Home > ",

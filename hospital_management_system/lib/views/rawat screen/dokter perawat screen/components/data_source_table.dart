@@ -14,10 +14,10 @@ import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
 class RawatDataSourceTable extends DataGridSource {
   List<DataRawatJalan> _data;
   List<DataRawatJalan> _paginatedData = [];
-  RawatJalanViewModel? valProvider;
+  RawatJalanViewModel? _valProvider;
   final DataPagerController _controller = DataPagerController();
   var contexts;
-  ProgressDialog? loadingWidget;
+  ProgressDialog? _loadingWidget;
   final int _rowsPerPage = 6;
   int _restOfPage = 0;
   int _startIndex = 0;
@@ -28,13 +28,13 @@ class RawatDataSourceTable extends DataGridSource {
 
   RawatDataSourceTable(this._data, BuildContext context) {
     contexts = context;
-    valProvider = context.read<RawatJalanViewModel>();
-    loadingWidget = ProgressDialog(
+    _valProvider = context.read<RawatJalanViewModel>();
+    _loadingWidget = ProgressDialog(
       context,
       isDismissible: false,
     );
 
-    loadingWidget!.style(
+    _loadingWidget!.style(
         padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30));
 
     _paginatedData = _data.getRange(0, _data.length).toList(growable: false);
@@ -163,7 +163,7 @@ class RawatDataSourceTable extends DataGridSource {
   Future<void> handleRefresh() async {
     await Future.delayed(const Duration(seconds: 4));
     buildPaginatedDataGridRows();
-    valProvider!.getDataApiRawatJalan();
+    _valProvider!.getDataApiRawatJalan();
 
     notifyListeners();
   }
@@ -174,12 +174,12 @@ class RawatDataSourceTable extends DataGridSource {
         const DataGridCell(columnName: 'No', value: '-'),
         DataGridCell(
             columnName: 'NIK',
-            value: valProvider!.highlightOccurences(
-                dataGridRow.nik ?? '-', valProvider!.searchController.text)),
+            value: _valProvider!.highlightOccurences(
+                dataGridRow.nik ?? '-', _valProvider!.searchController.text)),
         DataGridCell(
             columnName: 'Nama',
-            value: valProvider!.highlightOccurences(
-                dataGridRow.nama ?? '-', valProvider!.searchController.text)),
+            value: _valProvider!.highlightOccurences(
+                dataGridRow.nama ?? '-', _valProvider!.searchController.text)),
         DataGridCell(
             columnName: 'Jenis Kelamin',
             value: (dataGridRow.jenisKelamin!.isNotEmpty)
@@ -201,24 +201,25 @@ class RawatDataSourceTable extends DataGridSource {
                 if (dataGridRow.proses == false) {
                   log('check');
                   showCaseDialog(contexts,
+                      title: 'Konfirmasi',
                       label:
                           "Apa anda sudah yakin untuk menyelesaikan rawat jalan\npasien ini pada hari ini?",
                       onPressed: () async {
                     Navigator.of(contexts).pop();
-                    loadingWidget!.show();
+                    _loadingWidget!.show();
                     await Future.delayed(
                       const Duration(seconds: 2),
                       () {
                         dataGridRow.proses = newValue;
-                        valProvider!.putProsesAntrian(
+                        _valProvider!.putProsesAntrian(
                             dataGridRow.id!, dataGridRow.proses!);
-                        valProvider!.listRawatJalanData.sort((a, b) =>
+                        _valProvider!.listRawatJalanData.sort((a, b) =>
                             a.proses.toString().compareTo(b.proses.toString()));
-                        valProvider!.getCurrentAntrian();
+                        _valProvider!.getCurrentAntrian();
                         notifyListeners();
                       },
                     );
-                    loadingWidget!.hide();
+                    _loadingWidget!.hide();
                   });
                 } else {
                   return;

@@ -15,12 +15,12 @@ class DokterDataSourceTable extends DataGridSource {
   int restOfPage = 0;
   int startIndex = 0;
 
-  DokterViewModel? valProvider;
+  DokterViewModel? _valProvider;
 
   final DataPagerController _controller = DataPagerController();
 
   DokterDataSourceTable(this._data, BuildContext context) {
-    valProvider = context.read<DokterViewModel>();
+    _valProvider = context.read<DokterViewModel>();
     _paginatedData = _data.getRange(0, _data.length).toList(growable: false);
     restOfPage = _paginatedData.length - startIndex;
 
@@ -146,7 +146,7 @@ class DokterDataSourceTable extends DataGridSource {
   Future<void> handleRefresh() async {
     await Future.delayed(const Duration(seconds: 4));
     buildPaginatedDataGridRows();
-    valProvider!.getDataApiDokter();
+    _valProvider!.getDataApiDokter();
 
     notifyListeners();
   }
@@ -158,9 +158,9 @@ class DokterDataSourceTable extends DataGridSource {
         DataGridCell(columnName: 'SIP/SIPP', value: dataGridRow.sip ?? ' '),
         DataGridCell(
             columnName: 'Nama',
-            value: valProvider!.highlightOccurences(
+            value: _valProvider!.highlightOccurences(
                 dataGridRow.namaDokter ?? ' ',
-                valProvider!.searchController.text)),
+                _valProvider!.searchController.text)),
         DataGridCell(
             columnName: 'Jenis Kelamin',
             value: (dataGridRow.jenisKelamin!.isNotEmpty)

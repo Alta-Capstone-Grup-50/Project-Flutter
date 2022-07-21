@@ -1,7 +1,11 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
+import 'package:hospital_management_system/utilities/common/case_dialog.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/detailAkun_model.dart';
 import '../../models/dokter_data_model.dart';
@@ -26,9 +30,12 @@ class LoginProvider extends ChangeNotifier {
   bool obscure = true;
   bool checkBox = false;
   int? matchDataId;
+  Timer? authTimer;
   String? matchDataPoli;
   final AkunModel _user = AkunModel();
   StatusAuth _loggedInStatusAuth = StatusAuth.notLoggedIn;
+  Map<String, dynamic> _result = {};
+
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -69,18 +76,48 @@ class LoginProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Map<String, dynamic>> login(BuildContext context) async {
-    Map<String, dynamic> result = {};
-
+  void validasiUserData(BuildContext context,
+      {required AkunModel authUser}) async {
     DokterViewModel dokteViewModel = context.read<DokterViewModel>();
     PerawatViewModel perawatViewModel = context.read<PerawatViewModel>();
+    await dokteViewModel.getDataApiDokter();
+    await perawatViewModel.getDataApiPerawat();
 
+    DataDokter? dataDokter;
+    DataPerawat? dataPerawat;
+
+    UserPreferences().saveId();
+    UserPreferences().savePoli();
+
+    if (authUser.level == 'dokter') {
+      dataDokter = dokteViewModel.listDokterData
+          .firstWhere((element) => element.idUser == authUser.id);
+      matchDataId = dataDokter.idUser ?? 0;
+      matchDataPoli = dataDokter.poli ?? '';
+      notifyListeners();
+    }
+    if (authUser.level == 'perawat') {
+      dataPerawat = perawatViewModel.listPerawatData
+          .firstWhere((element) => element.idUser == authUser.id);
+      matchDataId = dataPerawat.idUser ?? 0;
+      matchDataPoli = dataPerawat.poli ?? '';
+      notifyListeners();
+    }
+
+    log(matchDataId.toString());
+    log(matchDataPoli.toString());
+
+    await UserPreferences().saveId(id: matchDataId);
+    await UserPreferences().savePoli(poli: matchDataPoli);
+  }
+
+  Future<Map<String, dynamic>> login(BuildContext context) async {
     final Map<String, dynamic> loginData = {
       'email': usernameController.text,
       'password': passwordController.text,
     };
 
-    log(jsonEncode(loginData));
+    log(loginData.toString());
 
     _loggedInStatusAuth = StatusAuth.authenticating;
     notifyListeners();
@@ -102,73 +139,52 @@ class LoginProvider extends ChangeNotifier {
             var responseData = response.data;
 
             AkunModel authUser = AkunModel.fromJson(responseData);
+
             if (authUser.level == 'dokter' || authUser.level == 'perawat') {
               UserPreferences().saveUser(authUser);
+
+              validasiUserData(context, authUser: authUser);
 
               _loggedInStatusAuth = StatusAuth.loggedIn;
               notifyListeners();
 
-              if (authUser.level == 'dokter') {
-                DataDokter data = dokteViewModel.listDokterData
-                    .firstWhere((element) => element.idUser == authUser.id);
-                matchDataId = data.idUser;
-                matchDataPoli = data.poli;
-                log(matchDataId.toString());
-                log(matchDataPoli.toString());
-                notifyListeners();
-                UserPreferences().saveId(matchDataId!);
-                UserPreferences().savePoli(matchDataPoli!);
-                log(data.namaDokter.toString());
-              }
-              if (authUser.level == 'perawat') {
-                DataPerawat data = perawatViewModel.listPerawatData
-                    .firstWhere((element) => element.idUser == authUser.id);
-                matchDataId = data.idUser;
-                matchDataPoli = data.poli;
-                log(matchDataId.toString());
-                log(matchDataPoli.toString());
-                notifyListeners();
-                UserPreferences().saveId(matchDataId!);
-                UserPreferences().savePoli(matchDataPoli!);
-                log(data.namaPerawat.toString());
-              }
-
-              result = {
+              _result = {
                 'status': true,
                 'message': 'Login Berhasil',
                 'user': authUser
               };
 
-              SnackBarComponent(
-                context: context,
-                message: result['message'],
-                type: 'success',
-                duration: const Duration(milliseconds: 1400),
-              );
-
-              Future.delayed(
-                const Duration(milliseconds: 1500),
-                () async {
-                  if (checkBox == false) {
-                    usernameController.text = '';
-                    passwordController.text = '';
-                  }
-                  await Navigator.pushNamedAndRemoveUntil(
-                      context, '/home', (Route<dynamic> route) => false);
-                },
-              );
+              if (_result['status'] == true) {
+                SnackBarComponent(
+                  context: context,
+                  message: _result['message'],
+                  type: 'success',
+                  duration: const Duration(milliseconds: 1400),
+                );
+                Future.delayed(
+                  const Duration(milliseconds: 1500),
+                  () async {
+                    if (checkBox == false) {
+                      usernameController.text = '';
+                      passwordController.text = '';
+                    }
+                    await Navigator.pushNamedAndRemoveUntil(
+                        context, '/home', (Route<dynamic> route) => false);
+                  },
+                );
+              }
             } else {
               _loggedInStatusAuth = StatusAuth.notLoggedIn;
               notifyListeners();
 
-              result = {
+              _result = {
                 'status': false,
                 'message': 'Hak akses terkunci',
               };
 
               SnackBarComponent(
                 context: context,
-                message: result['message'],
+                message: _result['message'],
                 type: 'warning',
                 duration: const Duration(milliseconds: 1400),
               );
@@ -177,16 +193,16 @@ class LoginProvider extends ChangeNotifier {
             _loggedInStatusAuth = StatusAuth.notLoggedIn;
             notifyListeners();
 
-            result = {
+            passwordController.text = '';
+
+            _result = {
               'status': false,
               'message': 'Username atau Password Salah',
             };
 
-            passwordController.text = '';
-
             SnackBarComponent(
               context: context,
-              message: result['message'],
+              message: _result['message'],
               type: 'danger',
               duration: const Duration(seconds: 4),
             );
@@ -196,9 +212,10 @@ class LoginProvider extends ChangeNotifier {
         _loggedInStatusAuth = StatusAuth.notLoggedIn;
         notifyListeners();
 
-        result = {
+        _result = {
           'status': false,
-          'message': 'Error Response',
+          'message':
+              'Akun bermasalah/belum validasi ulang, silahkan hubungi admin',
         };
 
         usernameController.text = '';
@@ -206,15 +223,15 @@ class LoginProvider extends ChangeNotifier {
 
         SnackBarComponent(
           context: context,
-          message: result['message'],
+          message: _result['message'],
           type: 'warning',
           duration: const Duration(seconds: 4),
         );
       });
 
-      return result;
+      return _result;
     } else {
-      result = {
+      _result = {
         'status': false,
         'message': 'Not Validate',
       };
@@ -222,7 +239,7 @@ class LoginProvider extends ChangeNotifier {
       _loggedInStatusAuth = StatusAuth.notLoggedIn;
       notifyListeners();
 
-      return result;
+      return _result;
     }
   }
 
@@ -232,14 +249,38 @@ class LoginProvider extends ChangeNotifier {
     UserPreferences().removePoli();
   }
 
+  Future<void> autologout(BuildContext context) async {
+    if (authTimer != null) {
+      authTimer!.cancel();
+      authTimer = null;
+    }
+
+    authTimer = Timer(const Duration(hours: 8), () {
+      showCaseDialog(context,
+          title: 'Logout',
+          label: 'Tidak ada aktivitas pada akun anda, silahkan login kembali',
+          confirmLabel: 'Oke',
+          cancelVisible: false, onPressed: () {
+        logout(context);
+      });
+    });
+  }
+
   void logout(BuildContext context) {
     removePrefereces();
-    Future.delayed(const Duration(seconds: 1), () async {
-      await Navigator.pushNamedAndRemoveUntil(
-        context,
-        '/login',
-        (Route<dynamic> route) => false,
-      );
+    if (authTimer != null) {
+      authTimer!.cancel();
+      authTimer = null;
+    }
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(const Duration(seconds: 1), () {
+        Navigator.pushNamedAndRemoveUntil(
+          context,
+          '/login',
+          (Route<dynamic> route) => false,
+        );
+      });
     });
 
     _loggedInStatusAuth = StatusAuth.loggedOut;

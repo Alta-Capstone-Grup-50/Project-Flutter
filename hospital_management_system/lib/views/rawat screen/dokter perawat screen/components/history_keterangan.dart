@@ -12,6 +12,8 @@ class HistoryKeterangan extends StatelessWidget {
     RawatJalanViewModel functionProvider = context.read<RawatJalanViewModel>();
     RawatJalanViewModel valueProvider = context.watch<RawatJalanViewModel>();
 
+    functionProvider.getDataApiRawatJalan();
+
     final ProgressDialog loadingWidget = ProgressDialog(
       context,
       isDismissible: false,

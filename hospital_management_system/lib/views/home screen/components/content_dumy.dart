@@ -14,9 +14,9 @@ final List<ContentDummy> content_dummy = [
         'Diberitahukan kepada seluruh karyawan klinik health.id, bahwa pada hari senin tanggal 20 juni 2022 akan ada kunjungan dari menteri kesehatan.',
   ),
   ContentDummy(
-    header: 'Kunjungan Bapak gua',
+    header: 'Kunjungan Bapak Presiden',
     title:
-        'Diberitahukan kepada seluruh karyawan klinik health.id, bahwa pada hari Kamis tanggal 23 juni 2022 akan ada kunjungan dari Bapak gua.',
+        'Diberitahukan kepada seluruh karyawan klinik health.id, bahwa pada hari Kamis tanggal 23 juni 2022 akan ada kunjungan dari Bapak Presiden.',
   ),
   ContentDummy(
     header: 'Stock Barang',

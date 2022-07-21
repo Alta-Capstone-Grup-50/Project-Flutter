@@ -33,134 +33,75 @@ class ChoseCard extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30),
               ),
               child: Consumer<HomeProvider>(
-                  builder: ((context, functionProvider, child) => InkWell(
-                        onTap: () {
-                          if (page != '') {
-                            Navigator.pushNamedAndRemoveUntil(
-                                context, page, ModalRoute.withName(page));
-                          }
-                          if (title == 'Data Pasien') {
-                            functionProvider.actionChoseCardPasien();
-                          } else if (title == 'Data Tenaga Kesehatan') {
-                            functionProvider.actionChoseCardDokter();
-                          } else {
-                            functionProvider.actionChoseCardRawat();
-                          }
-                          ;
-                        },
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.2,
-                              width: MediaQuery.of(context).size.width,
-                              child: (color != null)
-                                  ? const Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        'maintenance :)',
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    )
-                                  : Image.asset(
-                                      image,
-                                      fit: BoxFit.cover,
+                builder: ((context, functionProvider, child) => InkWell(
+                      onTap: () {
+                        if (page != '') {
+                          Navigator.pushNamed(context, page);
+                        }
+                        if (title == 'Data Pasien') {
+                          functionProvider.actionChoseCardPasien();
+                        } else if (title == 'Data Tenaga Kesehatan') {
+                          functionProvider.actionChoseCardDokter();
+                        } else {
+                          functionProvider.actionChoseCardRawat();
+                        }
+                      },
+                      child: Stack(
+                        children: [
+                          SizedBox(
+                            height: MediaQuery.of(context).size.height * 0.25,
+                            width: MediaQuery.of(context).size.width,
+                            child: (color != null)
+                                ? const Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'maintenance :)',
+                                      style: TextStyle(color: Colors.white),
                                     ),
-                            ),
-                            Container(
-                              color: (color != null) ? color : null,
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 18,
-                                  vertical: MediaQuery.of(context).size.height *
-                                      0.03),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  (Responsive.isDesktop(context) ||
-                                          Responsive.isTablet(context) &&
-                                              MediaQuery.of(context)
-                                                      .orientation ==
-                                                  Orientation.landscape)
-                                      ? SizedBox(
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              0.2,
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceAround,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                title,
-                                                overflow: TextOverflow.fade,
-                                                maxLines: 1,
-                                                softWrap: false,
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    color: (color != null)
-                                                        ? Colors.white
-                                                        : null,
-                                                    fontFamily: 'Open Sans',
-                                                    fontWeight:
-                                                        FontWeight.w700),
-                                              ),
-                                              const SizedBox(
-                                                height: 5,
-                                              ),
-                                              Row(
-                                                children: [
-                                                  ImageIcon(
-                                                    const AssetImage(
-                                                        'assets/icons/iconTable.png'),
-                                                    size: 15,
-                                                    color: primaryColor,
-                                                  ),
-                                                  const SizedBox(
-                                                    width: 10,
-                                                  ),
-                                                  Flexible(
-                                                    child: Text(
-                                                      openHistory,
-                                                      overflow:
-                                                          TextOverflow.fade,
-                                                      maxLines: 1,
-                                                      softWrap: false,
-                                                      style: TextStyle(
-                                                          fontSize: 13,
-                                                          color: (color != null)
-                                                              ? Colors.white
-                                                              : Colors.black54,
-                                                          fontFamily:
-                                                              'Open Sans',
-                                                          fontWeight:
-                                                              FontWeight.w600),
-                                                    ),
-                                                  ),
-                                                ],
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      : Expanded(
-                                          child: Text(
-                                            title,
-                                            overflow: TextOverflow.fade,
-                                            maxLines: 1,
-                                            softWrap: false,
-                                            style: const TextStyle(
-                                                fontFamily: 'Open Sans',
-                                                fontSize: 14.0,
-                                                fontWeight: FontWeight.w700),
-                                          ),
-                                        )
-                                ],
-                              ),
-                            )
-                          ],
-                        ),
-                      ))),
+                                  )
+                                : Image.asset(
+                                    image,
+                                    fit: BoxFit.cover,
+                                  ),
+                          ),
+                          (Responsive.isDesktop(context) ||
+                                  Responsive.isTablet(context) &&
+                                      MediaQuery.of(context).orientation ==
+                                          Orientation.landscape)
+                              ? Container(
+                                  height:
+                                      MediaQuery.of(context).size.height * 0.25,
+                                  alignment: Alignment.center,
+                                  color: Colors.black.withOpacity(0.57),
+                                  child: Text(
+                                    title,
+                                    overflow: TextOverflow.fade,
+                                    maxLines: 1,
+                                    softWrap: false,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        color: Colors.white,
+                                        fontFamily: 'Open Sans',
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                )
+                              : Expanded(
+                                  child: Text(
+                                    title,
+                                    overflow: TextOverflow.fade,
+                                    maxLines: 1,
+                                    softWrap: false,
+                                    style: const TextStyle(
+                                        fontFamily: 'Open Sans',
+                                        color: Colors.white,
+                                        fontSize: 14.0,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                )
+                        ],
+                      ),
+                    )),
+              ),
             ),
           )
         : Container(
@@ -189,18 +130,31 @@ class ChoseCard extends StatelessWidget {
                           }
                           ;
                         },
-                        child: Center(
-                          child: Text(
-                            title,
-                            overflow: TextOverflow.fade,
-                            maxLines: 1,
-                            softWrap: false,
-                            style: const TextStyle(
-                                fontFamily: 'Open Sans',
-                                fontSize: 16.0,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700),
-                          ),
+                        child: Stack(
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Image.asset(
+                                image,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              color: Colors.black.withOpacity(0.57),
+                              child: Text(
+                                title,
+                                overflow: TextOverflow.fade,
+                                maxLines: 1,
+                                softWrap: false,
+                                style: const TextStyle(
+                                    fontFamily: 'Open Sans',
+                                    fontSize: 16.0,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                          ],
                         ),
                       )),
                 )),

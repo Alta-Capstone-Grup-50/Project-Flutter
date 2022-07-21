@@ -51,8 +51,8 @@ class RawatTable {
                       child: SfDataGridTheme(
                         data: SfDataGridThemeData(
                           sortIconColor: Colors.black,
-                          headerHoverColor: primaryColor.shade200,
-                          headerColor: primaryColor.shade200,
+                          headerHoverColor: grey.shade100,
+                          headerColor: grey.shade100,
                           rowHoverColor: green.shade300,
                         ),
                         child: SfDataGrid(
@@ -178,7 +178,9 @@ class RawatTable {
                       ),
                       child: SfDataPagerTheme(
                         data: SfDataPagerThemeData(
-                          selectedItemColor: green.shade300,
+                          selectedItemColor: primaryColor.shade200,
+                          selectedItemTextStyle:
+                              const TextStyle(color: Colors.black),
                           itemBorderRadius: BorderRadius.circular(11),
                         ),
                         child: SfDataPager(

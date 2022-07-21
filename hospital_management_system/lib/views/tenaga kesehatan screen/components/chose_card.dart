@@ -21,7 +21,9 @@ class ChoseCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return (!Responsive.isMobile(context))
         ? Expanded(
-            child: Center(
+            child: Container(
+              alignment: Alignment.center,
+              height: MediaQuery.of(context).size.width * 0.25,
               child: Card(
                 semanticContainer: true,
                 clipBehavior: Clip.antiAliasWithSaveLayer,
@@ -37,28 +39,24 @@ class ChoseCard extends StatelessWidget {
 
                             functionProvider.actionChoseCardDokter();
                           },
-                          child: Column(
+                          child: Stack(
                             children: [
                               SizedBox(
-                                height:
-                                    MediaQuery.of(context).size.height * 0.25,
                                 width: MediaQuery.of(context).size.width * 0.5,
                                 child: Image.asset(
                                   image,
                                   fit: BoxFit.cover,
                                 ),
                               ),
-                              Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 18,
-                                    vertical:
-                                        MediaQuery.of(context).size.height *
-                                            0.03),
+                              Container(
+                                alignment: Alignment.center,
+                                color: Colors.black.withOpacity(0.57),
                                 child: Text(
                                   title,
                                   style: const TextStyle(
                                       fontSize: 18,
                                       fontFamily: 'Open Sans',
+                                      color: Colors.white,
                                       fontWeight: FontWeight.w700),
                                 ),
                               ),
@@ -70,7 +68,7 @@ class ChoseCard extends StatelessWidget {
           )
         : Container(
             margin: const EdgeInsets.symmetric(vertical: 10),
-            height: MediaQuery.of(context).size.width * 0.2,
+            height: MediaQuery.of(context).size.width * 0.25,
             child: Card(
                 semanticContainer: true,
                 color: primaryColor.shade300,
@@ -82,23 +80,35 @@ class ChoseCard extends StatelessWidget {
                 child: Consumer<HomeProvider>(
                   builder: ((context, functionProvider, child) => InkWell(
                         onTap: () {
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, page, ModalRoute.withName(page));
+                          Navigator.pushReplacementNamed(context, page);
 
                           functionProvider.actionChoseCardDokter();
                         },
-                        child: Center(
-                          child: Text(
-                            title,
-                            overflow: TextOverflow.fade,
-                            maxLines: 1,
-                            softWrap: false,
-                            style: const TextStyle(
-                                fontFamily: 'Open Sans',
-                                fontSize: 16.0,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700),
-                          ),
+                        child: Stack(
+                          children: [
+                            SizedBox(
+                              width: MediaQuery.of(context).size.width,
+                              child: Image.asset(
+                                image,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                            Container(
+                              alignment: Alignment.center,
+                              color: Colors.black.withOpacity(0.57),
+                              child: Text(
+                                title,
+                                overflow: TextOverflow.fade,
+                                maxLines: 1,
+                                softWrap: false,
+                                style: const TextStyle(
+                                    fontFamily: 'Open Sans',
+                                    fontSize: 16.0,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w700),
+                              ),
+                            ),
+                          ],
                         ),
                       )),
                 )),
