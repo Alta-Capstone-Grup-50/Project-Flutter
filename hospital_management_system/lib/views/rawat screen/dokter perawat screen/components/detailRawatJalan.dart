@@ -1,13 +1,17 @@
 import 'dart:developer';
 
+import 'package:date_format/date_format.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/models/updateRawat_model.dart';
 import 'package:hospital_management_system/viewModels/login%20viewModel/login_viewModel.dart';
 import 'package:provider/provider.dart';
 
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../../models/rawatJalan_data_model.dart';
+import '../../../../utilities/common/case_dialog.dart';
+import '../../../../utilities/common/progress_dialog.dart';
 import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
 
 import '/views/rawat%20screen/dokter%20perawat%20screen/components/keteranganRawat_dokterPerawat.dart';
@@ -15,19 +19,31 @@ import '../../../../utilities/common/input.dart';
 import '/utilities/constants/color.dart';
 import '/utilities/constants/responsive.dart';
 
-class DetailRawatJalan extends StatelessWidget {
+class DetailRawatJalan extends StatefulWidget {
   DetailRawatJalan({Key? key, required this.query, required this.queryPage})
       : super(key: key);
 
   DataGridCellTapDetails? query;
   int queryPage;
 
+  @override
+  State<DetailRawatJalan> createState() => _DetailRawatJalanState();
+}
+
+class _DetailRawatJalanState extends State<DetailRawatJalan> {
   final _scrollController = ScrollController();
+  final TextEditingController _jadwalRawatController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _jadwalRawatController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    int index = query!.rowColumnIndex.rowIndex - 1;
-    int indexOfPage = index + (queryPage + 1) - 1;
+    int index = widget.query!.rowColumnIndex.rowIndex - 1;
+    int indexOfPage = index + (widget.queryPage + 1) - 1;
 
     RawatJalanViewModel functionProvider = context.read<RawatJalanViewModel>();
     RawatJalanViewModel valueProvider = context.watch<RawatJalanViewModel>();
@@ -39,6 +55,13 @@ class DetailRawatJalan extends StatelessWidget {
     } else {
       putDataRawat = valueProvider.listRawatJalanData;
     }
+
+    final ProgressDialog loadingWidget = ProgressDialog(
+      context,
+      isDismissible: false,
+    );
+    loadingWidget.style(
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30));
 
     return AlertDialog(
       content: Stack(children: [
@@ -54,7 +77,7 @@ class DetailRawatJalan extends StatelessWidget {
               controller: _scrollController,
               thumbVisibility: (Responsive.isMobile(context)) ? false : true,
               child: showDetail(context, putDataRawat, indexOfPage,
-                  functionProvider, valueProvider, loginValue),
+                  functionProvider, valueProvider, loginValue, loadingWidget),
             ),
           ),
         ),
@@ -88,7 +111,8 @@ class DetailRawatJalan extends StatelessWidget {
       int indexOfPage,
       RawatJalanViewModel functionProvider,
       RawatJalanViewModel valueProvider,
-      LoginProvider loginValue) {
+      LoginProvider loginValue,
+      ProgressDialog loadingWidget) {
     final List<String> jenisKelamin = [
       'Laki - laki',
       'Perempuan',
@@ -100,6 +124,13 @@ class DetailRawatJalan extends StatelessWidget {
 
     final List<String> noAntrian = ['G-', 'K-', 'T-', 'U-'];
     String selected = putDataRawat[indexOfPage].nomerAntrian!.substring(0, 1);
+    _jadwalRawatController.text = putDataRawat[indexOfPage].jadwalRawatJalan!;
+
+    if (valueProvider.dateTimeJ != null) {
+      _jadwalRawatController.text = formatDate(
+          valueProvider.dateTimeJ!, [dd, '-', mm, '-', yyyy],
+          locale: const IndonesianDateLocale());
+    }
 
     return Stack(children: [
       SingleChildScrollView(
@@ -140,7 +171,7 @@ class DetailRawatJalan extends StatelessWidget {
                     child: Input(
                       initialValue: putDataRawat[indexOfPage].nik,
                       borderRadius: const BorderRadius.all(Radius.zero),
-                      enabled: valueProvider.hEdit,
+                      enabled: false,
                     ),
                   ),
                   const SizedBox(
@@ -156,7 +187,7 @@ class DetailRawatJalan extends StatelessWidget {
                       initialValue: putDataRawat[indexOfPage].nama,
                       borderRadius: const BorderRadius.all(Radius.zero),
                       keyboardType: TextInputType.none,
-                      enabled: valueProvider.hEdit,
+                      enabled: false,
                     ),
                   ),
                   const SizedBox(
@@ -171,7 +202,7 @@ class DetailRawatJalan extends StatelessWidget {
                     child: Input(
                       initialValue: putDataRawat[indexOfPage].alamat,
                       borderRadius: const BorderRadius.all(Radius.zero),
-                      enabled: valueProvider.hEdit,
+                      enabled: false,
                     ),
                   ),
                   const SizedBox(
@@ -193,7 +224,7 @@ class DetailRawatJalan extends StatelessWidget {
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.zero,
                         filled: true,
-                        enabled: valueProvider.hEdit,
+                        enabled: false,
                         fillColor: grey.shade100.withAlpha(65),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.zero,
@@ -211,8 +242,7 @@ class DetailRawatJalan extends StatelessWidget {
                       icon: const Icon(Icons.keyboard_arrow_down),
                       iconSize: 30,
                       buttonHeight: 50,
-                      onChanged:
-                          (valueProvider.hEdit == true) ? (value) {} : null,
+                      onChanged: (false == true) ? (value) {} : null,
                     ),
                   ),
                   const SizedBox(
@@ -228,7 +258,7 @@ class DetailRawatJalan extends StatelessWidget {
                       initialValue: putDataRawat[indexOfPage].noHp,
                       borderRadius: const BorderRadius.all(Radius.zero),
                       keyboardType: TextInputType.phone,
-                      enabled: valueProvider.hEdit,
+                      enabled: false,
                     ),
                   ),
                   const SizedBox(
@@ -243,7 +273,7 @@ class DetailRawatJalan extends StatelessWidget {
                     child: Input(
                       initialValue: putDataRawat[indexOfPage].jenisPenyakit,
                       borderRadius: const BorderRadius.all(Radius.zero),
-                      enabled: valueProvider.hEdit,
+                      enabled: false,
                     ),
                   ),
                   const SizedBox(
@@ -263,7 +293,7 @@ class DetailRawatJalan extends StatelessWidget {
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.zero,
                         filled: true,
-                        enabled: valueProvider.hEdit,
+                        enabled: false,
                         fillColor: grey.shade100.withAlpha(65),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.zero,
@@ -290,8 +320,7 @@ class DetailRawatJalan extends StatelessWidget {
                       icon: const Icon(Icons.keyboard_arrow_down),
                       iconSize: 30,
                       buttonHeight: 50,
-                      onChanged:
-                          (valueProvider.hEdit == true) ? (value) {} : null,
+                      onChanged: null,
                     ),
                   ),
                   const SizedBox(
@@ -316,7 +345,7 @@ class DetailRawatJalan extends StatelessWidget {
                                           putDataRawat[indexOfPage].tempatLahir,
                                       borderRadius:
                                           const BorderRadius.all(Radius.zero),
-                                      enabled: valueProvider.hEdit,
+                                      enabled: false,
                                     ),
                                   ),
                                 ],
@@ -344,7 +373,7 @@ class DetailRawatJalan extends StatelessWidget {
                                       keyboardType: TextInputType.none,
                                       textAlignVertical:
                                           TextAlignVertical.center,
-                                      enabled: valueProvider.hEdit,
+                                      enabled: false,
                                       onTap: () {},
                                       readOnly: true,
                                       suffixIcon: const Icon(Icons.date_range),
@@ -369,7 +398,7 @@ class DetailRawatJalan extends StatelessWidget {
                                     putDataRawat[indexOfPage].tempatLahir,
                                 borderRadius:
                                     const BorderRadius.all(Radius.zero),
-                                enabled: valueProvider.hEdit,
+                                enabled: false,
                               ),
                             ),
                             const SizedBox(
@@ -388,10 +417,8 @@ class DetailRawatJalan extends StatelessWidget {
                                     const BorderRadius.all(Radius.zero),
                                 keyboardType: TextInputType.none,
                                 textAlignVertical: TextAlignVertical.center,
-                                enabled: valueProvider.hEdit,
-                                onTap: () {
-                                  functionProvider.dateTimeTanggal(context);
-                                },
+                                enabled: false,
+                                onTap: () {},
                                 readOnly: true,
                                 suffixIcon: const Icon(Icons.date_range),
                               ),
@@ -417,12 +444,15 @@ class DetailRawatJalan extends StatelessWidget {
                                     padding: const EdgeInsets.only(top: 12),
                                     child: Input(
                                       initialValue: putDataRawat[indexOfPage]
-                                          .nomerAntrian
-                                          .toString(),
+                                          .nomerAntrian!
+                                          .substring(2),
+                                      keyboardType: TextInputType.number,
+                                      prefixText: putDataRawat[indexOfPage]
+                                          .nomerAntrian!
+                                          .substring(0, 2),
                                       borderRadius:
                                           const BorderRadius.all(Radius.zero),
-                                      keyboardType: TextInputType.none,
-                                      enabled: valueProvider.hEdit,
+                                      enabled: false,
                                     ),
                                   ),
                                 ],
@@ -444,8 +474,7 @@ class DetailRawatJalan extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 12),
                                     child: Input(
-                                      initialValue: putDataRawat[indexOfPage]
-                                          .jadwalRawatJalan,
+                                      controller: _jadwalRawatController,
                                       borderRadius:
                                           const BorderRadius.all(Radius.zero),
                                       keyboardType: TextInputType.none,
@@ -476,19 +505,19 @@ class DetailRawatJalan extends StatelessWidget {
                               padding: const EdgeInsets.only(top: 12),
                               child: Input(
                                 initialValue: putDataRawat[indexOfPage]
-                                    .nomerAntrian
-                                    .toString(),
+                                    .nomerAntrian!
+                                    .substring(2),
+                                prefixText: putDataRawat[indexOfPage]
+                                    .nomerAntrian!
+                                    .substring(0, 2),
+                                keyboardType: TextInputType.number,
                                 borderRadius:
                                     const BorderRadius.all(Radius.zero),
-                                keyboardType: TextInputType.none,
                                 textAlignVertical: TextAlignVertical.center,
-                                enabled: valueProvider.hEdit,
+                                enabled: false,
                                 onTap: () {
                                   log('Hello World');
                                 },
-                                readOnly: true,
-                                suffixIcon:
-                                    const Icon(Icons.keyboard_arrow_down),
                               ),
                             ),
                             const SizedBox(
@@ -502,8 +531,7 @@ class DetailRawatJalan extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(top: 12),
                               child: Input(
-                                initialValue:
-                                    putDataRawat[indexOfPage].jadwalRawatJalan,
+                                controller: _jadwalRawatController,
                                 borderRadius:
                                     const BorderRadius.all(Radius.zero),
                                 keyboardType: TextInputType.none,
@@ -554,7 +582,10 @@ class DetailRawatJalan extends StatelessWidget {
                                             context,
                                             putDataRawat[indexOfPage].id ?? 0,
                                             putDataRawat[indexOfPage].nama ??
-                                                '-');
+                                                '-',
+                                            putDataRawat[indexOfPage]
+                                                    .keterangan ??
+                                                'Data Kosong');
                                       },
                                       style: ElevatedButton.styleFrom(
                                         primary: green.shade300,
@@ -607,10 +638,30 @@ class DetailRawatJalan extends StatelessWidget {
                                 : 120,
                             height: 40,
                             child: ElevatedButton(
-                                onPressed: () {
+                                onPressed: () async {
                                   if (valueProvider.hEdit == true) {
-                                    functionProvider.changeEditStatus();
-                                    Navigator.pop(context);
+                                    showCaseDialog(context,
+                                        title: 'Konfirmasi',
+                                        label:
+                                            'Apakah anda yakin ingin merubah data jadwal rawat jalan ?',
+                                        onPressed: () async {
+                                      Navigator.pop(context);
+                                      functionProvider
+                                          .updateDataApiRawatJalanAdmin(
+                                              context,
+                                              putDataRawat[indexOfPage].id!,
+                                              UpdateRawatData(
+                                                  jadwalRawatJalan:
+                                                      _jadwalRawatController
+                                                          .text),
+                                              loadingWidget);
+                                    });
+                                    Future.delayed(
+                                      const Duration(seconds: 1),
+                                      () async {
+                                        functionProvider.changeEditStatus();
+                                      },
+                                    );
                                   } else {
                                     Navigator.pop(context);
                                   }
@@ -645,7 +696,10 @@ class DetailRawatJalan extends StatelessWidget {
                                             context,
                                             putDataRawat[indexOfPage].id ?? 0,
                                             putDataRawat[indexOfPage].nama ??
-                                                '-');
+                                                '-',
+                                            putDataRawat[indexOfPage]
+                                                    .keterangan ??
+                                                'Data Kosong');
                                       },
                                       style: ElevatedButton.styleFrom(
                                         primary: green.shade300,
@@ -696,8 +750,28 @@ class DetailRawatJalan extends StatelessWidget {
                             child: ElevatedButton(
                                 onPressed: () {
                                   if (valueProvider.hEdit == true) {
-                                    functionProvider.changeEditStatus();
-                                    Navigator.pop(context);
+                                    showCaseDialog(context,
+                                        title: 'Konfirmasi',
+                                        label:
+                                            'Apakah anda yakin ingin merubah data jadwal rawat jalan ?',
+                                        onPressed: () async {
+                                      Navigator.pop(context);
+                                      functionProvider
+                                          .updateDataApiRawatJalanAdmin(
+                                              context,
+                                              putDataRawat[indexOfPage].id!,
+                                              UpdateRawatData(
+                                                  jadwalRawatJalan:
+                                                      _jadwalRawatController
+                                                          .text),
+                                              loadingWidget);
+                                    });
+                                    Future.delayed(
+                                      const Duration(seconds: 1),
+                                      () async {
+                                        functionProvider.changeEditStatus();
+                                      },
+                                    );
                                   } else {
                                     Navigator.pop(context);
                                   }

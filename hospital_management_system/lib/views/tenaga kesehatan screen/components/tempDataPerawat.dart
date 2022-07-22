@@ -2,12 +2,12 @@ import 'dart:developer';
 
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/models/dokter_data_model.dart';
-import 'package:hospital_management_system/models/updateDokter_model.dart';
-import 'package:hospital_management_system/viewModels/dokter%20perawat%20viewModel/dokter_viewModel.dart';
+import 'package:hospital_management_system/models/perawat_data_model.dart';
+import 'package:hospital_management_system/viewModels/dokter%20perawat%20viewModel/perawat_viewModel.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../../models/updatePerawat_model.dart';
 import '../../../utilities/common/case_dialog.dart';
 import '../../../utilities/common/progress_dialog.dart';
 import '../../../viewModels/login viewModel/login_viewModel.dart';
@@ -15,18 +15,18 @@ import '/utilities/common/input.dart';
 import '/utilities/constants/color.dart';
 import '/utilities/constants/responsive.dart';
 
-class DetailDataDokter extends StatefulWidget {
-  DetailDataDokter({Key? key, required this.query, required this.queryPage})
+class DetailDataPerawat extends StatefulWidget {
+  DetailDataPerawat({Key? key, required this.query, required this.queryPage})
       : super(key: key);
 
   DataGridCellTapDetails? query;
   int queryPage;
 
   @override
-  State<DetailDataDokter> createState() => _DetailDataDokterState();
+  State<DetailDataPerawat> createState() => _DetailDataPerawatState();
 }
 
-class _DetailDataDokterState extends State<DetailDataDokter> {
+class _DetailDataPerawatState extends State<DetailDataPerawat> {
   final _scrollController = ScrollController();
   TextEditingController _sipController = TextEditingController();
   TextEditingController _namaController = TextEditingController();
@@ -34,6 +34,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
   TextEditingController _nomorTelfonController = TextEditingController();
   TextEditingController _poliController = TextEditingController();
   TextEditingController _jadwalPrakController = TextEditingController();
+  TextEditingController _jabatanController = TextEditingController();
   TextEditingController _strController = TextEditingController();
 
   @override
@@ -45,6 +46,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
     _nomorTelfonController.dispose();
     _poliController.dispose();
     _jadwalPrakController.dispose();
+    _jabatanController.dispose();
     _strController.dispose();
   }
 
@@ -53,16 +55,16 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
     int index = widget.query!.rowColumnIndex.rowIndex - 1;
     int indexOfPage = index + (widget.queryPage + 1) - 1;
 
-    DokterViewModel functionProvider = context.read<DokterViewModel>();
-    DokterViewModel valueProvider = context.watch<DokterViewModel>();
+    PerawatViewModel functionProvider = context.read<PerawatViewModel>();
+    PerawatViewModel valueProvider = context.watch<PerawatViewModel>();
     LoginProvider loginValue = context.watch<LoginProvider>();
 
-    List<DataDokter>? putDataDokter;
+    List<DataPerawat>? putDataPerawat;
     if (valueProvider.search.isNotEmpty ||
         valueProvider.searchController.text.isNotEmpty) {
-      putDataDokter = valueProvider.search;
+      putDataPerawat = valueProvider.search;
     } else {
-      putDataDokter = valueProvider.listDokterData;
+      putDataPerawat = valueProvider.listPerawatData;
     }
 
     final ProgressDialog loadingWidget = ProgressDialog(
@@ -88,7 +90,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                 thumbVisibility: (Responsive.isMobile(context)) ? false : true,
                 child: showDetail(
                   context,
-                  putDataDokter,
+                  putDataPerawat,
                   functionProvider,
                   valueProvider,
                   loginValue,
@@ -129,27 +131,28 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
 
   Widget showDetail(
       BuildContext context,
-      List<DataDokter> putDataDokter,
-      DokterViewModel functionProvider,
-      DokterViewModel valueProvider,
+      List<DataPerawat> putDataPerawat,
+      PerawatViewModel functionProvider,
+      PerawatViewModel valueProvider,
       LoginProvider loginValue,
       int indexOfPage,
       ProgressDialog loadingWidget) {
-    var splitJadwal = (putDataDokter[indexOfPage].jadwalPraktek!.isNotEmpty)
-        ? putDataDokter[indexOfPage].jadwalPraktek?.split(' ')
+    var splitJadwal = (putDataPerawat[indexOfPage].jadwalKerja!.isNotEmpty)
+        ? putDataPerawat[indexOfPage].jadwalKerja?.split(' ')
         : ['-', '-'];
 
     String? day = splitJadwal?[0] ?? '';
     String? hours = splitJadwal?[1] ?? '';
 
-    _sipController.text = putDataDokter[indexOfPage].sip!;
-    _namaController.text = putDataDokter[indexOfPage].namaDokter!;
-    _poliController.text = putDataDokter[indexOfPage].poli!;
-    _jenisKelController.text = putDataDokter[indexOfPage].jenisKelamin!;
+    _sipController.text = putDataPerawat[indexOfPage].sip!;
+    _namaController.text = putDataPerawat[indexOfPage].namaPerawat!;
+    _poliController.text = putDataPerawat[indexOfPage].poli!;
+    _jenisKelController.text = putDataPerawat[indexOfPage].jenisKelamin!;
 
-    _nomorTelfonController.text = putDataDokter[indexOfPage].nomorTelfon!;
+    _nomorTelfonController.text = putDataPerawat[indexOfPage].nomorTelfon!;
+    _jabatanController.text = putDataPerawat[indexOfPage].jabatan!;
 
-    _strController.text = putDataDokter[indexOfPage].nomorStr!;
+    _strController.text = putDataPerawat[indexOfPage].nomorStr!;
 
     return Stack(children: [
       SingleChildScrollView(
@@ -214,7 +217,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                     'Jenis Kelamin',
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
-                  putDataDokter[indexOfPage].jenisKelamin == ''
+                  putDataPerawat[indexOfPage].jenisKelamin == ''
                       ? Padding(
                           padding: const EdgeInsets.only(top: 12),
                           child: Padding(
@@ -250,11 +253,8 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                               buttonHeight: 50,
                               onChanged: (valueProvider.hEdit == true)
                                   ? (value) {
-                                      if (value.toString() == 'Laki - laki') {
-                                        _jenisKelController.text = 'L';
-                                      } else {
-                                        _jenisKelController.text = 'P';
-                                      }
+                                      _jenisKelController.text =
+                                          value.toString();
                                     }
                                   : null,
                             ),
@@ -265,10 +265,10 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                           child: Padding(
                             padding: const EdgeInsets.only(top: 12),
                             child: DropdownButtonFormField2(
-                              value: (putDataDokter[indexOfPage]
+                              value: (putDataPerawat[indexOfPage]
                                       .jenisKelamin!
                                       .isNotEmpty)
-                                  ? (putDataDokter[indexOfPage].jenisKelamin ==
+                                  ? (putDataPerawat[indexOfPage].jenisKelamin ==
                                           'L')
                                       ? 'Laki - laki'
                                       : 'Perempuan'
@@ -303,11 +303,8 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                               buttonHeight: 50,
                               onChanged: (valueProvider.hEdit == true)
                                   ? (value) {
-                                      if (value.toString() == 'Laki - laki') {
-                                        _jenisKelController.text = 'L';
-                                      } else {
-                                        _jenisKelController.text = 'P';
-                                      }
+                                      _jenisKelController.text =
+                                          value.toString();
                                     }
                                   : null,
                             ),
@@ -336,7 +333,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                     'Poli',
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
-                  putDataDokter[indexOfPage].poli == ''
+                  putDataPerawat[indexOfPage].poli == ''
                       ? Padding(
                           padding: const EdgeInsets.only(top: 12),
                           child: DropdownButtonFormField2(
@@ -380,7 +377,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                       : Padding(
                           padding: const EdgeInsets.only(top: 12),
                           child: DropdownButtonFormField2(
-                            value: putDataDokter[indexOfPage].poli,
+                            value: putDataPerawat[indexOfPage].poli,
                             decoration: InputDecoration(
                               contentPadding: EdgeInsets.zero,
                               filled: true,
@@ -422,7 +419,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                     height: 20,
                   ),
                   (!Responsive.isMobile(context))
-                      ? putDataDokter[indexOfPage].jadwalPraktek == ''
+                      ? putDataPerawat[indexOfPage].jadwalKerja == ''
                           ? Row(
                               children: [
                                 Flexible(
@@ -431,7 +428,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       const Text(
-                                        'Jadwal Praktek',
+                                        'Jadwal Kerja',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700),
                                       ),
@@ -564,7 +561,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       const Text(
-                                        'Jadwal Praktek',
+                                        'Jadwal Kerja',
                                         style: TextStyle(
                                             fontWeight: FontWeight.w700),
                                       ),
@@ -691,12 +688,12 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                 ),
                               ],
                             )
-                      : putDataDokter[indexOfPage].jadwalPraktek == ''
+                      : putDataPerawat[indexOfPage].jadwalKerja == ''
                           ? Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  'Jadwal Praktek',
+                                  'Jadwal Kerja',
                                   style: TextStyle(fontWeight: FontWeight.w700),
                                 ),
                                 Padding(
@@ -795,7 +792,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 const Text(
-                                  'Jadwal Praktek',
+                                  'Jadwal Kerja',
                                   style: TextStyle(fontWeight: FontWeight.w700),
                                 ),
                                 Padding(
@@ -896,6 +893,22 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                     height: 20,
                   ),
                   const Text(
+                    'Jabatan',
+                    style: TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: Input(
+                      controller: _strController,
+                      borderRadius: const BorderRadius.all(Radius.zero),
+                      keyboardType: TextInputType.none,
+                      enabled: valueProvider.hEdit,
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
                     'Nomor STR (Surat Tanda Registrasi)',
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
@@ -933,12 +946,12 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                               context,
                               title: 'Konfirmasi',
                               label:
-                                  'Apakah anda ingin menghapus data dokter ini ?',
+                                  'Apakah anda ingin menghapus data Perawat ini ?',
                               onPressed: () async {
                                 Navigator.pop(context);
-                                await functionProvider.deleteDokterData(
+                                await functionProvider.deletePerawatData(
                                     context,
-                                    putDataDokter[indexOfPage].idUser!,
+                                    putDataPerawat[indexOfPage].idUser!,
                                     loadingWidget);
                                 Future.delayed(const Duration(seconds: 2),
                                     () async {
@@ -971,19 +984,20 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                             showCaseDialog(
                               context,
                               title: 'Konfirmasi',
-                              label: 'Apakah anda ingin mengubah data dokter ?',
+                              label:
+                                  'Apakah anda ingin mengubah data Perawat ?',
                               onPressed: () async {
                                 Navigator.pop(context);
-                                await functionProvider.updateDokterData(
+                                await functionProvider.updatePerawatData(
                                     context,
-                                    putDataDokter[indexOfPage].idUser!,
-                                    UpdateDokterModel(
+                                    putDataPerawat[indexOfPage].idUser!,
+                                    UpdatePerawatModel(
                                       sip: _sipController.text,
                                       nama: _namaController.text,
                                       jenisKelamin: _jenisKelController.text,
                                       nomorTelfon: _nomorTelfonController.text,
                                       poli: _poliController.text,
-                                      jadwalPraktek: '$day $hours WIB',
+                                      jadwalKerja: '$day $hours WIB',
                                       nomorStr: _strController.text,
                                     ),
                                     loadingWidget);
@@ -1061,11 +1075,11 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
   }
 }
 
-Future openDetailDokter(BuildContext context, query, queryPage) {
+Future openDetailPerawat(BuildContext context, query, queryPage) {
   return showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (context) => DetailDataDokter(
+      builder: (context) => DetailDataPerawat(
             query: query,
             queryPage: queryPage,
           ));

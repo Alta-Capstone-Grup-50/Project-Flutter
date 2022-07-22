@@ -2,6 +2,7 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../viewModels/login viewModel/login_viewModel.dart';
 import '../../viewModels/pasien viewModel/pasien_viewModel.dart';
 import '/utilities/constants/responsive.dart';
 import '/utilities/common/input.dart';
@@ -9,6 +10,7 @@ import '/utilities/constants/color.dart';
 
 import '/views/pasien%20screen/components/pasien_table.dart';
 import '/views/main%20layout/main_layout.dart';
+import 'components/addPasien.dart';
 
 class PasienScreen extends StatelessWidget {
   const PasienScreen({Key? key}) : super(key: key);
@@ -16,6 +18,7 @@ class PasienScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     PasienViewModel init = context.read<PasienViewModel>();
+    LoginProvider loginValue = context.watch<LoginProvider>();
     init.getDataApiPasien();
 
     return MainLayout(
@@ -85,6 +88,40 @@ class PasienScreen extends StatelessWidget {
                       ? 30
                       : 20,
                 ),
+                (Responsive.isMobile(context))
+                    ? (loginValue.result['role'] != 'Dokter' ||
+                            loginValue.result['role'] != 'Perawat')
+                        ? Container(
+                            margin: const EdgeInsets.only(bottom: 20),
+                            height: 45,
+                            width: 176,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                openAddAccount(context);
+                              },
+                              style: ButtonStyle(
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        green.shade800),
+                                shape: MaterialStateProperty.all<
+                                    RoundedRectangleBorder>(
+                                  RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                  ),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceAround,
+                                children: const [
+                                  Icon(Icons.add_circle),
+                                  Text('Tambah Pasien')
+                                ],
+                              ),
+                            ),
+                          )
+                        : const SizedBox.shrink()
+                    : const SizedBox.shrink(),
                 Consumer<PasienViewModel>(
                     builder: ((context, valueProvider, _) {
                   if (Theme.of(context).platform == TargetPlatform.windows ||
@@ -152,6 +189,41 @@ class PasienScreen extends StatelessWidget {
                           ),
                         ),
                       ),
+                      const Spacer(),
+                      (Responsive.isMobile(context))
+                          ? const SizedBox.shrink()
+                          : (loginValue.result['role'] != 'Dokter' ||
+                                  loginValue.result['role'] != 'Perawat')
+                              ? SizedBox(
+                                  height: 45,
+                                  width: 176,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      openAddAccount(context);
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              green.shade800),
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16.0),
+                                        ),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: const [
+                                        Icon(Icons.add_circle),
+                                        Text('Tambah Pasien')
+                                      ],
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox.shrink()
                     ]);
                   } else {
                     return (Responsive.isDesktop(context) ||

@@ -87,7 +87,7 @@ class LoginProvider extends ChangeNotifier {
     DataDokter? dataDokter;
     DataPerawat? dataPerawat;
 
-    if (authUser.level == 'dokter') {
+    if (authUser.level == 'Dokter') {
       dataDokter = dokteViewModel.listDokterData
           .firstWhere((element) => element.idUser == authUser.id);
       matchDataId = dataDokter.idUser ?? 0;
@@ -95,7 +95,7 @@ class LoginProvider extends ChangeNotifier {
 
       notifyListeners();
     }
-    if (authUser.level == 'perawat') {
+    if (authUser.level == 'Perawat') {
       dataPerawat = perawatViewModel.listPerawatData
           .firstWhere((element) => element.idUser == authUser.id);
       matchDataId = dataPerawat.idUser ?? 0;
@@ -141,8 +141,9 @@ class LoginProvider extends ChangeNotifier {
             AkunModel authUser = AkunModel.fromJson(responseData);
             UserPreferences().saveUser(authUser);
 
-            if (authUser.level == 'dokter' || authUser.level == 'perawat') {
+            if (authUser.level == 'Dokter' || authUser.level == 'Perawat') {
               validasiUserData(context, authUser: authUser);
+              // UserPreferences().saveUser(authUser);
 
               _loggedInStatusAuth = StatusAuth.loggedIn;
               notifyListeners();
@@ -177,6 +178,9 @@ class LoginProvider extends ChangeNotifier {
               _loggedInStatusAuth = StatusAuth.loggedIn;
               notifyListeners();
 
+              // _loggedInStatusAuth = StatusAuth.notLoggedIn;
+              // notifyListeners();
+
               _result = {
                 'status': true,
                 'message': 'Login Berhasil, Welcome Admin',
@@ -184,12 +188,24 @@ class LoginProvider extends ChangeNotifier {
                 'role': authUser.level
               };
 
+              // _result = {
+              //   'status': false,
+              //   'message': 'Akses terkunci!',
+              // };
+
               SnackBarComponent(
                 context: context,
                 message: _result['message'],
                 type: 'success',
                 duration: const Duration(milliseconds: 1400),
               );
+
+              // SnackBarComponent(
+              //   context: context,
+              //   message: _result['message'],
+              //   type: 'warning',
+              //   duration: const Duration(milliseconds: 1400),
+              // );
 
               Future.delayed(
                 const Duration(milliseconds: 1500),
@@ -282,15 +298,15 @@ class LoginProvider extends ChangeNotifier {
     });
   }
 
-  void logout(BuildContext context) {
+  Future<void> logout(BuildContext context) async {
     if (authTimer != null) {
       authTimer!.cancel();
       authTimer = null;
     }
 
     SchedulerBinding.instance.addPostFrameCallback((_) async {
-      await Future.delayed(const Duration(seconds: 1), () async {
-        removePrefereces();
+      removePrefereces();
+      Future.delayed(const Duration(seconds: 1), () async {
         await Navigator.pushNamedAndRemoveUntil(
           context,
           '/login',

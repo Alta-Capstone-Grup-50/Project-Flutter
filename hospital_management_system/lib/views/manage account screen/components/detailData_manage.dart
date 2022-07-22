@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../models/manage_data_model.dart';
+import '../../../utilities/common/case_dialog.dart';
+import '../../../utilities/common/progress_dialog.dart';
 import '../../../viewModels/manage viewModel/manage_viewModel.dart';
 import '/utilities/common/input.dart';
 import '/utilities/constants/color.dart';
@@ -26,7 +28,9 @@ class DetailDataManage extends StatelessWidget {
     int index = query!.rowColumnIndex.rowIndex - 1;
     int indexOfPage = index + (queryPage + 1) - 1;
 
-    ManageViewModel valueProvider = context.read<ManageViewModel>();
+    ManageViewModel valueProvider = context.watch<ManageViewModel>();
+    ManageViewModel functionProvider = context.read<ManageViewModel>();
+
     List<DataManage>? putDataManage;
     if (valueProvider.search.isNotEmpty ||
         valueProvider.searchController.text.isNotEmpty) {
@@ -34,6 +38,13 @@ class DetailDataManage extends StatelessWidget {
     } else {
       putDataManage = valueProvider.listManageData;
     }
+
+    final ProgressDialog loadingWidget = ProgressDialog(
+      context,
+      isDismissible: false,
+    );
+    loadingWidget.style(
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30));
 
     return AlertDialog(
       content: Stack(
@@ -49,7 +60,8 @@ class DetailDataManage extends StatelessWidget {
               child: Scrollbar(
                 controller: _scrollController,
                 thumbVisibility: (Responsive.isMobile(context)) ? false : true,
-                child: showDetail(context, putDataManage, indexOfPage),
+                child: showDetail(context, putDataManage, valueProvider,
+                    functionProvider, indexOfPage, loadingWidget),
               ),
             ),
           ),
@@ -75,10 +87,12 @@ class DetailDataManage extends StatelessWidget {
   }
 
   Widget showDetail(
-    BuildContext context,
-    List<DataManage> putDataManage,
-    int indexOfPage,
-  ) {
+      BuildContext context,
+      List<DataManage> putDataManage,
+      ManageViewModel valueProvider,
+      ManageViewModel functionProvider,
+      int indexOfPage,
+      ProgressDialog loadingWidget) {
     return Stack(children: [
       SingleChildScrollView(
         controller: _scrollController,
@@ -160,7 +174,7 @@ class DetailDataManage extends StatelessWidget {
                     height: 20,
                   ),
                   const Text(
-                    'Nomor Telfon',
+                    'Level',
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
                   Padding(
@@ -176,7 +190,7 @@ class DetailDataManage extends StatelessWidget {
                     height: 20,
                   ),
                   const Text(
-                    'Poli',
+                    'Email',
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
                   Padding(
@@ -217,6 +231,34 @@ class DetailDataManage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
+                  SizedBox(
+                    width: 120,
+                    height: 40,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          showCaseDialog(
+                            context,
+                            title: 'Buat Akun',
+                            label:
+                                'Apakah anda ingin menambahkan akun tersebut ?',
+                            onPressed: () async {
+                              Navigator.pop(context);
+                              functionProvider.deletePasienData(
+                                  context,
+                                  putDataManage[indexOfPage].id!,
+                                  putDataManage[indexOfPage].email!,
+                                  loadingWidget);
+                            },
+                          );
+                        },
+                        style: ElevatedButton.styleFrom(
+                          primary: Colors.red,
+                        ),
+                        child: const Text(
+                          'Delete',
+                          style: TextStyle(fontSize: 15),
+                        )),
+                  ),
                   const SizedBox(
                     width: 20,
                   ),

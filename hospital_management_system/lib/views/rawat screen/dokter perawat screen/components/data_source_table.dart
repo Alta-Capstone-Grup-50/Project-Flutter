@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/utilities/common/case_dialog.dart';
+import 'package:hospital_management_system/viewModels/login%20viewModel/login_viewModel.dart';
 
 import 'package:provider/provider.dart';
 
@@ -15,6 +16,7 @@ class RawatDataSourceTable extends DataGridSource {
   List<DataRawatJalan> _data;
   List<DataRawatJalan> _paginatedData = [];
   RawatJalanViewModel? _valProvider;
+  LoginProvider? _logProvider;
   final DataPagerController _controller = DataPagerController();
   var contexts;
   ProgressDialog? _loadingWidget;
@@ -29,6 +31,7 @@ class RawatDataSourceTable extends DataGridSource {
   RawatDataSourceTable(this._data, BuildContext context) {
     contexts = context;
     _valProvider = context.read<RawatJalanViewModel>();
+    _logProvider = context.watch<LoginProvider>();
     _loadingWidget = ProgressDialog(
       context,
       isDismissible: false,
@@ -198,31 +201,36 @@ class RawatDataSourceTable extends DataGridSource {
           value: Checkbox(
               value: dataGridRow.proses ?? false,
               onChanged: (bool? newValue) {
-                if (dataGridRow.proses == false) {
-                  log('check');
-                  showCaseDialog(contexts,
-                      title: 'Konfirmasi',
-                      label:
-                          "Apa anda sudah yakin untuk menyelesaikan rawat jalan\npasien ini pada hari ini?",
-                      onPressed: () async {
-                    Navigator.of(contexts).pop();
-                    _loadingWidget!.show();
-                    await Future.delayed(
-                      const Duration(seconds: 2),
-                      () {
-                        dataGridRow.proses = newValue;
-                        _valProvider!.putProsesAntrian(
-                            dataGridRow.id!, dataGridRow.proses!);
-                        _valProvider!.listRawatJalanData.sort((a, b) =>
-                            a.proses.toString().compareTo(b.proses.toString()));
-                        _valProvider!.getCurrentAntrian();
-                        notifyListeners();
-                      },
-                    );
-                    _loadingWidget!.hide();
-                  });
-                } else {
-                  return;
+                if (_logProvider!.result['role'] == 'Dokter' ||
+                    _logProvider!.result['role'] == 'Perawat') {
+                  if (dataGridRow.proses == false) {
+                    log('check');
+                    showCaseDialog(contexts,
+                        title: 'Konfirmasi',
+                        label:
+                            "Apa anda sudah yakin untuk menyelesaikan rawat jalan\npasien ini pada hari ini?",
+                        onPressed: () async {
+                      Navigator.of(contexts).pop();
+                      _loadingWidget!.show();
+                      await Future.delayed(
+                        const Duration(seconds: 2),
+                        () {
+                          dataGridRow.proses = newValue;
+                          _valProvider!.putProsesAntrian(
+                              dataGridRow.id!, dataGridRow.proses!);
+                          _valProvider!.listRawatJalanData.sort((a, b) => a
+                              .proses
+                              .toString()
+                              .compareTo(b.proses.toString()));
+                          _valProvider!.getCurrentAntrian();
+                          notifyListeners();
+                        },
+                      );
+                      _loadingWidget!.hide();
+                    });
+                  } else {
+                    return;
+                  }
                 }
               }),
         ),

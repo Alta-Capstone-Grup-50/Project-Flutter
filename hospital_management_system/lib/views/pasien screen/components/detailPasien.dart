@@ -1,37 +1,90 @@
-import 'dart:developer';
-
+import 'package:date_format/date_format.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/models/updatePasien_model.dart';
+import 'package:hospital_management_system/viewModels/login%20viewModel/login_viewModel.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../../utilities/common/case_dialog.dart';
+import '../../../utilities/common/progress_dialog.dart';
+import '../../../utilities/constants/validate.dart';
 import '/models/pasien_data_model.dart';
 import '/utilities/common/input.dart';
 import '/utilities/constants/color.dart';
 import '/utilities/constants/responsive.dart';
 import '/viewModels/pasien viewModel/pasien_viewModel.dart';
 
-class DetailPasien extends StatelessWidget {
+class DetailPasien extends StatefulWidget {
   DetailPasien({Key? key, required this.query, required this.queryPage})
       : super(key: key);
 
   DataGridCellTapDetails? query;
   int queryPage;
 
+  @override
+  State<DetailPasien> createState() => _DetailPasienState();
+}
+
+class _DetailPasienState extends State<DetailPasien> {
   final _scrollController = ScrollController();
+
+  final GlobalKey<FormState> _formKey =
+      GlobalKey<FormState>(debugLabel: 'add pasien');
+
+  final TextEditingController _nikController = TextEditingController();
+
+  final TextEditingController _namacontroller = TextEditingController();
+
+  final TextEditingController _jenisKelController = TextEditingController();
+
+  final TextEditingController _jenisPolController = TextEditingController();
+
+  final TextEditingController _alamatController = TextEditingController();
+
+  final TextEditingController _noTelController = TextEditingController();
+
+  final TextEditingController _tempatLahController = TextEditingController();
+
+  final TextEditingController _tanggalLahirController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _nikController.dispose();
+    _namacontroller.dispose();
+    _jenisKelController.dispose();
+    _jenisPolController.dispose();
+    _alamatController.dispose();
+    _noTelController.dispose();
+    _tempatLahController.dispose();
+    _tanggalLahirController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    int index = query!.rowColumnIndex.rowIndex - 1;
-    int indexOfPage = index + (queryPage + 1) - 1;
+    int index = widget.query!.rowColumnIndex.rowIndex - 1;
+    int indexOfPage = index + (widget.queryPage + 1) - 1;
 
-    PasienViewModel valueProvider = context.read<PasienViewModel>();
+    PasienViewModel functionProvider = context.read<PasienViewModel>();
+    PasienViewModel valueProvider = context.watch<PasienViewModel>();
+    LoginProvider loginValue = context.watch<LoginProvider>();
+    LoginProvider loginFunction = context.read<LoginProvider>();
+
     List<DataPasien>? putDataPasien;
     if (valueProvider.search.isNotEmpty ||
         valueProvider.searchController.text.isNotEmpty) {
-      putDataPasien = valueProvider.search;
+      putDataPasien = functionProvider.search;
     } else {
-      putDataPasien = valueProvider.listPasienData;
+      putDataPasien = functionProvider.listPasienData;
     }
+
+    final ProgressDialog loadingWidget = ProgressDialog(
+      context,
+      isDismissible: false,
+    );
+    loadingWidget.style(
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30));
 
     return AlertDialog(
       content: Stack(
@@ -47,7 +100,15 @@ class DetailPasien extends StatelessWidget {
               child: Scrollbar(
                 controller: _scrollController,
                 thumbVisibility: (Responsive.isMobile(context)) ? false : true,
-                child: showDetail(context, putDataPasien, indexOfPage),
+                child: showDetail(
+                    context,
+                    putDataPasien,
+                    valueProvider,
+                    functionProvider,
+                    loginValue,
+                    loginFunction,
+                    indexOfPage,
+                    loadingWidget),
               ),
             ),
           ),
@@ -59,6 +120,12 @@ class DetailPasien extends StatelessWidget {
                   child: InkResponse(
                     radius: 25,
                     onTap: () {
+                      if (valueProvider.hEdit == true) {
+                        Future.delayed(const Duration(seconds: 1), () {
+                          functionProvider.changeEditStatus();
+                        });
+                      }
+
                       Navigator.of(context).pop();
                     },
                     child: Icon(
@@ -73,10 +140,27 @@ class DetailPasien extends StatelessWidget {
   }
 
   Widget showDetail(
-    BuildContext context,
-    List<DataPasien> putDataPasien,
-    int indexOfPage,
-  ) {
+      BuildContext context,
+      List<DataPasien> putDataPasien,
+      PasienViewModel valueProvider,
+      PasienViewModel functionProvider,
+      LoginProvider loginValue,
+      LoginProvider loginFunction,
+      int indexOfPage,
+      ProgressDialog loadingWidget) {
+    _nikController.text = putDataPasien[indexOfPage].nik!;
+    _namacontroller.text = putDataPasien[indexOfPage].nama!;
+    _alamatController.text = putDataPasien[indexOfPage].alamat!;
+    _noTelController.text = putDataPasien[indexOfPage].noHp!;
+    _tempatLahController.text = putDataPasien[indexOfPage].tempatLahir!;
+    _tanggalLahirController.text = putDataPasien[indexOfPage].tanggalLahir!;
+
+    if (valueProvider.dateTimeT != null) {
+      _tanggalLahirController.text = formatDate(
+          valueProvider.dateTimeT!, [dd, '-', mm, '-', yyyy],
+          locale: const IndonesianDateLocale());
+    }
+
     return Stack(children: [
       SingleChildScrollView(
         controller: _scrollController,
@@ -111,10 +195,12 @@ class DetailPasien extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Input(
-                      initialValue: putDataPasien[indexOfPage].nik,
+                      controller: _nikController,
                       borderRadius: const BorderRadius.all(Radius.zero),
-                      keyboardType: TextInputType.none,
-                      enabled: false,
+                      enabled: (valueProvider.hEdit == true) ? true : false,
+                      validator: (value) {
+                        return validateForm(value!, 'NIK tidak boleh kosong!');
+                      },
                     ),
                   ),
                   const SizedBox(
@@ -127,10 +213,13 @@ class DetailPasien extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Input(
-                      initialValue: putDataPasien[indexOfPage].nama,
+                      controller: _namacontroller,
                       borderRadius: const BorderRadius.all(Radius.zero),
                       keyboardType: TextInputType.none,
-                      enabled: false,
+                      enabled: (valueProvider.hEdit == true) ? true : false,
+                      validator: (value) {
+                        return validateForm(value!, 'Nama tidak boleh kosong!');
+                      },
                     ),
                   ),
                   const SizedBox(
@@ -142,16 +231,50 @@ class DetailPasien extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
-                    child: Input(
-                      initialValue:
+                    child: DropdownButtonFormField2(
+                      value:
                           (putDataPasien[indexOfPage].jenisKelamin!.isNotEmpty)
                               ? (putDataPasien[indexOfPage].jenisKelamin == 'L')
                                   ? 'Laki - laki'
                                   : 'Perempuan'
                               : ' ',
-                      borderRadius: const BorderRadius.all(Radius.zero),
-                      keyboardType: TextInputType.none,
-                      enabled: false,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.zero,
+                        filled: true,
+                        enabled: valueProvider.hEdit,
+                        fillColor: grey.shade100.withAlpha(65),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.zero,
+                          borderSide: BorderSide(color: grey.shade300),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.zero,
+                          borderSide: BorderSide(color: grey.shade300),
+                        ),
+                        disabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                                width: 0, color: Colors.transparent)),
+                      ),
+                      buttonPadding: const EdgeInsets.only(left: 10),
+                      items: [
+                        'Laki - laki',
+                        'Perempuan',
+                      ]
+                          .map((item) =>
+                              DropdownMenuItem(value: item, child: Text(item)))
+                          .toList(),
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      iconSize: 30,
+                      buttonHeight: 50,
+                      onChanged: (valueProvider.hEdit == true)
+                          ? (value) {
+                              if (value.toString() == 'Laki - laki') {
+                                _jenisKelController.text = 'L';
+                              } else {
+                                _jenisKelController.text = 'P';
+                              }
+                            }
+                          : null,
                     ),
                   ),
                   const SizedBox(
@@ -163,11 +286,43 @@ class DetailPasien extends StatelessWidget {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
-                    child: Input(
-                      initialValue: putDataPasien[indexOfPage].poli ?? '-',
-                      borderRadius: const BorderRadius.all(Radius.zero),
-                      keyboardType: TextInputType.none,
-                      enabled: false,
+                    child: DropdownButtonFormField2(
+                      value: putDataPasien[indexOfPage].poli,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.zero,
+                        filled: true,
+                        enabled: valueProvider.hEdit,
+                        fillColor: grey.shade100.withAlpha(65),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.zero,
+                          borderSide: BorderSide(color: grey.shade300),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.zero,
+                          borderSide: BorderSide(color: grey.shade300),
+                        ),
+                        disabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                                width: 0, color: Colors.transparent)),
+                      ),
+                      buttonPadding: const EdgeInsets.only(left: 10),
+                      items: ['Umum', 'Gigi', 'Kulit', 'THT']
+                          .map((item) =>
+                              DropdownMenuItem(value: item, child: Text(item)))
+                          .toList(),
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      iconSize: 30,
+                      buttonHeight: 50,
+                      onChanged: (valueProvider.hEdit == true)
+                          ? (value) {
+                              _jenisPolController.text = value.toString();
+                            }
+                          : null,
+                      validator: ((value) {
+                        if (value == null) {
+                          return 'Data poli tidak boleh kosong';
+                        }
+                      }),
                     ),
                   ),
                   const SizedBox(
@@ -180,10 +335,13 @@ class DetailPasien extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Input(
-                      initialValue: putDataPasien[indexOfPage].alamat,
+                      controller: _alamatController,
                       borderRadius: const BorderRadius.all(Radius.zero),
-                      keyboardType: TextInputType.none,
-                      enabled: false,
+                      enabled: (valueProvider.hEdit == true) ? true : false,
+                      validator: (value) {
+                        return validateForm(
+                            value!, 'Alamat tidak boleh kosong!');
+                      },
                     ),
                   ),
                   const SizedBox(
@@ -196,10 +354,13 @@ class DetailPasien extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Input(
-                      initialValue: putDataPasien[indexOfPage].noHp,
+                      controller: _noTelController,
                       borderRadius: const BorderRadius.all(Radius.zero),
-                      keyboardType: TextInputType.none,
-                      enabled: false,
+                      enabled: (valueProvider.hEdit == true) ? true : false,
+                      validator: (value) {
+                        return validateForm(
+                            value!, 'Nomor telfon tidak boleh kosong!');
+                      },
                     ),
                   ),
                   const SizedBox(
@@ -220,12 +381,17 @@ class DetailPasien extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 12),
                                     child: Input(
-                                      initialValue: putDataPasien[indexOfPage]
-                                          .tempatLahir,
+                                      controller: _tempatLahController,
                                       borderRadius:
                                           const BorderRadius.all(Radius.zero),
                                       keyboardType: TextInputType.none,
-                                      enabled: false,
+                                      enabled: (valueProvider.hEdit == true)
+                                          ? true
+                                          : false,
+                                      validator: (value) {
+                                        return validateForm(value!,
+                                            'Tempat lahir tidak boleh kosong!');
+                                      },
                                     ),
                                   ),
                                 ],
@@ -246,16 +412,24 @@ class DetailPasien extends StatelessWidget {
                                   Padding(
                                     padding: const EdgeInsets.only(top: 12),
                                     child: Input(
-                                      initialValue: putDataPasien[indexOfPage]
-                                          .tanggalLahir,
+                                      controller: _tanggalLahirController,
                                       borderRadius:
                                           const BorderRadius.all(Radius.zero),
-                                      keyboardType: TextInputType.none,
                                       textAlignVertical:
                                           TextAlignVertical.center,
-                                      enabled: false,
-                                      suffixIcon:
-                                          const Icon(Icons.keyboard_arrow_down),
+                                      enabled: (valueProvider.hEdit == true)
+                                          ? true
+                                          : false,
+                                      suffixIcon: const Icon(Icons.date_range),
+                                      onTap: () {
+                                        functionProvider
+                                            .dateTimeTanggal(context);
+                                      },
+                                      readOnly: true,
+                                      validator: (value) {
+                                        return validateForm(value!,
+                                            'Tanggal lahir tidak boleh kosong!');
+                                      },
                                     ),
                                   ),
                                 ],
@@ -273,12 +447,16 @@ class DetailPasien extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(top: 12),
                               child: Input(
-                                initialValue:
-                                    putDataPasien[indexOfPage].tempatLahir,
+                                controller: _tempatLahController,
                                 borderRadius:
                                     const BorderRadius.all(Radius.zero),
-                                keyboardType: TextInputType.none,
-                                enabled: false,
+                                enabled: (valueProvider.hEdit == true)
+                                    ? true
+                                    : false,
+                                validator: (value) {
+                                  return validateForm(value!,
+                                      'Tempat lahir tidak boleh kosong!');
+                                },
                               ),
                             ),
                             const SizedBox(
@@ -291,35 +469,28 @@ class DetailPasien extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.only(top: 12),
                               child: Input(
-                                initialValue:
-                                    putDataPasien[indexOfPage].tanggalLahir,
+                                controller: _tanggalLahirController,
                                 borderRadius:
                                     const BorderRadius.all(Radius.zero),
-                                keyboardType: TextInputType.none,
                                 textAlignVertical: TextAlignVertical.center,
-                                enabled: false,
-                                suffixIcon:
-                                    const Icon(Icons.keyboard_arrow_down),
+                                enabled: (valueProvider.hEdit == true)
+                                    ? true
+                                    : false,
+                                suffixIcon: const Icon(Icons.date_range),
+                                onTap: () {
+                                  functionProvider.dateTimeTanggal(context);
+                                },
+                                readOnly: true,
+                                validator: (value) {
+                                  return validateForm(value!,
+                                      'Tanggal lahir tidak boleh kosong!');
+                                },
                               ),
                             ),
                           ],
                         ),
                   const SizedBox(
                     height: 20,
-                  ),
-                  const Text(
-                    'Nama Dokter',
-                    style: TextStyle(fontWeight: FontWeight.w700),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 12),
-                    child: Input(
-                      initialValue:
-                          putDataPasien[indexOfPage].namaDokter ?? '-',
-                      borderRadius: const BorderRadius.all(Radius.zero),
-                      keyboardType: TextInputType.none,
-                      enabled: false,
-                    ),
                   ),
                 ],
               ),
@@ -328,33 +499,254 @@ class DetailPasien extends StatelessWidget {
               height: 40,
             ),
             Padding(
-              padding: EdgeInsets.only(
-                  right: (Responsive.isMobile(context)) ? 20 : 40, bottom: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  const SizedBox(
-                    width: 20,
-                  ),
-                  SizedBox(
-                    width: 120,
-                    height: 40,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary: primaryColor,
-                        ),
-                        child: const Text(
-                          'Kembali',
-                          style: TextStyle(fontSize: 15),
-                        )),
-                  )
-                ],
-              ),
-            )
+                padding: EdgeInsets.only(
+                    right: (Responsive.isMobile(context)) ? 20 : 40,
+                    bottom: 10),
+                child: (!Responsive.isMobile(context))
+                    ? Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          (valueProvider.hEdit == true)
+                              ? const SizedBox.shrink()
+                              : SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.1,
+                                  height: 40,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      showCaseDialog(
+                                        context,
+                                        title: 'Konfirmasi',
+                                        label:
+                                            'Apakah anda yakin ingin menghapus data ${putDataPasien[indexOfPage].nama} ?',
+                                        onPressed: () async {
+                                          Navigator.pop(context);
+                                          functionProvider.deletePasienData(
+                                              context,
+                                              putDataPasien[indexOfPage].id!,
+                                              loadingWidget);
+                                        },
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.red),
+                                    child: Text(
+                                      'Delete',
+                                      style: TextStyle(
+                                          fontSize:
+                                              (Responsive.isMobile(context))
+                                                  ? 14
+                                                  : 15),
+                                    ),
+                                  ),
+                                ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          (loginValue.result['role'] != 'dokter' ||
+                                  loginValue.result['role'] != 'perawat')
+                              ? SizedBox(
+                                  width:
+                                      MediaQuery.of(context).size.width * 0.1,
+                                  height: 40,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      functionProvider.changeEditStatus();
+                                    },
+                                    style:
+                                        ElevatedButton.styleFrom(primary: grey),
+                                    child: Text(
+                                      (valueProvider.hEdit == true)
+                                          ? 'Cancel'
+                                          : 'Edit',
+                                      style: TextStyle(
+                                          fontSize:
+                                              (Responsive.isMobile(context))
+                                                  ? 14
+                                                  : 15),
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width * 0.1,
+                            height: 40,
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  if (valueProvider.hEdit == true) {
+                                    showCaseDialog(context,
+                                        title: 'Konfirmasi',
+                                        label:
+                                            'Apakah anda yakin ingin merubah data ${putDataPasien[indexOfPage].nama} ?',
+                                        onPressed: () async {
+                                      Navigator.pop(context);
+
+                                      await functionProvider.updatePasienData(
+                                          context,
+                                          putDataPasien[indexOfPage].id!,
+                                          UpdatePasienData(
+                                            nik: _nikController.text,
+                                            nama: _namacontroller.text,
+                                            alamat: _alamatController.text,
+                                            jenisKelamin:
+                                                _jenisKelController.text,
+                                            poli: _jenisPolController.text,
+                                            noHp: _noTelController.text,
+                                            tempatLahir:
+                                                _tempatLahController.text,
+                                            tanggalLahir:
+                                                _tanggalLahirController.text,
+                                          ),
+                                          loadingWidget);
+                                    });
+                                    Future.delayed(
+                                      const Duration(seconds: 1),
+                                      () async {
+                                        functionProvider.changeEditStatus();
+                                      },
+                                    );
+                                  } else {
+                                    Navigator.pop(context);
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: (valueProvider.hEdit == true)
+                                      ? green.shade400
+                                      : primaryColor,
+                                ),
+                                child: Text(
+                                  (valueProvider.hEdit == true)
+                                      ? 'Simpan'
+                                      : 'Kembali',
+                                  style: const TextStyle(fontSize: 15),
+                                )),
+                          )
+                        ],
+                      )
+                    : Column(
+                        children: [
+                          (valueProvider.hEdit == true)
+                              ? const SizedBox.shrink()
+                              : SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 40,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      showCaseDialog(
+                                        context,
+                                        title: 'Konfirmasi',
+                                        label:
+                                            'Apakah anda yakin ingin menghapus data ${putDataPasien[indexOfPage].nama} ?',
+                                        onPressed: () async {
+                                          Navigator.pop(context);
+                                          functionProvider.deletePasienData(
+                                              context,
+                                              putDataPasien[indexOfPage].id!,
+                                              loadingWidget);
+                                        },
+                                      );
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                        primary: Colors.red),
+                                    child: Text(
+                                      'Delete',
+                                      style: TextStyle(
+                                          fontSize:
+                                              (Responsive.isMobile(context))
+                                                  ? 14
+                                                  : 15),
+                                    ),
+                                  ),
+                                ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          (loginValue.result['role'] != 'dokter' ||
+                                  loginValue.result['role'] != 'perawat')
+                              ? SizedBox(
+                                  width: MediaQuery.of(context).size.width,
+                                  height: 40,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      functionProvider.changeEditStatus();
+                                    },
+                                    style:
+                                        ElevatedButton.styleFrom(primary: grey),
+                                    child: Text(
+                                      (valueProvider.hEdit == true)
+                                          ? 'Cancel'
+                                          : 'Edit',
+                                      style: TextStyle(
+                                          fontSize:
+                                              (Responsive.isMobile(context))
+                                                  ? 14
+                                                  : 15),
+                                    ),
+                                  ),
+                                )
+                              : const SizedBox.shrink(),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: 40,
+                            child: ElevatedButton(
+                                onPressed: () {
+                                  if (valueProvider.hEdit == true) {
+                                    showCaseDialog(context,
+                                        title: 'Konfirmasi',
+                                        label:
+                                            'Apakah anda yakin ingin merubah data ${putDataPasien[indexOfPage].nama} ?',
+                                        onPressed: () async {
+                                      Navigator.pop(context);
+
+                                      await functionProvider.updatePasienData(
+                                          context,
+                                          putDataPasien[indexOfPage].id!,
+                                          UpdatePasienData(
+                                            nik: _nikController.text,
+                                            nama: _namacontroller.text,
+                                            alamat: _alamatController.text,
+                                            jenisKelamin:
+                                                _jenisKelController.text,
+                                            poli: _jenisPolController.text,
+                                            noHp: _noTelController.text,
+                                            tempatLahir:
+                                                _tempatLahController.text,
+                                            tanggalLahir:
+                                                _tanggalLahirController.text,
+                                          ),
+                                          loadingWidget);
+                                    });
+                                    Future.delayed(
+                                      const Duration(seconds: 1),
+                                      () async {
+                                        functionProvider.changeEditStatus();
+                                      },
+                                    );
+                                  } else {
+                                    Navigator.pop(context);
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  primary: (valueProvider.hEdit == true)
+                                      ? green.shade400
+                                      : primaryColor,
+                                ),
+                                child: Text(
+                                  (valueProvider.hEdit == true)
+                                      ? 'Simpan'
+                                      : 'Kembali',
+                                  style: const TextStyle(fontSize: 15),
+                                )),
+                          )
+                        ],
+                      ))
           ],
         ),
       ),
@@ -379,6 +771,11 @@ class DetailPasien extends StatelessWidget {
                             size: 19,
                           ),
                           onPressed: () {
+                            if (valueProvider.hEdit == true) {
+                              Future.delayed(const Duration(seconds: 1), () {
+                                functionProvider.changeEditStatus();
+                              });
+                            }
                             Navigator.of(context).pop();
                           }),
                     ),

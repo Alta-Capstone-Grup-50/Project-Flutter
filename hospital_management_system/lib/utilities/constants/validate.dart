@@ -18,3 +18,19 @@ String? validatePassword(String value) {
   }
   return _massage;
 }
+
+String? validatename(String value) {
+  String? _massage;
+  if (value.isEmpty) {
+    _massage = "Nama tidak boleh kosong";
+  }
+  return _massage;
+}
+
+String? validateForm(String value, String errorMessage) {
+  String? _message;
+  if (value.isEmpty) {
+    _message = errorMessage;
+  }
+  return _message;
+}

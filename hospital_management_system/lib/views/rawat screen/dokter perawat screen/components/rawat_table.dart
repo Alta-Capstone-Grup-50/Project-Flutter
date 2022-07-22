@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
+import '../../../../viewModels/login viewModel/login_viewModel.dart';
 import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
 import '/utilities/constants/color.dart';
 import '/utilities/constants/responsive.dart';
@@ -11,6 +12,16 @@ import 'detailRawatJalan.dart';
 
 class RawatTable {
   Widget buildTable(BuildContext context) {
+    RawatJalanViewModel init = context.read<RawatJalanViewModel>();
+    LoginProvider valueProvide = context.watch<LoginProvider>();
+
+    if (valueProvide.result['role'] == 'Dokter' ||
+        valueProvide.result['role'] == 'Perawat') {
+      init.getDataApiRawatJalan();
+    } else if (valueProvide.result['role'] != 'Dokter' ||
+        valueProvide.result['role'] != 'Perawat') {
+      init.getDataApiRawatJalanAdmin();
+    }
     return Consumer<RawatJalanViewModel>(builder: (context, value, _) {
       if (value.fetchStatusRawat == StatusFetchRawat.isLoading) {
         return SizedBox(

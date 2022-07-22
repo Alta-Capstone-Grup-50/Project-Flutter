@@ -83,6 +83,36 @@ class ManageScreen extends StatelessWidget {
                       ? 30
                       : 20,
                 ),
+                (Responsive.isMobile(context))
+                    ? Container(
+                        margin: const EdgeInsets.only(bottom: 20),
+                        height: 45,
+                        width: 176,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pushReplacementNamed(
+                                context, '/addAccount');
+                          },
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all<Color>(
+                                green.shade800),
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(16.0),
+                              ),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                            children: const [
+                              Icon(Icons.add_circle),
+                              Text('Tambah Pasien')
+                            ],
+                          ),
+                        ),
+                      )
+                    : const SizedBox.shrink(),
                 Consumer<ManageViewModel>(
                   builder: ((context, valueProvider, _) {
                     if (Theme.of(context).platform == TargetPlatform.windows ||
@@ -146,32 +176,38 @@ class ManageScreen extends StatelessWidget {
                             ),
                           ),
                           const Spacer(),
-                          SizedBox(
-                            height: 45,
-                            width: MediaQuery.of(context).size.width * 0.14,
-                            child: ElevatedButton(
-                              onPressed: () {},
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        green.shade800),
-                                shape: MaterialStateProperty.all<
-                                    RoundedRectangleBorder>(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16.0),
+                          (Responsive.isMobile(context))
+                              ? const SizedBox.shrink()
+                              : SizedBox(
+                                  height: 45,
+                                  width: 176,
+                                  child: ElevatedButton(
+                                    onPressed: () {
+                                      Navigator.pushReplacementNamed(
+                                          context, '/addAccount');
+                                    },
+                                    style: ButtonStyle(
+                                      backgroundColor:
+                                          MaterialStateProperty.all<Color>(
+                                              green.shade800),
+                                      shape: MaterialStateProperty.all<
+                                          RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(16.0),
+                                        ),
+                                      ),
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: const [
+                                        Icon(Icons.add_circle),
+                                        Text('Tambah Account')
+                                      ],
+                                    ),
                                   ),
                                 ),
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
-                                children: const [
-                                  Icon(Icons.add_circle),
-                                  Text('Tambah Pasien')
-                                ],
-                              ),
-                            ),
-                          ),
                         ],
                       );
                     } else {

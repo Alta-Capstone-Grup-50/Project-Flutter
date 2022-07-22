@@ -1,9 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../models/perawat_data_model.dart';
+import '../../models/updatePerawat_model.dart';
+import '../../services/deletePerawat_service.dart';
 import '../../services/perawat_service.dart';
+import '../../services/updatePerawat_service.dart';
+import '../../utilities/common/progress_dialog.dart';
+import '../../utilities/common/snackbar.dart';
 import '../../utilities/constants/color.dart';
+import '../../views/pasien screen/components/dialog_alert.dart';
 
 enum StatusFetchPerawat {
   idle,
@@ -18,8 +26,10 @@ class PerawatViewModel extends ChangeNotifier {
   final GlobalKey<SfDataGridState> keyPerawat = GlobalKey<SfDataGridState>();
 
   List<DataPerawat> _listPerawatData = [];
-  List<DataPerawat> _tempData = [];
+
   List<DataPerawat> _search = [];
+
+  bool hEdit = false;
 
   List<DataPerawat> get search => _search;
   List<DataPerawat> get listPerawatData => _listPerawatData;
@@ -32,6 +42,11 @@ class PerawatViewModel extends ChangeNotifier {
     getDataApiPerawat();
   }
 
+  changeEdit() {
+    hEdit = !hEdit;
+    notifyListeners();
+  }
+
   changeLoadingIndicator() {
     showLoadingIndicator = !showLoadingIndicator;
     notifyListeners();
@@ -40,12 +55,80 @@ class PerawatViewModel extends ChangeNotifier {
   Future getDataApiPerawat() async {
     fetchStatusPerawat = StatusFetchPerawat.isLoading;
 
-    _tempData = (await service.getDataPerawatApi())!;
-    _listPerawatData = _tempData.reversed
-        .where((element) => element.sip != '' && element.namaPerawat != '')
-        .toList();
+    _listPerawatData = (await service.getDataPerawatApi())!;
+
     fetchStatusPerawat = StatusFetchPerawat.letsGo;
     notifyListeners();
+  }
+
+  Future<void> updatePerawatData(BuildContext context, int id,
+      UpdatePerawatModel data, ProgressDialog progressWidget) async {
+    Map<String, dynamic> updateData = data.toJson();
+
+    progressWidget.show();
+
+    log(id.toString());
+    log(updateData.toString());
+
+    UpdatePerawatService()
+        .updateDataPerawatApi(id.toString(), updateData)
+        .then((response) {
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        progressWidget.hide();
+        log('Endpoint Status Code : ${response.statusCode}');
+        Navigator.pop(context);
+
+        getDataApiPerawat();
+        showAlertSuccess(context,
+            title: 'Update data berhasil',
+            label: 'Selamat, data berhasil di perbarui silahkan lanjut kerja');
+      } else if (response.statusCode! >= 300) {
+        progressWidget.hide();
+        Navigator.pop(context);
+
+        showAlertFailed(context,
+            title: 'Update data gagal',
+            label:
+                'Data gagal di perbarui, coba diulang kembali pastikan data dimasukan dengan benar');
+      }
+    });
+  }
+
+  Future<void> deletePerawatData(
+    BuildContext context,
+    int id,
+    ProgressDialog progressWidget,
+  ) async {
+    progressWidget.show();
+
+    log(id.toString());
+
+    notifyListeners();
+    await DeletePerawatService()
+        .deleteDataPerawatApi(id.toString())
+        .then((response) async {
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        progressWidget.hide();
+        log('Endpoint Status Code : ${response.statusCode}');
+        Navigator.pop(context);
+        getDataApiPerawat();
+        SnackBarComponent(
+          context: context,
+          message: 'Data Perawat dengan id ${id} berhasil dihapus',
+          type: 'danger',
+          duration: const Duration(milliseconds: 2400),
+        );
+      } else if (response.statusCode! >= 300) {
+        progressWidget.hide();
+        Navigator.pop(context);
+        SnackBarComponent(
+          context: context,
+          message: 'Data tidak berhasil dihapus',
+          type: 'warning',
+          duration: const Duration(milliseconds: 2400),
+        );
+      }
+    });
   }
 
   void onSearch(String query) async {

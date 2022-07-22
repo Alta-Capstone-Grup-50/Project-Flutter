@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:hospital_management_system/viewModels/manage%20viewModel/manage_viewModel.dart';
+import 'package:hospital_management_system/views/manage%20account%20screen/addAccount_screen.dart';
 import 'package:hospital_management_system/views/manage%20account%20screen/manage_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -104,7 +105,8 @@ class MyApp extends StatelessWidget {
           '/rawatJalan': (context) => const RawatScreen(),
           '/tenagaKesehatan/dokter': (context) => const DokterScreen(),
           '/tenagaKesehatan/perawat': (context) => const PerawatScreen(),
-          '/manage': (context) => const ManageScreen()
+          '/manage': (context) => const ManageScreen(),
+          '/addAccount': (context) => const AddAcountScreen(),
         },
         scrollBehavior: const MaterialScrollBehavior().copyWith(
           dragDevices: {

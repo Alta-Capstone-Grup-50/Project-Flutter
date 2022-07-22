@@ -25,7 +25,7 @@ class ManageDataModel {
 }
 
 class DataManage {
-  String? id;
+  int? id;
   String? sip;
   String? nama;
   String? jenisKelamin;

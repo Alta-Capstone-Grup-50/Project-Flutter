@@ -46,6 +46,12 @@ class CustomDrawer extends StatelessWidget {
             keyScreen: 'DokterPerawatScreen',
           ),
           divider,
+          _drawerItem(
+            context,
+            text: 'Manage Account',
+            route: '/manage',
+            keyScreen: 'ManageScreen',
+          ),
           const SizedBox(
             height: 30,
           ),
@@ -114,12 +120,12 @@ class CustomDrawer extends StatelessWidget {
         ],
       ),
       onTap: () {
-        if (keyScreen != keyScreens && keyScreens != 'HomeScreen') {
+        if (keyScreens == 'HomeScreen') {
+          Navigator.pushNamed(context, route!);
+        } else if (keyScreens != 'HomeScreen') {
           Navigator.pushReplacementNamed(context, route!);
-        } else if (keyScreen != keyScreens && keyScreens == 'HomeScreen') {
+        } else if (route == '/home') {
           Navigator.pop(context);
-        } else {
-          null;
         }
       },
     );

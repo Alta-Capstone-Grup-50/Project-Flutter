@@ -47,9 +47,9 @@ class DataPerawat {
       this.nomorStr});
 
   DataPerawat.fromJson(Map<String, dynamic> json) {
-    idUser = json['id_user'];
+    idUser = json['id'];
     sip = json['sip'];
-    namaPerawat = json['nama_perawat'];
+    namaPerawat = json['nama'];
     jenisKelamin = json['jenis_kelamin'];
     poli = json['poli'];
     jadwalKerja = json['jadwal_kerja'];

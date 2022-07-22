@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -6,9 +8,10 @@ import '../../viewModels/login viewModel/login_viewModel.dart';
 import '../../viewModels/main layout viewModel/mainLayout_viewModel.dart';
 
 class Dropdown extends StatelessWidget {
-  Dropdown({Key? key, required this.keyScreen}) : super(key: key);
+  Dropdown({Key? key, this.ctx, required this.keyScreen}) : super(key: key);
   final double padding = 4;
   String? keyScreen;
+  BuildContext? ctx;
 
   @override
   Widget build(BuildContext context) {
@@ -77,11 +80,10 @@ class Dropdown extends StatelessWidget {
                         context,
                         title: 'Konfirmasi',
                         label: 'Apakah anda yakin ingin logout ?',
-                        onPressed: () {
+                        onPressed: () async {
                           Navigator.pop(context);
-
-                          logoutFunction.logout(context);
-                          Future.delayed(const Duration(seconds: 1), () async {
+                          logoutFunction.logout(ctx!);
+                          await Future.delayed(const Duration(seconds: 1), () {
                             provideFunction.changeMenuShown();
                           });
                         },

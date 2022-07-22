@@ -3,7 +3,9 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:hospital_management_system/models/keterangan_model.dart';
+import 'package:hospital_management_system/models/updateRawat_model.dart';
 import 'package:hospital_management_system/services/rawat%20jalan/rawatJalan_serviceAdmin.dart';
+import 'package:hospital_management_system/services/rawat%20jalan/rawatJalan_updateJadwal_service.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
 import 'package:hospital_management_system/viewModels/login%20viewModel/login_viewModel.dart';
 
@@ -41,7 +43,7 @@ class RawatJalanViewModel extends ChangeNotifier {
   final List<DataKeterangan> _listKeterangan = [];
   List<DataRawatJalan> _search = [];
   bool hEdit = false;
-  DateTime? dateTimeT;
+
   DateTime? dateTimeJ;
 
   String? get hasMatchPoli => _hasMatchPoli;
@@ -68,18 +70,6 @@ class RawatJalanViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void dateTimeTanggal(BuildContext context) {
-    showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(1901),
-            lastDate: DateTime(2023))
-        .then((date) {
-      dateTimeT = date;
-    });
-    notifyListeners();
-  }
-
   void dateTimeJadwal(BuildContext context) {
     showDatePicker(
             context: context,
@@ -88,8 +78,8 @@ class RawatJalanViewModel extends ChangeNotifier {
             lastDate: DateTime(2023))
         .then((date) {
       dateTimeJ = date;
+      notifyListeners();
     });
-    notifyListeners();
   }
 
   Future<void> createKeterangan(DataKeterangan? keterangan) async {
@@ -224,6 +214,34 @@ class RawatJalanViewModel extends ChangeNotifier {
 
     fetchStatusRawat = StatusFetchRawat.letsGo;
     notifyListeners();
+  }
+
+  Future<void> updateDataApiRawatJalanAdmin(BuildContext context, int id,
+      UpdateRawatData data, ProgressDialog progressWidget) async {
+    Map<String, dynamic> updateData = data.toJson();
+
+    progressWidget.show();
+
+    log(id.toString());
+    log(updateData.toString());
+
+    UpdateRawatJalanService()
+        .updateDataRawatJalanApi(id, updateData)
+        .then((response) {
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        progressWidget.hide();
+        log('Endpoint Status Code : ${response.statusCode}');
+        Navigator.pop(context);
+
+        getDataApiRawatJalanAdmin();
+        showNotifSuccess(context, label: 'Update data berhasil');
+      } else if (response.statusCode! >= 300) {
+        progressWidget.hide();
+        Navigator.pop(context);
+        showNotifFailed(context, label: 'Update data gagal');
+      }
+      dateTimeJ = null;
+    });
   }
 
   void onSearch(String query) async {

@@ -18,15 +18,7 @@ class RawatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    RawatJalanViewModel init = context.read<RawatJalanViewModel>();
     LoginProvider valueProvide = context.watch<LoginProvider>();
-
-    if (valueProvide.result['role'] == 'dokter' ||
-        valueProvide.result['role'] == 'perawat') {
-      init.getDataApiRawatJalan();
-    } else {
-      init.getDataApiRawatJalanAdmin();
-    }
 
     return MainLayout(
       action: true,
@@ -166,8 +158,8 @@ class RawatScreen extends StatelessWidget {
                                 ),
                               ),
                         const Spacer(),
-                        (valueProvide.result['role'] == 'dokter' ||
-                                valueProvide.result['role'] == 'perawat')
+                        (valueProvide.result['role'] == 'Dokter' ||
+                                valueProvide.result['role'] == 'Perawat')
                             ? SizedBox(
                                 height: 65,
                                 child: Card(
@@ -238,8 +230,8 @@ class RawatScreen extends StatelessWidget {
                                   ),
                                 ),
                           const Spacer(),
-                          (valueProvide.result['role'] == 'dokter' ||
-                                  valueProvide.result['role'] == 'perawat')
+                          (valueProvide.result['role'] == 'Dokter' ||
+                                  valueProvide.result['role'] == 'Perawat')
                               ? SizedBox(
                                   height: 50,
                                   child: Card(

@@ -1,9 +1,17 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
+import 'package:hospital_management_system/models/updateDokter_model.dart';
+import 'package:hospital_management_system/services/deleteDokter_service.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../models/dokter_data_model.dart';
 import '../../services/dokter_service.dart';
+import '../../services/updateDokter_service.dart';
+import '../../utilities/common/progress_dialog.dart';
+import '../../utilities/common/snackbar.dart';
 import '../../utilities/constants/color.dart';
+import '../../views/pasien screen/components/dialog_alert.dart';
 
 enum StatusFetchDokter {
   idle,
@@ -18,8 +26,10 @@ class DokterViewModel extends ChangeNotifier {
   final GlobalKey<SfDataGridState> keyDokter = GlobalKey<SfDataGridState>();
 
   List<DataDokter> _listDokterData = [];
-  List<DataDokter> _tempData = [];
+
   List<DataDokter> _search = [];
+
+  bool hEdit = false;
 
   List<DataDokter> get search => _search;
   List<DataDokter> get listDokterData => _listDokterData;
@@ -37,15 +47,86 @@ class DokterViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  changeEdit() {
+    hEdit = !hEdit;
+    notifyListeners();
+  }
+
   Future getDataApiDokter() async {
     fetchStatusDokter = StatusFetchDokter.isLoading;
 
-    _tempData = (await service.getDataDokterApi())!;
-    _listDokterData = _tempData.reversed
-        .where((element) => element.sip != '' && element.namaDokter != null)
-        .toList();
+    _listDokterData = (await service.getDataDokterApi())!;
+
     fetchStatusDokter = StatusFetchDokter.letsGo;
     notifyListeners();
+  }
+
+  Future<void> updateDokterData(BuildContext context, int id,
+      UpdateDokterModel data, ProgressDialog progressWidget) async {
+    Map<String, dynamic> updateData = data.toJson();
+
+    progressWidget.show();
+
+    log(id.toString());
+    log(updateData.toString());
+
+    UpdateDokterService().updateDataDokterApi(id, updateData).then((response) {
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        progressWidget.hide();
+        log('Endpoint Status Code : ${response.statusCode}');
+        Navigator.pop(context);
+
+        getDataApiDokter();
+        showAlertSuccess(context,
+            title: 'Update data berhasil',
+            label: 'Selamat, data berhasil di perbarui silahkan lanjut kerja');
+      } else if (response.statusCode! >= 300) {
+        progressWidget.hide();
+        Navigator.pop(context);
+
+        showAlertFailed(context,
+            title: 'Update data gagal',
+            label:
+                'Data gagal di perbarui, coba diulang kembali pastikan data dimasukan dengan benar');
+      }
+    });
+  }
+
+  Future<void> deleteDokterData(
+    BuildContext context,
+    int id,
+    ProgressDialog progressWidget,
+  ) async {
+    progressWidget.show();
+
+    log(id.toString());
+
+    notifyListeners();
+    await DeleteDokterService()
+        .deleteDataDokterApi(id.toString())
+        .then((response) async {
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        progressWidget.hide();
+        log('Endpoint Status Code : ${response.statusCode}');
+        Navigator.pop(context);
+        getDataApiDokter();
+        SnackBarComponent(
+          context: context,
+          message: 'Data Dokter dengan id ${id} berhasil dihapus',
+          type: 'danger',
+          duration: const Duration(milliseconds: 2400),
+        );
+      } else if (response.statusCode! >= 300) {
+        progressWidget.hide();
+        Navigator.pop(context);
+        SnackBarComponent(
+          context: context,
+          message: 'Data tidak berhasil dihapus',
+          type: 'warning',
+          duration: const Duration(milliseconds: 2400),
+        );
+      }
+    });
   }
 
   void onSearch(String query) async {

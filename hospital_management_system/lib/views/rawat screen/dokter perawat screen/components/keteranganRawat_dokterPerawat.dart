@@ -7,6 +7,7 @@ import 'package:hospital_management_system/views/rawat%20screen/dokter%20perawat
 import 'package:provider/provider.dart';
 import '../../../../models/keterangan_model.dart';
 import '../../../../utilities/common/progress_dialog.dart';
+import '../../../../viewModels/login viewModel/login_viewModel.dart';
 import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
 import '/utilities/common/input.dart';
 
@@ -15,16 +16,18 @@ import '../../../../utilities/common/case_dialog.dart';
 
 class KeteranganRawatDokterPerawat extends StatelessWidget {
   KeteranganRawatDokterPerawat(
-      {Key? key, required this.id, required this.namePasien})
+      {Key? key, required this.id, required this.namePasien, this.keterangan})
       : super(key: key);
 
   int id;
   String namePasien;
+  String? keterangan;
   final TextEditingController _keteranganController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     RawatJalanViewModel functionProvider = context.read<RawatJalanViewModel>();
+    LoginProvider loginFunction = context.watch<LoginProvider>();
     final ProgressDialog loadingWidget = ProgressDialog(
       context,
       isDismissible: false,
@@ -43,7 +46,8 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
             child: Padding(
                 padding: EdgeInsets.only(
                     right: (Responsive.isMobile(context)) ? 0 : 30),
-                child: showDetail(context, functionProvider, loadingWidget)),
+                child: showDetail(
+                    context, functionProvider, loginFunction, loadingWidget)),
           ),
           (Responsive.isMobile(context))
               ? const SizedBox.shrink()
@@ -83,7 +87,7 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
   }
 
   Widget showDetail(BuildContext context, RawatJalanViewModel functionProvider,
-      ProgressDialog loadingProgres) {
+      LoginProvider loginFunction, ProgressDialog loadingProgres) {
     log("ID : $id");
     return Stack(
       children: [
@@ -133,94 +137,110 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
                     ? MediaQuery.of(context).size.height / 1.9
                     : MediaQuery.of(context).size.height / 2.45,
                 child: Input(
-                  controller: _keteranganController,
+                  controller: (loginFunction.result['role'] == 'Dokter' ||
+                          loginFunction.result['role'] == 'Perawat')
+                      ? _keteranganController
+                      : null,
+                  initialValue: keterangan,
                   expands: true,
                   maxLines: null,
                   minLines: null,
+                  enabled: (loginFunction.result['role'] == 'Dokter' ||
+                          loginFunction.result['role'] == 'Perawat')
+                      ? true
+                      : false,
                   keyboardType: TextInputType.multiline,
                   textAlignVertical: TextAlignVertical.top,
                   contentPadding: const EdgeInsets.only(left: 20, top: 20),
                   cursorHeight: 22,
                 ),
               ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.only(
-                    right: (Responsive.isMobile(context)) ? 30 : 30,
-                    bottom: 10,
-                    top: 25),
-                child: Row(
-                  mainAxisAlignment: (Responsive.isMobile(context))
-                      ? MainAxisAlignment.center
-                      : MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                      width: (Responsive.isMobile(context))
-                          ? MediaQuery.of(context).size.width * 0.28
-                          : 120,
-                      height: 40,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            side: BorderSide(color: green.shade800)),
-                        onPressed: () {
-                          openHistoryKeterangan(context);
-                        },
-                        child: Text(
-                          'History',
-                          style: TextStyle(color: green.shade800, fontSize: 15),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    SizedBox(
-                      width: (Responsive.isMobile(context))
-                          ? MediaQuery.of(context).size.width * 0.28
-                          : 120,
-                      height: 40,
-                      child: Consumer<RawatJalanViewModel>(
-                        builder: ((context, value, child) => ElevatedButton(
+              (loginFunction.result['role'] == 'Dokter' ||
+                      loginFunction.result['role'] == 'Perawat')
+                  ? Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.only(
+                          right: (Responsive.isMobile(context)) ? 30 : 30,
+                          bottom: 10,
+                          top: 25),
+                      child: Row(
+                        mainAxisAlignment: (Responsive.isMobile(context))
+                            ? MainAxisAlignment.center
+                            : MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            width: (Responsive.isMobile(context))
+                                ? MediaQuery.of(context).size.width * 0.28
+                                : 120,
+                            height: 40,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.white,
+                                  side: BorderSide(color: green.shade800)),
                               onPressed: () {
-                                showCaseDialog(context,
-                                    title: 'Konfirmasi',
-                                    label:
-                                        "Apa anda sudah yakin untuk menyimpan keterangan\ntersebut?",
-                                    onPressed: () async {
-                                  Navigator.of(context).pop();
-                                  functionProvider.createKeterangan(
-                                    DataKeterangan(
-                                        id: id,
-                                        namaPasien: namePasien,
-                                        keterangan: _keteranganController.text,
-                                        tanggal: formatDate(DateTime.now(),
-                                            [dd, ' ', MM, ' ', yyyy, ' '],
-                                            locale:
-                                                const IndonesianDateLocale())),
-                                  );
-                                  await functionProvider.putProsesKeterangan(
-                                      context,
-                                      id,
-                                      _keteranganController.text,
-                                      loadingProgres);
-                                  if (value.postStatusKeterangan ==
-                                      StatusPostKeterangan.isLoading) {
-                                    loadingProgres.show();
-                                  }
-                                });
+                                openHistoryKeterangan(context);
                               },
-                              child: const Text(
-                                'Simpan',
-                                style: TextStyle(fontSize: 15),
+                              child: Text(
+                                'History',
+                                style: TextStyle(
+                                    color: green.shade800, fontSize: 15),
                               ),
-                            )),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          SizedBox(
+                            width: (Responsive.isMobile(context))
+                                ? MediaQuery.of(context).size.width * 0.28
+                                : 120,
+                            height: 40,
+                            child: Consumer<RawatJalanViewModel>(
+                              builder: ((context, value, child) =>
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      showCaseDialog(context,
+                                          title: 'Konfirmasi',
+                                          label:
+                                              "Apa anda sudah yakin untuk menyimpan keterangan\ntersebut?",
+                                          onPressed: () async {
+                                        Navigator.of(context).pop();
+                                        functionProvider.createKeterangan(
+                                          DataKeterangan(
+                                              id: id,
+                                              namaPasien: namePasien,
+                                              keterangan:
+                                                  _keteranganController.text,
+                                              tanggal: formatDate(
+                                                  DateTime.now(),
+                                                  [dd, ' ', MM, ' ', yyyy, ' '],
+                                                  locale:
+                                                      const IndonesianDateLocale())),
+                                        );
+                                        await functionProvider
+                                            .putProsesKeterangan(
+                                                context,
+                                                id,
+                                                _keteranganController.text,
+                                                loadingProgres);
+                                        if (value.postStatusKeterangan ==
+                                            StatusPostKeterangan.isLoading) {
+                                          loadingProgres.show();
+                                        }
+                                      });
+                                    },
+                                    child: const Text(
+                                      'Simpan',
+                                      style: TextStyle(fontSize: 15),
+                                    ),
+                                  )),
+                            ),
+                          )
+                        ],
                       ),
                     )
-                  ],
-                ),
-              )
+                  : const SizedBox.shrink()
             ],
           ),
         ),
@@ -267,12 +287,13 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
 }
 
 Future openKeteranganRawatDokterPerawat(
-    BuildContext context, int id, String namePasien) {
+    BuildContext context, int id, String namePasien, String keterangan) {
   return showDialog(
       barrierDismissible: false,
       context: context,
       builder: (context) => KeteranganRawatDokterPerawat(
             id: id,
             namePasien: namePasien,
+            keterangan: keterangan,
           ));
 }

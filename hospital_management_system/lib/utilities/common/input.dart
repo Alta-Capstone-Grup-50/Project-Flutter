@@ -14,6 +14,7 @@ class Input extends StatelessWidget {
     this.onTap,
     this.validator,
     this.prefixIcon,
+    this.prefixText,
     this.suffix,
     this.suffixIcon,
     this.backgroundColor,
@@ -40,6 +41,7 @@ class Input extends StatelessWidget {
   Function()? onTap;
   String? Function(String?)? validator;
   Widget? prefixIcon;
+  String? prefixText;
   Widget? suffixIcon;
   Widget? suffix;
   Color? backgroundColor;
@@ -80,9 +82,11 @@ class Input extends StatelessWidget {
         suffixIcon: suffixIcon,
         suffix: suffix,
         labelText: labelText,
+       
         errorText: errorText,
         hintText: hintText,
         prefixIcon: prefixIcon,
+        prefixText: prefixText,
         fillColor: backgroundColor,
         contentPadding: contentPadding ?? const EdgeInsets.only(left: 10),
         hintStyle: const TextStyle(color: Colors.black45),

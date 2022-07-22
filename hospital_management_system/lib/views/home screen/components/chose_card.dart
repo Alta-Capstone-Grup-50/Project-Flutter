@@ -119,7 +119,7 @@ class ChoseCard extends StatelessWidget {
                   builder: ((context, functionProvider, child) => InkWell(
                         onTap: () {
                           if (page != '') {
-                            Navigator.of(context).pushReplacementNamed(page);
+                            Navigator.of(context).pushNamed(page);
                           }
                           if (title == 'Data Pasien') {
                             functionProvider.actionChoseCardPasien();

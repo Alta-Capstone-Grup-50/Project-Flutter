@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/viewModels/login%20viewModel/login_viewModel.dart';
 import 'package:provider/provider.dart';
 import '../../../../utilities/common/progress_dialog.dart';
 import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
@@ -11,6 +12,7 @@ class HistoryKeterangan extends StatelessWidget {
   Widget build(BuildContext context) {
     RawatJalanViewModel functionProvider = context.read<RawatJalanViewModel>();
     RawatJalanViewModel valueProvider = context.watch<RawatJalanViewModel>();
+    LoginProvider loginProvider = context.watch<LoginProvider>();
 
     functionProvider.getDataApiRawatJalan();
 

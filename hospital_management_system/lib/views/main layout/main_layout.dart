@@ -34,7 +34,7 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout>
     with WidgetsBindingObserver, SingleTickerProviderStateMixin {
   final String assetLogo = 'assets/icons/logo.png';
-  AnimationController? animationController;
+  late AnimationController animationController;
 
   void handleUserInteraction([_]) {
     if (widget.keyScreens != 'login') {
@@ -47,7 +47,7 @@ class _MainLayoutState extends State<MainLayout>
   void initState() {
     super.initState();
 
-    // WidgetsBinding.instance.addObserver(this);
+    WidgetsBinding.instance.addObserver(this);
 
     final mainProvider = context.read<MainLayoutProvider>();
     mainProvider.checkConnection();
@@ -65,7 +65,7 @@ class _MainLayoutState extends State<MainLayout>
   @override
   void dispose() {
     super.dispose();
-
+    animationController.dispose();
     WidgetsBinding.instance.removeObserver(this);
   }
 
@@ -123,7 +123,9 @@ class _MainLayoutState extends State<MainLayout>
       MainLayoutProvider provideFunction) {
     LoginProvider logoutFunction = context.read<LoginProvider>();
     LoginProvider loginValue = context.watch<LoginProvider>();
-
+    if (Responsive.isMobile(context) && provideValue.menuShown == true) {
+      provideFunction.changeMenuShown();
+    }
     return Material(
       elevation: 5,
       child: SizedBox(
@@ -175,8 +177,8 @@ class _MainLayoutState extends State<MainLayout>
                                       .route(context, widget.keyScreens),
                                 )
                               : const SizedBox.shrink(),
-                          (loginValue.result['role'] == 'dokter' ||
-                                  loginValue.result['role'] == 'perawat')
+                          (loginValue.result['role'] == 'Dokter' ||
+                                  loginValue.result['role'] == 'Perawat')
                               ? InkWell(
                                   borderRadius: BorderRadius.circular(16),
                                   onTap: () {
@@ -263,7 +265,7 @@ class _MainLayoutState extends State<MainLayout>
                                                       color: Colors.white,
                                                     ),
                                           onTap: () {
-                                            provideValue.changeMenuShown();
+                                            provideFunction.changeMenuShown();
                                           },
                                         ),
                                       ],
@@ -302,11 +304,11 @@ class _MainLayoutState extends State<MainLayout>
   Widget body(BuildContext context, MainLayoutProvider provideValue,
       MainLayoutProvider provideFunction) {
     Animation<double> opacityAnimation =
-        Tween(begin: 0.0, end: 1.0).animate(animationController!);
+        Tween(begin: 0.0, end: 1.0).animate(animationController);
     if (provideValue.menuShown) {
-      animationController!.forward();
+      animationController.forward();
     } else {
-      animationController!.reverse();
+      animationController.reverse();
     }
     return Expanded(
       child: Stack(alignment: AlignmentDirectional.topCenter, children: [
@@ -345,6 +347,7 @@ class _MainLayoutState extends State<MainLayout>
               opacity: opacityAnimation,
               child: (provideValue.menuShown != false)
                   ? Dropdown(
+                      ctx: context,
                       keyScreen: widget.keyScreens!,
                     )
                   : const SizedBox.shrink()),
