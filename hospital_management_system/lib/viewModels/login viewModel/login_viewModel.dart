@@ -86,17 +86,17 @@ class LoginProvider extends ChangeNotifier {
     DataDokter? dataDokter;
     DataPerawat? dataPerawat;
 
-    UserPreferences().saveId();
-    UserPreferences().savePoli();
+    await UserPreferences().saveId();
+    await UserPreferences().savePoli();
 
-    if (authUser.level == 'dokter') {
+    if (authUser.level == 'Dokter') {
       dataDokter = dokteViewModel.listDokterData
           .firstWhere((element) => element.idUser == authUser.id);
       matchDataId = dataDokter.idUser ?? 0;
       matchDataPoli = dataDokter.poli ?? '';
       notifyListeners();
     }
-    if (authUser.level == 'perawat') {
+    if (authUser.level == 'Perawat') {
       dataPerawat = perawatViewModel.listPerawatData
           .firstWhere((element) => element.idUser == authUser.id);
       matchDataId = dataPerawat.idUser ?? 0;
@@ -140,7 +140,7 @@ class LoginProvider extends ChangeNotifier {
 
             AkunModel authUser = AkunModel.fromJson(responseData);
 
-            if (authUser.level == 'dokter' || authUser.level == 'perawat') {
+            if (authUser.level == 'Dokter' || authUser.level == 'Perawat') {
               UserPreferences().saveUser(authUser);
 
               validasiUserData(context, authUser: authUser);

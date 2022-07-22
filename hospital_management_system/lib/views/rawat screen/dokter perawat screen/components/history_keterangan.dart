@@ -73,9 +73,11 @@ class HistoryKeterangan extends StatelessWidget {
 
   Widget showDetail(BuildContext context, RawatJalanViewModel valueProvider) {
     List historyKeteranganLen = [];
+    List namaPasien = [];
     valueProvider.listRawatJalanData.forEach((element) {
       if (element.keterangan!.isNotEmpty) {
         historyKeteranganLen.add(element.keterangan);
+        namaPasien.add(element.nama);
       }
     });
 
@@ -113,7 +115,7 @@ class HistoryKeterangan extends StatelessWidget {
                           softWrap: false,
                           overflow: TextOverflow.ellipsis,
                         ),
-                        subtitle: const Text('Tanggal :  -'),
+                        subtitle: Text('Nama pasien : ${namaPasien[index]}'),
                       ),
                     ),
                   );
