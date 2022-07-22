@@ -125,7 +125,7 @@ class RawatJalanViewModel extends ChangeNotifier {
     RawatJalanChangeService()
         .putDataRawatJalanApi(id, prosesAntrian)
         .then((response) {
-      if (response.statusCode >= 200 && response.statusCode < 300) {
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
         var responseData = response.data;
         result = responseData;
       } else {
@@ -163,7 +163,7 @@ class RawatJalanViewModel extends ChangeNotifier {
     RawatJalanChangeService()
         .putDataRawatJalanApi(id, prosesAntrian)
         .then((response) {
-      if (response.statusCode >= 200 && response.statusCode < 300) {
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
         var responseData = response.data;
         result = responseData;
       } else {

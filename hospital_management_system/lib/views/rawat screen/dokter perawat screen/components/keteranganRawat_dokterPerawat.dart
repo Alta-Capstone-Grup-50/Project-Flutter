@@ -141,7 +141,6 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
                           loginFunction.result['role'] == 'Perawat')
                       ? _keteranganController
                       : null,
-                  initialValue: keterangan,
                   expands: true,
                   maxLines: null,
                   minLines: null,

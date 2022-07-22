@@ -35,13 +35,13 @@ class LoginProvider extends ChangeNotifier {
 
   final AkunModel _user = AkunModel();
   StatusAuth _loggedInStatusAuth = StatusAuth.notLoggedIn;
-  Map<String, dynamic> _result = {};
+  Map<String, dynamic> result = {};
 
   TextEditingController usernameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   AkunModel get user => _user;
-  Map<String, dynamic> get result => _result;
+
   StatusAuth get loggedInStatusAuth => _loggedInStatusAuth;
 
   set loggedInStatus(StatusAuth value) {
@@ -148,17 +148,19 @@ class LoginProvider extends ChangeNotifier {
               _loggedInStatusAuth = StatusAuth.loggedIn;
               notifyListeners();
 
-              _result = {
+              result = {
                 'status': true,
                 'message': 'Login Berhasil',
                 'user': authUser,
                 'role': authUser.level
               };
 
-              if (_result['status'] == true) {
+              log(authUser.level.toString());
+
+              if (result['status'] == true) {
                 SnackBarComponent(
                   context: context,
-                  message: _result['message'],
+                  message: result['message'],
                   type: 'success',
                   duration: const Duration(milliseconds: 1400),
                 );
@@ -181,28 +183,30 @@ class LoginProvider extends ChangeNotifier {
               // _loggedInStatusAuth = StatusAuth.notLoggedIn;
               // notifyListeners();
 
-              _result = {
+              result = {
                 'status': true,
                 'message': 'Login Berhasil, Welcome Admin',
                 'user': authUser,
                 'role': authUser.level
               };
 
-              // _result = {
+              log(authUser.level.toString());
+
+              // result = {
               //   'status': false,
               //   'message': 'Akses terkunci!',
               // };
 
               SnackBarComponent(
                 context: context,
-                message: _result['message'],
+                message: result['message'],
                 type: 'success',
                 duration: const Duration(milliseconds: 1400),
               );
 
               // SnackBarComponent(
               //   context: context,
-              //   message: _result['message'],
+              //   message: result['message'],
               //   type: 'warning',
               //   duration: const Duration(milliseconds: 1400),
               // );
@@ -225,14 +229,14 @@ class LoginProvider extends ChangeNotifier {
 
             passwordController.text = '';
 
-            _result = {
+            result = {
               'status': false,
               'message': 'Username atau Password Salah',
             };
 
             SnackBarComponent(
               context: context,
-              message: _result['message'],
+              message: result['message'],
               type: 'danger',
               duration: const Duration(seconds: 4),
             );
@@ -242,7 +246,7 @@ class LoginProvider extends ChangeNotifier {
         _loggedInStatusAuth = StatusAuth.notLoggedIn;
         notifyListeners();
 
-        _result = {
+        result = {
           'status': false,
           'message':
               'Akun bermasalah/belum validasi ulang, silahkan hubungi admin',
@@ -253,15 +257,15 @@ class LoginProvider extends ChangeNotifier {
 
         SnackBarComponent(
           context: context,
-          message: _result['message'],
+          message: result['message'],
           type: 'warning',
           duration: const Duration(seconds: 4),
         );
       });
 
-      return _result;
+      return result;
     } else {
-      _result = {
+      result = {
         'status': false,
         'message': 'Not Validate',
       };
@@ -269,13 +273,13 @@ class LoginProvider extends ChangeNotifier {
       _loggedInStatusAuth = StatusAuth.notLoggedIn;
       notifyListeners();
 
-      return _result;
+      return result;
     }
   }
 
   void removePrefereces() {
     UserPreferences().removeUser();
-    if (_result['role'] == 'dokter' || _result['role'] == 'perawat') {
+    if (result['role'] == 'dokter' || result['role'] == 'perawat') {
       UserPreferences().removeId();
       UserPreferences().removePoli();
     }

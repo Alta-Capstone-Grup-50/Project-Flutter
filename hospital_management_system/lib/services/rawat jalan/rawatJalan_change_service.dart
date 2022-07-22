@@ -7,15 +7,16 @@ import '../../utilities/constants/api_url.dart';
 class RawatJalanChangeService {
   final Dio _dio = Dio();
 
-  Future putDataRawatJalanApi(int id, Map<String, dynamic> data) async {
-    try {
-      var response =
-          await _dio.put('${ApiUrl.putDataPasienRawatJalan}/$id', data: data);
-      if (response.statusCode! >= 200 && response.statusCode! <= 300) {
-        return response;
-      }
-    } catch (e) {
-      log(e.toString());
-    }
+  Future<Response> putDataRawatJalanApi(
+      int id, Map<String, dynamic> data) async {
+    log(id.toString());
+    var response = await _dio
+        .put('${ApiUrl.putDataPasienRawatJalan}/$id', data: data)
+        .onError((error, stackTrace) {
+      log(error.toString());
+      throw error.toString();
+    });
+
+    return response;
   }
 }

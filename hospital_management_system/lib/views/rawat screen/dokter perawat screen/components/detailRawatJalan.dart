@@ -132,6 +132,8 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
           locale: const IndonesianDateLocale());
     }
 
+    log((loginValue.result['role'] == 'Perawat').toString());
+
     return Stack(children: [
       SingleChildScrollView(
         controller: _scrollController,
@@ -603,8 +605,8 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
                           const SizedBox(
                             width: 20,
                           ),
-                          (loginValue.result['role'] != 'dokter' ||
-                                  loginValue.result['role'] != 'perawat')
+                          !(loginValue.result['role'] == 'Dokter' ||
+                                  loginValue.result['role'] == 'Perawat')
                               ? SizedBox(
                                   width: (Responsive.isMobile(context))
                                       ? MediaQuery.of(context).size.width * 0.28
@@ -717,8 +719,8 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
                           const SizedBox(
                             height: 20,
                           ),
-                          (loginValue.result['role'] != 'dokter' ||
-                                  loginValue.result['role'] != 'perawat')
+                          !(loginValue.result['role'] == 'Dookter' ||
+                                  loginValue.result['role'] == 'Perawat')
                               ? SizedBox(
                                   width: MediaQuery.of(context).size.width,
                                   height: 40,
