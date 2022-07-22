@@ -45,9 +45,9 @@ class DataDokter {
       this.nomorTelfon});
 
   DataDokter.fromJson(Map<String, dynamic> json) {
-    idUser = json['id_user'];
+    idUser = json['id'];
     sip = json['sip'];
-    namaDokter = json['nama_dokter'];
+    namaDokter = json['nama'];
     poli = json['poli'];
     jenisKelamin = json['jenis_kelamin'];
     jadwalPraktek = json['jadwal_praktek'];
