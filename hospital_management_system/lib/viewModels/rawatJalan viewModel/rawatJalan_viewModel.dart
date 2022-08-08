@@ -44,7 +44,9 @@ class RawatJalanViewModel extends ChangeNotifier {
   List<DataRawatJalan> _search = [];
   bool hEdit = false;
 
-  DateTime? dateTimeJ;
+  DateTime? dateJ;
+  TimeOfDay? timeJ;
+  var dateTime;
 
   String? get hasMatchPoli => _hasMatchPoli;
   String? get noAntrian => _noAntrian;
@@ -70,16 +72,44 @@ class RawatJalanViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  void dateTimeJadwal(BuildContext context) {
-    showDatePicker(
-            context: context,
-            initialDate: DateTime.now(),
-            firstDate: DateTime(1901),
-            lastDate: DateTime(2023))
-        .then((date) {
-      dateTimeJ = date;
+  void dateTimeJadwal(BuildContext context) async {
+    bool? cancel;
+    await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1901),
+      lastDate: DateTime(2023),
+    ).then((date) {
+      dateJ = date;
+      if (date != null) {
+        cancel = false;
+      } else {
+        cancel = true;
+      }
+
+      log(date.toString());
+
       notifyListeners();
     });
+    if (cancel == false && cancel != null) {
+      showTimePicker(
+          context: context,
+          initialTime: TimeOfDay.now(),
+          builder: (context, child) {
+            return MediaQuery(
+              data:
+                  MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+              child: child!,
+            );
+          }).then((time) {
+        timeJ = time;
+        notifyListeners();
+      });
+    } else {
+      null;
+    }
+
+    log(cancel.toString());
   }
 
   Future<void> createKeterangan(DataKeterangan? keterangan) async {
@@ -157,8 +187,10 @@ class RawatJalanViewModel extends ChangeNotifier {
 
     final Map<String, dynamic> prosesAntrian = {
       "proses": proses,
-      "keterangan": keterangan
+      "keterangan": keterangan,
     };
+
+    log(prosesAntrian.toString());
 
     RawatJalanChangeService()
         .putDataRawatJalanApi(id, prosesAntrian)
@@ -240,7 +272,8 @@ class RawatJalanViewModel extends ChangeNotifier {
         Navigator.pop(context);
         showNotifFailed(context, label: 'Update data gagal');
       }
-      dateTimeJ = null;
+      dateJ = null;
+      timeJ = null;
     });
   }
 

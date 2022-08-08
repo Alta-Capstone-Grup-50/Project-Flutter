@@ -89,9 +89,10 @@ class PasienScreen extends StatelessWidget {
                       : 20,
                 ),
                 (Responsive.isMobile(context))
-                    ? (loginValue.result['role'] != 'Dokter' ||
-                            loginValue.result['role'] != 'Perawat')
-                        ? Container(
+                    ? (loginValue.user.level == 'Dokter' ||
+                            loginValue.user.level == 'Perawat')
+                        ? const SizedBox.shrink()
+                        : Container(
                             margin: const EdgeInsets.only(bottom: 20),
                             height: 45,
                             width: 176,
@@ -120,7 +121,6 @@ class PasienScreen extends StatelessWidget {
                               ),
                             ),
                           )
-                        : const SizedBox.shrink()
                     : const SizedBox.shrink(),
                 Consumer<PasienViewModel>(
                     builder: ((context, valueProvider, _) {
@@ -192,9 +192,10 @@ class PasienScreen extends StatelessWidget {
                       const Spacer(),
                       (Responsive.isMobile(context))
                           ? const SizedBox.shrink()
-                          : (loginValue.result['role'] != 'Dokter' ||
-                                  loginValue.result['role'] != 'Perawat')
-                              ? SizedBox(
+                          : (loginValue.user.level == 'Dokter' ||
+                                  loginValue.user.level == 'Perawat')
+                              ? const SizedBox.shrink()
+                              : SizedBox(
                                   height: 45,
                                   width: 176,
                                   child: ElevatedButton(
@@ -223,7 +224,6 @@ class PasienScreen extends StatelessWidget {
                                     ),
                                   ),
                                 )
-                              : const SizedBox.shrink()
                     ]);
                   } else {
                     return (Responsive.isDesktop(context) ||

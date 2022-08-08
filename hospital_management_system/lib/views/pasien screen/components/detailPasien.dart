@@ -69,7 +69,6 @@ class _DetailPasienState extends State<DetailPasien> {
     PasienViewModel functionProvider = context.read<PasienViewModel>();
     PasienViewModel valueProvider = context.watch<PasienViewModel>();
     LoginProvider loginValue = context.watch<LoginProvider>();
-    LoginProvider loginFunction = context.read<LoginProvider>();
 
     List<DataPasien>? putDataPasien;
     if (valueProvider.search.isNotEmpty ||
@@ -100,15 +99,8 @@ class _DetailPasienState extends State<DetailPasien> {
               child: Scrollbar(
                 controller: _scrollController,
                 thumbVisibility: (Responsive.isMobile(context)) ? false : true,
-                child: showDetail(
-                    context,
-                    putDataPasien,
-                    valueProvider,
-                    functionProvider,
-                    loginValue,
-                    loginFunction,
-                    indexOfPage,
-                    loadingWidget),
+                child: showDetail(context, putDataPasien, valueProvider,
+                    functionProvider, loginValue, indexOfPage, loadingWidget),
               ),
             ),
           ),
@@ -145,11 +137,12 @@ class _DetailPasienState extends State<DetailPasien> {
       PasienViewModel valueProvider,
       PasienViewModel functionProvider,
       LoginProvider loginValue,
-      LoginProvider loginFunction,
       int indexOfPage,
       ProgressDialog loadingWidget) {
     _nikController.text = putDataPasien[indexOfPage].nik!;
     _namacontroller.text = putDataPasien[indexOfPage].nama!;
+    _jenisKelController.text = putDataPasien[indexOfPage].jenisKelamin!;
+    _jenisPolController.text = putDataPasien[indexOfPage].poli!;
     _alamatController.text = putDataPasien[indexOfPage].alamat!;
     _noTelController.text = putDataPasien[indexOfPage].noHp!;
     _tempatLahController.text = putDataPasien[indexOfPage].tempatLahir!;
@@ -160,6 +153,8 @@ class _DetailPasienState extends State<DetailPasien> {
           valueProvider.dateTimeT!, [dd, '-', mm, '-', yyyy],
           locale: const IndonesianDateLocale());
     }
+
+    List<String> poli = ['Umum', 'Gigi', 'THT', 'Kandungan'];
 
     return Stack(children: [
       SingleChildScrollView(
@@ -232,12 +227,12 @@ class _DetailPasienState extends State<DetailPasien> {
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: DropdownButtonFormField2(
-                      value:
+                      hint: Text(
                           (putDataPasien[indexOfPage].jenisKelamin!.isNotEmpty)
                               ? (putDataPasien[indexOfPage].jenisKelamin == 'L')
                                   ? 'Laki - laki'
                                   : 'Perempuan'
-                              : ' ',
+                              : ' '),
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.zero,
                         filled: true,
@@ -270,7 +265,7 @@ class _DetailPasienState extends State<DetailPasien> {
                           ? (value) {
                               if (value.toString() == 'Laki - laki') {
                                 _jenisKelController.text = 'L';
-                              } else {
+                              } else if (value.toString() == 'Perempuan') {
                                 _jenisKelController.text = 'P';
                               }
                             }
@@ -287,7 +282,7 @@ class _DetailPasienState extends State<DetailPasien> {
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: DropdownButtonFormField2(
-                      value: putDataPasien[indexOfPage].poli,
+                      hint: Text(putDataPasien[indexOfPage].poli!),
                       decoration: InputDecoration(
                         contentPadding: EdgeInsets.zero,
                         filled: true,
@@ -306,7 +301,7 @@ class _DetailPasienState extends State<DetailPasien> {
                                 width: 0, color: Colors.transparent)),
                       ),
                       buttonPadding: const EdgeInsets.only(left: 10),
-                      items: ['Umum', 'Gigi', 'Kulit', 'THT']
+                      items: poli
                           .map((item) =>
                               DropdownMenuItem(value: item, child: Text(item)))
                           .toList(),
@@ -509,44 +504,49 @@ class _DetailPasienState extends State<DetailPasien> {
                         children: [
                           (valueProvider.hEdit == true)
                               ? const SizedBox.shrink()
-                              : SizedBox(
-                                  width:
-                                      MediaQuery.of(context).size.width * 0.1,
-                                  height: 40,
-                                  child: ElevatedButton(
-                                    onPressed: () {
-                                      showCaseDialog(
-                                        context,
-                                        title: 'Konfirmasi',
-                                        label:
-                                            'Apakah anda yakin ingin menghapus data ${putDataPasien[indexOfPage].nama} ?',
-                                        onPressed: () async {
-                                          Navigator.pop(context);
-                                          functionProvider.deletePasienData(
-                                              context,
-                                              putDataPasien[indexOfPage].id!,
-                                              loadingWidget);
+                              : (loginValue.user.level == 'Dokter' ||
+                                      loginValue.user.level == 'Perawat')
+                                  ? const SizedBox.shrink()
+                                  : SizedBox(
+                                      width: MediaQuery.of(context).size.width *
+                                          0.1,
+                                      height: 40,
+                                      child: ElevatedButton(
+                                        onPressed: () {
+                                          showCaseDialog(
+                                            context,
+                                            title: 'Konfirmasi',
+                                            label:
+                                                'Apakah anda yakin ingin menghapus data ${putDataPasien[indexOfPage].nama} ?',
+                                            onPressed: () async {
+                                              Navigator.pop(context);
+                                              functionProvider.deletePasienData(
+                                                  context,
+                                                  putDataPasien[indexOfPage]
+                                                      .id!,
+                                                  loadingWidget);
+                                            },
+                                          );
                                         },
-                                      );
-                                    },
-                                    style: ElevatedButton.styleFrom(
-                                        primary: Colors.red),
-                                    child: Text(
-                                      'Delete',
-                                      style: TextStyle(
-                                          fontSize:
-                                              (Responsive.isMobile(context))
-                                                  ? 14
-                                                  : 15),
+                                        style: ElevatedButton.styleFrom(
+                                            primary: Colors.red),
+                                        child: Text(
+                                          'Delete',
+                                          style: TextStyle(
+                                              fontSize:
+                                                  (Responsive.isMobile(context))
+                                                      ? 14
+                                                      : 15),
+                                        ),
+                                      ),
                                     ),
-                                  ),
-                                ),
                           const SizedBox(
                             width: 20,
                           ),
-                          (loginValue.result['role'] != 'dokter' ||
-                                  loginValue.result['role'] != 'perawat')
-                              ? SizedBox(
+                          (loginValue.user.level == 'Dokter' ||
+                                  loginValue.user.level == 'Perawat')
+                              ? const SizedBox.shrink()
+                              : SizedBox(
                                   width:
                                       MediaQuery.of(context).size.width * 0.1,
                                   height: 40,
@@ -567,8 +567,7 @@ class _DetailPasienState extends State<DetailPasien> {
                                                   : 15),
                                     ),
                                   ),
-                                )
-                              : const SizedBox.shrink(),
+                                ),
                           const SizedBox(
                             width: 20,
                           ),
@@ -665,9 +664,10 @@ class _DetailPasienState extends State<DetailPasien> {
                           const SizedBox(
                             height: 20,
                           ),
-                          (loginValue.result['role'] != 'dokter' ||
-                                  loginValue.result['role'] != 'perawat')
-                              ? SizedBox(
+                          (loginValue.user.level == 'Dokter' ||
+                                  loginValue.user.level == 'Perawat')
+                              ? const SizedBox.shrink()
+                              : SizedBox(
                                   width: MediaQuery.of(context).size.width,
                                   height: 40,
                                   child: ElevatedButton(
@@ -687,8 +687,7 @@ class _DetailPasienState extends State<DetailPasien> {
                                                   : 15),
                                     ),
                                   ),
-                                )
-                              : const SizedBox.shrink(),
+                                ),
                           const SizedBox(
                             height: 20,
                           ),

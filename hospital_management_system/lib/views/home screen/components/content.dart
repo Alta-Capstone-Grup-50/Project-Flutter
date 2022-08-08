@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
 import 'package:hospital_management_system/views/home%20screen/components/content_dumy.dart';
@@ -17,7 +15,9 @@ class Content extends StatelessWidget {
   Widget build(BuildContext context) {
     var valueProvider = context.watch<HomeProvider>();
     var functionProvider = context.read<HomeProvider>();
-    return Container(
+    return AnimatedContainer(
+        duration: const Duration(seconds: 1),
+        curve: Curves.fastOutSlowIn,
         margin: EdgeInsets.symmetric(
           horizontal: Responsive.isDesktop(context)
               ? MediaQuery.of(context).size.width * 0.1
@@ -29,10 +29,10 @@ class Content extends StatelessWidget {
         ),
         height: (Responsive.isMobile(context))
             ? valueProvider.expansionTile == true
-                ? 650
+                ? content_dummy.length * 110
                 : 270
             : valueProvider.expansionTile == true
-                ? 630
+                ? content_dummy.length * 110
                 : 320,
         decoration: BoxDecoration(
           color: grey.shade100.withOpacity(0.6),
@@ -121,12 +121,27 @@ class Content extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   child: InkWell(
                     borderRadius: BorderRadius.circular(25),
-                    child: Icon(
-                      (valueProvider.expansionTile != true)
-                          ? Icons.arrow_drop_down
-                          : Icons.arrow_drop_up,
-                      size: 40,
-                    ),
+                    child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 350),
+                        transitionBuilder: (child, anim) => RotationTransition(
+                              turns: child.key == const ValueKey('icon1')
+                                  ? Tween<double>(begin: 1, end: 0)
+                                      .animate(anim)
+                                  : Tween<double>(begin: 0, end: 1)
+                                      .animate(anim),
+                              child: ScaleTransition(scale: anim, child: child),
+                            ),
+                        child: (valueProvider.expansionTile != true)
+                            ? const Icon(
+                                Icons.arrow_drop_down,
+                                key: ValueKey('icon1'),
+                                size: 40,
+                              )
+                            : const Icon(
+                                Icons.arrow_drop_up,
+                                key: ValueKey('icon2'),
+                                size: 40,
+                              )),
                     onTap: () {
                       functionProvider.expansionTileVisible();
                     },

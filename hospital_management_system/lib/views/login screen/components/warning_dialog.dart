@@ -32,12 +32,14 @@ class NotionDialog extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Padding(
+                Padding(
                   padding: EdgeInsets.symmetric(vertical: 20),
                   child: Text(
                     'Silahkan hubungi dan klik E-mail berikut\nini untuk melakukan reset password :',
                     textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700),
+                    style: TextStyle(
+                        fontSize: (Responsive.isMobile(context)) ? 14 : 20,
+                        fontWeight: FontWeight.w700),
                   ),
                 ),
                 InkWell(

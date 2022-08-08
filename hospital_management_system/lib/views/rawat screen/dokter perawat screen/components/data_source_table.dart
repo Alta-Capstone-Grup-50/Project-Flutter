@@ -201,8 +201,8 @@ class RawatDataSourceTable extends DataGridSource {
           value: Checkbox(
               value: dataGridRow.proses ?? false,
               onChanged: (bool? newValue) {
-                if (_logProvider!.result['role'] == 'Dokter' ||
-                    _logProvider!.result['role'] == 'Perawat') {
+                if (_logProvider!.user.level == 'Dokter' ||
+                    _logProvider!.user.level == 'Perawat') {
                   if (dataGridRow.proses == false) {
                     log('check');
                     showCaseDialog(contexts,

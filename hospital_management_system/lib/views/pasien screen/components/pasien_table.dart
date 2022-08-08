@@ -39,7 +39,12 @@ class PasienTable {
         final PasienDataSourceTable _dataSource =
             PasienDataSourceTable(val, context);
 
-        double countPage = _dataSource.data.length / _dataSource.rowsPerPage;
+        double countPage;
+        if (_dataSource.data.isEmpty) {
+          countPage = 1;
+        } else {
+          countPage = _dataSource.data.length / _dataSource.rowsPerPage;
+        }
 
         double countPageOfSearch =
             value.search.length / _dataSource.rowsPerPage;
@@ -47,19 +52,21 @@ class PasienTable {
         return LayoutBuilder(
           builder: ((context, constraints) => Column(children: [
                 SizedBox(
-                    height: (_dataSource.data.length <= 2)
-                        ? 160
-                        : (_dataSource.data.length <= 4)
-                            ? 240
-                            : 305,
-                    child: SfDataGridTheme(
-                        data: SfDataGridThemeData(
-                          sortIconColor: Colors.black,
-                          headerHoverColor: grey.shade100,
-                          headerColor: grey.shade100,
-                          rowHoverColor: green.shade300,
-                        ),
-                        child: SfDataGrid(
+                  height: (_dataSource.data.length <= 2)
+                      ? 160
+                      : (_dataSource.data.length <= 4)
+                          ? 240
+                          : 305,
+                  child: SfDataGridTheme(
+                    data: SfDataGridThemeData(
+                      sortIconColor: Colors.black,
+                      headerHoverColor: grey.shade100,
+                      headerColor: grey.shade100,
+                      rowHoverColor: green.shade300,
+                    ),
+                    child: Stack(
+                      children: [
+                        SfDataGrid(
                             key: value.keyPasien,
                             source: _dataSource,
                             rowHeight: 40,
@@ -158,7 +165,14 @@ class PasienTable {
                                             fontWeight: FontWeight.w700),
                                         overflow: TextOverflow.ellipsis,
                                       )))
-                            ]))),
+                            ]),
+                        (_dataSource.data.isEmpty)
+                            ? const Center(child: Text('Data Kosong'))
+                            : const SizedBox.shrink(),
+                      ],
+                    ),
+                  ),
+                ),
                 const SizedBox(
                   height: 20,
                 ),

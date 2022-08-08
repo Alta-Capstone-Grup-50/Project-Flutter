@@ -27,8 +27,8 @@ class Dropdown extends StatelessWidget {
           child: Container(
             padding: EdgeInsets.all(padding).copyWith(bottom: padding * 2),
             child: SizedBox(
-              height: (keyScreen != 'ManageScreen') ? 80 : 40,
-              width: (keyScreen != 'ManageScreen') ? 190 : 150,
+              height: (keyScreen != 'ManageScreen') ? 100 : 60,
+              width: (keyScreen != 'ManageScreen') ? 210 : 165,
               child: Column(
                 mainAxisAlignment: (keyScreen != 'ManageScreen')
                     ? MainAxisAlignment.spaceEvenly

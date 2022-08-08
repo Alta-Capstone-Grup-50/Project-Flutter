@@ -158,8 +158,8 @@ class RawatScreen extends StatelessWidget {
                                 ),
                               ),
                         const Spacer(),
-                        (valueProvide.result['role'] == 'Dokter' ||
-                                valueProvide.result['role'] == 'Perawat')
+                        (valueProvide.user.level == 'Dokter' ||
+                                valueProvide.user.level == 'Perawat')
                             ? SizedBox(
                                 height: 65,
                                 child: Card(
@@ -230,8 +230,8 @@ class RawatScreen extends StatelessWidget {
                                   ),
                                 ),
                           const Spacer(),
-                          (valueProvide.result['role'] == 'Dokter' ||
-                                  valueProvide.result['role'] == 'Perawat')
+                          (valueProvide.user.level == 'Dokter' ||
+                                  valueProvide.user.level == 'Perawat')
                               ? SizedBox(
                                   height: 50,
                                   child: Card(

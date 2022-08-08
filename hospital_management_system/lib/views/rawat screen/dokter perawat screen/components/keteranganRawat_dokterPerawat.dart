@@ -137,15 +137,15 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
                     ? MediaQuery.of(context).size.height / 1.9
                     : MediaQuery.of(context).size.height / 2.45,
                 child: Input(
-                  controller: (loginFunction.result['role'] == 'Dokter' ||
-                          loginFunction.result['role'] == 'Perawat')
+                  controller: (loginFunction.user.level == 'Dokter' ||
+                          loginFunction.user.level == 'Perawat')
                       ? _keteranganController
                       : null,
                   expands: true,
                   maxLines: null,
                   minLines: null,
-                  enabled: (loginFunction.result['role'] == 'Dokter' ||
-                          loginFunction.result['role'] == 'Perawat')
+                  enabled: (loginFunction.user.level == 'Dokter' ||
+                          loginFunction.user.level == 'Perawat')
                       ? true
                       : false,
                   keyboardType: TextInputType.multiline,
@@ -154,8 +154,8 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
                   cursorHeight: 22,
                 ),
               ),
-              (loginFunction.result['role'] == 'Dokter' ||
-                      loginFunction.result['role'] == 'Perawat')
+              (loginFunction.user.level == 'Dokter' ||
+                      loginFunction.user.level == 'Perawat')
                   ? Container(
                       width: MediaQuery.of(context).size.width,
                       padding: EdgeInsets.only(

@@ -10,15 +10,10 @@ class UpdatePerawatService {
       String id, Map<String, dynamic> data) async {
     Response response;
 
-    response = await _dio
-        .put(
+    response = await _dio.put(
       '${ApiUrl.updateDataPerawat}/$id',
       data: data,
-    )
-        .onError((error, stackTrace) {
-      log(error.toString());
-      throw error!;
-    });
+    );
 
     return response;
   }

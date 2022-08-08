@@ -43,6 +43,8 @@ class _MainLayoutState extends State<MainLayout>
     }
   }
 
+  ScrollController scrollController = ScrollController();
+
   @override
   void initState() {
     super.initState();
@@ -53,7 +55,7 @@ class _MainLayoutState extends State<MainLayout>
     mainProvider.checkConnection();
 
     animationController = AnimationController(
-        duration: const Duration(milliseconds: 150), vsync: this);
+        duration: const Duration(milliseconds: 200), vsync: this);
 
     if (widget.keyScreens != 'login') {
       final loginFunction = context.read<LoginProvider>();
@@ -64,9 +66,8 @@ class _MainLayoutState extends State<MainLayout>
 
   @override
   void dispose() {
-    super.dispose();
     animationController.dispose();
-    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
   }
 
   @override
@@ -111,7 +112,7 @@ class _MainLayoutState extends State<MainLayout>
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               appBar(context, provideValue, provideFunction),
-              body(context, provideValue, provideFunction),
+              body(context, provideValue, provideFunction, scrollController),
             ],
           ),
         ),
@@ -119,9 +120,13 @@ class _MainLayoutState extends State<MainLayout>
     );
   }
 
-  Widget appBar(BuildContext context, MainLayoutProvider provideValue,
-      MainLayoutProvider provideFunction) {
+  Widget appBar(
+    BuildContext context,
+    MainLayoutProvider provideValue,
+    MainLayoutProvider provideFunction,
+  ) {
     LoginProvider logoutFunction = context.read<LoginProvider>();
+
     LoginProvider loginValue = context.watch<LoginProvider>();
     if (Responsive.isMobile(context) && provideValue.menuShown == true) {
       provideFunction.changeMenuShown();
@@ -177,8 +182,8 @@ class _MainLayoutState extends State<MainLayout>
                                       .route(context, widget.keyScreens),
                                 )
                               : const SizedBox.shrink(),
-                          (loginValue.result['role'] == 'Dokter' ||
-                                  loginValue.result['role'] == 'Perawat')
+                          (loginValue.user.level == 'Dokter' ||
+                                  loginValue.user.level == 'Perawat')
                               ? InkWell(
                                   borderRadius: BorderRadius.circular(16),
                                   onTap: () {
@@ -254,16 +259,37 @@ class _MainLayoutState extends State<MainLayout>
                                         InkWell(
                                           borderRadius:
                                               BorderRadius.circular(50),
-                                          child:
-                                              (provideValue.menuShown == false)
+                                          child: AnimatedSwitcher(
+                                              duration: const Duration(
+                                                  milliseconds: 350),
+                                              transitionBuilder:
+                                                  (child, anim) =>
+                                                      RotationTransition(
+                                                        turns: child.key ==
+                                                                const ValueKey(
+                                                                    'icon1')
+                                                            ? Tween<double>(
+                                                                    begin: 1,
+                                                                    end: 0)
+                                                                .animate(anim)
+                                                            : Tween<double>(
+                                                                    begin: 0,
+                                                                    end: 1)
+                                                                .animate(anim),
+                                                        child: ScaleTransition(
+                                                            scale: anim,
+                                                            child: child),
+                                                      ),
+                                              child: (provideValue.menuShown ==
+                                                      false)
                                                   ? const Icon(
                                                       Icons.keyboard_arrow_down,
-                                                      color: Colors.white,
-                                                    )
+                                                      key: ValueKey('icon1'),
+                                                      color: Colors.white)
                                                   : const Icon(
                                                       Icons.keyboard_arrow_up,
-                                                      color: Colors.white,
-                                                    ),
+                                                      key: ValueKey('icon2'),
+                                                      color: Colors.white)),
                                           onTap: () {
                                             provideFunction.changeMenuShown();
                                           },
@@ -302,7 +328,7 @@ class _MainLayoutState extends State<MainLayout>
   }
 
   Widget body(BuildContext context, MainLayoutProvider provideValue,
-      MainLayoutProvider provideFunction) {
+      MainLayoutProvider provideFunction, ScrollController scrollController) {
     Animation<double> opacityAnimation =
         Tween(begin: 0.0, end: 1.0).animate(animationController);
     if (provideValue.menuShown) {
@@ -316,6 +342,7 @@ class _MainLayoutState extends State<MainLayout>
             Responsive.isTablet(context) &&
                 MediaQuery.of(context).orientation == Orientation.landscape)
           SingleChildScrollView(
+            controller: scrollController,
             child: (provideValue.connected == true)
                 ? widget.child
                 : SizedBox(

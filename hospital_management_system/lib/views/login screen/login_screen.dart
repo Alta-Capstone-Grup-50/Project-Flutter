@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_carousel_slider/carousel_slider.dart';
+import 'package:flutter_carousel_slider/carousel_slider_transforms.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '/utilities/constants/responsive.dart';
@@ -7,7 +9,16 @@ import '../main layout/main_layout.dart';
 import 'components/login_view.dart';
 
 class LoginScreen extends StatelessWidget {
-  const LoginScreen({Key? key}) : super(key: key);
+  LoginScreen({Key? key}) : super(key: key);
+
+  final List<String> imgList = [
+    'assets/contents/online-doctor.svg',
+    'assets/contents/online-doctor2.svg',
+    'assets/contents/online-doctor3.svg',
+    'assets/contents/online-doctor4.svg',
+    'assets/contents/online-doctor5.svg',
+    'assets/contents/online-doctor6.svg',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +44,20 @@ class LoginScreen extends StatelessWidget {
                 children: [
                   const Expanded(child: LoginView()),
                   Expanded(
-                    child: SvgPicture.asset(
-                      'assets/contents/online-doctor.svg',
+                    child: SizedBox(
+                      height: MediaQuery.of(context).size.height * 0.60,
+                      child: CarouselSlider.builder(
+                        itemCount: imgList.length,
+                        autoSliderTransitionCurve: Curves.fastOutSlowIn,
+                        slideTransform: const DepthTransform(),
+                        slideBuilder: (index) {
+                          return SvgPicture.asset(
+                            imgList[index],
+                          );
+                        },
+                        enableAutoSlider: true,
+                        unlimitedMode: true,
+                      ),
                     ),
                   ),
                 ],
@@ -49,9 +72,19 @@ class LoginScreen extends StatelessWidget {
                       padding: EdgeInsets.symmetric(
                           vertical: MediaQuery.of(context).size.height * 0.02),
                       child: (!Responsive.isMobile(context))
-                          ? SvgPicture.asset(
-                              'assets/contents/online-doctor.svg',
+                          ? SizedBox(
                               height: MediaQuery.of(context).size.height * 0.35,
+                              child: CarouselSlider.builder(
+                                itemCount: imgList.length,
+                                autoSliderTransitionCurve: Curves.fastOutSlowIn,
+                                slideBuilder: (index) {
+                                  return SvgPicture.asset(
+                                    imgList[index],
+                                  );
+                                },
+                                enableAutoSlider: true,
+                                unlimitedMode: true,
+                              ),
                             )
                           : const SizedBox.shrink()),
                   Padding(

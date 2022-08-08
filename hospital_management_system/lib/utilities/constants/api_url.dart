@@ -20,7 +20,7 @@ class ApiUrl {
   static const String getDataPasienRawatJalanAdmin =
       '$baseUrl/admin/rawat_jalan_lihat';
   static const String putDataPasienRawatJalan =
-      '$baseUrl/dokter/rawat_jalan_edit';
+      '$baseUrl/dokter/rawat_jalan_ubah_proses';
 
   static const String getDataManage = '$baseUrl/admin/akun_tampil';
   static const String addDataManage = '$baseUrl/admin/akun_tambah';

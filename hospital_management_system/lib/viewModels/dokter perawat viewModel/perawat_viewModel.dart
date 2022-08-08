@@ -39,7 +39,12 @@ class PerawatViewModel extends ChangeNotifier {
   TextEditingController searchController = TextEditingController();
 
   PerawatViewModel() {
-    getDataApiPerawat();
+    initialFun();
+  }
+
+  initialFun() async {
+    await getDataApiPerawat();
+    ;
   }
 
   changeEdit() {
@@ -82,7 +87,7 @@ class PerawatViewModel extends ChangeNotifier {
         showAlertSuccess(context,
             title: 'Update data berhasil',
             label: 'Selamat, data berhasil di perbarui silahkan lanjut kerja');
-      } else if (response.statusCode! >= 300) {
+      } else if (response.statusCode == 400) {
         progressWidget.hide();
         Navigator.pop(context);
 

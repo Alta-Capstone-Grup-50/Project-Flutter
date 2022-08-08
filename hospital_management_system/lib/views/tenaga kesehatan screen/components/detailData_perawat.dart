@@ -28,14 +28,14 @@ class DetailDataPerawat extends StatefulWidget {
 
 class _DetailDataPerawatState extends State<DetailDataPerawat> {
   final _scrollController = ScrollController();
-  TextEditingController _sipController = TextEditingController();
-  TextEditingController _namaController = TextEditingController();
-  TextEditingController _jenisKelController = TextEditingController();
-  TextEditingController _nomorTelfonController = TextEditingController();
-  TextEditingController _poliController = TextEditingController();
-  TextEditingController _jadwalPrakController = TextEditingController();
-  TextEditingController _jabatanController = TextEditingController();
-  TextEditingController _strController = TextEditingController();
+  final TextEditingController _sipController = TextEditingController();
+  final TextEditingController _namaController = TextEditingController();
+  final TextEditingController _jenisKelController = TextEditingController();
+  final TextEditingController _nomorTelfonController = TextEditingController();
+  final TextEditingController _poliController = TextEditingController();
+  final TextEditingController _jadwalPrakController = TextEditingController();
+  final TextEditingController _jabatanController = TextEditingController();
+  final TextEditingController _strController = TextEditingController();
 
   @override
   void dispose() {
@@ -153,6 +153,9 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
     _jabatanController.text = putDataPerawat[indexOfPage].jabatan!;
 
     _strController.text = putDataPerawat[indexOfPage].nomorStr!;
+    _jadwalPrakController.text = putDataPerawat[indexOfPage].jadwalKerja!;
+
+    List<String> poli = ['Umum', 'Gigi', 'THT', 'Kandungan'];
 
     return Stack(children: [
       SingleChildScrollView(
@@ -217,105 +220,58 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                     'Jenis Kelamin',
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
-                  putDataPerawat[indexOfPage].jenisKelamin == ''
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 12),
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 12),
-                            child: DropdownButtonFormField2(
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.zero,
-                                filled: true,
-                                enabled: valueProvider.hEdit,
-                                fillColor: grey.shade100.withAlpha(65),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.zero,
-                                  borderSide: BorderSide(color: grey.shade300),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.zero,
-                                  borderSide: BorderSide(color: grey.shade300),
-                                ),
-                                disabledBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 0, color: Colors.transparent)),
-                              ),
-                              buttonPadding: const EdgeInsets.only(left: 10),
-                              items: [
-                                'Laki - laki',
-                                'Perempuan',
-                              ]
-                                  .map((item) => DropdownMenuItem(
-                                      value: item, child: Text(item)))
-                                  .toList(),
-                              icon: const Icon(Icons.keyboard_arrow_down),
-                              iconSize: 30,
-                              buttonHeight: 50,
-                              onChanged: (valueProvider.hEdit == true)
-                                  ? (value) {
-                                      if (value.toString() == 'Laki - laki') {
-                                        _jenisKelController.text = 'L';
-                                      } else {
-                                        _jenisKelController.text = 'P';
-                                      }
-                                    }
-                                  : null,
-                            ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 12),
+                      child: DropdownButtonFormField2(
+                        hint: Text((putDataPerawat[indexOfPage]
+                                .jenisKelamin!
+                                .isNotEmpty)
+                            ? (putDataPerawat[indexOfPage].jenisKelamin == 'L')
+                                ? 'Laki - laki'
+                                : 'Perempuan'
+                            : ' '),
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.zero,
+                          filled: true,
+                          enabled: valueProvider.hEdit,
+                          fillColor: grey.shade100.withAlpha(65),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.zero,
+                            borderSide: BorderSide(color: grey.shade300),
                           ),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.only(top: 12),
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 12),
-                            child: DropdownButtonFormField2(
-                              value: (putDataPerawat[indexOfPage]
-                                      .jenisKelamin!
-                                      .isNotEmpty)
-                                  ? (putDataPerawat[indexOfPage].jenisKelamin ==
-                                          'L')
-                                      ? 'Laki - laki'
-                                      : 'Perempuan'
-                                  : ' ',
-                              decoration: InputDecoration(
-                                contentPadding: EdgeInsets.zero,
-                                filled: true,
-                                enabled: valueProvider.hEdit,
-                                fillColor: grey.shade100.withAlpha(65),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.zero,
-                                  borderSide: BorderSide(color: grey.shade300),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.zero,
-                                  borderSide: BorderSide(color: grey.shade300),
-                                ),
-                                disabledBorder: const OutlineInputBorder(
-                                    borderSide: BorderSide(
-                                        width: 0, color: Colors.transparent)),
-                              ),
-                              buttonPadding: const EdgeInsets.only(left: 10),
-                              items: [
-                                'Laki - laki',
-                                'Perempuan',
-                              ]
-                                  .map((item) => DropdownMenuItem(
-                                      value: item, child: Text(item)))
-                                  .toList(),
-                              icon: const Icon(Icons.keyboard_arrow_down),
-                              iconSize: 30,
-                              buttonHeight: 50,
-                              onChanged: (valueProvider.hEdit == true)
-                                  ? (value) {
-                                      if (value.toString() == 'Laki - laki') {
-                                        _jenisKelController.text = 'L';
-                                      } else {
-                                        _jenisKelController.text = 'P';
-                                      }
-                                    }
-                                  : null,
-                            ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.zero,
+                            borderSide: BorderSide(color: grey.shade300),
                           ),
+                          disabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(
+                                  width: 0, color: Colors.transparent)),
                         ),
+                        buttonPadding: const EdgeInsets.only(left: 10),
+                        items: [
+                          'Laki - laki',
+                          'Perempuan',
+                        ]
+                            .map((item) => DropdownMenuItem(
+                                value: item, child: Text(item)))
+                            .toList(),
+                        icon: const Icon(Icons.keyboard_arrow_down),
+                        iconSize: 30,
+                        buttonHeight: 50,
+                        onChanged: (valueProvider.hEdit == true)
+                            ? (value) {
+                                if (value.toString() == 'Laki - laki') {
+                                  _jenisKelController.text = 'L';
+                                } else {
+                                  _jenisKelController.text = 'P';
+                                }
+                              }
+                            : null,
+                      ),
+                    ),
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -339,562 +295,273 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                     'Poli',
                     style: TextStyle(fontWeight: FontWeight.w700),
                   ),
-                  putDataPerawat[indexOfPage].poli == ''
-                      ? Padding(
-                          padding: const EdgeInsets.only(top: 12),
-                          child: DropdownButtonFormField2(
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.zero,
-                              filled: true,
-                              enabled: valueProvider.hEdit,
-                              fillColor: grey.shade100.withAlpha(65),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.zero,
-                                borderSide: BorderSide(color: grey.shade300),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.zero,
-                                borderSide: BorderSide(color: grey.shade300),
-                              ),
-                              disabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 0, color: Colors.transparent)),
-                            ),
-                            buttonPadding: const EdgeInsets.only(left: 10),
-                            items: ['Umum', 'Gigi', 'Kulit', 'THT']
-                                .map((item) => DropdownMenuItem(
-                                    value: item, child: Text(item)))
-                                .toList(),
-                            icon: const Icon(Icons.keyboard_arrow_down),
-                            iconSize: 30,
-                            buttonHeight: 50,
-                            onChanged: (valueProvider.hEdit == true)
-                                ? (value) {
-                                    _poliController.text = value.toString();
-                                  }
-                                : null,
-                            validator: ((value) {
-                              if (value == null) {
-                                return 'Data poli tidak boleh kosong';
-                              }
-                            }),
-                          ),
-                        )
-                      : Padding(
-                          padding: const EdgeInsets.only(top: 12),
-                          child: DropdownButtonFormField2(
-                            value: putDataPerawat[indexOfPage].poli,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.zero,
-                              filled: true,
-                              enabled: valueProvider.hEdit,
-                              fillColor: grey.shade100.withAlpha(65),
-                              focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.zero,
-                                borderSide: BorderSide(color: grey.shade300),
-                              ),
-                              enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.zero,
-                                borderSide: BorderSide(color: grey.shade300),
-                              ),
-                              disabledBorder: const OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                      width: 0, color: Colors.transparent)),
-                            ),
-                            buttonPadding: const EdgeInsets.only(left: 10),
-                            items: ['Umum', 'Gigi', 'Kulit', 'THT']
-                                .map((item) => DropdownMenuItem(
-                                    value: item, child: Text(item)))
-                                .toList(),
-                            icon: const Icon(Icons.keyboard_arrow_down),
-                            iconSize: 30,
-                            buttonHeight: 50,
-                            onChanged: (valueProvider.hEdit == true)
-                                ? (value) {
-                                    _poliController.text = value.toString();
-                                  }
-                                : null,
-                            validator: ((value) {
-                              if (value == null) {
-                                return 'Data poli tidak boleh kosong';
-                              }
-                            }),
-                          ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 12),
+                    child: DropdownButtonFormField2(
+                      hint: Text(putDataPerawat[indexOfPage].poli!),
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.zero,
+                        filled: true,
+                        enabled: valueProvider.hEdit,
+                        fillColor: grey.shade100.withAlpha(65),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.zero,
+                          borderSide: BorderSide(color: grey.shade300),
                         ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.zero,
+                          borderSide: BorderSide(color: grey.shade300),
+                        ),
+                        disabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(
+                                width: 0, color: Colors.transparent)),
+                      ),
+                      buttonPadding: const EdgeInsets.only(left: 10),
+                      items: poli
+                          .map((item) =>
+                              DropdownMenuItem(value: item, child: Text(item)))
+                          .toList(),
+                      icon: const Icon(Icons.keyboard_arrow_down),
+                      iconSize: 30,
+                      buttonHeight: 50,
+                      onChanged: (valueProvider.hEdit == true)
+                          ? (value) {
+                              _poliController.text = value.toString();
+                            }
+                          : null,
+                      validator: ((value) {
+                        if (value == null) {
+                          return 'Data poli tidak boleh kosong';
+                        }
+                      }),
+                    ),
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
                   (!Responsive.isMobile(context))
-                      ? putDataPerawat[indexOfPage].jadwalKerja == ''
-                          ? Row(
-                              children: [
-                                Flexible(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        'Jadwal Kerja',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 12),
-                                        child: DropdownButtonFormField2(
-                                          decoration: InputDecoration(
-                                            contentPadding: EdgeInsets.zero,
-                                            filled: true,
-                                            enabled: valueProvider.hEdit,
-                                            fillColor:
-                                                grey.shade100.withAlpha(65),
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.zero,
-                                              borderSide: BorderSide(
-                                                  color: grey.shade300),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.zero,
-                                              borderSide: BorderSide(
-                                                  color: grey.shade300),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.zero,
-                                              borderSide: BorderSide(
-                                                  color: grey.shade300),
-                                            ),
-                                            disabledBorder:
-                                                const OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        width: 0,
-                                                        color: Colors
-                                                            .transparent)),
-                                          ),
-                                          buttonPadding:
-                                              const EdgeInsets.only(left: 10),
-                                          items: ['Senin-Sabtu']
-                                              .map((item) => DropdownMenuItem(
-                                                  value: item,
-                                                  child: Text(item)))
-                                              .toList(),
-                                          icon: const Icon(
-                                              Icons.keyboard_arrow_down),
-                                          iconSize: 30,
-                                          buttonHeight: 50,
-                                          onChanged:
-                                              (valueProvider.hEdit == true)
-                                                  ? (value) {
-                                                      log(value.toString());
-                                                      day = value.toString();
-                                                    }
-                                                  : null,
+                      ? Row(
+                          children: [
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text(
+                                    'Jadwal Kerja',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.w700),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 12),
+                                    child: DropdownButtonFormField2(
+                                      hint: Text(day),
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.zero,
+                                        filled: true,
+                                        enabled: valueProvider.hEdit,
+                                        fillColor: grey.shade100.withAlpha(65),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.zero,
+                                          borderSide:
+                                              BorderSide(color: grey.shade300),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 30,
-                                ),
-                                Flexible(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 20),
-                                        child: DropdownButtonFormField2(
-                                          decoration: InputDecoration(
-                                            contentPadding: EdgeInsets.zero,
-                                            filled: true,
-                                            enabled: valueProvider.hEdit,
-                                            fillColor:
-                                                grey.shade100.withAlpha(65),
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.zero,
-                                              borderSide: BorderSide(
-                                                  color: grey.shade300),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.zero,
-                                              borderSide: BorderSide(
-                                                  color: grey.shade300),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.zero,
-                                              borderSide: BorderSide(
-                                                  color: grey.shade300),
-                                            ),
-                                            disabledBorder:
-                                                const OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        width: 0,
-                                                        color: Colors
-                                                            .transparent)),
-                                          ),
-                                          buttonPadding:
-                                              const EdgeInsets.only(left: 10),
-                                          items: ['08.00-16.00']
-                                              .map((item) => DropdownMenuItem(
-                                                  value: item,
-                                                  child: Text(item)))
-                                              .toList(),
-                                          icon: const Icon(
-                                              Icons.keyboard_arrow_down),
-                                          iconSize: 30,
-                                          buttonHeight: 50,
-                                          onChanged:
-                                              (valueProvider.hEdit == true)
-                                                  ? (value) {
-                                                      log(value.toString());
-                                                      hours = value.toString();
-                                                    }
-                                                  : null,
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.zero,
+                                          borderSide:
+                                              BorderSide(color: grey.shade300),
                                         ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            )
-                          : Row(
-                              children: [
-                                Flexible(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const Text(
-                                        'Jadwal Kerja',
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 12),
-                                        child: DropdownButtonFormField2(
-                                          value: day,
-                                          decoration: InputDecoration(
-                                            contentPadding: EdgeInsets.zero,
-                                            filled: true,
-                                            enabled: valueProvider.hEdit,
-                                            fillColor:
-                                                grey.shade100.withAlpha(65),
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.zero,
-                                              borderSide: BorderSide(
-                                                  color: grey.shade300),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.zero,
-                                              borderSide: BorderSide(
-                                                  color: grey.shade300),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.zero,
-                                              borderSide: BorderSide(
-                                                  color: grey.shade300),
-                                            ),
-                                            disabledBorder:
-                                                const OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        width: 0,
-                                                        color: Colors
-                                                            .transparent)),
-                                          ),
-                                          buttonPadding:
-                                              const EdgeInsets.only(left: 10),
-                                          items: ['Senin-Sabtu']
-                                              .map((item) => DropdownMenuItem(
-                                                  value: item,
-                                                  child: Text(item)))
-                                              .toList(),
-                                          icon: const Icon(
-                                              Icons.keyboard_arrow_down),
-                                          iconSize: 30,
-                                          buttonHeight: 50,
-                                          onChanged:
-                                              (valueProvider.hEdit == true)
-                                                  ? (value) {
-                                                      log(value.toString());
-                                                      day = value.toString();
-                                                    }
-                                                  : null,
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.zero,
+                                          borderSide:
+                                              BorderSide(color: grey.shade300),
                                         ),
+                                        disabledBorder:
+                                            const OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    width: 0,
+                                                    color: Colors.transparent)),
                                       ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(
-                                  width: 30,
-                                ),
-                                Flexible(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(
-                                        height: 20,
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 20),
-                                        child: DropdownButtonFormField2(
-                                          value: hours,
-                                          decoration: InputDecoration(
-                                            contentPadding: EdgeInsets.zero,
-                                            filled: true,
-                                            enabled: valueProvider.hEdit,
-                                            fillColor:
-                                                grey.shade100.withAlpha(65),
-                                            border: OutlineInputBorder(
-                                              borderRadius: BorderRadius.zero,
-                                              borderSide: BorderSide(
-                                                  color: grey.shade300),
-                                            ),
-                                            focusedBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.zero,
-                                              borderSide: BorderSide(
-                                                  color: grey.shade300),
-                                            ),
-                                            enabledBorder: OutlineInputBorder(
-                                              borderRadius: BorderRadius.zero,
-                                              borderSide: BorderSide(
-                                                  color: grey.shade300),
-                                            ),
-                                            disabledBorder:
-                                                const OutlineInputBorder(
-                                                    borderSide: BorderSide(
-                                                        width: 0,
-                                                        color: Colors
-                                                            .transparent)),
-                                          ),
-                                          buttonPadding:
-                                              const EdgeInsets.only(left: 10),
-                                          items: ['08.00-16.00']
-                                              .map((item) => DropdownMenuItem(
-                                                  value: item,
-                                                  child: Text(item)))
-                                              .toList(),
-                                          icon: const Icon(
-                                              Icons.keyboard_arrow_down),
-                                          iconSize: 30,
-                                          buttonHeight: 50,
-                                          onChanged:
-                                              (valueProvider.hEdit == true)
-                                                  ? (value) {
-                                                      log(value.toString());
-                                                      hours = value.toString();
-                                                    }
-                                                  : null,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            )
-                      : putDataPerawat[indexOfPage].jadwalKerja == ''
-                          ? Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Jadwal Kerja',
-                                  style: TextStyle(fontWeight: FontWeight.w700),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 12),
-                                  child: DropdownButtonFormField2(
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.zero,
-                                      filled: true,
-                                      enabled: valueProvider.hEdit,
-                                      fillColor: grey.shade100.withAlpha(65),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.zero,
-                                        borderSide:
-                                            BorderSide(color: grey.shade300),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.zero,
-                                        borderSide:
-                                            BorderSide(color: grey.shade300),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.zero,
-                                        borderSide:
-                                            BorderSide(color: grey.shade300),
-                                      ),
-                                      disabledBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 0,
-                                              color: Colors.transparent)),
+                                      buttonPadding:
+                                          const EdgeInsets.only(left: 10),
+                                      items: ['Senin-Sabtu']
+                                          .map((item) => DropdownMenuItem(
+                                              value: item, child: Text(item)))
+                                          .toList(),
+                                      icon:
+                                          const Icon(Icons.keyboard_arrow_down),
+                                      iconSize: 30,
+                                      buttonHeight: 50,
+                                      onChanged: (valueProvider.hEdit == true)
+                                          ? (value) {
+                                              log(value.toString());
+                                              day = value.toString();
+                                            }
+                                          : null,
                                     ),
-                                    buttonPadding:
-                                        const EdgeInsets.only(left: 10),
-                                    items: ['Senin-Sabtu']
-                                        .map((item) => DropdownMenuItem(
-                                            value: item, child: Text(item)))
-                                        .toList(),
-                                    icon: const Icon(Icons.keyboard_arrow_down),
-                                    iconSize: 30,
-                                    buttonHeight: 50,
-                                    onChanged: (valueProvider.hEdit == true)
-                                        ? (value) {
-                                            log(value.toString());
-                                            day = value.toString();
-                                          }
-                                        : null,
                                   ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 20),
-                                  child: DropdownButtonFormField2(
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.zero,
-                                      filled: true,
-                                      enabled: valueProvider.hEdit,
-                                      fillColor: grey.shade100.withAlpha(65),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.zero,
-                                        borderSide:
-                                            BorderSide(color: grey.shade300),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.zero,
-                                        borderSide:
-                                            BorderSide(color: grey.shade300),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.zero,
-                                        borderSide:
-                                            BorderSide(color: grey.shade300),
-                                      ),
-                                      disabledBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 0,
-                                              color: Colors.transparent)),
-                                    ),
-                                    buttonPadding:
-                                        const EdgeInsets.only(left: 10),
-                                    items: ['08.00-16.00']
-                                        .map((item) => DropdownMenuItem(
-                                            value: item, child: Text(item)))
-                                        .toList(),
-                                    icon: const Icon(Icons.keyboard_arrow_down),
-                                    iconSize: 30,
-                                    buttonHeight: 50,
-                                    onChanged: (valueProvider.hEdit == true)
-                                        ? (value) {
-                                            log(value.toString());
-                                            hours = value.toString();
-                                          }
-                                        : null,
-                                  ),
-                                ),
-                              ],
-                            )
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
-                                  'Jadwal Kerja',
-                                  style: TextStyle(fontWeight: FontWeight.w700),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 12),
-                                  child: DropdownButtonFormField2(
-                                    value: day,
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.zero,
-                                      filled: true,
-                                      enabled: valueProvider.hEdit,
-                                      fillColor: grey.shade100.withAlpha(65),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.zero,
-                                        borderSide:
-                                            BorderSide(color: grey.shade300),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.zero,
-                                        borderSide:
-                                            BorderSide(color: grey.shade300),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.zero,
-                                        borderSide:
-                                            BorderSide(color: grey.shade300),
-                                      ),
-                                      disabledBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 0,
-                                              color: Colors.transparent)),
-                                    ),
-                                    buttonPadding:
-                                        const EdgeInsets.only(left: 10),
-                                    items: ['Senin-Sabtu']
-                                        .map((item) => DropdownMenuItem(
-                                            value: item, child: Text(item)))
-                                        .toList(),
-                                    icon: const Icon(Icons.keyboard_arrow_down),
-                                    iconSize: 30,
-                                    buttonHeight: 50,
-                                    onChanged: (valueProvider.hEdit == true)
-                                        ? (value) {
-                                            log(value.toString());
-                                            day = value.toString();
-                                          }
-                                        : null,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(top: 20),
-                                  child: DropdownButtonFormField2(
-                                    value: hours,
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.zero,
-                                      filled: true,
-                                      enabled: valueProvider.hEdit,
-                                      fillColor: grey.shade100.withAlpha(65),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.zero,
-                                        borderSide:
-                                            BorderSide(color: grey.shade300),
-                                      ),
-                                      focusedBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.zero,
-                                        borderSide:
-                                            BorderSide(color: grey.shade300),
-                                      ),
-                                      enabledBorder: OutlineInputBorder(
-                                        borderRadius: BorderRadius.zero,
-                                        borderSide:
-                                            BorderSide(color: grey.shade300),
-                                      ),
-                                      disabledBorder: const OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              width: 0,
-                                              color: Colors.transparent)),
-                                    ),
-                                    buttonPadding:
-                                        const EdgeInsets.only(left: 10),
-                                    items: ['08.00-16.00']
-                                        .map((item) => DropdownMenuItem(
-                                            value: item, child: Text(item)))
-                                        .toList(),
-                                    icon: const Icon(Icons.keyboard_arrow_down),
-                                    iconSize: 30,
-                                    buttonHeight: 50,
-                                    onChanged: (valueProvider.hEdit == true)
-                                        ? (value) {
-                                            log(value.toString());
-                                            hours = value.toString();
-                                          }
-                                        : null,
-                                  ),
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
+                            const SizedBox(
+                              width: 30,
+                            ),
+                            Flexible(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.only(top: 20),
+                                    child: DropdownButtonFormField2(
+                                      hint: Text(hours),
+                                      decoration: InputDecoration(
+                                        contentPadding: EdgeInsets.zero,
+                                        filled: true,
+                                        enabled: valueProvider.hEdit,
+                                        fillColor: grey.shade100.withAlpha(65),
+                                        border: OutlineInputBorder(
+                                          borderRadius: BorderRadius.zero,
+                                          borderSide:
+                                              BorderSide(color: grey.shade300),
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.zero,
+                                          borderSide:
+                                              BorderSide(color: grey.shade300),
+                                        ),
+                                        enabledBorder: OutlineInputBorder(
+                                          borderRadius: BorderRadius.zero,
+                                          borderSide:
+                                              BorderSide(color: grey.shade300),
+                                        ),
+                                        disabledBorder:
+                                            const OutlineInputBorder(
+                                                borderSide: BorderSide(
+                                                    width: 0,
+                                                    color: Colors.transparent)),
+                                      ),
+                                      buttonPadding:
+                                          const EdgeInsets.only(left: 10),
+                                      items: ['08.00-16.00', '17.00-01.00']
+                                          .map((item) => DropdownMenuItem(
+                                              value: item, child: Text(item)))
+                                          .toList(),
+                                      icon:
+                                          const Icon(Icons.keyboard_arrow_down),
+                                      iconSize: 30,
+                                      buttonHeight: 50,
+                                      onChanged: (valueProvider.hEdit == true)
+                                          ? (value) {
+                                              log(value.toString());
+                                              hours = value.toString();
+                                            }
+                                          : null,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        )
+                      : Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Jadwal Kerja',
+                              style: TextStyle(fontWeight: FontWeight.w700),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 12),
+                              child: DropdownButtonFormField2(
+                                hint: Text(day),
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.zero,
+                                  filled: true,
+                                  enabled: valueProvider.hEdit,
+                                  fillColor: grey.shade100.withAlpha(65),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.zero,
+                                    borderSide:
+                                        BorderSide(color: grey.shade300),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.zero,
+                                    borderSide:
+                                        BorderSide(color: grey.shade300),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.zero,
+                                    borderSide:
+                                        BorderSide(color: grey.shade300),
+                                  ),
+                                  disabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 0, color: Colors.transparent)),
+                                ),
+                                buttonPadding: const EdgeInsets.only(left: 10),
+                                items: ['Senin-Sabtu']
+                                    .map((item) => DropdownMenuItem(
+                                        value: item, child: Text(item)))
+                                    .toList(),
+                                icon: const Icon(Icons.keyboard_arrow_down),
+                                iconSize: 30,
+                                buttonHeight: 50,
+                                onChanged: (valueProvider.hEdit == true)
+                                    ? (value) {
+                                        log(value.toString());
+                                        day = value.toString();
+                                      }
+                                    : null,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 20),
+                              child: DropdownButtonFormField2(
+                                hint: Text(hours),
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.zero,
+                                  filled: true,
+                                  enabled: valueProvider.hEdit,
+                                  fillColor: grey.shade100.withAlpha(65),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.zero,
+                                    borderSide:
+                                        BorderSide(color: grey.shade300),
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.zero,
+                                    borderSide:
+                                        BorderSide(color: grey.shade300),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.zero,
+                                    borderSide:
+                                        BorderSide(color: grey.shade300),
+                                  ),
+                                  disabledBorder: const OutlineInputBorder(
+                                      borderSide: BorderSide(
+                                          width: 0, color: Colors.transparent)),
+                                ),
+                                buttonPadding: const EdgeInsets.only(left: 10),
+                                items: ['08.00-16.00', '17.00-01.00']
+                                    .map((item) => DropdownMenuItem(
+                                        value: item, child: Text(item)))
+                                    .toList(),
+                                icon: const Icon(Icons.keyboard_arrow_down),
+                                iconSize: 30,
+                                buttonHeight: 50,
+                                onChanged: (valueProvider.hEdit == true)
+                                    ? (value) {
+                                        log(value.toString());
+                                        hours = value.toString();
+                                      }
+                                    : null,
+                              ),
+                            ),
+                          ],
+                        ),
                   const SizedBox(
                     height: 20,
                   ),
@@ -905,7 +572,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Input(
-                      controller: _strController,
+                      controller: _jabatanController,
                       borderRadius: const BorderRadius.all(Radius.zero),
                       keyboardType: TextInputType.none,
                       enabled: valueProvider.hEdit,
@@ -940,42 +607,46 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  SizedBox(
-                    width: 120,
-                    height: 40,
-                    child: ElevatedButton(
-                        onPressed: () {
-                          if (valueProvider.hEdit == false) {
-                            functionProvider.changeEdit();
-                          } else {
-                            showCaseDialog(
-                              context,
-                              title: 'Konfirmasi',
-                              label:
-                                  'Apakah anda ingin menghapus data Perawat ini ?',
-                              onPressed: () async {
-                                Navigator.pop(context);
-                                await functionProvider.deletePerawatData(
-                                    context,
-                                    putDataPerawat[indexOfPage].idUser!,
-                                    loadingWidget);
-                                Future.delayed(const Duration(seconds: 2),
-                                    () async {
+                  !(loginValue.user.level == 'Dokter' ||
+                          loginValue.user.level == 'Perawat')
+                      ? SizedBox(
+                          width: 120,
+                          height: 40,
+                          child: ElevatedButton(
+                              onPressed: () {
+                                if (valueProvider.hEdit == false) {
                                   functionProvider.changeEdit();
-                                });
+                                } else {
+                                  showCaseDialog(
+                                    context,
+                                    title: 'Konfirmasi',
+                                    label:
+                                        'Apakah anda ingin menghapus data Perawat ini ?',
+                                    onPressed: () async {
+                                      Navigator.pop(context);
+                                      await functionProvider.deletePerawatData(
+                                          context,
+                                          putDataPerawat[indexOfPage].idUser!,
+                                          loadingWidget);
+                                      Future.delayed(const Duration(seconds: 2),
+                                          () async {
+                                        functionProvider.changeEdit();
+                                      });
+                                    },
+                                  );
+                                }
                               },
-                            );
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          primary:
-                              valueProvider.hEdit == false ? grey : Colors.red,
-                        ),
-                        child: Text(
-                          valueProvider.hEdit == false ? 'Edit' : 'Hapus',
-                          style: const TextStyle(fontSize: 15),
-                        )),
-                  ),
+                              style: ElevatedButton.styleFrom(
+                                primary: valueProvider.hEdit == false
+                                    ? grey
+                                    : Colors.red,
+                              ),
+                              child: Text(
+                                valueProvider.hEdit == false ? 'Edit' : 'Hapus',
+                                style: const TextStyle(fontSize: 15),
+                              )),
+                        )
+                      : const SizedBox.shrink(),
                   const SizedBox(
                     width: 20,
                   ),
@@ -1004,6 +675,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                                       nomorTelfon: _nomorTelfonController.text,
                                       poli: _poliController.text,
                                       jadwalKerja: '$day $hours WIB',
+                                      jabatan: _jabatanController.text,
                                       nomorStr: _strController.text,
                                     ),
                                     loadingWidget);

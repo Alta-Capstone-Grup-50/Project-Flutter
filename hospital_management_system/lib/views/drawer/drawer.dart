@@ -10,11 +10,15 @@ class CustomDrawer extends StatelessWidget {
   late final Widget divider = _divider();
   final keyScreens;
 
+  ScrollController scrollControllerDrawer = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     LoginProvider logoutFunction = context.read<LoginProvider>();
+    LoginProvider loginValue = context.watch<LoginProvider>();
     return Drawer(
       child: ListView(
+        controller: scrollControllerDrawer,
         padding: EdgeInsets.zero,
         children: [
           _drawerHeader(),
@@ -46,12 +50,15 @@ class CustomDrawer extends StatelessWidget {
             keyScreen: 'DokterPerawatScreen',
           ),
           divider,
-          _drawerItem(
-            context,
-            text: 'Manage Account',
-            route: '/manage',
-            keyScreen: 'ManageScreen',
-          ),
+          (loginValue.user.level == 'Dokter' ||
+                  loginValue.user.level == 'Perawat')
+              ? const SizedBox.shrink()
+              : _drawerItem(
+                  context,
+                  text: 'Manage Account',
+                  route: '/manage',
+                  keyScreen: 'ManageScreen',
+                ),
           const SizedBox(
             height: 30,
           ),
@@ -121,11 +128,15 @@ class CustomDrawer extends StatelessWidget {
       ),
       onTap: () {
         if (keyScreens == 'HomeScreen') {
+          Navigator.pop(context);
           Navigator.pushNamed(context, route!);
         } else if (keyScreens != 'HomeScreen') {
-          Navigator.pushReplacementNamed(context, route!);
-        } else if (route == '/home') {
-          Navigator.pop(context);
+          if (route == '/home') {
+            Navigator.pop(context);
+            Navigator.pop(context);
+          } else {
+            Navigator.pushReplacementNamed(context, route!);
+          }
         }
       },
     );

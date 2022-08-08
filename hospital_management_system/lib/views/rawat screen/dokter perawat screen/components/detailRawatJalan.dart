@@ -126,13 +126,17 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
     String selected = putDataRawat[indexOfPage].nomerAntrian!.substring(0, 1);
     _jadwalRawatController.text = putDataRawat[indexOfPage].jadwalRawatJalan!;
 
-    if (valueProvider.dateTimeJ != null) {
-      _jadwalRawatController.text = formatDate(
-          valueProvider.dateTimeJ!, [dd, '-', mm, '-', yyyy],
-          locale: const IndonesianDateLocale());
+    if (valueProvider.dateJ != null && valueProvider.timeJ != null) {
+      _jadwalRawatController.text = "${formatDate(valueProvider.dateJ!, [
+            DD,
+            ', ',
+            dd,
+            ' ',
+            MM,
+            ' ',
+            yyyy
+          ], locale: const IndonesianDateLocale())} ${valueProvider.timeJ!.hour.toString().padLeft(2, '0')}.${valueProvider.timeJ!.minute.toString().padLeft(2, '0')} WIB";
     }
-
-    log((loginValue.result['role'] == 'Perawat').toString());
 
     return Stack(children: [
       SingleChildScrollView(
@@ -605,8 +609,8 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
                           const SizedBox(
                             width: 20,
                           ),
-                          !(loginValue.result['role'] == 'Dokter' ||
-                                  loginValue.result['role'] == 'Perawat')
+                          !(loginValue.user.level == 'Dokter' ||
+                                  loginValue.user.level == 'Perawat')
                               ? SizedBox(
                                   width: (Responsive.isMobile(context))
                                       ? MediaQuery.of(context).size.width * 0.28
@@ -719,8 +723,8 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
                           const SizedBox(
                             height: 20,
                           ),
-                          !(loginValue.result['role'] == 'Dookter' ||
-                                  loginValue.result['role'] == 'Perawat')
+                          !(loginValue.user.level == 'Dokter' ||
+                                  loginValue.user.level == 'Perawat')
                               ? SizedBox(
                                   width: MediaQuery.of(context).size.width,
                                   height: 40,

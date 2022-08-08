@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:hospital_management_system/viewModels/manage%20viewModel/manage_viewModel.dart';
 import 'package:hospital_management_system/views/manage%20account%20screen/addAccount_screen.dart';
 import 'package:hospital_management_system/views/manage%20account%20screen/manage_screen.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
 import 'models/akun_model.dart';
@@ -90,24 +91,94 @@ class MyApp extends StatelessWidget {
                 if (snapshot.hasError) {
                   return Text('Error ${snapshot.error}');
                 } else if (snapshot.data!.id == null) {
-                  return const LoginScreen();
+                  return LoginScreen();
                 } else {
                   return const HomeScreen();
                 }
             }
           },
         ),
-        routes: {
-          '/login': (context) => const LoginScreen(),
-          '/home': (context) => const HomeScreen(),
-          '/pasien': (context) => const PasienScreen(),
-          '/tenagaKesehatan': (context) => const TenagaKesehatanScreen(),
-          '/rawatJalan': (context) => const RawatScreen(),
-          '/tenagaKesehatan/dokter': (context) => const DokterScreen(),
-          '/tenagaKesehatan/perawat': (context) => const PerawatScreen(),
-          '/manage': (context) => const ManageScreen(),
-          '/addAccount': (context) => const AddAcountScreen(),
-        },
+        onGenerateRoute: ((settings) {
+          switch (settings.name) {
+            case '/login':
+              return PageTransition(
+                child: LoginScreen(),
+                duration: const Duration(milliseconds: 200),
+                reverseDuration: const Duration(milliseconds: 200),
+                alignment: Alignment.topCenter,
+                type: PageTransitionType.size,
+                settings: settings,
+              );
+            case '/home':
+              return PageTransition(
+                child: const HomeScreen(),
+                duration: const Duration(milliseconds: 200),
+                reverseDuration: const Duration(milliseconds: 200),
+                alignment: Alignment.bottomCenter,
+                type: PageTransitionType.size,
+                curve: Curves.easeInOut,
+                settings: settings,
+              );
+            case '/pasien':
+              return PageTransition(
+                child: const PasienScreen(),
+                duration: const Duration(milliseconds: 50),
+                reverseDuration: const Duration(milliseconds: 50),
+                type: PageTransitionType.fade,
+                settings: settings,
+              );
+            case '/tenagaKesehatan':
+              return PageTransition(
+                child: const TenagaKesehatanScreen(),
+                duration: const Duration(milliseconds: 50),
+                reverseDuration: const Duration(milliseconds: 50),
+                type: PageTransitionType.fade,
+                settings: settings,
+              );
+            case '/rawatJalan':
+              return PageTransition(
+                child: const RawatScreen(),
+                duration: const Duration(milliseconds: 50),
+                reverseDuration: const Duration(milliseconds: 50),
+                type: PageTransitionType.fade,
+                settings: settings,
+              );
+            case '/tenagaKesehatan/dokter':
+              return PageTransition(
+                child: const DokterScreen(),
+                duration: const Duration(milliseconds: 50),
+                reverseDuration: const Duration(milliseconds: 50),
+                type: PageTransitionType.fade,
+                settings: settings,
+              );
+            case '/tenagaKesehatan/perawat':
+              return PageTransition(
+                child: const PerawatScreen(),
+                duration: const Duration(milliseconds: 50),
+                reverseDuration: const Duration(milliseconds: 50),
+                type: PageTransitionType.fade,
+                settings: settings,
+              );
+            case '/manage':
+              return PageTransition(
+                child: const ManageScreen(),
+                duration: const Duration(milliseconds: 50),
+                reverseDuration: const Duration(milliseconds: 50),
+                type: PageTransitionType.fade,
+                settings: settings,
+              );
+            case '/addAccount':
+              return PageTransition(
+                child: const AddAcountScreen(),
+                duration: const Duration(milliseconds: 50),
+                reverseDuration: const Duration(milliseconds: 50),
+                type: PageTransitionType.fade,
+                settings: settings,
+              );
+            default:
+              return null;
+          }
+        }),
         scrollBehavior: const MaterialScrollBehavior().copyWith(
           dragDevices: {
             PointerDeviceKind.mouse,

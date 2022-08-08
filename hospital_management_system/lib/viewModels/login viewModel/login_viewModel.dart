@@ -33,7 +33,7 @@ class LoginProvider extends ChangeNotifier {
   Timer? authTimer;
   String? matchDataPoli;
 
-  final AkunModel _user = AkunModel();
+  AkunModel _user = AkunModel();
   StatusAuth _loggedInStatusAuth = StatusAuth.notLoggedIn;
   Map<String, dynamic> result = {};
 
@@ -51,11 +51,17 @@ class LoginProvider extends ChangeNotifier {
   LoginProvider() {
     getCheckBox();
     getDetailLogin();
+    getLevel();
   }
 
   functionCheckBox() {
     checkBox = !checkBox;
     UserPreferences().checked(checkBox);
+    notifyListeners();
+  }
+
+  getLevel() async {
+    _user = await UserPreferences().getUser();
     notifyListeners();
   }
 
@@ -134,12 +140,13 @@ class LoginProvider extends ChangeNotifier {
       }
 
       LoginService().post(loginData).then(
-        (response) {
+        (response) async {
           if (response.statusCode! >= 200 && response.statusCode! < 300) {
             var responseData = response.data;
 
             AkunModel authUser = AkunModel.fromJson(responseData);
             UserPreferences().saveUser(authUser);
+            getLevel();
 
             if (authUser.level == 'Dokter' || authUser.level == 'Perawat') {
               validasiUserData(context, authUser: authUser);
@@ -180,9 +187,6 @@ class LoginProvider extends ChangeNotifier {
               _loggedInStatusAuth = StatusAuth.loggedIn;
               notifyListeners();
 
-              // _loggedInStatusAuth = StatusAuth.notLoggedIn;
-              // notifyListeners();
-
               result = {
                 'status': true,
                 'message': 'Login Berhasil, Welcome Admin',
@@ -192,24 +196,12 @@ class LoginProvider extends ChangeNotifier {
 
               log(authUser.level.toString());
 
-              // result = {
-              //   'status': false,
-              //   'message': 'Akses terkunci!',
-              // };
-
               SnackBarComponent(
                 context: context,
                 message: result['message'],
                 type: 'success',
                 duration: const Duration(milliseconds: 1400),
               );
-
-              // SnackBarComponent(
-              //   context: context,
-              //   message: result['message'],
-              //   type: 'warning',
-              //   duration: const Duration(milliseconds: 1400),
-              // );
 
               Future.delayed(
                 const Duration(milliseconds: 1500),
