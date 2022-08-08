@@ -80,7 +80,6 @@ class ChoseCard extends StatelessWidget {
                   builder: ((context, functionProvider, child) => InkWell(
                         onTap: () {
                           Navigator.pushReplacementNamed(context, page);
-
                           functionProvider.actionChoseCardDokter();
                         },
                         child: Stack(

@@ -9,6 +9,7 @@ class RawatJalanService {
   final Dio _dio = Dio();
 
   Future<List<DataRawatJalan>?> getDataRawatJalanApi(int id) async {
+    log(id.toString());
     try {
       var response = await _dio.get(
         '${ApiUrl.getDataPasienRawatJalan}/$id',
