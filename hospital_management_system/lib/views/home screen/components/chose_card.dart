@@ -128,7 +128,6 @@ class ChoseCard extends StatelessWidget {
                           } else {
                             functionProvider.actionChoseCardRawat();
                           }
-                          ;
                         },
                         child: Stack(
                           children: [

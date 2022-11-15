@@ -62,6 +62,15 @@ class LoginView extends StatelessWidget {
                 height: 5,
               ),
               anotherButton(loginValue, loginFunction, context),
+              // const SizedBox(
+              //   height: 20,
+              // ),
+              // ElevatedButton(
+              //   onPressed: () {
+              //     Navigator.pushReplacementNamed(context, '/ghoib');
+              //   },
+              //   child: const Text('Halaman Ghoib'),
+              // ),
             ],
           ),
         ),

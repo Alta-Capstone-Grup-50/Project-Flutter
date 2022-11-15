@@ -16,7 +16,7 @@ class UpdatePasienService {
       data: data,
     )
         .onError((error, stackTrace) {
-      log(error.toString());
+      // log(error.toString());
       throw error!;
     });
 

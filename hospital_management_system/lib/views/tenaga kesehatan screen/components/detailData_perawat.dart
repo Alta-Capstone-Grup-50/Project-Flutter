@@ -333,6 +333,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                         if (value == null) {
                           return 'Data poli tidak boleh kosong';
                         }
+                        return null;
                       }),
                     ),
                   ),
@@ -393,7 +394,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                                       buttonHeight: 50,
                                       onChanged: (valueProvider.hEdit == true)
                                           ? (value) {
-                                              log(value.toString());
+                                              // log(value.toString());
                                               day = value.toString();
                                             }
                                           : null,
@@ -454,7 +455,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                                       buttonHeight: 50,
                                       onChanged: (valueProvider.hEdit == true)
                                           ? (value) {
-                                              log(value.toString());
+                                              // log(value.toString());
                                               hours = value.toString();
                                             }
                                           : null,
@@ -510,7 +511,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                                 buttonHeight: 50,
                                 onChanged: (valueProvider.hEdit == true)
                                     ? (value) {
-                                        log(value.toString());
+                                        // log(value.toString());
                                         day = value.toString();
                                       }
                                     : null,
@@ -554,7 +555,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                                 buttonHeight: 50,
                                 onChanged: (valueProvider.hEdit == true)
                                     ? (value) {
-                                        log(value.toString());
+                                        // log(value.toString());
                                         hours = value.toString();
                                       }
                                     : null,
@@ -637,7 +638,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                                 }
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: valueProvider.hEdit == false
+                                backgroundColor: valueProvider.hEdit == false
                                     ? grey
                                     : Colors.red,
                               ),
@@ -688,7 +689,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: valueProvider.hEdit == false
+                          backgroundColor: valueProvider.hEdit == false
                               ? primaryColor
                               : green.shade400,
                         ),

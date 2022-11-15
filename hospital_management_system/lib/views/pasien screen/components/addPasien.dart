@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:date_format/date_format.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +13,7 @@ import '/utilities/constants/responsive.dart';
 import '/viewModels/pasien viewModel/pasien_viewModel.dart';
 
 class AddAccount extends StatefulWidget {
-  AddAccount({Key? key}) : super(key: key);
+  const AddAccount({Key? key}) : super(key: key);
 
   @override
   State<AddAccount> createState() => _AddAccountState();
@@ -239,6 +237,7 @@ class _AddAccountState extends State<AddAccount> {
                           if (value == null) {
                             return 'Data poli tidak boleh kosong';
                           }
+                          return null;
                         }),
                       ),
                     ),
@@ -442,6 +441,7 @@ class _AddAccountState extends State<AddAccount> {
                           if (value == null) {
                             return 'Jenis Penanganan tidak boleh kosong';
                           }
+                          return null;
                         }),
                       ),
                     ),
@@ -467,7 +467,7 @@ class _AddAccountState extends State<AddAccount> {
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: grey,
+                            backgroundColor: grey,
                           ),
                           child: const Text(
                             'Batal',
@@ -514,7 +514,7 @@ class _AddAccountState extends State<AddAccount> {
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: primaryColor,
+                            backgroundColor: primaryColor,
                           ),
                           child: const Text(
                             'Simpan',
@@ -573,5 +573,5 @@ Future openAddAccount(BuildContext context) {
   return showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (context) => AddAccount());
+      builder: (context) => const AddAccount());
 }

@@ -14,7 +14,7 @@ class DeleteManageService {
       '${ApiUrl.deleteDataManage}/$id',
     )
         .onError((error, stackTrace) {
-      log(error.toString());
+      // log(error.toString());
       throw error!;
     });
 

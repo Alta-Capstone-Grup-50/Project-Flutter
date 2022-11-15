@@ -88,7 +88,7 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
 
   Widget showDetail(BuildContext context, RawatJalanViewModel functionProvider,
       LoginProvider loginFunction, ProgressDialog loadingProgres) {
-    log("ID : $id");
+    // log("ID : $id");
     return Stack(
       children: [
         SingleChildScrollView(

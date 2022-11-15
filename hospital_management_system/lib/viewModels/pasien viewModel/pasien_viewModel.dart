@@ -1,7 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hospital_management_system/models/createPasien_model.dart';
 import 'package:hospital_management_system/models/pasien_data_model.dart';
 import 'package:hospital_management_system/models/updatePasien_model.dart';
@@ -90,7 +87,7 @@ class PasienViewModel extends ChangeNotifier {
 
     final Map<String, dynamic> createData = pasienData.toJson();
 
-    log(createData.toString());
+    // log(createData.toString());
 
     Future.delayed(const Duration(seconds: 2), () {
       AddPasienService().postDataPasienApi(pasienData).then((response) async {
@@ -135,15 +132,15 @@ class PasienViewModel extends ChangeNotifier {
 
     progressWidget.show();
 
-    log(id.toString());
-    log(updateData.toString());
+    // log(id.toString());
+    // log(updateData.toString());
 
     UpdatePasienService()
         .updateDataPasienApi(id.toString(), updateData)
         .then((response) {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
-        log('Endpoint Status Code : ${response.statusCode}');
+        // log('Endpoint Status Code : ${response.statusCode}');
         Navigator.pop(context);
 
         getDataApiPasien();
@@ -170,7 +167,7 @@ class PasienViewModel extends ChangeNotifier {
   ) async {
     progressWidget.show();
 
-    log(id.toString());
+    // log(id.toString());
 
     notifyListeners();
     await DeletePasienService()
@@ -178,12 +175,12 @@ class PasienViewModel extends ChangeNotifier {
         .then((response) async {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
-        log('Endpoint Status Code : ${response.statusCode}');
+        // log('Endpoint Status Code : ${response.statusCode}');
         Navigator.pop(context);
         getDataApiPasien();
         SnackBarComponent(
           context: context,
-          message: 'Data pasien dengan id ${id} berhasil dihapus',
+          message: 'Data pasien dengan id $id berhasil dihapus',
           type: 'danger',
           duration: const Duration(milliseconds: 2400),
         );

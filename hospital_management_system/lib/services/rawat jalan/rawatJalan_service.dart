@@ -21,7 +21,7 @@ class RawatJalanService {
         return listData;
       }
     } catch (e) {
-      log(e.toString());
+      // log(e.toString());
     }
     return null;
   }
