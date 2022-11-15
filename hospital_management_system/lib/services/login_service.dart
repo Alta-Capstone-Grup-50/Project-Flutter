@@ -25,8 +25,8 @@ class LoginService {
         return response;
       }
     } catch (exception) {
-      log('============================== Dio Exception ==============================');
-      log(exception.toString());
+      // log('============================== Dio Exception ==============================');
+      // log(exception.toString());
     }
   }
 }

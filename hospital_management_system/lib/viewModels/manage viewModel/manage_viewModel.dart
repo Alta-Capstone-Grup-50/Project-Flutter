@@ -1,14 +1,10 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:hospital_management_system/models/createManage_model.dart';
 import 'package:hospital_management_system/services/deleteManage_service.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../models/dokter_data_model.dart';
 import '../../models/manage_data_model.dart';
 import '../../services/createManage_service.dart';
-import '../../services/dokter_service.dart';
 import '../../services/manage_service.dart';
 import '../../utilities/common/progress_dialog.dart';
 import '../../utilities/common/snackbar.dart';
@@ -78,7 +74,7 @@ class ManageViewModel extends ChangeNotifier {
 
     final Map<String, dynamic> createData = data.toJson();
 
-    log(createData.toString());
+    // log(createData.toString());
 
     Future.delayed(const Duration(seconds: 2), () {
       CreateManage().createManageAccount(createData).then((response) async {
@@ -122,7 +118,7 @@ class ManageViewModel extends ChangeNotifier {
   ) async {
     progressWidget.show();
 
-    log(id.toString());
+    // log(id.toString());
 
     notifyListeners();
     await DeleteManageService()
@@ -130,7 +126,7 @@ class ManageViewModel extends ChangeNotifier {
         .then((response) async {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
-        log('Endpoint Status Code : ${response.statusCode}');
+        // log('Endpoint Status Code : ${response.statusCode}');
         Navigator.pop(context);
         getAkunApi();
         SnackBarComponent(

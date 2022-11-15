@@ -13,7 +13,7 @@ import '../../../../utilities/common/progress_dialog.dart';
 import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
 
 class RawatDataSourceTable extends DataGridSource {
-  List<DataRawatJalan> _data;
+  final List<DataRawatJalan> _data;
   List<DataRawatJalan> _paginatedData = [];
   RawatJalanViewModel? _valProvider;
   LoginProvider? _logProvider;
@@ -204,7 +204,7 @@ class RawatDataSourceTable extends DataGridSource {
                 if (_logProvider!.user.level == 'Dokter' ||
                     _logProvider!.user.level == 'Perawat') {
                   if (dataGridRow.proses == false) {
-                    log('check');
+                    // log('check');
                     showCaseDialog(contexts,
                         title: 'Konfirmasi',
                         label:

@@ -44,7 +44,6 @@ class PerawatViewModel extends ChangeNotifier {
 
   initialFun() async {
     await getDataApiPerawat();
-    ;
   }
 
   changeEdit() {
@@ -61,6 +60,7 @@ class PerawatViewModel extends ChangeNotifier {
     fetchStatusPerawat = StatusFetchPerawat.isLoading;
 
     _listPerawatData = (await service.getDataPerawatApi())!;
+    _listPerawatData[1].jabatan;
 
     fetchStatusPerawat = StatusFetchPerawat.letsGo;
     notifyListeners();
@@ -72,15 +72,15 @@ class PerawatViewModel extends ChangeNotifier {
 
     progressWidget.show();
 
-    log(id.toString());
-    log(updateData.toString());
+    // log(id.toString());
+    // log(updateData.toString());
 
     UpdatePerawatService()
         .updateDataPerawatApi(id.toString(), updateData)
         .then((response) {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
-        log('Endpoint Status Code : ${response.statusCode}');
+        // log('Endpoint Status Code : ${response.statusCode}');
         Navigator.pop(context);
 
         getDataApiPerawat();
@@ -106,7 +106,7 @@ class PerawatViewModel extends ChangeNotifier {
   ) async {
     progressWidget.show();
 
-    log(id.toString());
+    // log(id.toString());
 
     notifyListeners();
     await DeletePerawatService()
@@ -114,12 +114,12 @@ class PerawatViewModel extends ChangeNotifier {
         .then((response) async {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
-        log('Endpoint Status Code : ${response.statusCode}');
+        // log('Endpoint Status Code : ${response.statusCode}');
         Navigator.pop(context);
         getDataApiPerawat();
         SnackBarComponent(
           context: context,
-          message: 'Data Perawat dengan id ${id} berhasil dihapus',
+          message: 'Data Perawat dengan id $id berhasil dihapus',
           type: 'danger',
           duration: const Duration(milliseconds: 2400),
         );

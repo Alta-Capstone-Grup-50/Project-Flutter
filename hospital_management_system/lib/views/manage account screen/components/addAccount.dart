@@ -134,7 +134,7 @@ class _AddAccountState extends State<AddAccount> {
                             manageFunction.setGroupValue(value!);
 
                             _levelController = jenis.text!;
-                            log(_levelController);
+                            // log(_levelController);
                           },
                           title: Text(jenis.text!),
                         ),
@@ -150,7 +150,7 @@ class _AddAccountState extends State<AddAccount> {
                           manageFunction.setGroupValue(value!);
 
                           _levelController = jenis.text!;
-                          log(_levelController);
+                          // log(_levelController);
                         },
                         title: Text(jenis.text!),
                       );

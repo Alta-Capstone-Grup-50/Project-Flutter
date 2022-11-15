@@ -18,7 +18,7 @@ class RawatJalanServiceAdmin {
         return listData;
       }
     } catch (e) {
-      log(e.toString());
+      // log(e.toString());
     }
     return null;
   }

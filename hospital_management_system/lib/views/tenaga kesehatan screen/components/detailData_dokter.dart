@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/models/dokter_data_model.dart';
@@ -28,13 +26,13 @@ class DetailDataDokter extends StatefulWidget {
 
 class _DetailDataDokterState extends State<DetailDataDokter> {
   final _scrollController = ScrollController();
-  TextEditingController _sipController = TextEditingController();
-  TextEditingController _namaController = TextEditingController();
-  TextEditingController _jenisKelController = TextEditingController();
-  TextEditingController _nomorTelfonController = TextEditingController();
-  TextEditingController _poliController = TextEditingController();
-  TextEditingController _jadwalPrakController = TextEditingController();
-  TextEditingController _strController = TextEditingController();
+  final TextEditingController _sipController = TextEditingController();
+  final TextEditingController _namaController = TextEditingController();
+  final TextEditingController _jenisKelController = TextEditingController();
+  final TextEditingController _nomorTelfonController = TextEditingController();
+  final TextEditingController _poliController = TextEditingController();
+  final TextEditingController _jadwalPrakController = TextEditingController();
+  final TextEditingController _strController = TextEditingController();
 
   @override
   void dispose() {
@@ -331,6 +329,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                         if (value == null) {
                           return 'Data poli tidak boleh kosong';
                         }
+                        return null;
                       }),
                     ),
                   ),
@@ -391,7 +390,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                       buttonHeight: 50,
                                       onChanged: (valueProvider.hEdit == true)
                                           ? (value) {
-                                              log(value.toString());
+                                              // log(value.toString());
                                               day = value.toString();
                                             }
                                           : null,
@@ -452,7 +451,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                       buttonHeight: 50,
                                       onChanged: (valueProvider.hEdit == true)
                                           ? (value) {
-                                              log(value.toString());
+                                              // log(value.toString());
                                               hours = value.toString();
                                             }
                                           : null,
@@ -508,7 +507,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                 buttonHeight: 50,
                                 onChanged: (valueProvider.hEdit == true)
                                     ? (value) {
-                                        log(value.toString());
+                                        // log(value.toString());
                                         day = value.toString();
                                       }
                                     : null,
@@ -552,7 +551,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                 buttonHeight: 50,
                                 onChanged: (valueProvider.hEdit == true)
                                     ? (value) {
-                                        log(value.toString());
+                                        // log(value.toString());
                                         hours = value.toString();
                                       }
                                     : null,
@@ -619,7 +618,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                 }
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: valueProvider.hEdit == false
+                                backgroundColor: valueProvider.hEdit == false
                                     ? grey
                                     : Colors.red,
                               ),
@@ -668,7 +667,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: valueProvider.hEdit == false
+                          backgroundColor: valueProvider.hEdit == false
                               ? primaryColor
                               : green.shade400,
                         ),

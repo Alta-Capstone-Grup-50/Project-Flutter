@@ -14,7 +14,7 @@ class DeletePasienService {
       '${ApiUrl.deleteDataPasien}/$id',
     )
         .onError((error, stackTrace) {
-      log(error.toString());
+      // log(error.toString());
       throw error!;
     });
 
