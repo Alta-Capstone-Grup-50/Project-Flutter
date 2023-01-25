@@ -6,6 +6,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hospital_management_system/viewModels/manage%20viewModel/manage_viewModel.dart';
 import 'package:hospital_management_system/views/manage%20account%20screen/addAccount_screen.dart';
 import 'package:hospital_management_system/views/manage%20account%20screen/manage_screen.dart';
+import 'package:hospital_management_system/views/testing/ghoib.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
@@ -22,6 +23,7 @@ import 'viewModels/login viewModel/login_viewModel.dart';
 import 'viewModels/main layout viewModel/mainLayout_viewModel.dart';
 import 'viewModels/pasien viewModel/pasien_viewModel.dart';
 
+import 'viewModels/viewModelGhoib.dart';
 import 'views/home%20screen/home_screen.dart';
 import 'views/login%20screen/login_screen.dart';
 import 'views/tenaga kesehatan screen/dokter dan perawat/dokter_screen.dart';
@@ -77,6 +79,9 @@ class MyApp extends StatelessWidget {
         ),
         ChangeNotifierProvider(
           create: ((context) => ManageViewModel()),
+        ),
+        ChangeNotifierProvider(
+          create: ((context) => ArtisDetailViewModel()),
         ),
       ],
       child: MaterialApp(
@@ -173,6 +178,14 @@ class MyApp extends StatelessWidget {
             case '/addAccount':
               return PageTransition(
                 child: const AddAcountScreen(),
+                duration: const Duration(milliseconds: 50),
+                reverseDuration: const Duration(milliseconds: 50),
+                type: PageTransitionType.fade,
+                settings: settings,
+              );
+            case '/ghoib':
+              return PageTransition(
+                child:  Ghoib(),
                 duration: const Duration(milliseconds: 50),
                 reverseDuration: const Duration(milliseconds: 50),
                 type: PageTransitionType.fade,

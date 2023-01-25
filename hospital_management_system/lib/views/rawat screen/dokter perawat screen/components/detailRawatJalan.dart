@@ -522,7 +522,7 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
                                 textAlignVertical: TextAlignVertical.center,
                                 enabled: false,
                                 onTap: () {
-                                  log('Hello World');
+                                  // log('Hello World');
                                 },
                               ),
                             ),

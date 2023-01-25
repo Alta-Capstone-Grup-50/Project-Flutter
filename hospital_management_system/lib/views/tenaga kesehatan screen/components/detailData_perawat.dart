@@ -403,7 +403,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                                       buttonHeight: 50,
                                       onChanged: (valueProvider.hEdit == true)
                                           ? (value) {
-                                              log(value.toString());
+                                              // log(value.toString());
                                               day = value.toString();
                                             }
                                           : null,
@@ -464,7 +464,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                                       buttonHeight: 50,
                                       onChanged: (valueProvider.hEdit == true)
                                           ? (value) {
-                                              log(value.toString());
+                                              // log(value.toString());
                                               hours = value.toString();
                                             }
                                           : null,
@@ -520,7 +520,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                                 buttonHeight: 50,
                                 onChanged: (valueProvider.hEdit == true)
                                     ? (value) {
-                                        log(value.toString());
+                                        // log(value.toString());
                                         day = value.toString();
                                       }
                                     : null,
@@ -564,7 +564,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                                 buttonHeight: 50,
                                 onChanged: (valueProvider.hEdit == true)
                                     ? (value) {
-                                        log(value.toString());
+                                        // log(value.toString());
                                         hours = value.toString();
                                       }
                                     : null,

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/models/keterangan_model.dart';
 import 'package:hospital_management_system/models/updateRawat_model.dart';
@@ -58,13 +56,13 @@ class RawatJalanViewModel extends ChangeNotifier {
 
   TextEditingController searchController = TextEditingController();
 
-  RawatJalanViewModel() {
-    initialFun();
-  }
+  // RawatJalanViewModel() {
+  //   initialFun();
+  // }
 
-  initialFun() async {
-    await getCurrentAntrian();
-  }
+  // initialFun() async {
+  //   await getCurrentAntrian();
+  // }
 
   changeEditStatus() {
     hEdit = !hEdit;
@@ -86,7 +84,7 @@ class RawatJalanViewModel extends ChangeNotifier {
         cancel = true;
       }
 
-      log(date.toString());
+      // log(date.toString());
 
       notifyListeners();
     });
@@ -108,7 +106,7 @@ class RawatJalanViewModel extends ChangeNotifier {
       null;
     }
 
-    log(cancel.toString());
+    // log(cancel.toString());
   }
 
   Future<void> createKeterangan(DataKeterangan? keterangan) async {
@@ -118,7 +116,11 @@ class RawatJalanViewModel extends ChangeNotifier {
 
   getCurrentAntrian() {
     int countSelected = 0;
+<<<<<<< HEAD
     for (var element in _listRawatJalanData!.reversed) {
+=======
+    for (var element in _listRawatJalanData.reversed) {
+>>>>>>> 984bc04aa025e084bcf5a26be19105c3205c9886
       if (!element.proses!) {
         _noAntrian = element.nomerAntrian;
       }
@@ -126,7 +128,11 @@ class RawatJalanViewModel extends ChangeNotifier {
         countSelected++;
       }
     }
+<<<<<<< HEAD
     if (countSelected == _listRawatJalanData!.length) {
+=======
+    if (countSelected == _listRawatJalanData.length) {
+>>>>>>> 984bc04aa025e084bcf5a26be19105c3205c9886
       _noAntrian = null;
     }
     notifyListeners();
@@ -140,7 +146,11 @@ class RawatJalanViewModel extends ChangeNotifier {
     postStatusKeterangan = StatusPostKeterangan.isLoading;
     notifyListeners();
 
+<<<<<<< HEAD
     for (var element in _listRawatJalanData!) {
+=======
+    for (var element in _listRawatJalanData) {
+>>>>>>> 984bc04aa025e084bcf5a26be19105c3205c9886
       if (element.id == id) {
         proses = element.proses;
       }
@@ -189,7 +199,7 @@ class RawatJalanViewModel extends ChangeNotifier {
       "keterangan": keterangan,
     };
 
-    log(prosesAntrian.toString());
+    // log(prosesAntrian.toString());
 
     RawatJalanChangeService()
         .putDataRawatJalanApi(id, prosesAntrian)
@@ -224,6 +234,8 @@ class RawatJalanViewModel extends ChangeNotifier {
         .sort((a, b) => a.proses.toString().compareTo(b.proses.toString()));
 
     fetchStatusRawat = StatusFetchRawat.letsGo;
+
+    getCurrentAntrian();
     notifyListeners();
   }
 
@@ -253,15 +265,15 @@ class RawatJalanViewModel extends ChangeNotifier {
 
     progressWidget.show();
 
-    log(id.toString());
-    log(updateData.toString());
+    // log(id.toString());
+    // log(updateData.toString());
 
     UpdateRawatJalanService()
         .updateDataRawatJalanApi(id, updateData)
         .then((response) {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
-        log('Endpoint Status Code : ${response.statusCode}');
+        // log('Endpoint Status Code : ${response.statusCode}');
         Navigator.pop(context);
 
         getDataApiRawatJalanAdmin();

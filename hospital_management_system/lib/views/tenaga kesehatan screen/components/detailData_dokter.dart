@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/models/dokter_data_model.dart';
@@ -399,7 +397,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                       buttonHeight: 50,
                                       onChanged: (valueProvider.hEdit == true)
                                           ? (value) {
-                                              log(value.toString());
+                                              // log(value.toString());
                                               day = value.toString();
                                             }
                                           : null,
@@ -460,7 +458,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                       buttonHeight: 50,
                                       onChanged: (valueProvider.hEdit == true)
                                           ? (value) {
-                                              log(value.toString());
+                                              // log(value.toString());
                                               hours = value.toString();
                                             }
                                           : null,
@@ -516,7 +514,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                 buttonHeight: 50,
                                 onChanged: (valueProvider.hEdit == true)
                                     ? (value) {
-                                        log(value.toString());
+                                        // log(value.toString());
                                         day = value.toString();
                                       }
                                     : null,
@@ -560,7 +558,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                 buttonHeight: 50,
                                 onChanged: (valueProvider.hEdit == true)
                                     ? (value) {
-                                        log(value.toString());
+                                        // log(value.toString());
                                         hours = value.toString();
                                       }
                                     : null,

@@ -1,5 +1,8 @@
 import 'dart:async';
+<<<<<<< HEAD
 import 'dart:developer';
+=======
+>>>>>>> 984bc04aa025e084bcf5a26be19105c3205c9886
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:hospital_management_system/utilities/common/case_dialog.dart';
@@ -108,8 +111,8 @@ class LoginProvider extends ChangeNotifier {
       notifyListeners();
     }
 
-    log(matchDataId.toString());
-    log(matchDataPoli.toString());
+    // log(matchDataId.toString());
+    // log(matchDataPoli.toString());
 
     await UserPreferences().saveId(id: matchDataId);
     await UserPreferences().savePoli(poli: matchDataPoli);
@@ -121,7 +124,7 @@ class LoginProvider extends ChangeNotifier {
       'password': passwordController.text,
     };
 
-    log(loginData.toString());
+    // log(loginData.toString());
 
     _loggedInStatusAuth = StatusAuth.authenticating;
     notifyListeners();
@@ -160,7 +163,7 @@ class LoginProvider extends ChangeNotifier {
                 'role': authUser.level
               };
 
-              log(authUser.level.toString());
+              // log(authUser.level.toString());
 
               if (result['status'] == true) {
                 SnackBarComponent(
@@ -192,7 +195,7 @@ class LoginProvider extends ChangeNotifier {
                 'role': authUser.level
               };
 
-              log(authUser.level.toString());
+              // log(authUser.level.toString());
 
               SnackBarComponent(
                 context: context,

@@ -19,7 +19,7 @@ class PasienService {
         listData = model.dataPasien;
       }
     } catch (e) {
-      log(e.toString());
+      // log(e.toString());
     }
     return listData;
   }

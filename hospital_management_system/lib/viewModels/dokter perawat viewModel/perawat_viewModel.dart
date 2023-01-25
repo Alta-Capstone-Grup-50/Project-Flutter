@@ -59,7 +59,12 @@ class PerawatViewModel extends ChangeNotifier {
   Future getDataApiPerawat() async {
     fetchStatusPerawat = StatusFetchPerawat.isLoading;
 
+<<<<<<< HEAD
     _listPerawatData = (await service.getDataPerawatApi()) ?? [];
+=======
+    _listPerawatData = (await service.getDataPerawatApi())!;
+    _listPerawatData[1].jabatan;
+>>>>>>> 984bc04aa025e084bcf5a26be19105c3205c9886
 
     fetchStatusPerawat = StatusFetchPerawat.letsGo;
     notifyListeners();
@@ -71,15 +76,15 @@ class PerawatViewModel extends ChangeNotifier {
 
     progressWidget.show();
 
-    log(id.toString());
-    log(updateData.toString());
+    // log(id.toString());
+    // log(updateData.toString());
 
     UpdatePerawatService()
         .updateDataPerawatApi(id.toString(), updateData)
         .then((response) {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
-        log('Endpoint Status Code : ${response.statusCode}');
+        // log('Endpoint Status Code : ${response.statusCode}');
         Navigator.pop(context);
 
         getDataApiPerawat();
@@ -103,14 +108,25 @@ class PerawatViewModel extends ChangeNotifier {
     int id,
     ProgressDialog progressWidget,
   ) async {
+<<<<<<< HEAD
     await progressWidget.show();
+=======
+    progressWidget.show();
+
+    // log(id.toString());
+>>>>>>> 984bc04aa025e084bcf5a26be19105c3205c9886
 
     notifyListeners();
     DeletePerawatService().deleteDataPerawatApi(id.toString()).then((response) {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
+<<<<<<< HEAD
         log('Endpoint Status Code : ${response.statusCode}');
 
+=======
+        // log('Endpoint Status Code : ${response.statusCode}');
+        Navigator.pop(context);
+>>>>>>> 984bc04aa025e084bcf5a26be19105c3205c9886
         getDataApiPerawat();
         SnackBarComponent(
           context: context,

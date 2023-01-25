@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:hospital_management_system/models/updateDokter_model.dart';
 import 'package:hospital_management_system/services/deleteDokter_service.dart';
@@ -69,13 +67,13 @@ class DokterViewModel extends ChangeNotifier {
 
     progressWidget.show();
 
-    log(id.toString());
-    log(updateData.toString());
+    // log(id.toString());
+    // log(updateData.toString());
 
     UpdateDokterService().updateDataDokterApi(id, updateData).then((response) {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
-        log('Endpoint Status Code : ${response.statusCode}');
+        // log('Endpoint Status Code : ${response.statusCode}');
         Navigator.pop(context);
 
         getDataApiDokter();
@@ -101,14 +99,19 @@ class DokterViewModel extends ChangeNotifier {
   ) async {
     await progressWidget.show();
 
-    log(id.toString());
+    // log(id.toString());
 
     notifyListeners();
     DeleteDokterService().deleteDataDokterApi(id.toString()).then((response) {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
+<<<<<<< HEAD
         log('Endpoint Status Code : ${response.statusCode}');
 
+=======
+        // log('Endpoint Status Code : ${response.statusCode}');
+        Navigator.pop(context);
+>>>>>>> 984bc04aa025e084bcf5a26be19105c3205c9886
         getDataApiDokter();
         SnackBarComponent(
           context: context,

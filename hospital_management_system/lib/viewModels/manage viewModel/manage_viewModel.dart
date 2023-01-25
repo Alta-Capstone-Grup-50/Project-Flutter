@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:hospital_management_system/models/createManage_model.dart';
 import 'package:hospital_management_system/services/deleteManage_service.dart';
@@ -7,7 +5,10 @@ import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../models/manage_data_model.dart';
 import '../../services/createManage_service.dart';
+<<<<<<< HEAD
 
+=======
+>>>>>>> 984bc04aa025e084bcf5a26be19105c3205c9886
 import '../../services/manage_service.dart';
 import '../../utilities/common/progress_dialog.dart';
 import '../../utilities/common/snackbar.dart';
@@ -75,7 +76,7 @@ class ManageViewModel extends ChangeNotifier {
 
     final Map<String, dynamic> createData = data.toJson();
 
-    log(createData.toString());
+    // log(createData.toString());
 
     await Future.delayed(const Duration(seconds: 2), () {
       CreateManage().createManageAccount(createData).then((response) async {
@@ -143,10 +144,23 @@ class ManageViewModel extends ChangeNotifier {
   ) async {
     await progressWidget.show();
 
+<<<<<<< HEAD
     DeleteManageService().deleteDataAccountApi(id.toString()).then((response) {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
 
+=======
+    // log(id.toString());
+
+    notifyListeners();
+    await DeleteManageService()
+        .deleteDataAccountApi(id.toString())
+        .then((response) async {
+      if (response.statusCode! >= 200 && response.statusCode! < 300) {
+        progressWidget.hide();
+        // log('Endpoint Status Code : ${response.statusCode}');
+        Navigator.pop(context);
+>>>>>>> 984bc04aa025e084bcf5a26be19105c3205c9886
         getAkunApi();
 
         SnackBarComponent(

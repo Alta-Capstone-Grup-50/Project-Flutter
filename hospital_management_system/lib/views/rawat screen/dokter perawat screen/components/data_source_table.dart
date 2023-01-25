@@ -204,7 +204,7 @@ class RawatDataSourceTable extends DataGridSource {
                 if (_logProvider!.user.level == 'Dokter' ||
                     _logProvider!.user.level == 'Perawat') {
                   if (dataGridRow.proses == false) {
-                    log('check');
+                    // log('check');
                     showCaseDialog(contexts,
                         title: 'Konfirmasi',
                         label:
