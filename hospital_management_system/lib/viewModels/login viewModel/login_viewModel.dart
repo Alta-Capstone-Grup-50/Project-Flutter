@@ -108,9 +108,6 @@ class LoginProvider extends ChangeNotifier {
       notifyListeners();
     }
 
-    // log(matchDataId.toString());
-    // log(matchDataPoli.toString());
-
     await UserPreferences().saveId(id: matchDataId);
     await UserPreferences().savePoli(poli: matchDataPoli);
   }
@@ -120,8 +117,6 @@ class LoginProvider extends ChangeNotifier {
       'email': usernameController.text,
       'password': passwordController.text,
     };
-
-    // log(loginData.toString());
 
     _loggedInStatusAuth = StatusAuth.authenticating;
     notifyListeners();
@@ -160,8 +155,6 @@ class LoginProvider extends ChangeNotifier {
                 'role': authUser.level
               };
 
-              // log(authUser.level.toString());
-
               if (result['status'] == true) {
                 SnackBarComponent(
                   context: context,
@@ -191,8 +184,6 @@ class LoginProvider extends ChangeNotifier {
                 'user': authUser,
                 'role': authUser.level
               };
-
-              // log(authUser.level.toString());
 
               SnackBarComponent(
                 context: context,

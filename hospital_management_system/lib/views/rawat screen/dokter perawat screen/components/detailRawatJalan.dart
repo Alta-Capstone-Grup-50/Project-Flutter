@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:date_format/date_format.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -521,9 +519,6 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
                                     const BorderRadius.all(Radius.zero),
                                 textAlignVertical: TextAlignVertical.center,
                                 enabled: false,
-                                onTap: () {
-                                  // log('Hello World');
-                                },
                               ),
                             ),
                             const SizedBox(

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/utilities/common/case_dialog.dart';
 import 'package:hospital_management_system/viewModels/login%20viewModel/login_viewModel.dart';
@@ -204,7 +202,6 @@ class RawatDataSourceTable extends DataGridSource {
                 if (_logProvider!.user.level == 'Dokter' ||
                     _logProvider!.user.level == 'Perawat') {
                   if (dataGridRow.proses == false) {
-                    // log('check');
                     showCaseDialog(contexts,
                         title: 'Konfirmasi',
                         label:

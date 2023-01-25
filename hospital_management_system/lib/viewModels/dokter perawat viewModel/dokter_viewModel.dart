@@ -68,7 +68,6 @@ class DokterViewModel extends ChangeNotifier {
     UpdateDokterService().updateDataDokterApi(id, updateData).then((response) {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
-        // log('Endpoint Status Code : ${response.statusCode}');
         Navigator.pop(context);
 
         getDataApiDokter();
@@ -93,8 +92,6 @@ class DokterViewModel extends ChangeNotifier {
     ProgressDialog progressWidget,
   ) async {
     await progressWidget.show();
-
-    // log(id.toString());
 
     notifyListeners();
     DeleteDokterService().deleteDataDokterApi(id.toString()).then((response) {

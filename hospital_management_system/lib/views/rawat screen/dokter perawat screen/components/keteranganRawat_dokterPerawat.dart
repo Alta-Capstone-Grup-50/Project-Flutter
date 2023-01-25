@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
@@ -88,7 +86,6 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
 
   Widget showDetail(BuildContext context, RawatJalanViewModel functionProvider,
       LoginProvider loginFunction, ProgressDialog loadingProgres) {
-    // log("ID : $id");
     return Stack(
       children: [
         SingleChildScrollView(

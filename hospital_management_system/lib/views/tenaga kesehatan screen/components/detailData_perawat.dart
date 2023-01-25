@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/models/perawat_data_model.dart';
@@ -143,8 +141,6 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
 
     String? day = splitJadwal?[0] ?? '';
     String? hours = splitJadwal?[1] ?? '';
-
-    log(putDataPerawat[indexOfPage].sip ?? '-');
 
     _sipController.text = putDataPerawat[indexOfPage].sip ?? '-';
     _namaController.text = putDataPerawat[indexOfPage].namaPerawat ?? '-';
@@ -403,7 +399,6 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                                       buttonHeight: 50,
                                       onChanged: (valueProvider.hEdit == true)
                                           ? (value) {
-                                              // log(value.toString());
                                               day = value.toString();
                                             }
                                           : null,
@@ -464,7 +459,6 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                                       buttonHeight: 50,
                                       onChanged: (valueProvider.hEdit == true)
                                           ? (value) {
-                                              // log(value.toString());
                                               hours = value.toString();
                                             }
                                           : null,
@@ -520,7 +514,6 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                                 buttonHeight: 50,
                                 onChanged: (valueProvider.hEdit == true)
                                     ? (value) {
-                                        // log(value.toString());
                                         day = value.toString();
                                       }
                                     : null,
@@ -564,7 +557,6 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                                 buttonHeight: 50,
                                 onChanged: (valueProvider.hEdit == true)
                                     ? (value) {
-                                        // log(value.toString());
                                         hours = value.toString();
                                       }
                                     : null,

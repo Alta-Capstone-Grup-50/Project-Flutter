@@ -73,8 +73,6 @@ class ManageViewModel extends ChangeNotifier {
 
     final Map<String, dynamic> createData = data.toJson();
 
-    // log(createData.toString());
-
     await Future.delayed(const Duration(seconds: 2), () {
       CreateManage().createManageAccount(createData).then((response) async {
         if (response.statusCode! >= 200 && response.statusCode! < 300) {

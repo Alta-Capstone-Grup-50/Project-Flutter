@@ -14,14 +14,12 @@ class DokterService {
         ApiUrl.getDataDokter,
       );
       if (response.statusCode! >= 200 && response.statusCode! <= 300) {
-        var _model = DokterDataModel.fromJson(response.data);
-        var listData = _model.dataDokter;
+        var model = DokterDataModel.fromJson(response.data);
+        var listData = model.dataDokter;
 
         return listData;
       }
-    } catch (e) {
-      // log(e.toString());
-    }
+    } catch (e) {}
     return null;
   }
 }

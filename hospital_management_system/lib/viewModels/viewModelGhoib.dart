@@ -17,7 +17,7 @@ class ArtisDetailViewModel with ChangeNotifier {
       notifyListeners();
     }
     artistName = query;
-    // log(artistName);
+
     notifyListeners();
 
     getResult();

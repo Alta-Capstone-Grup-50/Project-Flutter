@@ -84,8 +84,6 @@ class RawatJalanViewModel extends ChangeNotifier {
         cancel = true;
       }
 
-      // log(date.toString());
-
       notifyListeners();
     });
     if (cancel == false && cancel != null) {
@@ -105,8 +103,6 @@ class RawatJalanViewModel extends ChangeNotifier {
     } else {
       null;
     }
-
-    // log(cancel.toString());
   }
 
   Future<void> createKeterangan(DataKeterangan? keterangan) async {
@@ -189,8 +185,6 @@ class RawatJalanViewModel extends ChangeNotifier {
       "keterangan": keterangan,
     };
 
-    // log(prosesAntrian.toString());
-
     RawatJalanChangeService()
         .putDataRawatJalanApi(id, prosesAntrian)
         .then((response) {
@@ -255,15 +249,12 @@ class RawatJalanViewModel extends ChangeNotifier {
 
     progressWidget.show();
 
-    // log(id.toString());
-    // log(updateData.toString());
-
     UpdateRawatJalanService()
         .updateDataRawatJalanApi(id, updateData)
         .then((response) {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
-        // log('Endpoint Status Code : ${response.statusCode}');
+
         Navigator.pop(context);
 
         getDataApiRawatJalanAdmin();

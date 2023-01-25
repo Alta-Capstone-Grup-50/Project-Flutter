@@ -397,7 +397,6 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                       buttonHeight: 50,
                                       onChanged: (valueProvider.hEdit == true)
                                           ? (value) {
-                                              // log(value.toString());
                                               day = value.toString();
                                             }
                                           : null,
@@ -458,7 +457,6 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                       buttonHeight: 50,
                                       onChanged: (valueProvider.hEdit == true)
                                           ? (value) {
-                                              // log(value.toString());
                                               hours = value.toString();
                                             }
                                           : null,
@@ -514,7 +512,6 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                 buttonHeight: 50,
                                 onChanged: (valueProvider.hEdit == true)
                                     ? (value) {
-                                        // log(value.toString());
                                         day = value.toString();
                                       }
                                     : null,
@@ -558,7 +555,6 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                 buttonHeight: 50,
                                 onChanged: (valueProvider.hEdit == true)
                                     ? (value) {
-                                        // log(value.toString());
                                         hours = value.toString();
                                       }
                                     : null,

@@ -88,8 +88,6 @@ class PasienViewModel extends ChangeNotifier {
 
     final Map<String, dynamic> createData = pasienData.toJson();
 
-    // log(createData.toString());
-
     Future.delayed(const Duration(seconds: 2), () {
       AddPasienService().postDataPasienApi(pasienData).then((response) async {
         if (response.statusCode! >= 200 && response.statusCode! < 300) {
@@ -133,15 +131,12 @@ class PasienViewModel extends ChangeNotifier {
 
     progressWidget.show();
 
-    // log(id.toString());
-    // log(updateData.toString());
-
     UpdatePasienService()
         .updateDataPasienApi(id.toString(), updateData)
         .then((response) {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
-        // log('Endpoint Status Code : ${response.statusCode}');
+
         Navigator.pop(context);
 
         getDataApiPasien();
@@ -168,15 +163,13 @@ class PasienViewModel extends ChangeNotifier {
   ) async {
     progressWidget.show();
 
-    // log(id.toString());
-
     notifyListeners();
     await DeletePasienService()
         .deleteDataPasienApi(id.toString())
         .then((response) async {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
-        // log('Endpoint Status Code : ${response.statusCode}');
+
         Navigator.pop(context);
         getDataApiPasien();
         SnackBarComponent(

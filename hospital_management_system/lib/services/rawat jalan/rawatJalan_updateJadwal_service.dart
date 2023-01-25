@@ -15,7 +15,7 @@ class UpdateRawatJalanService {
         return response;
       }
     } catch (e) {
-      // log(e.toString());
+      rethrow;
     }
   }
 }

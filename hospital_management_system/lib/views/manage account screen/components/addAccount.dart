@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/models/createManage_model.dart';
 import 'package:hospital_management_system/models/radio_model.dart';
@@ -133,7 +131,6 @@ class _AddAccountState extends State<AddAccount> {
                             manageFunction.setGroupValue(value!);
 
                             _levelController = jenis.text!;
-                            // log(_levelController);
                           },
                           title: Text(jenis.text!),
                         ),
@@ -149,7 +146,6 @@ class _AddAccountState extends State<AddAccount> {
                           manageFunction.setGroupValue(value!);
 
                           _levelController = jenis.text!;
-                          // log(_levelController);
                         },
                         title: Text(jenis.text!),
                       );

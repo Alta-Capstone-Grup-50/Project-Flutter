@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:hospital_management_system/utilities/constants/api_url.dart';
 import 'package:dio/dio.dart';
 
@@ -25,8 +23,7 @@ class LoginService {
         return response;
       }
     } catch (exception) {
-      // log('============================== Dio Exception ==============================');
-      // log(exception.toString());
+      rethrow;
     }
   }
 }

@@ -14,13 +14,13 @@ class PerawatService {
         ApiUrl.getDataPerawat,
       );
       if (response.statusCode! >= 200 && response.statusCode! <= 300) {
-        var _model = PerawatDataModel.fromJson(response.data);
-        var listData = _model.dataPerawat;
+        var model = PerawatDataModel.fromJson(response.data);
+        var listData = model.dataPerawat;
 
         return listData;
       }
     } catch (e) {
-      // log(e.toString());
+      rethrow;
     }
     return null;
   }

@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 
 import '../../models/rawatJalan_data_model.dart';
@@ -20,9 +18,7 @@ class RawatJalanService {
 
         return listData;
       }
-    } catch (e) {
-      // log(e.toString());
-    }
+    } catch (e) {}
     return null;
   }
 }

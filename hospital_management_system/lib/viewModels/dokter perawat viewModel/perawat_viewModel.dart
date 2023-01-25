@@ -69,15 +69,11 @@ class PerawatViewModel extends ChangeNotifier {
 
     progressWidget.show();
 
-    // log(id.toString());
-    // log(updateData.toString());
-
     UpdatePerawatService()
         .updateDataPerawatApi(id.toString(), updateData)
         .then((response) {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
-        // log('Endpoint Status Code : ${response.statusCode}');
         Navigator.pop(context);
 
         getDataApiPerawat();
