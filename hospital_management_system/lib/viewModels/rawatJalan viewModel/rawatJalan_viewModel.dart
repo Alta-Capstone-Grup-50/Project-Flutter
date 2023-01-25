@@ -116,11 +116,8 @@ class RawatJalanViewModel extends ChangeNotifier {
 
   getCurrentAntrian() {
     int countSelected = 0;
-<<<<<<< HEAD
+
     for (var element in _listRawatJalanData!.reversed) {
-=======
-    for (var element in _listRawatJalanData.reversed) {
->>>>>>> 984bc04aa025e084bcf5a26be19105c3205c9886
       if (!element.proses!) {
         _noAntrian = element.nomerAntrian;
       }
@@ -128,12 +125,9 @@ class RawatJalanViewModel extends ChangeNotifier {
         countSelected++;
       }
     }
-<<<<<<< HEAD
+
     if (countSelected == _listRawatJalanData!.length) {
-=======
-    if (countSelected == _listRawatJalanData.length) {
->>>>>>> 984bc04aa025e084bcf5a26be19105c3205c9886
-      _noAntrian = null;
+      noAntrian;
     }
     notifyListeners();
   }
@@ -146,11 +140,7 @@ class RawatJalanViewModel extends ChangeNotifier {
     postStatusKeterangan = StatusPostKeterangan.isLoading;
     notifyListeners();
 
-<<<<<<< HEAD
     for (var element in _listRawatJalanData!) {
-=======
-    for (var element in _listRawatJalanData) {
->>>>>>> 984bc04aa025e084bcf5a26be19105c3205c9886
       if (element.id == id) {
         proses = element.proses;
       }

@@ -1,8 +1,5 @@
 import 'dart:async';
-<<<<<<< HEAD
-import 'dart:developer';
-=======
->>>>>>> 984bc04aa025e084bcf5a26be19105c3205c9886
+
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:hospital_management_system/utilities/common/case_dialog.dart';

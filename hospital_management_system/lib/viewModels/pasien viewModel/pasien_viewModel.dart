@@ -71,7 +71,7 @@ class PasienViewModel extends ChangeNotifier {
     fetchStatusPasien = StatusFetchPasien.isLoading;
 
     _tempData = (await service.getDataPasienApi()) ?? [];
-    log(_tempData.toString());
+
     _listPasienData = _tempData
         .where((element) => element.nik != '' && element.nama != '')
         .toList();

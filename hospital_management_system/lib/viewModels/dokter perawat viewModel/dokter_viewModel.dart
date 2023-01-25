@@ -55,8 +55,6 @@ class DokterViewModel extends ChangeNotifier {
 
     _listDokterData = (await service.getDataDokterApi()) ?? [];
 
-    log(_listDokterData.toString());
-
     fetchStatusDokter = StatusFetchDokter.letsGo;
     notifyListeners();
   }
@@ -66,9 +64,6 @@ class DokterViewModel extends ChangeNotifier {
     Map<String, dynamic> updateData = data.toJson();
 
     progressWidget.show();
-
-    // log(id.toString());
-    // log(updateData.toString());
 
     UpdateDokterService().updateDataDokterApi(id, updateData).then((response) {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
@@ -105,13 +100,7 @@ class DokterViewModel extends ChangeNotifier {
     DeleteDokterService().deleteDataDokterApi(id.toString()).then((response) {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
-<<<<<<< HEAD
-        log('Endpoint Status Code : ${response.statusCode}');
 
-=======
-        // log('Endpoint Status Code : ${response.statusCode}');
-        Navigator.pop(context);
->>>>>>> 984bc04aa025e084bcf5a26be19105c3205c9886
         getDataApiDokter();
         SnackBarComponent(
           context: context,
