@@ -46,7 +46,6 @@ flutter:
     - assets/icons/iconTable.png
     - assets/icons/accountCircle.png
     - assets/contents/
-    - .env
 
   fonts:
     - family: Open Sans
