@@ -49,7 +49,7 @@ class CaseDialog extends StatelessWidget {
           child: Text(confirmLabel!),
         ),
       ],
-      actionsPadding: const EdgeInsets.only(bottom: 10),
+      actionsPadding: const EdgeInsets.only(bottom: 20, right: 15),
     );
   }
 }

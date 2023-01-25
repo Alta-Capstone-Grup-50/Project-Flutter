@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/models/dokter_data_model.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -24,32 +25,31 @@ class DokterTable {
           ),
         );
       } else if (value.fetchStatusDokter == StatusFetchDokter.letsGo) {
-        var val;
+        List<DataDokter>? val;
 
         if (value.search.isNotEmpty || value.searchController.text.isNotEmpty) {
           val = value.search;
         } else {
           val = value.listDokterData;
         }
-        final DokterDataSourceTable _dataSource =
-            DokterDataSourceTable(val, context);
+        final DokterDataSourceTable dataSource =
+            DokterDataSourceTable(val!, context);
 
         double countPage;
-        if (_dataSource.data.isEmpty) {
+        if (dataSource.data.isEmpty) {
           countPage = 1;
         } else {
-          countPage = _dataSource.data.length / _dataSource.rowsPerPage;
+          countPage = dataSource.data.length / dataSource.rowsPerPage;
         }
-        double countPageOfSearch =
-            value.search.length / _dataSource.rowsPerPage;
+        double countPageOfSearch = value.search.length / dataSource.rowsPerPage;
         return LayoutBuilder(
           builder: ((context, constraints) => Column(
                 children: [
                   SizedBox(
                     width: constraints.maxWidth,
-                    height: (_dataSource.data.length <= 2)
+                    height: (dataSource.data.length <= 2)
                         ? 160
-                        : (_dataSource.data.length <= 4)
+                        : (dataSource.data.length <= 4)
                             ? 240
                             : 305,
                     child: SfDataGridTheme(
@@ -65,12 +65,12 @@ class DokterTable {
                           isScrollbarAlwaysShown: true,
                           rowHeight: 40,
                           allowPullToRefresh: true,
-                          source: _dataSource,
+                          source: dataSource,
                           columnWidthMode: ColumnWidthMode.fill,
                           onCellTap: (query) {
                             if (query.rowColumnIndex.rowIndex > 0) {
                               openDetailDokter(
-                                  context, query, _dataSource.startIndex);
+                                  context, query, dataSource.startIndex);
                             } else {
                               return;
                             }
@@ -167,7 +167,7 @@ class DokterTable {
                             )
                           ],
                         ),
-                        (_dataSource.data.isEmpty)
+                        (dataSource.data.isEmpty)
                             ? const Center(child: Text('Data Kosong'))
                             : const SizedBox.shrink(),
                       ]),
@@ -199,7 +199,7 @@ class DokterTable {
                                 : 1
                             : countPage.ceil().toDouble(),
                         direction: Axis.horizontal,
-                        delegate: _dataSource,
+                        delegate: dataSource,
                       ),
                     ),
                   ),

@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hospital_management_system/models/createPasien_model.dart';
 import 'package:hospital_management_system/models/pasien_data_model.dart';
 import 'package:hospital_management_system/models/updatePasien_model.dart';
@@ -63,7 +62,7 @@ class PasienViewModel extends ChangeNotifier {
             context: context,
             initialDate: DateTime.now(),
             firstDate: DateTime(1901),
-            lastDate: DateTime(2023))
+            lastDate: DateTime(2024))
         .then((date) {
       dateTimeT = date;
       notifyListeners();
@@ -73,7 +72,8 @@ class PasienViewModel extends ChangeNotifier {
   Future getDataApiPasien() async {
     fetchStatusPasien = StatusFetchPasien.isLoading;
 
-    _tempData = (await service.getDataPasienApi())!;
+    _tempData = (await service.getDataPasienApi()) ?? [];
+    log(_tempData.toString());
     _listPasienData = _tempData
         .where((element) => element.nik != '' && element.nama != '')
         .toList();
@@ -183,7 +183,7 @@ class PasienViewModel extends ChangeNotifier {
         getDataApiPasien();
         SnackBarComponent(
           context: context,
-          message: 'Data pasien dengan id ${id} berhasil dihapus',
+          message: 'Data pasien dengan id $id berhasil dihapus',
           type: 'danger',
           duration: const Duration(milliseconds: 2400),
         );

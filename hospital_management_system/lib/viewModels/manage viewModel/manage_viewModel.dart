@@ -5,10 +5,9 @@ import 'package:hospital_management_system/models/createManage_model.dart';
 import 'package:hospital_management_system/services/deleteManage_service.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../models/dokter_data_model.dart';
 import '../../models/manage_data_model.dart';
 import '../../services/createManage_service.dart';
-import '../../services/dokter_service.dart';
+
 import '../../services/manage_service.dart';
 import '../../utilities/common/progress_dialog.dart';
 import '../../utilities/common/snackbar.dart';
@@ -28,7 +27,7 @@ class ManageViewModel extends ChangeNotifier {
   final GlobalKey<SfDataGridState> keyManage = GlobalKey<SfDataGridState>();
 
   List<DataManage> _listManageData = [];
-  List<DataManage> _tempData = [];
+  List<DataManage>? _tempData = [];
   List<DataManage> _search = [];
   Map<String, dynamic>? _result;
   int grupValue = 1;
@@ -62,8 +61,8 @@ class ManageViewModel extends ChangeNotifier {
   Future getAkunApi() async {
     fetchStatusManage = StatusFetchManage.isLoading;
 
-    _tempData = (await service.getDataAkunApi())!;
-    _listManageData = _tempData
+    _tempData = (await service.getDataAkunApi()) ?? [];
+    _listManageData = _tempData!
         .where((element) => element.email != '' && element.password != null)
         .toList();
     fetchStatusManage = StatusFetchManage.letsGo;
@@ -72,15 +71,13 @@ class ManageViewModel extends ChangeNotifier {
 
   Future<Map<String, dynamic>?> createAkunApi(BuildContext context,
       ProgressDialog progressWidget, CreateAccount data) async {
-    progressWidget.show();
-
-    notifyListeners();
+    await progressWidget.show();
 
     final Map<String, dynamic> createData = data.toJson();
 
     log(createData.toString());
 
-    Future.delayed(const Duration(seconds: 2), () {
+    await Future.delayed(const Duration(seconds: 2), () {
       CreateManage().createManageAccount(createData).then((response) async {
         if (response.statusCode! >= 200 && response.statusCode! < 300) {
           _result = {
@@ -88,51 +85,70 @@ class ManageViewModel extends ChangeNotifier {
             'message': 'Data Berhasil Ditambahkan',
           };
 
+          progressWidget.hide();
+
           notifyListeners();
 
           getAkunApi();
 
-          progressWidget.hide();
-
-          await showAlertSuccess(context, label: 'Akun berhasil dibuat');
+          await showAlertSuccess(context, label: 'Akun berhasil dibuat',
+              backButton: () {
+            log("ora");
+            Navigator.pushReplacementNamed(context, '/manage');
+          });
         } else if (response.statusCode! > 300) {
           _result = {
             'status': false,
             'message': 'Data gagal Ditambahkan',
           };
 
-          notifyListeners();
-
           progressWidget.hide();
 
-          await showAlertFailed(context,
-              label: 'Akun tidak berhasil dibuat, silahkan coba lagi');
+          notifyListeners();
+
+          showAlertFailed(context,
+              label: 'Akun tidak berhasil dibuat, silahkan coba lagi',
+              backButton: () {
+            log("ora");
+            Navigator.pushReplacementNamed(context, '/manage');
+          });
         }
+      }).onError((error, stackTrace) {
+        _result = {
+          'status': false,
+          'message': 'Data gagal Ditambahkan',
+        };
+
+        notifyListeners();
+
+        progressWidget.hide();
+
+        showAlertFailed(context,
+            label: 'Akun tidak berhasil dibuat, silahkan coba lagi',
+            backButton: () {
+          log("ora");
+          Navigator.pushReplacementNamed(context, '/manage');
+        });
       });
     });
 
     return _result;
   }
 
-  Future<void> deletePasienData(
+  Future<void> deleteAkunApi(
     BuildContext context,
     int id,
     String email,
     ProgressDialog progressWidget,
   ) async {
-    progressWidget.show();
+    await progressWidget.show();
 
-    log(id.toString());
-
-    notifyListeners();
-    await DeleteManageService()
-        .deleteDataAccountApi(id.toString())
-        .then((response) async {
+    DeleteManageService().deleteDataAccountApi(id.toString()).then((response) {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
-        log('Endpoint Status Code : ${response.statusCode}');
-        Navigator.pop(context);
+
         getAkunApi();
+
         SnackBarComponent(
           context: context,
           message: 'Account dengan email $email berhasil dihapus',
@@ -141,7 +157,7 @@ class ManageViewModel extends ChangeNotifier {
         );
       } else if (response.statusCode! >= 300) {
         progressWidget.hide();
-        Navigator.pop(context);
+
         SnackBarComponent(
           context: context,
           message: 'Account tidak bisa dihapus',
@@ -149,7 +165,7 @@ class ManageViewModel extends ChangeNotifier {
           duration: const Duration(milliseconds: 2400),
         );
       }
-    });
+    }).whenComplete(() => Navigator.pop(context));
   }
 
   void onSearch(String query) async {

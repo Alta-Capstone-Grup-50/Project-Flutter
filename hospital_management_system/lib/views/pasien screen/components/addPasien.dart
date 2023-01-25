@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:date_format/date_format.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +13,7 @@ import '/utilities/constants/responsive.dart';
 import '/viewModels/pasien viewModel/pasien_viewModel.dart';
 
 class AddAccount extends StatefulWidget {
-  AddAccount({Key? key}) : super(key: key);
+  const AddAccount({Key? key}) : super(key: key);
 
   @override
   State<AddAccount> createState() => _AddAccountState();
@@ -182,15 +180,38 @@ class _AddAccountState extends State<AddAccount> {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 12),
-                      child: Input(
-                        controller: _jenisKelController,
-                        borderRadius: const BorderRadius.all(Radius.zero),
-                        keyboardType: TextInputType.none,
-                        validator: (value) {
-                          return validateForm(
-                              value!, 'Jenis kelamin tidak boleh kosong!');
-                        },
-                      ),
+                      child: DropdownButtonFormField2(
+                          decoration: InputDecoration(
+                            contentPadding: EdgeInsets.zero,
+                            filled: true,
+                            fillColor: grey.shade100.withAlpha(65),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.zero,
+                              borderSide: BorderSide(color: grey.shade300),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.zero,
+                              borderSide: BorderSide(color: grey.shade300),
+                            ),
+                          ),
+                          buttonPadding: const EdgeInsets.only(left: 10),
+                          items: [
+                            'Laki - laki',
+                            'Perempuan',
+                          ]
+                              .map((item) => DropdownMenuItem(
+                                  value: item, child: Text(item)))
+                              .toList(),
+                          icon: const Icon(Icons.keyboard_arrow_down),
+                          iconSize: 30,
+                          buttonHeight: 50,
+                          onChanged: (value) {
+                            if (value.toString() == 'Laki - laki') {
+                              _jenisKelController.text = 'L';
+                            } else if (value.toString() == 'Perempuan') {
+                              _jenisKelController.text = 'P';
+                            }
+                          }),
                     ),
                     const SizedBox(
                       height: 20,
@@ -223,7 +244,7 @@ class _AddAccountState extends State<AddAccount> {
                                   width: 0, color: Colors.transparent)),
                         ),
                         buttonPadding: const EdgeInsets.only(left: 10),
-                        items: ['Umum', 'Gigi', 'Kulit', 'THT']
+                        items: ['Umum', 'Gigi', 'Kandungan', 'THT']
                             .map((item) => DropdownMenuItem(
                                 value: item, child: Text(item)))
                             .toList(),
@@ -237,8 +258,9 @@ class _AddAccountState extends State<AddAccount> {
                         },
                         validator: ((value) {
                           if (value == null) {
-                            return 'Data poli tidak boleh kosong';
+                            return '   Data poli tidak boleh kosong';
                           }
+                          return null;
                         }),
                       ),
                     ),
@@ -440,8 +462,9 @@ class _AddAccountState extends State<AddAccount> {
                         },
                         validator: ((value) {
                           if (value == null) {
-                            return 'Jenis Penanganan tidak boleh kosong';
+                            return '    Jenis Penanganan tidak boleh kosong';
                           }
+                          return null;
                         }),
                       ),
                     ),
@@ -467,7 +490,7 @@ class _AddAccountState extends State<AddAccount> {
                             Navigator.pop(context);
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: grey,
+                            backgroundColor: grey,
                           ),
                           child: const Text(
                             'Batal',
@@ -514,7 +537,7 @@ class _AddAccountState extends State<AddAccount> {
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            primary: primaryColor,
+                            backgroundColor: primaryColor,
                           ),
                           child: const Text(
                             'Simpan',
@@ -573,5 +596,5 @@ Future openAddAccount(BuildContext context) {
   return showDialog(
       barrierDismissible: false,
       context: context,
-      builder: (context) => AddAccount());
+      builder: (context) => const AddAccount());
 }

@@ -51,11 +51,11 @@ class AddAcountScreen extends StatelessWidget {
               padding: EdgeInsets.only(
                   top: (Responsive.isMobile(context))
                       ? 60
-                      : MediaQuery.of(context).size.height * 0.15),
+                      : MediaQuery.of(context).size.height * 0.10),
               width: (Responsive.isMobile(context))
                   ? MediaQuery.of(context).size.width * 0.8
                   : MediaQuery.of(context).size.width * 0.5,
-              child: AddAccount()),
+              child: const AddAccount()),
         ],
       ),
     );

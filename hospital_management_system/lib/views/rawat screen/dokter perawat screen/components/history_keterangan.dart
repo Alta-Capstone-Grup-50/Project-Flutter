@@ -76,12 +76,12 @@ class HistoryKeterangan extends StatelessWidget {
   Widget showDetail(BuildContext context, RawatJalanViewModel valueProvider) {
     List historyKeteranganLen = [];
     List namaPasien = [];
-    valueProvider.listRawatJalanData.forEach((element) {
+    for (var element in valueProvider.listRawatJalanData!) {
       if (element.keterangan!.isNotEmpty) {
         historyKeteranganLen.add(element.keterangan);
         namaPasien.add(element.nama);
       }
-    });
+    }
 
     return Stack(
       children: [

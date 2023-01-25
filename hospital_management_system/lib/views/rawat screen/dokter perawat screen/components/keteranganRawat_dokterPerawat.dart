@@ -143,6 +143,10 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
                       : null,
                   expands: true,
                   maxLines: null,
+                  initialValue: (loginFunction.user.level == 'Dokter' ||
+                          loginFunction.user.level == 'Perawat')
+                      ? null
+                      : keterangan,
                   minLines: null,
                   enabled: (loginFunction.user.level == 'Dokter' ||
                           loginFunction.user.level == 'Perawat')
@@ -154,84 +158,92 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
                   cursorHeight: 22,
                 ),
               ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                padding: EdgeInsets.only(
-                    right: (Responsive.isMobile(context)) ? 30 : 30,
-                    bottom: 10,
-                    top: 25),
-                child: Row(
-                  mainAxisAlignment: (Responsive.isMobile(context))
-                      ? MainAxisAlignment.center
-                      : MainAxisAlignment.end,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    SizedBox(
-                      width: (Responsive.isMobile(context))
-                          ? MediaQuery.of(context).size.width * 0.28
-                          : 120,
-                      height: 40,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            primary: Colors.white,
-                            side: BorderSide(color: green.shade800)),
-                        onPressed: () {
-                          openHistoryKeterangan(context);
-                        },
-                        child: Text(
-                          'History',
-                          style: TextStyle(color: green.shade800, fontSize: 15),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 20,
-                    ),
-                    SizedBox(
-                      width: (Responsive.isMobile(context))
-                          ? MediaQuery.of(context).size.width * 0.28
-                          : 120,
-                      height: 40,
-                      child: Consumer<RawatJalanViewModel>(
-                        builder: ((context, value, child) => ElevatedButton(
+              (loginFunction.user.level == 'Dokter' ||
+                      loginFunction.user.level == 'Perawat')
+                  ? Container(
+                      width: MediaQuery.of(context).size.width,
+                      padding: EdgeInsets.only(
+                          right: (Responsive.isMobile(context)) ? 30 : 30,
+                          bottom: 10,
+                          top: 25),
+                      child: Row(
+                        mainAxisAlignment: (Responsive.isMobile(context))
+                            ? MainAxisAlignment.center
+                            : MainAxisAlignment.end,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            width: (Responsive.isMobile(context))
+                                ? MediaQuery.of(context).size.width * 0.28
+                                : 120,
+                            height: 40,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  side: BorderSide(color: green.shade800)),
                               onPressed: () {
-                                showCaseDialog(context,
-                                    title: 'Konfirmasi',
-                                    label:
-                                        "Apa anda sudah yakin untuk menyimpan keterangan\ntersebut?",
-                                    onPressed: () async {
-                                  Navigator.of(context).pop();
-                                  functionProvider.createKeterangan(
-                                    DataKeterangan(
-                                        id: id,
-                                        namaPasien: namePasien,
-                                        keterangan: _keteranganController.text,
-                                        tanggal: formatDate(DateTime.now(),
-                                            [dd, ' ', MM, ' ', yyyy, ' '],
-                                            locale:
-                                                const IndonesianDateLocale())),
-                                  );
-                                  await functionProvider.putProsesKeterangan(
-                                      context,
-                                      id,
-                                      _keteranganController.text,
-                                      loadingProgres);
-                                  if (value.postStatusKeterangan ==
-                                      StatusPostKeterangan.isLoading) {
-                                    loadingProgres.show();
-                                  }
-                                });
+                                openHistoryKeterangan(context);
                               },
-                              child: const Text(
-                                'Simpan',
-                                style: TextStyle(fontSize: 15),
+                              child: Text(
+                                'History',
+                                style: TextStyle(
+                                    color: green.shade800, fontSize: 15),
                               ),
-                            )),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          SizedBox(
+                            width: (Responsive.isMobile(context))
+                                ? MediaQuery.of(context).size.width * 0.28
+                                : 120,
+                            height: 40,
+                            child: Consumer<RawatJalanViewModel>(
+                              builder: ((context, value, child) =>
+                                  ElevatedButton(
+                                    onPressed: () {
+                                      showCaseDialog(context,
+                                          title: 'Konfirmasi',
+                                          label:
+                                              "Apa anda sudah yakin untuk menyimpan keterangan\ntersebut?",
+                                          onPressed: () async {
+                                        Navigator.of(context).pop();
+                                        functionProvider.createKeterangan(
+                                          DataKeterangan(
+                                              id: id,
+                                              namaPasien: namePasien,
+                                              keterangan:
+                                                  _keteranganController.text,
+                                              tanggal: formatDate(
+                                                  DateTime.now(),
+                                                  [dd, ' ', MM, ' ', yyyy, ' '],
+                                                  locale:
+                                                      const IndonesianDateLocale())),
+                                        );
+                                        await functionProvider
+                                            .putProsesKeterangan(
+                                                context,
+                                                id,
+                                                _keteranganController.text,
+                                                loadingProgres);
+                                        if (value.postStatusKeterangan ==
+                                            StatusPostKeterangan.isLoading) {
+                                          loadingProgres.show();
+                                        }
+                                      });
+                                    },
+                                    child: const Text(
+                                      'Simpan',
+                                      style: TextStyle(fontSize: 15),
+                                    ),
+                                  )),
+                            ),
+                          )
+                        ],
                       ),
                     )
-                  ],
-                ),
-              )
+                  : const SizedBox.shrink()
             ],
           ),
         ),

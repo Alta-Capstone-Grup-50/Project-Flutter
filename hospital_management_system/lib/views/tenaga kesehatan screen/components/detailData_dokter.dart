@@ -28,13 +28,13 @@ class DetailDataDokter extends StatefulWidget {
 
 class _DetailDataDokterState extends State<DetailDataDokter> {
   final _scrollController = ScrollController();
-  TextEditingController _sipController = TextEditingController();
-  TextEditingController _namaController = TextEditingController();
-  TextEditingController _jenisKelController = TextEditingController();
-  TextEditingController _nomorTelfonController = TextEditingController();
-  TextEditingController _poliController = TextEditingController();
-  TextEditingController _jadwalPrakController = TextEditingController();
-  TextEditingController _strController = TextEditingController();
+  final TextEditingController _sipController = TextEditingController();
+  final TextEditingController _namaController = TextEditingController();
+  final TextEditingController _jenisKelController = TextEditingController();
+  final TextEditingController _nomorTelfonController = TextEditingController();
+  final TextEditingController _poliController = TextEditingController();
+  final TextEditingController _jadwalPrakController = TextEditingController();
+  final TextEditingController _strController = TextEditingController();
 
   @override
   void dispose() {
@@ -88,7 +88,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                 thumbVisibility: (Responsive.isMobile(context)) ? false : true,
                 child: showDetail(
                   context,
-                  putDataDokter,
+                  putDataDokter!,
                   functionProvider,
                   valueProvider,
                   loginValue,
@@ -142,18 +142,25 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
     String? day = splitJadwal?[0] ?? '';
     String? hours = splitJadwal?[1] ?? '';
 
-    _sipController.text = putDataDokter[indexOfPage].sip!;
-    _namaController.text = putDataDokter[indexOfPage].namaDokter!;
-    _poliController.text = putDataDokter[indexOfPage].poli!;
-    _jenisKelController.text = putDataDokter[indexOfPage].jenisKelamin!;
+    _sipController.text = putDataDokter[indexOfPage].sip ?? '-';
+    _namaController.text = putDataDokter[indexOfPage].namaDokter ?? '-';
+    _poliController.text = putDataDokter[indexOfPage].poli ?? '-';
+    _jenisKelController.text = putDataDokter[indexOfPage].jenisKelamin ?? '-';
 
-    _nomorTelfonController.text = putDataDokter[indexOfPage].nomorTelfon!;
+    _nomorTelfonController.text = putDataDokter[indexOfPage].nomorTelfon ?? '-';
 
-    _strController.text = putDataDokter[indexOfPage].nomorStr!;
+    _strController.text = putDataDokter[indexOfPage].nomorStr ?? '-';
 
-    _jadwalPrakController.text = putDataDokter[indexOfPage].jadwalPraktek!;
+    _jadwalPrakController.text =
+        putDataDokter[indexOfPage].jadwalPraktek ?? '-';
 
     List<String> poli = ['Umum', 'Gigi', 'THT', 'Kandungan'];
+
+    if (putDataDokter.isEmpty) {
+      return const Center(
+        child: Text('Data Kosong'),
+      );
+    }
 
     return Stack(children: [
       SingleChildScrollView(
@@ -331,6 +338,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                         if (value == null) {
                           return 'Data poli tidak boleh kosong';
                         }
+                        return null;
                       }),
                     ),
                   ),
@@ -619,7 +627,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                 }
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: valueProvider.hEdit == false
+                                backgroundColor: valueProvider.hEdit == false
                                     ? grey
                                     : Colors.red,
                               ),
@@ -668,7 +676,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: valueProvider.hEdit == false
+                          backgroundColor: valueProvider.hEdit == false
                               ? primaryColor
                               : green.shade400,
                         ),

@@ -1,8 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/models/dokter_data_model.dart';
-import 'package:hospital_management_system/viewModels/dokter%20perawat%20viewModel/dokter_viewModel.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
@@ -31,7 +27,7 @@ class DetailDataManage extends StatelessWidget {
     ManageViewModel valueProvider = context.watch<ManageViewModel>();
     ManageViewModel functionProvider = context.read<ManageViewModel>();
 
-    List<DataManage>? putDataManage;
+    List<DataManage>? putDataManage = [];
     if (valueProvider.search.isNotEmpty ||
         valueProvider.searchController.text.isNotEmpty) {
       putDataManage = valueProvider.search;
@@ -93,6 +89,12 @@ class DetailDataManage extends StatelessWidget {
       ManageViewModel functionProvider,
       int indexOfPage,
       ProgressDialog loadingWidget) {
+    if (putDataManage.isEmpty) {
+      return const Center(
+        child: Text('Data tidak ditemukan'),
+      );
+    }
+
     return Stack(children: [
       SingleChildScrollView(
         controller: _scrollController,
@@ -238,12 +240,13 @@ class DetailDataManage extends StatelessWidget {
                         onPressed: () {
                           showCaseDialog(
                             context,
-                            title: 'Buat Akun',
+                            title: 'Hapus Akun',
                             label:
-                                'Apakah anda ingin menambahkan akun tersebut ?',
+                                'Apakah anda yakin ingin menghapus akun ini ?',
                             onPressed: () async {
                               Navigator.pop(context);
-                              functionProvider.deletePasienData(
+
+                              functionProvider.deleteAkunApi(
                                   context,
                                   putDataManage[indexOfPage].id!,
                                   putDataManage[indexOfPage].email!,
@@ -252,10 +255,10 @@ class DetailDataManage extends StatelessWidget {
                           );
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: Colors.red,
+                          backgroundColor: Colors.red,
                         ),
                         child: const Text(
-                          'Delete',
+                          'Hapus',
                           style: TextStyle(fontSize: 15),
                         )),
                   ),
@@ -270,7 +273,7 @@ class DetailDataManage extends StatelessWidget {
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: primaryColor,
+                          backgroundColor: primaryColor,
                         ),
                         child: const Text(
                           'Kembali',

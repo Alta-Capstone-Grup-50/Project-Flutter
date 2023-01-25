@@ -9,14 +9,14 @@ class RawatJalanService {
   final Dio _dio = Dio();
 
   Future<List<DataRawatJalan>?> getDataRawatJalanApi(int id) async {
-    log(id.toString());
+    List<DataRawatJalan>? listData = [];
     try {
       var response = await _dio.get(
         '${ApiUrl.getDataPasienRawatJalan}/$id',
       );
       if (response.statusCode! >= 200 && response.statusCode! <= 300) {
-        var _model = RawatJalanDataModel.fromJson(response.data);
-        var listData = _model.dataRawatJalan;
+        var model = RawatJalanDataModel.fromJson(response.data);
+        listData = model.dataRawatJalan;
 
         return listData;
       }

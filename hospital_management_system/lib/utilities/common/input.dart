@@ -82,7 +82,6 @@ class Input extends StatelessWidget {
         suffixIcon: suffixIcon,
         suffix: suffix,
         labelText: labelText,
-       
         errorText: errorText,
         hintText: hintText,
         prefixIcon: prefixIcon,
@@ -91,6 +90,11 @@ class Input extends StatelessWidget {
         contentPadding: contentPadding ?? const EdgeInsets.only(left: 10),
         hintStyle: const TextStyle(color: Colors.black45),
         enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.black26),
+          borderRadius:
+              borderRadius ?? const BorderRadius.all(Radius.circular(20)),
+        ),
+        disabledBorder: OutlineInputBorder(
           borderSide: const BorderSide(color: Colors.black26),
           borderRadius:
               borderRadius ?? const BorderRadius.all(Radius.circular(20)),

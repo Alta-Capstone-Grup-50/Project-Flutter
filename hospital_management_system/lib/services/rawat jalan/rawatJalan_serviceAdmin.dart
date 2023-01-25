@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:dio/dio.dart';
 
 import '../../models/rawatJalan_data_model.dart';
@@ -9,16 +7,18 @@ class RawatJalanServiceAdmin {
   final Dio _dio = Dio();
 
   Future<List<DataRawatJalan>?> getDataRawatJalanApiAdmin() async {
+    List<DataRawatJalan>? listData = [];
     try {
       var response = await _dio.get(ApiUrl.getDataPasienRawatJalanAdmin);
-      if (response.statusCode! >= 200 && response.statusCode! <= 300) {
-        var _model = RawatJalanDataModel.fromJson(response.data);
-        var listData = _model.dataRawatJalan;
 
-        return listData;
+      if (response.statusCode! >= 200 && response.statusCode! <= 300) {
+        var model = RawatJalanDataModel.fromJson(response.data);
+        listData = model.dataRawatJalan;
+
+        return listData ?? [];
       }
     } catch (e) {
-      log(e.toString());
+      // log(e.toString());
     }
     return null;
   }

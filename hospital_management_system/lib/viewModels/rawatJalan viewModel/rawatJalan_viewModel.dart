@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hospital_management_system/models/keterangan_model.dart';
 import 'package:hospital_management_system/models/updateRawat_model.dart';
 import 'package:hospital_management_system/services/rawat%20jalan/rawatJalan_serviceAdmin.dart';
@@ -38,8 +37,8 @@ class RawatJalanViewModel extends ChangeNotifier {
   String? _hasMatchPoli;
   String? _noAntrian;
 
-  List<DataRawatJalan> _listRawatJalanData = [];
-  List<DataRawatJalan> _tempData = [];
+  List<DataRawatJalan>? _listRawatJalanData = [];
+  List<DataRawatJalan>? _tempData = [];
   final List<DataKeterangan> _listKeterangan = [];
   List<DataRawatJalan> _search = [];
   bool hEdit = false;
@@ -52,7 +51,7 @@ class RawatJalanViewModel extends ChangeNotifier {
   String? get noAntrian => _noAntrian;
   LoginProvider? valueProvide;
   List<DataRawatJalan> get search => _search;
-  List<DataRawatJalan> get listRawatJalanData => _listRawatJalanData;
+  List<DataRawatJalan>? get listRawatJalanData => _listRawatJalanData;
 
   RawatJalanService service = RawatJalanService();
   RawatJalanServiceAdmin serviceForAdmin = RawatJalanServiceAdmin();
@@ -119,15 +118,15 @@ class RawatJalanViewModel extends ChangeNotifier {
 
   getCurrentAntrian() {
     int countSelected = 0;
-    _listRawatJalanData.reversed.forEach((element) {
+    for (var element in _listRawatJalanData!.reversed) {
       if (!element.proses!) {
         _noAntrian = element.nomerAntrian;
       }
       if (element.proses!) {
         countSelected++;
       }
-    });
-    if (countSelected == _listRawatJalanData.length) {
+    }
+    if (countSelected == _listRawatJalanData!.length) {
       _noAntrian = null;
     }
     notifyListeners();
@@ -141,11 +140,11 @@ class RawatJalanViewModel extends ChangeNotifier {
     postStatusKeterangan = StatusPostKeterangan.isLoading;
     notifyListeners();
 
-    _listRawatJalanData.forEach((element) {
+    for (var element in _listRawatJalanData!) {
       if (element.id == id) {
         proses = element.proses;
       }
-    });
+    }
 
     final Map<String, dynamic> prosesAntrian = {
       "proses": proses,
@@ -179,11 +178,11 @@ class RawatJalanViewModel extends ChangeNotifier {
     Map<String, dynamic> result = {};
     String? keterangan;
 
-    _listKeterangan.forEach((element) {
+    for (var element in _listKeterangan) {
       if (element.id == id) {
         keterangan = element.keterangan;
       }
-    });
+    }
 
     final Map<String, dynamic> prosesAntrian = {
       "proses": proses,
@@ -213,15 +212,15 @@ class RawatJalanViewModel extends ChangeNotifier {
     _hasMatchId = await (UserPreferences().getId());
     _hasMatchPoli = await (UserPreferences().getPoli());
 
-    _tempData = (await service.getDataRawatJalanApi(_hasMatchId!))!;
+    _tempData = (await service.getDataRawatJalanApi(_hasMatchId!)) ?? [];
 
-    _listRawatJalanData = _tempData
+    _listRawatJalanData = _tempData!
         .where((element) => element.nik != '' && element.nama != '')
         .toList();
 
-    _listRawatJalanData.sort((a, b) =>
+    _listRawatJalanData!.sort((a, b) =>
         a.nomerAntrian!.toString().compareTo(b.nomerAntrian!.toString()));
-    _listRawatJalanData
+    _listRawatJalanData!
         .sort((a, b) => a.proses.toString().compareTo(b.proses.toString()));
 
     fetchStatusRawat = StatusFetchRawat.letsGo;
@@ -233,15 +232,15 @@ class RawatJalanViewModel extends ChangeNotifier {
     _hasMatchId = await (UserPreferences().getId());
     _hasMatchPoli = await (UserPreferences().getPoli());
 
-    _tempData = (await serviceForAdmin.getDataRawatJalanApiAdmin())!;
+    _tempData = (await serviceForAdmin.getDataRawatJalanApiAdmin()) ?? [];
 
-    _listRawatJalanData = _tempData
+    _listRawatJalanData = _tempData!
         .where((element) => element.nik != '' && element.nama != '')
         .toList();
 
-    _listRawatJalanData.sort((a, b) =>
+    _listRawatJalanData!.sort((a, b) =>
         a.nomerAntrian!.toString().compareTo(b.nomerAntrian!.toString()));
-    _listRawatJalanData
+    _listRawatJalanData!
         .sort((a, b) => a.proses.toString().compareTo(b.proses.toString()));
 
     fetchStatusRawat = StatusFetchRawat.letsGo;
@@ -283,7 +282,7 @@ class RawatJalanViewModel extends ChangeNotifier {
       notifyListeners();
     }
 
-    _search = _listRawatJalanData
+    _search = _listRawatJalanData!
         .where((DataRawatJalan element) =>
             (element.nama!.toLowerCase().contains(query.toLowerCase())) ||
             (element.nik!.toLowerCase().contains(query.toLowerCase())))

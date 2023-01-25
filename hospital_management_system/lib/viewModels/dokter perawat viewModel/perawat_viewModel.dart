@@ -25,14 +25,14 @@ class PerawatViewModel extends ChangeNotifier {
 
   final GlobalKey<SfDataGridState> keyPerawat = GlobalKey<SfDataGridState>();
 
-  List<DataPerawat> _listPerawatData = [];
+  List<DataPerawat>? _listPerawatData = [];
 
   List<DataPerawat> _search = [];
 
   bool hEdit = false;
 
   List<DataPerawat> get search => _search;
-  List<DataPerawat> get listPerawatData => _listPerawatData;
+  List<DataPerawat>? get listPerawatData => _listPerawatData;
 
   PerawatService service = PerawatService();
 
@@ -44,7 +44,6 @@ class PerawatViewModel extends ChangeNotifier {
 
   initialFun() async {
     await getDataApiPerawat();
-    ;
   }
 
   changeEdit() {
@@ -60,7 +59,7 @@ class PerawatViewModel extends ChangeNotifier {
   Future getDataApiPerawat() async {
     fetchStatusPerawat = StatusFetchPerawat.isLoading;
 
-    _listPerawatData = (await service.getDataPerawatApi())!;
+    _listPerawatData = (await service.getDataPerawatApi()) ?? [];
 
     fetchStatusPerawat = StatusFetchPerawat.letsGo;
     notifyListeners();
@@ -104,28 +103,24 @@ class PerawatViewModel extends ChangeNotifier {
     int id,
     ProgressDialog progressWidget,
   ) async {
-    progressWidget.show();
-
-    log(id.toString());
+    await progressWidget.show();
 
     notifyListeners();
-    await DeletePerawatService()
-        .deleteDataPerawatApi(id.toString())
-        .then((response) async {
+    DeletePerawatService().deleteDataPerawatApi(id.toString()).then((response) {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
         log('Endpoint Status Code : ${response.statusCode}');
-        Navigator.pop(context);
+
         getDataApiPerawat();
         SnackBarComponent(
           context: context,
-          message: 'Data Perawat dengan id ${id} berhasil dihapus',
+          message: 'Data Perawat dengan id $id berhasil dihapus',
           type: 'danger',
           duration: const Duration(milliseconds: 2400),
         );
       } else if (response.statusCode! >= 300) {
         progressWidget.hide();
-        Navigator.pop(context);
+
         SnackBarComponent(
           context: context,
           message: 'Data tidak berhasil dihapus',
@@ -133,7 +128,7 @@ class PerawatViewModel extends ChangeNotifier {
           duration: const Duration(milliseconds: 2400),
         );
       }
-    });
+    }).whenComplete(() => Navigator.pop(context));
   }
 
   void onSearch(String query) async {
@@ -142,7 +137,7 @@ class PerawatViewModel extends ChangeNotifier {
       notifyListeners();
     }
 
-    _search = listPerawatData
+    _search = listPerawatData!
         .where((DataPerawat element) =>
             (element.namaPerawat!.toLowerCase().contains(query.toLowerCase())))
         .toList();

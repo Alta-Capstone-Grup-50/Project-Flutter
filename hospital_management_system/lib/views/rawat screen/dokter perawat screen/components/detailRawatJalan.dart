@@ -76,7 +76,7 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
             child: Scrollbar(
               controller: _scrollController,
               thumbVisibility: (Responsive.isMobile(context)) ? false : true,
-              child: showDetail(context, putDataRawat, indexOfPage,
+              child: showDetail(context, putDataRawat!, indexOfPage,
                   functionProvider, valueProvider, loginValue, loadingWidget),
             ),
           ),
@@ -594,7 +594,7 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
                                                 'Data Kosong');
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        primary: green.shade300,
+                                        backgroundColor: green.shade300,
                                       ),
                                       child: Text(
                                         'Keterangan',
@@ -620,8 +620,8 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
                                     onPressed: () {
                                       functionProvider.changeEditStatus();
                                     },
-                                    style:
-                                        ElevatedButton.styleFrom(primary: grey),
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: grey),
                                     child: Text(
                                       (valueProvider.hEdit == true)
                                           ? 'Cancel'
@@ -673,7 +673,7 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  primary: (valueProvider.hEdit == true)
+                                  backgroundColor: (valueProvider.hEdit == true)
                                       ? green
                                       : primaryColor,
                                 ),
@@ -708,7 +708,7 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
                                                 'Data Kosong');
                                       },
                                       style: ElevatedButton.styleFrom(
-                                        primary: green.shade300,
+                                        backgroundColor: green.shade300,
                                       ),
                                       child: Text(
                                         'Keterangan',
@@ -732,8 +732,8 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
                                     onPressed: () {
                                       functionProvider.changeEditStatus();
                                     },
-                                    style:
-                                        ElevatedButton.styleFrom(primary: grey),
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: grey),
                                     child: Text(
                                       (valueProvider.hEdit == true)
                                           ? 'Cancel'
@@ -783,7 +783,7 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  primary: (valueProvider.hEdit == true)
+                                  backgroundColor: (valueProvider.hEdit == true)
                                       ? green
                                       : primaryColor,
                                 ),

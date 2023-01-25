@@ -15,8 +15,8 @@ class PasienService {
         ApiUrl.getDataPasien,
       );
       if (response.statusCode! >= 200 && response.statusCode! <= 300) {
-        var _model = PasienDataModel.fromJson(response.data);
-        listData = _model.dataPasien;
+        var model = PasienDataModel.fromJson(response.data);
+        listData = model.dataPasien;
       }
     } catch (e) {
       log(e.toString());

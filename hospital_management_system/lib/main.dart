@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hospital_management_system/viewModels/manage%20viewModel/manage_viewModel.dart';
 import 'package:hospital_management_system/views/manage%20account%20screen/addAccount_screen.dart';
 import 'package:hospital_management_system/views/manage%20account%20screen/manage_screen.dart';
@@ -31,6 +32,8 @@ import 'views/rawat screen/dokter perawat screen/rawat_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  await dotenv.load(fileName: ".env");
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.landscapeRight,

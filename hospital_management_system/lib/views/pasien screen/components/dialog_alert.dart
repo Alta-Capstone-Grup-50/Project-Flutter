@@ -7,12 +7,14 @@ class DialogAlert extends StatelessWidget {
       {Key? key,
       required this.isSuccess,
       required this.title,
+      this.backButton,
       required this.label})
       : super(key: key);
 
   final bool isSuccess;
   String title;
   String label;
+  Function? backButton;
 
   final String assetSuccess = 'assets/icons/success.svg';
   final String assetFailed = 'assets/icons/failed.svg';
@@ -51,6 +53,7 @@ class DialogAlert extends StatelessWidget {
               child: ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
+                    backButton!();
                   },
                   child: const Text('Kembali')),
             )
@@ -61,7 +64,8 @@ class DialogAlert extends StatelessWidget {
   }
 }
 
-Future showAlertSuccess(BuildContext context, {title, required label}) {
+Future showAlertSuccess(BuildContext context,
+    {title, required label, Function? backButton}) {
   return showDialog(
       barrierDismissible: false,
       context: context,
@@ -69,10 +73,12 @@ Future showAlertSuccess(BuildContext context, {title, required label}) {
             isSuccess: true,
             title: title ?? 'Tambah Akun Berhasil',
             label: label,
+            backButton: backButton,
           ));
 }
 
-Future showAlertFailed(BuildContext context, {title, required label}) {
+Future showAlertFailed(BuildContext context,
+    {title, required label, Function? backButton}) {
   return showDialog(
       barrierDismissible: false,
       context: context,
@@ -80,5 +86,6 @@ Future showAlertFailed(BuildContext context, {title, required label}) {
             isSuccess: false,
             title: title ?? 'Tambah Akun Gagal',
             label: label,
+            backButton: backButton,
           ));
 }

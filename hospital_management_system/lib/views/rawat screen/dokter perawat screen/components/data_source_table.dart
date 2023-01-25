@@ -13,7 +13,7 @@ import '../../../../utilities/common/progress_dialog.dart';
 import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
 
 class RawatDataSourceTable extends DataGridSource {
-  List<DataRawatJalan> _data;
+  final List<DataRawatJalan> _data;
   List<DataRawatJalan> _paginatedData = [];
   RawatJalanViewModel? _valProvider;
   LoginProvider? _logProvider;
@@ -218,7 +218,7 @@ class RawatDataSourceTable extends DataGridSource {
                           dataGridRow.proses = newValue;
                           _valProvider!.putProsesAntrian(
                               dataGridRow.id!, dataGridRow.proses!);
-                          _valProvider!.listRawatJalanData.sort((a, b) => a
+                          _valProvider!.listRawatJalanData!.sort((a, b) => a
                               .proses
                               .toString()
                               .compareTo(b.proses.toString()));

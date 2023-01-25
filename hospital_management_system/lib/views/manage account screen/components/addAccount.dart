@@ -1,10 +1,6 @@
 import 'dart:developer';
 
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/widgets.dart';
 import 'package:hospital_management_system/models/createManage_model.dart';
 import 'package:hospital_management_system/models/radio_model.dart';
 import 'package:hospital_management_system/utilities/constants/validate.dart';
@@ -18,17 +14,17 @@ import '../../../utilities/constants/color.dart';
 import '../../../utilities/constants/responsive.dart';
 
 class AddAccount extends StatefulWidget {
-  AddAccount({Key? key}) : super(key: key);
+  const AddAccount({Key? key}) : super(key: key);
 
   @override
   State<AddAccount> createState() => _AddAccountState();
 }
 
 class _AddAccountState extends State<AddAccount> {
-  TextEditingController _namaController = TextEditingController();
-  TextEditingController _emailController = TextEditingController();
-  TextEditingController _passwordController = TextEditingController();
-  String _levelController = '';
+  final TextEditingController _namaController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  String _levelController = 'Dokter';
 
   final GlobalKey<FormState> _formKey =
       GlobalKey<FormState>(debugLabel: 'add account');
@@ -66,6 +62,7 @@ class _AddAccountState extends State<AddAccount> {
               controller: _namaController,
               validator: ((value) {
                 validatename(value!);
+                return null;
               }),
             ),
           ),
@@ -82,6 +79,7 @@ class _AddAccountState extends State<AddAccount> {
               controller: _emailController,
               validator: ((value) {
                 validateEmail(value!);
+                return null;
               }),
             ),
           ),
@@ -109,6 +107,7 @@ class _AddAccountState extends State<AddAccount> {
               ),
               validator: ((value) {
                 validatePassword(value!);
+                return null;
               }),
             ),
           ),
@@ -158,8 +157,8 @@ class _AddAccountState extends State<AddAccount> {
                   ),
           ),
           Container(
-            margin:
-                EdgeInsets.only(top: !(Responsive.isMobile(context)) ? 40 : 20),
+            margin: EdgeInsets.only(
+                top: !(Responsive.isMobile(context)) ? 40 : 20, bottom: 50),
             width: MediaQuery.of(context).size.width,
             height: 40,
             child: ElevatedButton(
@@ -170,6 +169,7 @@ class _AddAccountState extends State<AddAccount> {
                   label: 'Apakah anda ingin menambahkan akun tersebut ?',
                   onPressed: () async {
                     Navigator.pop(context);
+                    manageFunction.setGroupValue(1);
                     manageFunction.createAkunApi(
                         context,
                         loadingWidget,
@@ -183,7 +183,10 @@ class _AddAccountState extends State<AddAccount> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                primary: primaryColor,
+                backgroundColor: primaryColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
               child: const Text(
                 'Buat Akun',

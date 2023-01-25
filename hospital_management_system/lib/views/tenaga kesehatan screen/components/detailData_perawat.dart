@@ -90,7 +90,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                 thumbVisibility: (Responsive.isMobile(context)) ? false : true,
                 child: showDetail(
                   context,
-                  putDataPerawat,
+                  putDataPerawat!,
                   functionProvider,
                   valueProvider,
                   loginValue,
@@ -144,18 +144,27 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
     String? day = splitJadwal?[0] ?? '';
     String? hours = splitJadwal?[1] ?? '';
 
-    _sipController.text = putDataPerawat[indexOfPage].sip!;
-    _namaController.text = putDataPerawat[indexOfPage].namaPerawat!;
-    _poliController.text = putDataPerawat[indexOfPage].poli!;
-    _jenisKelController.text = putDataPerawat[indexOfPage].jenisKelamin!;
+    log(putDataPerawat[indexOfPage].sip ?? '-');
 
-    _nomorTelfonController.text = putDataPerawat[indexOfPage].nomorTelfon!;
-    _jabatanController.text = putDataPerawat[indexOfPage].jabatan!;
+    _sipController.text = putDataPerawat[indexOfPage].sip ?? '-';
+    _namaController.text = putDataPerawat[indexOfPage].namaPerawat ?? '-';
+    _poliController.text = putDataPerawat[indexOfPage].poli ?? '-';
+    _jenisKelController.text = putDataPerawat[indexOfPage].jenisKelamin ?? '-';
 
-    _strController.text = putDataPerawat[indexOfPage].nomorStr!;
-    _jadwalPrakController.text = putDataPerawat[indexOfPage].jadwalKerja!;
+    _nomorTelfonController.text =
+        putDataPerawat[indexOfPage].nomorTelfon ?? '-';
+    _jabatanController.text = putDataPerawat[indexOfPage].jabatan ?? '-';
+
+    _strController.text = putDataPerawat[indexOfPage].nomorStr ?? '-';
+    _jadwalPrakController.text = putDataPerawat[indexOfPage].jadwalKerja ?? '-';
 
     List<String> poli = ['Umum', 'Gigi', 'THT', 'Kandungan'];
+
+    if (putDataPerawat.isEmpty) {
+      return const Center(
+        child: Text('Data Kosong'),
+      );
+    }
 
     return Stack(children: [
       SingleChildScrollView(
@@ -333,6 +342,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                         if (value == null) {
                           return 'Data poli tidak boleh kosong';
                         }
+                        return null;
                       }),
                     ),
                   ),
@@ -637,7 +647,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                                 }
                               },
                               style: ElevatedButton.styleFrom(
-                                primary: valueProvider.hEdit == false
+                                backgroundColor: valueProvider.hEdit == false
                                     ? grey
                                     : Colors.red,
                               ),
@@ -688,7 +698,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          primary: valueProvider.hEdit == false
+                          backgroundColor: valueProvider.hEdit == false
                               ? primaryColor
                               : green.shade400,
                         ),

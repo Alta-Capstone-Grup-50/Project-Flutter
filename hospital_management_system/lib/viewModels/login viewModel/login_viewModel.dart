@@ -1,11 +1,9 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:hospital_management_system/utilities/common/case_dialog.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/detailAkun_model.dart';
 import '../../models/dokter_data_model.dart';
@@ -94,7 +92,7 @@ class LoginProvider extends ChangeNotifier {
     DataPerawat? dataPerawat;
 
     if (authUser.level == 'Dokter') {
-      dataDokter = dokteViewModel.listDokterData
+      dataDokter = dokteViewModel.listDokterData!
           .firstWhere((element) => element.idUser == authUser.id);
       matchDataId = dataDokter.idUser ?? 0;
       matchDataPoli = dataDokter.poli ?? '';
@@ -102,7 +100,7 @@ class LoginProvider extends ChangeNotifier {
       notifyListeners();
     }
     if (authUser.level == 'Perawat') {
-      dataPerawat = perawatViewModel.listPerawatData
+      dataPerawat = perawatViewModel.listPerawatData!
           .firstWhere((element) => element.idUser == authUser.id);
       matchDataId = dataPerawat.idUser ?? 0;
       matchDataPoli = dataPerawat.poli ?? '';
@@ -244,7 +242,7 @@ class LoginProvider extends ChangeNotifier {
               'Akun bermasalah/belum validasi ulang, silahkan hubungi admin',
         };
 
-        usernameController.text = '';
+        // usernameController.text = '';
         passwordController.text = '';
 
         SnackBarComponent(

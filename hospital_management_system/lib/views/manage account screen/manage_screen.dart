@@ -107,7 +107,7 @@ class ManageScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceAround,
                             children: const [
                               Icon(Icons.add_circle),
-                              Text('Tambah Pasien')
+                              Text('Tambah Account')
                             ],
                           ),
                         ),

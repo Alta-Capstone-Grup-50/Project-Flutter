@@ -17,8 +17,8 @@ class ManageDataModel {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['code'] = code;
-    if (this.dataManage != null) {
-      data['data'] = this.dataManage!.map((v) => v.toJson()).toList();
+    if (dataManage != null) {
+      data['data'] = dataManage!.map((v) => v.toJson()).toList();
     }
     return data;
   }

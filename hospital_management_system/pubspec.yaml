@@ -1,7 +1,7 @@
 name: hospital_management_system
 description: Group 50 Project Capstone "Hospital Management System"
 
-publish_to: 'none'
+publish_to: "none"
 version: 1.0.2+2
 
 environment:
@@ -17,7 +17,6 @@ dependencies:
   flutter_svg: ^1.1.0
   intl: ^0.17.0
   syncfusion_flutter_datagrid: ^20.1.59
-  
   syncfusion_flutter_core: ^20.1.60
   dio: ^4.0.6
   date_format: ^2.0.6
@@ -27,8 +26,8 @@ dependencies:
   dropdown_button2: ^1.6.3
   page_transition: ^2.0.9
   flutter_carousel_slider: ^1.0.9
-  
-
+  flutter_dotenv: ^5.0.2
+  logger: ^1.1.0
 
 dev_dependencies:
   flutter_test:
@@ -38,7 +37,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-  
+
   assets:
     - assets/icons/success.svg
     - assets/icons/failed.svg
@@ -47,7 +46,7 @@ flutter:
     - assets/icons/iconTable.png
     - assets/icons/accountCircle.png
     - assets/contents/
-
+    - .env
 
   fonts:
     - family: Open Sans
@@ -68,12 +67,10 @@ flutter:
           weight: 500
         - asset: assets/fonts/OpenSans/OpenSans-MediumItalic.ttf
           weight: 500
-          style : italic
+          style: italic
         - asset: assets/fonts/OpenSans/OpenSans-Regular.ttf
         - asset: assets/fonts/OpenSans/OpenSans-SemiBold.ttf
           weight: 600
         - asset: assets/fonts/OpenSans/OpenSans-SemiBoldItalic.ttf
           weight: 600
           style: italic
-    
-  

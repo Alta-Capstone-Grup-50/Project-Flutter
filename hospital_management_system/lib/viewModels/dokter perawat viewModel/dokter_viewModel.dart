@@ -25,14 +25,14 @@ class DokterViewModel extends ChangeNotifier {
 
   final GlobalKey<SfDataGridState> keyDokter = GlobalKey<SfDataGridState>();
 
-  List<DataDokter> _listDokterData = [];
+  List<DataDokter>? _listDokterData = [];
 
   List<DataDokter> _search = [];
 
   bool hEdit = false;
 
   List<DataDokter> get search => _search;
-  List<DataDokter> get listDokterData => _listDokterData;
+  List<DataDokter>? get listDokterData => _listDokterData;
 
   DokterService service = DokterService();
 
@@ -55,7 +55,9 @@ class DokterViewModel extends ChangeNotifier {
   Future getDataApiDokter() async {
     fetchStatusDokter = StatusFetchDokter.isLoading;
 
-    _listDokterData = (await service.getDataDokterApi())!;
+    _listDokterData = (await service.getDataDokterApi()) ?? [];
+
+    log(_listDokterData.toString());
 
     fetchStatusDokter = StatusFetchDokter.letsGo;
     notifyListeners();
@@ -97,28 +99,26 @@ class DokterViewModel extends ChangeNotifier {
     int id,
     ProgressDialog progressWidget,
   ) async {
-    progressWidget.show();
+    await progressWidget.show();
 
     log(id.toString());
 
     notifyListeners();
-    await DeleteDokterService()
-        .deleteDataDokterApi(id.toString())
-        .then((response) async {
+    DeleteDokterService().deleteDataDokterApi(id.toString()).then((response) {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
         log('Endpoint Status Code : ${response.statusCode}');
-        Navigator.pop(context);
+
         getDataApiDokter();
         SnackBarComponent(
           context: context,
-          message: 'Data Dokter dengan id ${id} berhasil dihapus',
+          message: 'Data Dokter dengan id $id berhasil dihapus',
           type: 'danger',
           duration: const Duration(milliseconds: 2400),
         );
       } else if (response.statusCode! >= 300) {
         progressWidget.hide();
-        Navigator.pop(context);
+
         SnackBarComponent(
           context: context,
           message: 'Data tidak berhasil dihapus',
@@ -126,7 +126,7 @@ class DokterViewModel extends ChangeNotifier {
           duration: const Duration(milliseconds: 2400),
         );
       }
-    });
+    }).whenComplete(() => Navigator.pop(context));
   }
 
   void onSearch(String query) async {
@@ -135,7 +135,7 @@ class DokterViewModel extends ChangeNotifier {
       notifyListeners();
     }
 
-    _search = listDokterData
+    _search = listDokterData!
         .where((DataDokter element) =>
             (element.namaDokter!.toLowerCase().contains(query.toLowerCase())))
         .toList();

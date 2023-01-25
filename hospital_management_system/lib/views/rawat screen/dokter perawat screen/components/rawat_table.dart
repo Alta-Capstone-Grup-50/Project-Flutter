@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/models/rawatJalan_data_model.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
@@ -35,32 +36,31 @@ class RawatTable {
           ),
         );
       } else if (value.fetchStatusRawat == StatusFetchRawat.letsGo) {
-        var val;
+        List<DataRawatJalan> val;
 
         if (value.search.isNotEmpty || value.searchController.text.isNotEmpty) {
           val = value.search;
         } else {
-          val = value.listRawatJalanData;
+          val = value.listRawatJalanData!;
         }
-        final RawatDataSourceTable _dataSource =
+        final RawatDataSourceTable dataSource =
             RawatDataSourceTable(val, context);
         double countPage;
-        if (_dataSource.data.isEmpty) {
+        if (dataSource.data.isEmpty) {
           countPage = 1;
         } else {
-          countPage = _dataSource.data.length / _dataSource.rowsPerPage;
+          countPage = dataSource.data.length / dataSource.rowsPerPage;
         }
 
-        double countPageOfSearch =
-            value.search.length / _dataSource.rowsPerPage;
+        double countPageOfSearch = value.search.length / dataSource.rowsPerPage;
         return LayoutBuilder(
             builder: ((context, constraints) => Column(
                   children: [
                     SizedBox(
                       width: constraints.maxWidth,
-                      height: (_dataSource.data.length <= 2)
+                      height: (dataSource.data.length <= 2)
                           ? 160
-                          : (_dataSource.data.length <= 4)
+                          : (dataSource.data.length <= 4)
                               ? 240
                               : 305,
                       child: SfDataGridTheme(
@@ -76,12 +76,12 @@ class RawatTable {
                             rowHeight: 40,
                             allowPullToRefresh: true,
                             isScrollbarAlwaysShown: true,
-                            source: _dataSource,
+                            source: dataSource,
                             columnWidthMode: ColumnWidthMode.lastColumnFill,
                             onCellTap: (query) {
                               if (query.rowColumnIndex.rowIndex > 0) {
                                 openDetailRawatJalan(
-                                    context, query, _dataSource.startIndex);
+                                    context, query, dataSource.startIndex);
                               } else {
                                 return;
                               }
@@ -185,7 +185,7 @@ class RawatTable {
                               ),
                             ],
                           ),
-                          (_dataSource.data.isEmpty)
+                          (dataSource.data.isEmpty)
                               ? const Center(child: Text('Data Kosong'))
                               : const SizedBox.shrink(),
                         ]),
@@ -215,7 +215,7 @@ class RawatTable {
                                   : 1
                               : countPage.ceil().toDouble(),
                           direction: Axis.horizontal,
-                          delegate: _dataSource,
+                          delegate: dataSource,
                         ),
                       ),
                     ),

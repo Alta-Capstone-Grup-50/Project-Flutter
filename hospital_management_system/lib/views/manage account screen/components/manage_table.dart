@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/models/manage_data_model.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../utilities/constants/responsive.dart';
-import '../../../viewModels/dokter perawat viewModel/dokter_viewModel.dart';
 import '../../../viewModels/manage viewModel/manage_viewModel.dart';
 import '/utilities/constants/color.dart';
 import 'dataManage_source_table.dart';
@@ -25,28 +25,33 @@ class ManageAccountTable {
           ),
         );
       } else if (value.fetchStatusManage == StatusFetchManage.letsGo) {
-        var val;
+        List<DataManage> val;
 
         if (value.search.isNotEmpty || value.searchController.text.isNotEmpty) {
           val = value.search;
         } else {
           val = value.listManageData;
         }
-        final ManageDataSourceTable _dataSource =
+        final ManageDataSourceTable dataSource =
             ManageDataSourceTable(val, context);
 
-        double countPage = _dataSource.data.length / _dataSource.rowsPerPage;
+        double countPage;
 
-        double countPageOfSearch =
-            value.search.length / _dataSource.rowsPerPage;
+        if (dataSource.data.isEmpty) {
+          countPage = 1;
+        } else {
+          countPage = dataSource.data.length / dataSource.rowsPerPage;
+        }
+
+        double countPageOfSearch = value.search.length / dataSource.rowsPerPage;
         return LayoutBuilder(
           builder: ((context, constraints) => Column(
                 children: [
                   SizedBox(
                     width: constraints.maxWidth,
-                    height: (_dataSource.data.length <= 2)
+                    height: (dataSource.data.length <= 2)
                         ? 160
-                        : (_dataSource.data.length <= 4)
+                        : (dataSource.data.length <= 4)
                             ? 240
                             : 300,
                     child: SfDataGridTheme(
@@ -56,101 +61,106 @@ class ManageAccountTable {
                         headerColor: grey.shade100,
                         rowHoverColor: green.shade300,
                       ),
-                      child: SfDataGrid(
-                        key: value.keyManage,
-                        isScrollbarAlwaysShown: true,
-                        rowHeight: 40,
-                        allowPullToRefresh: true,
-                        source: _dataSource,
-                        columnWidthMode: ColumnWidthMode.fill,
-                        onCellTap: (query) {
-                          if (query.rowColumnIndex.rowIndex > 0) {
-                            openDetailManage(
-                                context, query, _dataSource.startIndex);
-                          } else {
-                            return;
-                          }
-                        },
-                        columns: [
-                          GridColumn(
-                            width: 60,
-                            columnName: 'No',
-                            label: Container(
-                              padding: const EdgeInsets.only(right: 10),
-                              alignment: Alignment.center,
-                              child: const Text(
-                                'No',
-                                style: TextStyle(fontWeight: FontWeight.w700),
-                                overflow: TextOverflow.ellipsis,
+                      child: Stack(children: [
+                        SfDataGrid(
+                          key: value.keyManage,
+                          isScrollbarAlwaysShown: true,
+                          rowHeight: 40,
+                          allowPullToRefresh: true,
+                          source: dataSource,
+                          columnWidthMode: ColumnWidthMode.fill,
+                          onCellTap: (query) {
+                            if (query.rowColumnIndex.rowIndex > 0) {
+                              openDetailManage(
+                                  context, query, dataSource.startIndex);
+                            } else {
+                              return;
+                            }
+                          },
+                          columns: [
+                            GridColumn(
+                              width: 60,
+                              columnName: 'No',
+                              label: Container(
+                                padding: const EdgeInsets.only(right: 10),
+                                alignment: Alignment.center,
+                                child: const Text(
+                                  'No',
+                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
-                          ),
-                          GridColumn(
-                            columnName: 'SIP/SIPP',
-                            columnWidthMode: ColumnWidthMode.fitByCellValue,
-                            label: Container(
-                              padding: const EdgeInsets.only(right: 16),
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                'SIP/SIPP',
-                                style: TextStyle(fontWeight: FontWeight.w700),
-                                overflow: TextOverflow.ellipsis,
+                            GridColumn(
+                              columnName: 'SIP/SIPP',
+                              columnWidthMode: ColumnWidthMode.fitByCellValue,
+                              label: Container(
+                                padding: const EdgeInsets.only(right: 16),
+                                alignment: Alignment.centerLeft,
+                                child: const Text(
+                                  'SIP/SIPP',
+                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
-                          ),
-                          GridColumn(
-                            width: 210,
-                            columnName: 'Nama',
-                            label: Container(
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                'Nama',
-                                style: TextStyle(fontWeight: FontWeight.w700),
-                                overflow: TextOverflow.ellipsis,
+                            GridColumn(
+                              width: 210,
+                              columnName: 'Nama',
+                              label: Container(
+                                alignment: Alignment.centerLeft,
+                                child: const Text(
+                                  'Nama',
+                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
-                          ),
-                          GridColumn(
-                            width: 160,
-                            columnName: 'Jenis Kelamin',
-                            label: Container(
-                              padding: const EdgeInsets.only(right: 16),
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                'Jenis Kelamin',
-                                style: TextStyle(fontWeight: FontWeight.w700),
-                                overflow: TextOverflow.ellipsis,
+                            GridColumn(
+                              width: 160,
+                              columnName: 'Jenis Kelamin',
+                              label: Container(
+                                padding: const EdgeInsets.only(right: 16),
+                                alignment: Alignment.centerLeft,
+                                child: const Text(
+                                  'Jenis Kelamin',
+                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
-                          ),
-                          GridColumn(
-                            columnWidthMode: ColumnWidthMode.fitByCellValue,
-                            columnName: 'Email',
-                            label: Container(
-                              padding: const EdgeInsets.only(right: 16),
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                'Email',
-                                style: TextStyle(fontWeight: FontWeight.w700),
-                                overflow: TextOverflow.ellipsis,
+                            GridColumn(
+                              columnWidthMode: ColumnWidthMode.fitByCellValue,
+                              columnName: 'Email',
+                              label: Container(
+                                padding: const EdgeInsets.only(right: 16),
+                                alignment: Alignment.centerLeft,
+                                child: const Text(
+                                  'Email',
+                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
-                          ),
-                          GridColumn(
-                            columnWidthMode: ColumnWidthMode.lastColumnFill,
-                            columnName: 'Password',
-                            label: Container(
-                              padding: const EdgeInsets.only(right: 16),
-                              alignment: Alignment.centerLeft,
-                              child: const Text(
-                                'Password',
-                                style: TextStyle(fontWeight: FontWeight.w700),
-                                overflow: TextOverflow.ellipsis,
+                            GridColumn(
+                              columnWidthMode: ColumnWidthMode.lastColumnFill,
+                              columnName: 'Password',
+                              label: Container(
+                                padding: const EdgeInsets.only(right: 16),
+                                alignment: Alignment.centerLeft,
+                                child: const Text(
+                                  'Password',
+                                  style: TextStyle(fontWeight: FontWeight.w700),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
+                        (dataSource.data.isEmpty)
+                            ? const Center(child: Text('Data Kosong'))
+                            : const SizedBox.shrink(),
+                      ]),
                     ),
                   ),
                   const SizedBox(
@@ -179,7 +189,7 @@ class ManageAccountTable {
                                 : 1
                             : countPage.ceil().toDouble(),
                         direction: Axis.horizontal,
-                        delegate: _dataSource,
+                        delegate: dataSource,
                       ),
                     ),
                   ),
