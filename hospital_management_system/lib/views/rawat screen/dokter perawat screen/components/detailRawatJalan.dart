@@ -1,16 +1,16 @@
 import 'package:date_format/date_format.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/models/updateRawat_model.dart';
-import 'package:hospital_management_system/viewModels/login%20viewModel/login_viewModel.dart';
+import 'package:hospital_management_system/models/rawatJalan/data/rawatJalan_model.dart';
+import 'package:hospital_management_system/models/rawatJalan/update/rawatJalan_update_model.dart';
+import 'package:hospital_management_system/viewModels/login_viewModel/login_viewModel.dart';
 import 'package:provider/provider.dart';
 
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../../../models/rawatJalan_data_model.dart';
 import '../../../../utilities/common/case_dialog.dart';
 import '../../../../utilities/common/progress_dialog.dart';
-import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
+import '../../../../viewModels/rawatJalan_viewModel/rawatJalan_viewModel.dart';
 
 import '/views/rawat%20screen/dokter%20perawat%20screen/components/keteranganRawat_dokterPerawat.dart';
 import '../../../../utilities/common/input.dart';
@@ -46,7 +46,7 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
     RawatJalanViewModel functionProvider = context.read<RawatJalanViewModel>();
     RawatJalanViewModel valueProvider = context.watch<RawatJalanViewModel>();
     LoginProvider loginValue = context.watch<LoginProvider>();
-    List<DataRawatJalan>? putDataRawat;
+    List<RawatJalanModel>? putDataRawat;
     if (valueProvider.search.isNotEmpty ||
         valueProvider.searchController.text.isNotEmpty) {
       putDataRawat = valueProvider.search;
@@ -105,7 +105,7 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
 
   Widget showDetail(
       BuildContext context,
-      List<DataRawatJalan> putDataRawat,
+      List<RawatJalanModel> putDataRawat,
       int indexOfPage,
       RawatJalanViewModel functionProvider,
       RawatJalanViewModel valueProvider,
@@ -121,7 +121,7 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
     ];
 
     final List<String> noAntrian = ['G-', 'K-', 'T-', 'U-'];
-    String selected = putDataRawat[indexOfPage].nomerAntrian!.substring(0, 1);
+    String selected = putDataRawat[indexOfPage].noAntrian!.substring(0, 1);
     _jadwalRawatController.text = putDataRawat[indexOfPage].jadwalRawatJalan!;
 
     if (valueProvider.dateJ != null && valueProvider.timeJ != null) {
@@ -448,11 +448,11 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
                                     padding: const EdgeInsets.only(top: 12),
                                     child: Input(
                                       initialValue: putDataRawat[indexOfPage]
-                                          .nomerAntrian!
+                                          .noAntrian!
                                           .substring(2),
                                       keyboardType: TextInputType.number,
                                       prefixText: putDataRawat[indexOfPage]
-                                          .nomerAntrian!
+                                          .noAntrian!
                                           .substring(0, 2),
                                       borderRadius:
                                           const BorderRadius.all(Radius.zero),
@@ -509,10 +509,10 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
                               padding: const EdgeInsets.only(top: 12),
                               child: Input(
                                 initialValue: putDataRawat[indexOfPage]
-                                    .nomerAntrian!
+                                    .noAntrian!
                                     .substring(2),
                                 prefixText: putDataRawat[indexOfPage]
-                                    .nomerAntrian!
+                                    .noAntrian!
                                     .substring(0, 2),
                                 keyboardType: TextInputType.number,
                                 borderRadius:
@@ -651,7 +651,7 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
                                           .updateDataApiRawatJalanAdmin(
                                               context,
                                               putDataRawat[indexOfPage].id!,
-                                              UpdateRawatData(
+                                              RawatJalanUpdateModel(
                                                   jadwalRawatJalan:
                                                       _jadwalRawatController
                                                           .text),
@@ -761,7 +761,7 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
                                           .updateDataApiRawatJalanAdmin(
                                               context,
                                               putDataRawat[indexOfPage].id!,
-                                              UpdateRawatData(
+                                              RawatJalanUpdateModel(
                                                   jadwalRawatJalan:
                                                       _jadwalRawatController
                                                           .text),

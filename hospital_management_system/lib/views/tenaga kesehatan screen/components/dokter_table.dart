@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/models/dokter_data_model.dart';
+import 'package:hospital_management_system/models/dokter/data/dokter_model.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../utilities/constants/responsive.dart';
-import '../../../viewModels/dokter perawat viewModel/dokter_viewModel.dart';
+import '../../../viewModels/dokter_viewModel/dokter_viewModel.dart';
 import '/utilities/constants/color.dart';
 import 'dataDokter_source_table.dart';
 import 'detailData_dokter.dart';
@@ -25,7 +25,7 @@ class DokterTable {
           ),
         );
       } else if (value.fetchStatusDokter == StatusFetchDokter.letsGo) {
-        List<DataDokter>? val;
+        List<DokterModel>? val;
 
         if (value.search.isNotEmpty || value.searchController.text.isNotEmpty) {
           val = value.search;

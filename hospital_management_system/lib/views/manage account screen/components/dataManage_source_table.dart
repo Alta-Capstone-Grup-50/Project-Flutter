@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/models/account/data/account_model.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../../models/dokter_data_model.dart';
-import '../../../models/manage_data_model.dart';
-import '../../../viewModels/dokter perawat viewModel/dokter_viewModel.dart';
-import '../../../viewModels/manage viewModel/manage_viewModel.dart';
+import '../../../viewModels/manage_viewModel/manage_viewModel.dart';
 
 class ManageDataSourceTable extends DataGridSource {
-  List<DataManage> _data;
-  List<DataManage> get data => _data;
+  final List<AccountModel> _data;
+  List<AccountModel> get data => _data;
 
-  late List<DataManage> _paginatedData;
+  late List<AccountModel> _paginatedData;
 
   int rowsPerPage = 6;
   int restOfPage = 0;

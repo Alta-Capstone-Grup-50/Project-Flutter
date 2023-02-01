@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/models/rawatJalan/data/rawatJalan_model.dart';
 import 'package:hospital_management_system/utilities/common/case_dialog.dart';
-import 'package:hospital_management_system/viewModels/login%20viewModel/login_viewModel.dart';
+import 'package:hospital_management_system/viewModels/login_viewModel/login_viewModel.dart';
 
 import 'package:provider/provider.dart';
 
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../../../models/rawatJalan_data_model.dart';
 import '../../../../utilities/common/progress_dialog.dart';
-import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
+import '../../../../viewModels/rawatJalan_viewModel/rawatJalan_viewModel.dart';
 
 class RawatDataSourceTable extends DataGridSource {
-  final List<DataRawatJalan> _data;
-  List<DataRawatJalan> _paginatedData = [];
+  final List<RawatJalanModel> _data;
+  List<RawatJalanModel> _paginatedData = [];
   RawatJalanViewModel? _valProvider;
   LoginProvider? _logProvider;
   final DataPagerController _controller = DataPagerController();
@@ -22,7 +22,7 @@ class RawatDataSourceTable extends DataGridSource {
   int _restOfPage = 0;
   int _startIndex = 0;
 
-  List<DataRawatJalan> get data => _data;
+  List<RawatJalanModel> get data => _data;
   int get rowsPerPage => _rowsPerPage;
   int get startIndex => _startIndex;
 
@@ -192,8 +192,7 @@ class RawatDataSourceTable extends DataGridSource {
             columnName: 'Jadwal Rawat Jalan',
             value: dataGridRow.jadwalRawatJalan ?? '-'),
         DataGridCell(
-            columnName: 'Nomor Antrian',
-            value: dataGridRow.nomerAntrian ?? '-'),
+            columnName: 'Nomor Antrian', value: dataGridRow.noAntrian ?? '-'),
         DataGridCell(
           columnName: 'Proses',
           value: Checkbox(
@@ -208,11 +207,11 @@ class RawatDataSourceTable extends DataGridSource {
                             "Apa anda sudah yakin untuk menyelesaikan rawat jalan\npasien ini pada hari ini?",
                         onPressed: () async {
                       Navigator.of(contexts).pop();
-                      _loadingWidget!.show();
+                      await _loadingWidget!.show();
                       await Future.delayed(
                         const Duration(seconds: 2),
                         () {
-                          dataGridRow.proses = newValue;
+                          dataGridRow = dataGridRow.copyWith(proses: newValue);
                           _valProvider!.putProsesAntrian(
                               dataGridRow.id!, dataGridRow.proses!);
                           _valProvider!.listRawatJalanData!.sort((a, b) => a

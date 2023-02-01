@@ -1,14 +1,14 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/models/perawat_data_model.dart';
-import 'package:hospital_management_system/viewModels/dokter%20perawat%20viewModel/perawat_viewModel.dart';
+import 'package:hospital_management_system/models/perawat/data/perawat_model.dart';
+import 'package:hospital_management_system/models/perawat/update/perawat_update_model.dart';
+import 'package:hospital_management_system/viewModels/perawat_viewModel/perawat_viewModel.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../../models/updatePerawat_model.dart';
 import '../../../utilities/common/case_dialog.dart';
 import '../../../utilities/common/progress_dialog.dart';
-import '../../../viewModels/login viewModel/login_viewModel.dart';
+import '../../../viewModels/login_viewModel/login_viewModel.dart';
 import '/utilities/common/input.dart';
 import '/utilities/constants/color.dart';
 import '/utilities/constants/responsive.dart';
@@ -57,7 +57,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
     PerawatViewModel valueProvider = context.watch<PerawatViewModel>();
     LoginProvider loginValue = context.watch<LoginProvider>();
 
-    List<DataPerawat>? putDataPerawat;
+    List<PerawatModel>? putDataPerawat;
     if (valueProvider.search.isNotEmpty ||
         valueProvider.searchController.text.isNotEmpty) {
       putDataPerawat = valueProvider.search;
@@ -129,7 +129,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
 
   Widget showDetail(
       BuildContext context,
-      List<DataPerawat> putDataPerawat,
+      List<PerawatModel> putDataPerawat,
       PerawatViewModel functionProvider,
       PerawatViewModel valueProvider,
       LoginProvider loginValue,
@@ -143,15 +143,14 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
     String? hours = splitJadwal?[1] ?? '';
 
     _sipController.text = putDataPerawat[indexOfPage].sip ?? '-';
-    _namaController.text = putDataPerawat[indexOfPage].namaPerawat ?? '-';
+    _namaController.text = putDataPerawat[indexOfPage].nama ?? '-';
     _poliController.text = putDataPerawat[indexOfPage].poli ?? '-';
     _jenisKelController.text = putDataPerawat[indexOfPage].jenisKelamin ?? '-';
 
-    _nomorTelfonController.text =
-        putDataPerawat[indexOfPage].nomorTelfon ?? '-';
+    _nomorTelfonController.text = putDataPerawat[indexOfPage].noTelepon ?? '-';
     _jabatanController.text = putDataPerawat[indexOfPage].jabatan ?? '-';
 
-    _strController.text = putDataPerawat[indexOfPage].nomorStr ?? '-';
+    _strController.text = putDataPerawat[indexOfPage].noStr ?? '-';
     _jadwalPrakController.text = putDataPerawat[indexOfPage].jadwalKerja ?? '-';
 
     List<String> poli = ['Umum', 'Gigi', 'THT', 'Kandungan'];
@@ -628,7 +627,7 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                                       Navigator.pop(context);
                                       await functionProvider.deletePerawatData(
                                           context,
-                                          putDataPerawat[indexOfPage].idUser!,
+                                          putDataPerawat[indexOfPage].id!,
                                           loadingWidget);
                                       Future.delayed(const Duration(seconds: 2),
                                           () async {
@@ -669,16 +668,16 @@ class _DetailDataPerawatState extends State<DetailDataPerawat> {
                                 Navigator.pop(context);
                                 await functionProvider.updatePerawatData(
                                     context,
-                                    putDataPerawat[indexOfPage].idUser!,
-                                    UpdatePerawatModel(
+                                    putDataPerawat[indexOfPage].id!,
+                                    PerawatUpdateModel(
                                       sip: _sipController.text,
                                       nama: _namaController.text,
                                       jenisKelamin: _jenisKelController.text,
-                                      nomorTelfon: _nomorTelfonController.text,
+                                      noTelepon: _nomorTelfonController.text,
                                       poli: _poliController.text,
                                       jadwalKerja: '$day $hours WIB',
                                       jabatan: _jabatanController.text,
-                                      nomorStr: _strController.text,
+                                      noStr: _strController.text,
                                     ),
                                     loadingWidget);
                                 Future.delayed(const Duration(seconds: 2),

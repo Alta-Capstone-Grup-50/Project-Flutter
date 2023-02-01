@@ -1,12 +1,12 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/models/keterangan/keterangan_model.dart';
 import 'package:hospital_management_system/utilities/constants/color.dart';
 import 'package:hospital_management_system/views/rawat%20screen/dokter%20perawat%20screen/components/history_keterangan.dart';
 import 'package:provider/provider.dart';
-import '../../../../models/keterangan_model.dart';
 import '../../../../utilities/common/progress_dialog.dart';
-import '../../../../viewModels/login viewModel/login_viewModel.dart';
-import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
+import '../../../../viewModels/login_viewModel/login_viewModel.dart';
+import '../../../../viewModels/rawatJalan_viewModel/rawatJalan_viewModel.dart';
 import '/utilities/common/input.dart';
 
 import '/utilities/constants/responsive.dart';
@@ -25,7 +25,7 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     RawatJalanViewModel functionProvider = context.read<RawatJalanViewModel>();
-    LoginProvider loginFunction = context.watch<LoginProvider>();
+    LoginProvider loginFunction = context.read<LoginProvider>();
     final ProgressDialog loadingWidget = ProgressDialog(
       context,
       isDismissible: false,
@@ -207,7 +207,7 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
                                           onPressed: () async {
                                         Navigator.of(context).pop();
                                         functionProvider.createKeterangan(
-                                          DataKeterangan(
+                                          KeteranganModel(
                                               id: id,
                                               namaPasien: namePasien,
                                               keterangan:
@@ -218,12 +218,15 @@ class KeteranganRawatDokterPerawat extends StatelessWidget {
                                                   locale:
                                                       const IndonesianDateLocale())),
                                         );
-                                        await functionProvider
-                                            .putProsesKeterangan(
-                                                context,
-                                                id,
-                                                _keteranganController.text,
-                                                loadingProgres);
+                                        await functionProvider.putProsesKeterangan(
+                                            context,
+                                            id,
+                                            _keteranganController.text,
+                                            formatDate(DateTime.now(),
+                                                [dd, ' ', MM, ' ', yyyy, ' '],
+                                                locale:
+                                                    const IndonesianDateLocale()),
+                                            loadingProgres);
                                         if (value.postStatusKeterangan ==
                                             StatusPostKeterangan.isLoading) {
                                           loadingProgres.show();

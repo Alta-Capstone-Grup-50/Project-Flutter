@@ -1,18 +1,15 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import '/viewModels/pasien%20viewModel/pasien_viewModel.dart';
+import 'package:hospital_management_system/models/pasien/data/pasien_model.dart';
+import '../../../viewModels/pasien_viewModel/pasien_viewModel.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../../models/pasien_data_model.dart';
-
 class PasienDataSourceTable extends DataGridSource {
-  List<DataPasien> _data;
-  List<DataPasien> get data => _data;
+  final List<PasienModel> _data;
+  List<PasienModel> get data => _data;
 
-  List<DataPasien> _paginatedData = [];
-  List<DataPasien> get paginatedData => _paginatedData;
+  List<PasienModel> _paginatedData = [];
+  List<PasienModel> get paginatedData => _paginatedData;
 
   int rowsPerPage = 6;
   int restOfPage = 0;
@@ -27,6 +24,7 @@ class PasienDataSourceTable extends DataGridSource {
     _valProvider = context.read<PasienViewModel>();
 
     _paginatedData = _data.getRange(0, _data.length).toList(growable: false);
+
     restOfPage = _paginatedData.length - startIndex;
 
     buildPaginatedDataGridRows();
@@ -173,7 +171,7 @@ class PasienDataSourceTable extends DataGridSource {
                 dataGridRow.nama ?? '-', _valProvider!.searchController.text)),
         DataGridCell(
             columnName: 'Jenis Kelamin',
-            value: (dataGridRow.jenisKelamin!.isNotEmpty)
+            value: (dataGridRow.jenisKelamin != null)
                 ? (dataGridRow.jenisKelamin == 'L')
                     ? 'Laki - laki'
                     : 'Perempuan'
@@ -181,7 +179,7 @@ class PasienDataSourceTable extends DataGridSource {
         DataGridCell(columnName: 'Alamat', value: dataGridRow.alamat ?? '-'),
         DataGridCell(columnName: 'Poli', value: dataGridRow.poli ?? '-'),
         DataGridCell(
-            columnName: 'Nomor Telepon', value: dataGridRow.noHp ?? '-'),
+            columnName: 'Nomor Telepon', value: dataGridRow.noTelepon ?? '-'),
       ]);
     }).toList(growable: false);
   }

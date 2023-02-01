@@ -1,10 +1,11 @@
 import 'dart:async';
 
-import 'package:hospital_management_system/models/detailAkun_model.dart';
+import 'package:encrypt/encrypt.dart';
+import 'package:hospital_management_system/models/account/save/account_save_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../models/akun_model.dart';
-import '../models/openCardDetail_model.dart';
+import '../models/account/validate/account_validate_model.dart';
+import '../models/etc/openCardDetail_model.dart';
 
 class UserPreferences {
   Future<void> saveId({int? id}) async {
@@ -39,7 +40,7 @@ class UserPreferences {
     prefs.remove('poli');
   }
 
-  Future<bool> saveUser(AkunModel user) async {
+  Future<bool> saveUser(AccountValidateModel user) async {
     // Preference Authentication User Akun Model
 
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -51,14 +52,14 @@ class UserPreferences {
     return true;
   }
 
-  Future<AkunModel> getUser() async {
+  Future<AccountValidateModel> getUser() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     int? id = prefs.getInt('id');
     int? code = prefs.getInt('code');
     String? level = prefs.getString('level');
 
-    return AkunModel(
+    return AccountValidateModel(
       id: id,
       code: code,
       level: level,
@@ -76,8 +77,14 @@ class UserPreferences {
   Future<bool> saveLoginDetail(String email, String password) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
+    final key = Key.fromLength(32);
+    final iv = IV.fromLength(8);
+    final encrypter = Encrypter(Salsa20(key));
+
+    final encryptedPassword = encrypter.encrypt(password, iv: iv);
+
     prefs.setString('detailEmail', email);
-    prefs.setString('detailPassword', password);
+    prefs.setString('detailPassword', encryptedPassword.base64);
 
     return true;
   }
@@ -88,9 +95,15 @@ class UserPreferences {
     String? detailEmail = prefs.getString('detailEmail');
     String? detailPassword = prefs.getString('detailPassword');
 
-    return DetailAkunModel(
+    final key = Key.fromLength(32);
+    final iv = IV.fromLength(8);
+    final encrypter = Encrypter(Salsa20(key));
+
+    final decryptedPassword = encrypter.decrypt64(detailPassword!, iv: iv);
+
+    return AccountSaveModel(
       email: detailEmail ?? '',
-      password: detailPassword ?? '',
+      password: decryptedPassword,
     );
   }
 

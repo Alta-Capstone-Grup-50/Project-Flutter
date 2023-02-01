@@ -1,14 +1,14 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/models/dokter_data_model.dart';
-import 'package:hospital_management_system/models/updateDokter_model.dart';
-import 'package:hospital_management_system/viewModels/dokter%20perawat%20viewModel/dokter_viewModel.dart';
+import 'package:hospital_management_system/models/dokter/data/dokter_model.dart';
+import 'package:hospital_management_system/models/dokter/update/dokter_update_model.dart';
+import 'package:hospital_management_system/viewModels/dokter_viewModel/dokter_viewModel.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../utilities/common/case_dialog.dart';
 import '../../../utilities/common/progress_dialog.dart';
-import '../../../viewModels/login viewModel/login_viewModel.dart';
+import '../../../viewModels/login_viewModel/login_viewModel.dart';
 import '/utilities/common/input.dart';
 import '/utilities/constants/color.dart';
 import '/utilities/constants/responsive.dart';
@@ -55,7 +55,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
     DokterViewModel valueProvider = context.watch<DokterViewModel>();
     LoginProvider loginValue = context.watch<LoginProvider>();
 
-    List<DataDokter>? putDataDokter;
+    List<DokterModel>? putDataDokter;
     if (valueProvider.search.isNotEmpty ||
         valueProvider.searchController.text.isNotEmpty) {
       putDataDokter = valueProvider.search;
@@ -127,7 +127,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
 
   Widget showDetail(
       BuildContext context,
-      List<DataDokter> putDataDokter,
+      List<DokterModel> putDataDokter,
       DokterViewModel functionProvider,
       DokterViewModel valueProvider,
       LoginProvider loginValue,
@@ -141,13 +141,13 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
     String? hours = splitJadwal?[1] ?? '';
 
     _sipController.text = putDataDokter[indexOfPage].sip ?? '-';
-    _namaController.text = putDataDokter[indexOfPage].namaDokter ?? '-';
+    _namaController.text = putDataDokter[indexOfPage].nama ?? '-';
     _poliController.text = putDataDokter[indexOfPage].poli ?? '-';
     _jenisKelController.text = putDataDokter[indexOfPage].jenisKelamin ?? '-';
 
-    _nomorTelfonController.text = putDataDokter[indexOfPage].nomorTelfon ?? '-';
+    _nomorTelfonController.text = putDataDokter[indexOfPage].noTelepon ?? '-';
 
-    _strController.text = putDataDokter[indexOfPage].nomorStr ?? '-';
+    _strController.text = putDataDokter[indexOfPage].noStr ?? '-';
 
     _jadwalPrakController.text =
         putDataDokter[indexOfPage].jadwalPraktek ?? '-';
@@ -610,7 +610,7 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                       Navigator.pop(context);
                                       await functionProvider.deleteDokterData(
                                           context,
-                                          putDataDokter[indexOfPage].idUser!,
+                                          putDataDokter[indexOfPage].id!,
                                           loadingWidget);
                                       Future.delayed(const Duration(seconds: 2),
                                           () async {
@@ -650,15 +650,15 @@ class _DetailDataDokterState extends State<DetailDataDokter> {
                                 Navigator.pop(context);
                                 await functionProvider.updateDokterData(
                                     context,
-                                    putDataDokter[indexOfPage].idUser!,
-                                    UpdateDokterModel(
+                                    putDataDokter[indexOfPage].id!,
+                                    DokterUpdateModel(
                                       sip: _sipController.text,
                                       nama: _namaController.text,
                                       jenisKelamin: _jenisKelController.text,
-                                      nomorTelfon: _nomorTelfonController.text,
+                                      noTelepon: _nomorTelfonController.text,
                                       poli: _poliController.text,
                                       jadwalPraktek: '$day $hours WIB',
-                                      nomorStr: _strController.text,
+                                      noStr: _strController.text,
                                     ),
                                     loadingWidget);
                                 Future.delayed(const Duration(seconds: 2),

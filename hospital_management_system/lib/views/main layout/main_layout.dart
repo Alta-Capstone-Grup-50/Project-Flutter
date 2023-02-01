@@ -6,8 +6,8 @@ import 'package:hospital_management_system/views/main%20layout/dropdown.dart';
 import 'package:provider/provider.dart';
 import '../../utilities/common/case_dialog.dart';
 import '../../utilities/constants/color.dart';
-import '../../viewModels/login viewModel/login_viewModel.dart';
-import '../../viewModels/main layout viewModel/mainLayout_viewModel.dart';
+import '../../viewModels/login_viewModel/login_viewModel.dart';
+import '../../viewModels/main_viewModel/mainLayout_viewModel.dart';
 import '../drawer/drawer.dart';
 import '/Views/main%20layout/inRoute.dart';
 

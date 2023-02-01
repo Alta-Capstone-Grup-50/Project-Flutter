@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/models/account/data/account_model.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../../models/manage_data_model.dart';
 import '../../../utilities/common/case_dialog.dart';
 import '../../../utilities/common/progress_dialog.dart';
-import '../../../viewModels/manage viewModel/manage_viewModel.dart';
+import '../../../viewModels/manage_viewModel/manage_viewModel.dart';
 import '/utilities/common/input.dart';
 import '/utilities/constants/color.dart';
 import '/utilities/constants/responsive.dart';
@@ -27,7 +27,7 @@ class DetailDataManage extends StatelessWidget {
     ManageViewModel valueProvider = context.watch<ManageViewModel>();
     ManageViewModel functionProvider = context.read<ManageViewModel>();
 
-    List<DataManage>? putDataManage = [];
+    List<AccountModel>? putDataManage = [];
     if (valueProvider.search.isNotEmpty ||
         valueProvider.searchController.text.isNotEmpty) {
       putDataManage = valueProvider.search;
@@ -84,7 +84,7 @@ class DetailDataManage extends StatelessWidget {
 
   Widget showDetail(
       BuildContext context,
-      List<DataManage> putDataManage,
+      List<AccountModel> putDataManage,
       ManageViewModel valueProvider,
       ManageViewModel functionProvider,
       int indexOfPage,

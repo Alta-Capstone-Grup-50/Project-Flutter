@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/models/createManage_model.dart';
-import 'package:hospital_management_system/models/radio_model.dart';
+import 'package:hospital_management_system/models/account/create/account_create_model.dart';
+import 'package:hospital_management_system/models/etc/radio_model.dart';
 import 'package:hospital_management_system/utilities/constants/validate.dart';
-import 'package:hospital_management_system/viewModels/manage%20viewModel/manage_viewModel.dart';
+import 'package:hospital_management_system/viewModels/manage_viewModel/manage_viewModel.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utilities/common/case_dialog.dart';
@@ -169,7 +169,7 @@ class _AddAccountState extends State<AddAccount> {
                     manageFunction.createAkunApi(
                         context,
                         loadingWidget,
-                        CreateAccount(
+                        AccountCreateModel(
                           nama: _namaController.text,
                           email: _emailController.text,
                           password: _passwordController.text,

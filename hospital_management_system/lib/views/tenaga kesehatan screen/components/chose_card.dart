@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../../utilities/constants/color.dart';
-import '/viewModels/home viewModel/home_viewModel.dart';
+import '/viewModels/home_viewModel/home_viewModel.dart';
 import 'package:provider/provider.dart';
 
 import '../../../utilities/constants/responsive.dart';

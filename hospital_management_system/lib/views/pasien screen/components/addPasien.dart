@@ -1,7 +1,7 @@
 import 'package:date_format/date_format.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/models/createPasien_model.dart';
+import 'package:hospital_management_system/models/pasien/create/pasien_create_model.dart';
 import 'package:hospital_management_system/utilities/constants/validate.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +10,7 @@ import '../../../utilities/common/progress_dialog.dart';
 import '/utilities/common/input.dart';
 import '/utilities/constants/color.dart';
 import '/utilities/constants/responsive.dart';
-import '/viewModels/pasien viewModel/pasien_viewModel.dart';
+import '../../../viewModels/pasien_viewModel/pasien_viewModel.dart';
 
 class AddAccount extends StatefulWidget {
   const AddAccount({Key? key}) : super(key: key);
@@ -518,14 +518,14 @@ class _AddAccountState extends State<AddAccount> {
                                   await functionProvider.addPasienData(
                                       context,
                                       loadingWidget,
-                                      CreatePasienData(
+                                      PasienCreateModel(
                                           nik: _nikController.text,
                                           nama: _namacontroller.text,
                                           jenisKelamin:
                                               _jenisKelController.text,
                                           poli: _jenisPolController.text,
                                           alamat: _alamatController.text,
-                                          noHp: _noTelController.text,
+                                          noTelepon: _noTelController.text,
                                           tempatLahir:
                                               _tempatLahController.text,
                                           tanggalLahir:

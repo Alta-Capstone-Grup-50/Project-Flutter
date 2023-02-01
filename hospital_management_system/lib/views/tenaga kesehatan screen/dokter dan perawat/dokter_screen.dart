@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/viewModels/dokter%20perawat%20viewModel/dokter_viewModel.dart';
+import 'package:hospital_management_system/viewModels/dokter_viewModel/dokter_viewModel.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 

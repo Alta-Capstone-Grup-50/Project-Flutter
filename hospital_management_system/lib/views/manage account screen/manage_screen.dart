@@ -3,7 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 import '../../../utilities/constants/responsive.dart';
-import '../../viewModels/manage viewModel/manage_viewModel.dart';
+import '../../viewModels/manage_viewModel/manage_viewModel.dart';
 import '/views/main%20layout/main_layout.dart';
 import '/utilities/common/input.dart';
 import '/utilities/constants/color.dart';

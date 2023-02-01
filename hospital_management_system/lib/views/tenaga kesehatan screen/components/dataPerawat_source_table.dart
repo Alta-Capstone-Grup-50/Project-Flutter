@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/models/perawat/data/perawat_model.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../../models/perawat_data_model.dart';
-import '../../../viewModels/dokter perawat viewModel/perawat_viewModel.dart';
+import '../../../viewModels/perawat_viewModel/perawat_viewModel.dart';
 
 class PerawatDataSourceTable extends DataGridSource {
-  List<DataPerawat> _data;
-  List<DataPerawat> get data => _data;
+  final List<PerawatModel> _data;
+  List<PerawatModel> get data => _data;
 
-  late List<DataPerawat> _paginatedData;
+  late List<PerawatModel> _paginatedData;
 
   int rowsPerPage = 6;
   int restOfPage = 0;
@@ -149,8 +149,7 @@ class PerawatDataSourceTable extends DataGridSource {
         DataGridCell(
             columnName: 'Nama',
             value: _valProvider!.highlightOccurences(
-                dataGridRow.namaPerawat ?? '-',
-                _valProvider!.searchController.text)),
+                dataGridRow.nama ?? '-', _valProvider!.searchController.text)),
         DataGridCell(
             columnName: 'Jenis Kelamin',
             value: (dataGridRow.jenisKelamin!.isNotEmpty)

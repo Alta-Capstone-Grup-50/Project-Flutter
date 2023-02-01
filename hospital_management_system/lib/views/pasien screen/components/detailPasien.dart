@@ -1,19 +1,19 @@
 import 'package:date_format/date_format.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/models/updatePasien_model.dart';
-import 'package:hospital_management_system/viewModels/login%20viewModel/login_viewModel.dart';
+import 'package:hospital_management_system/models/pasien/data/pasien_model.dart';
+import 'package:hospital_management_system/models/pasien/update/pasien_update_model.dart';
+import 'package:hospital_management_system/viewModels/login_viewModel/login_viewModel.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../utilities/common/case_dialog.dart';
 import '../../../utilities/common/progress_dialog.dart';
 import '../../../utilities/constants/validate.dart';
-import '/models/pasien_data_model.dart';
 import '/utilities/common/input.dart';
 import '/utilities/constants/color.dart';
 import '/utilities/constants/responsive.dart';
-import '/viewModels/pasien viewModel/pasien_viewModel.dart';
+import '../../../viewModels/pasien_viewModel/pasien_viewModel.dart';
 
 class DetailPasien extends StatefulWidget {
   DetailPasien({Key? key, required this.query, required this.queryPage})
@@ -28,9 +28,6 @@ class DetailPasien extends StatefulWidget {
 
 class _DetailPasienState extends State<DetailPasien> {
   final _scrollController = ScrollController();
-
-  final GlobalKey<FormState> _formKey =
-      GlobalKey<FormState>(debugLabel: 'add pasien');
 
   final TextEditingController _nikController = TextEditingController();
 
@@ -70,7 +67,7 @@ class _DetailPasienState extends State<DetailPasien> {
     PasienViewModel valueProvider = context.watch<PasienViewModel>();
     LoginProvider loginValue = context.watch<LoginProvider>();
 
-    List<DataPasien>? putDataPasien;
+    List<PasienModel>? putDataPasien;
     if (valueProvider.search.isNotEmpty ||
         valueProvider.searchController.text.isNotEmpty) {
       putDataPasien = functionProvider.search;
@@ -133,7 +130,7 @@ class _DetailPasienState extends State<DetailPasien> {
 
   Widget showDetail(
       BuildContext context,
-      List<DataPasien> putDataPasien,
+      List<PasienModel> putDataPasien,
       PasienViewModel valueProvider,
       PasienViewModel functionProvider,
       LoginProvider loginValue,
@@ -144,7 +141,7 @@ class _DetailPasienState extends State<DetailPasien> {
     _jenisKelController.text = putDataPasien[indexOfPage].jenisKelamin!;
     _jenisPolController.text = putDataPasien[indexOfPage].poli!;
     _alamatController.text = putDataPasien[indexOfPage].alamat!;
-    _noTelController.text = putDataPasien[indexOfPage].noHp!;
+    _noTelController.text = putDataPasien[indexOfPage].noTelepon!;
     _tempatLahController.text = putDataPasien[indexOfPage].tempatLahir!;
     _tanggalLahirController.text = putDataPasien[indexOfPage].tanggalLahir!;
 
@@ -227,8 +224,8 @@ class _DetailPasienState extends State<DetailPasien> {
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: DropdownButtonFormField2(
-                      hint: Text(
-                          (putDataPasien[indexOfPage].jenisKelamin!.isNotEmpty)
+                      hint:
+                          Text((putDataPasien[indexOfPage].jenisKelamin != null)
                               ? (putDataPasien[indexOfPage].jenisKelamin == 'L')
                                   ? 'Laki - laki'
                                   : 'Perempuan'
@@ -317,6 +314,7 @@ class _DetailPasienState extends State<DetailPasien> {
                         if (value == null) {
                           return 'Data poli tidak boleh kosong';
                         }
+                        return null;
                       }),
                     ),
                   ),
@@ -529,7 +527,7 @@ class _DetailPasienState extends State<DetailPasien> {
                                           );
                                         },
                                         style: ElevatedButton.styleFrom(
-                                            primary: Colors.red),
+                                            backgroundColor: Colors.red),
                                         child: Text(
                                           'Delete',
                                           style: TextStyle(
@@ -554,8 +552,8 @@ class _DetailPasienState extends State<DetailPasien> {
                                     onPressed: () {
                                       functionProvider.changeEditStatus();
                                     },
-                                    style:
-                                        ElevatedButton.styleFrom(primary: grey),
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: grey),
                                     child: Text(
                                       (valueProvider.hEdit == true)
                                           ? 'Cancel'
@@ -587,14 +585,14 @@ class _DetailPasienState extends State<DetailPasien> {
                                       await functionProvider.updatePasienData(
                                           context,
                                           putDataPasien[indexOfPage].id!,
-                                          UpdatePasienData(
+                                          PasienUpdateModel(
                                             nik: _nikController.text,
                                             nama: _namacontroller.text,
                                             alamat: _alamatController.text,
                                             jenisKelamin:
                                                 _jenisKelController.text,
                                             poli: _jenisPolController.text,
-                                            noHp: _noTelController.text,
+                                            noTelepon: _noTelController.text,
                                             tempatLahir:
                                                 _tempatLahController.text,
                                             tanggalLahir:
@@ -613,7 +611,7 @@ class _DetailPasienState extends State<DetailPasien> {
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  primary: (valueProvider.hEdit == true)
+                                  backgroundColor: (valueProvider.hEdit == true)
                                       ? green.shade400
                                       : primaryColor,
                                 ),
@@ -650,7 +648,7 @@ class _DetailPasienState extends State<DetailPasien> {
                                       );
                                     },
                                     style: ElevatedButton.styleFrom(
-                                        primary: Colors.red),
+                                        backgroundColor: Colors.red),
                                     child: Text(
                                       'Delete',
                                       style: TextStyle(
@@ -674,8 +672,8 @@ class _DetailPasienState extends State<DetailPasien> {
                                     onPressed: () {
                                       functionProvider.changeEditStatus();
                                     },
-                                    style:
-                                        ElevatedButton.styleFrom(primary: grey),
+                                    style: ElevatedButton.styleFrom(
+                                        backgroundColor: grey),
                                     child: Text(
                                       (valueProvider.hEdit == true)
                                           ? 'Cancel'
@@ -707,14 +705,14 @@ class _DetailPasienState extends State<DetailPasien> {
                                       await functionProvider.updatePasienData(
                                           context,
                                           putDataPasien[indexOfPage].id!,
-                                          UpdatePasienData(
+                                          PasienUpdateModel(
                                             nik: _nikController.text,
                                             nama: _namacontroller.text,
                                             alamat: _alamatController.text,
                                             jenisKelamin:
                                                 _jenisKelController.text,
                                             poli: _jenisPolController.text,
-                                            noHp: _noTelController.text,
+                                            noTelepon: _noTelController.text,
                                             tempatLahir:
                                                 _tempatLahController.text,
                                             tanggalLahir:
@@ -733,7 +731,7 @@ class _DetailPasienState extends State<DetailPasien> {
                                   }
                                 },
                                 style: ElevatedButton.styleFrom(
-                                  primary: (valueProvider.hEdit == true)
+                                  backgroundColor: (valueProvider.hEdit == true)
                                       ? green.shade400
                                       : primaryColor,
                                 ),

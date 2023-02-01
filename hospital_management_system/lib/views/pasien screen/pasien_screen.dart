@@ -2,8 +2,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../viewModels/login viewModel/login_viewModel.dart';
-import '../../viewModels/pasien viewModel/pasien_viewModel.dart';
+import '../../viewModels/login_viewModel/login_viewModel.dart';
+import '../../viewModels/pasien_viewModel/pasien_viewModel.dart';
 import '/utilities/constants/responsive.dart';
 import '/utilities/common/input.dart';
 import '/utilities/constants/color.dart';

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/models/manage_data_model.dart';
+import 'package:hospital_management_system/models/account/data/account_model.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '../../../utilities/constants/responsive.dart';
-import '../../../viewModels/manage viewModel/manage_viewModel.dart';
+import '../../../viewModels/manage_viewModel/manage_viewModel.dart';
 import '/utilities/constants/color.dart';
 import 'dataManage_source_table.dart';
 import 'detailData_manage.dart';
@@ -25,7 +25,7 @@ class ManageAccountTable {
           ),
         );
       } else if (value.fetchStatusManage == StatusFetchManage.letsGo) {
-        List<DataManage> val;
+        List<AccountModel> val;
 
         if (value.search.isNotEmpty || value.searchController.text.isNotEmpty) {
           val = value.search;

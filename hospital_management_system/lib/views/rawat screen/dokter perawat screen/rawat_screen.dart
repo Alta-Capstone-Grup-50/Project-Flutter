@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:provider/provider.dart';
 
-import '../../../viewModels/login viewModel/login_viewModel.dart';
-import '../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
+import '../../../viewModels/login_viewModel/login_viewModel.dart';
+import '../../../viewModels/rawatJalan_viewModel/rawatJalan_viewModel.dart';
 import '/views/main%20layout/main_layout.dart';
 import '/views/rawat%20screen/dokter%20perawat%20screen/components/rawat_table.dart';
 

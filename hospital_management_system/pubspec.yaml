@@ -27,6 +27,11 @@ dependencies:
   page_transition: ^2.0.9
   flutter_carousel_slider: ^1.0.9
   flutter_dotenv: ^5.0.2
+
+  freezed_annotation: ^2.2.0
+  json_serializable: ^6.6.0
+  json_annotation: ^4.8.0
+  encrypt: ^5.0.1
   logger: ^1.1.0
 
 dev_dependencies:
@@ -34,6 +39,8 @@ dev_dependencies:
     sdk: flutter
 
   flutter_lints: ^2.0.0
+  build_runner: ^2.3.3
+  freezed: ^2.3.2
 
 flutter:
   uses-material-design: true

@@ -4,7 +4,7 @@ import 'package:flutter_carousel_slider/carousel_slider_transforms.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '/utilities/constants/responsive.dart';
-import '/viewModels/login viewModel/login_viewModel.dart';
+import '/viewModels/login_viewModel/login_viewModel.dart';
 import '../main layout/main_layout.dart';
 import 'components/login_view.dart';
 

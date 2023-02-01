@@ -3,7 +3,7 @@ import 'package:hospital_management_system/utilities/constants/color.dart';
 import 'package:provider/provider.dart';
 
 import '../../utilities/common/case_dialog.dart';
-import '../../viewModels/login viewModel/login_viewModel.dart';
+import '../../viewModels/login_viewModel/login_viewModel.dart';
 
 class CustomDrawer extends StatelessWidget {
   CustomDrawer({Key? key, required this.keyScreens}) : super(key: key);

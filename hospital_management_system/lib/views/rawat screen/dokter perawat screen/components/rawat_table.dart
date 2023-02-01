@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/models/rawatJalan_data_model.dart';
+import 'package:hospital_management_system/models/rawatJalan/data/rawatJalan_model.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../../../viewModels/login viewModel/login_viewModel.dart';
-import '../../../../viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
+import '../../../../viewModels/login_viewModel/login_viewModel.dart';
+import '../../../../viewModels/rawatJalan_viewModel/rawatJalan_viewModel.dart';
 import '/utilities/constants/color.dart';
 import '/utilities/constants/responsive.dart';
 import 'data_source_table.dart';
@@ -36,7 +36,7 @@ class RawatTable {
           ),
         );
       } else if (value.fetchStatusRawat == StatusFetchRawat.letsGo) {
-        List<DataRawatJalan> val;
+        List<RawatJalanModel> val;
 
         if (value.search.isNotEmpty || value.searchController.text.isNotEmpty) {
           val = value.search;

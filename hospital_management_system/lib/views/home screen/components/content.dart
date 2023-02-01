@@ -4,7 +4,7 @@ import 'package:hospital_management_system/views/home%20screen/components/conten
 import 'package:provider/provider.dart';
 
 import '../../../utilities/constants/responsive.dart';
-import '../../../viewModels/home viewModel/home_viewModel.dart';
+import '../../../viewModels/home_viewModel/home_viewModel.dart';
 
 class Content extends StatelessWidget {
   Content({Key? key}) : super(key: key);

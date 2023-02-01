@@ -6,7 +6,7 @@ import '/utilities/constants/responsive.dart';
 import '/Views/home%20screen/components/chose_card.dart';
 import '/Views/home%20screen/components/content.dart';
 import '/Views/main%20layout/main_layout.dart';
-import '/viewModels/home viewModel/home_viewModel.dart';
+import '/viewModels/home_viewModel/home_viewModel.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);

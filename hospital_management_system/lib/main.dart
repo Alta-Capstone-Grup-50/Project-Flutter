@@ -3,27 +3,26 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hospital_management_system/viewModels/manage%20viewModel/manage_viewModel.dart';
+import 'package:hospital_management_system/viewModels/manage_viewModel/manage_viewModel.dart';
 import 'package:hospital_management_system/views/manage%20account%20screen/addAccount_screen.dart';
 import 'package:hospital_management_system/views/manage%20account%20screen/manage_screen.dart';
-import 'package:hospital_management_system/views/testing/ghoib.dart';
+
 import 'package:page_transition/page_transition.dart';
 import 'package:provider/provider.dart';
 
-import 'models/akun_model.dart';
+import 'models/account/validate/account_validate_model.dart';
 
 import '/services/perfs_service.dart';
 import '/utilities/constants/color.dart';
 
-import 'viewModels/dokter perawat viewModel/dokter_viewModel.dart';
-import 'viewModels/dokter perawat viewModel/perawat_viewModel.dart';
-import 'viewModels/rawatJalan viewModel/rawatJalan_viewModel.dart';
-import 'viewModels/home viewModel/home_viewModel.dart';
-import 'viewModels/login viewModel/login_viewModel.dart';
-import 'viewModels/main layout viewModel/mainLayout_viewModel.dart';
-import 'viewModels/pasien viewModel/pasien_viewModel.dart';
+import 'viewModels/dokter_viewModel/dokter_viewModel.dart';
+import 'viewModels/perawat_viewModel/perawat_viewModel.dart';
+import 'viewModels/rawatJalan_viewModel/rawatJalan_viewModel.dart';
+import 'viewModels/home_viewModel/home_viewModel.dart';
+import 'viewModels/login_viewModel/login_viewModel.dart';
+import 'viewModels/main_viewModel/mainLayout_viewModel.dart';
+import 'viewModels/pasien_viewModel/pasien_viewModel.dart';
 
-import 'viewModels/viewModelGhoib.dart';
 import 'views/home%20screen/home_screen.dart';
 import 'views/login%20screen/login_screen.dart';
 import 'views/tenaga kesehatan screen/dokter dan perawat/dokter_screen.dart';
@@ -52,7 +51,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Future<AkunModel> getUserData() => UserPreferences().getUser();
+    Future<AccountValidateModel> getUserData() => UserPreferences().getUser();
 
     return MultiProvider(
       providers: [
@@ -80,15 +79,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: ((context) => ManageViewModel()),
         ),
-        ChangeNotifierProvider(
-          create: ((context) => ArtisDetailViewModel()),
-        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Projek capstone alta kelompok 50',
         theme: ThemeData(primaryColor: primaryColor),
-        home: FutureBuilder<AkunModel>(
+        home: FutureBuilder<AccountValidateModel>(
           future: getUserData(),
           builder: (context, snapshot) {
             switch (snapshot.connectionState) {
@@ -183,14 +179,7 @@ class MyApp extends StatelessWidget {
                 type: PageTransitionType.fade,
                 settings: settings,
               );
-            case '/ghoib':
-              return PageTransition(
-                child:  Ghoib(),
-                duration: const Duration(milliseconds: 50),
-                reverseDuration: const Duration(milliseconds: 50),
-                type: PageTransitionType.fade,
-                settings: settings,
-              );
+
             default:
               return null;
           }

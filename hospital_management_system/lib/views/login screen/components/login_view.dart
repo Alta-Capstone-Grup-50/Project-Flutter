@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -9,7 +7,7 @@ import '/utilities/constants/responsive.dart';
 import '/utilities/common/input.dart';
 import '/utilities/constants/color.dart';
 
-import '/viewModels/login viewModel/login_viewModel.dart';
+import '/viewModels/login_viewModel/login_viewModel.dart';
 import 'warning_dialog.dart';
 
 // ignore: must_be_immutable

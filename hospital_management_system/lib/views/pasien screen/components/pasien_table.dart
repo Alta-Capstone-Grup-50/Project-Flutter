@@ -1,14 +1,15 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:hospital_management_system/viewModels/rawatJalan%20viewModel/rawatJalan_viewModel.dart';
+import 'package:hospital_management_system/models/pasien/data/pasien_model.dart';
+import 'package:hospital_management_system/viewModels/rawatJalan_viewModel/rawatJalan_viewModel.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 import '/utilities/constants/color.dart';
 import '/utilities/constants/responsive.dart';
-import '/viewModels/pasien viewModel/pasien_viewModel.dart';
+import '../../../viewModels/pasien_viewModel/pasien_viewModel.dart';
 
 import 'data_source_table.dart';
 
@@ -29,32 +30,31 @@ class PasienTable {
           ),
         );
       } else if (value.fetchStatusPasien == StatusFetchPasien.letsGo) {
-        var val;
+        List<PasienModel> val;
 
         if (value.search.isNotEmpty || value.searchController.text.isNotEmpty) {
           val = value.search;
         } else {
           val = value.listPasienData;
         }
-        final PasienDataSourceTable _dataSource =
+        final PasienDataSourceTable dataSource =
             PasienDataSourceTable(val, context);
 
         double countPage;
-        if (_dataSource.data.isEmpty) {
+        if (dataSource.data.isEmpty) {
           countPage = 1;
         } else {
-          countPage = _dataSource.data.length / _dataSource.rowsPerPage;
+          countPage = dataSource.data.length / dataSource.rowsPerPage;
         }
 
-        double countPageOfSearch =
-            value.search.length / _dataSource.rowsPerPage;
+        double countPageOfSearch = value.search.length / dataSource.rowsPerPage;
 
         return LayoutBuilder(
           builder: ((context, constraints) => Column(children: [
                 SizedBox(
-                  height: (_dataSource.data.length <= 2)
+                  height: (dataSource.data.length <= 2)
                       ? 160
-                      : (_dataSource.data.length <= 4)
+                      : (dataSource.data.length <= 4)
                           ? 240
                           : 305,
                   child: SfDataGridTheme(
@@ -68,7 +68,7 @@ class PasienTable {
                       children: [
                         SfDataGrid(
                             key: value.keyPasien,
-                            source: _dataSource,
+                            source: dataSource,
                             rowHeight: 40,
                             allowPullToRefresh: true,
                             isScrollbarAlwaysShown: true,
@@ -76,7 +76,7 @@ class PasienTable {
                             onCellTap: (query) {
                               if (query.rowColumnIndex.rowIndex > 0) {
                                 openDetailPasien(
-                                    context, query, _dataSource.startIndex);
+                                    context, query, dataSource.startIndex);
                               } else {
                                 return;
                               }
@@ -166,7 +166,7 @@ class PasienTable {
                                         overflow: TextOverflow.ellipsis,
                                       )))
                             ]),
-                        (_dataSource.data.isEmpty)
+                        (dataSource.data.isEmpty)
                             ? const Center(child: Text('Data Kosong'))
                             : const SizedBox.shrink(),
                       ],
@@ -199,7 +199,7 @@ class PasienTable {
                                   : 1
                               : countPage.ceil().toDouble(),
                           direction: Axis.horizontal,
-                          delegate: _dataSource,
+                          delegate: dataSource,
                         )))
               ])),
         );

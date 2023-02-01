@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:hospital_management_system/models/dokter/data/dokter_model.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-import '../../../models/dokter_data_model.dart';
-import '../../../viewModels/dokter perawat viewModel/dokter_viewModel.dart';
+import '../../../viewModels/dokter_viewModel/dokter_viewModel.dart';
 
 class DokterDataSourceTable extends DataGridSource {
-  List<DataDokter> _data;
-  List<DataDokter> get data => _data;
+  final List<DokterModel> _data;
+  List<DokterModel> get data => _data;
 
-  late List<DataDokter> _paginatedData;
+  late List<DokterModel> _paginatedData;
 
   int rowsPerPage = 6;
   int restOfPage = 0;
@@ -159,8 +159,7 @@ class DokterDataSourceTable extends DataGridSource {
         DataGridCell(
             columnName: 'Nama',
             value: _valProvider!.highlightOccurences(
-                dataGridRow.namaDokter ?? ' ',
-                _valProvider!.searchController.text)),
+                dataGridRow.nama ?? ' ', _valProvider!.searchController.text)),
         DataGridCell(
             columnName: 'Jenis Kelamin',
             value: (dataGridRow.jenisKelamin!.isNotEmpty)
@@ -172,7 +171,7 @@ class DokterDataSourceTable extends DataGridSource {
         DataGridCell(
             columnName: 'Jadwal Praktek',
             value: dataGridRow.jadwalPraktek ?? ' '),
-        DataGridCell(columnName: 'STR', value: dataGridRow.nomorStr ?? ' '),
+        DataGridCell(columnName: 'STR', value: dataGridRow.noStr ?? ' '),
       ]);
     }).toList(growable: false);
   }
