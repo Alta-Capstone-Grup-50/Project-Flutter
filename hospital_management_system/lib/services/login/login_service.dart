@@ -2,11 +2,11 @@ import 'package:hospital_management_system/utilities/constants/api_url.dart';
 import 'package:dio/dio.dart';
 
 class LoginService {
-  final Dio _dio = Dio();
+  Dio dio = Dio();
 
-  Future post(loginData) async {
+  Future post(Map<String, dynamic> loginData) async {
     try {
-      Response response = await _dio.post(
+      Response response = await dio.post(
         ApiUrl.login,
         data: loginData,
         options: Options(

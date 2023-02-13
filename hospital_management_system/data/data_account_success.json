@@ -1,0 +1,23 @@
+{
+  "code": 200,
+  "data": [
+    {
+      "id": 51,
+      "sip": "019209518",
+      "nama": "Gilka Ezrya",
+      "jenisKelamin": "P",
+      "email": "gilkaezrya63@gmail.com",
+      "password": "gikaez123",
+      "level": "Perawat"
+    },
+    {
+      "id": 52,
+      "sip": "019220211",
+      "nama": "Naufal Ulwan",
+      "jenisKelamin": "L",
+      "email": "naufalulwan63@gmail.com",
+      "password": "adanofal123",
+      "level": "Dokter"
+    }
+  ]
+}

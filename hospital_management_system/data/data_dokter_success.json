@@ -1,0 +1,15 @@
+{
+    "code": 200,
+    "data": [
+        {
+            "id": 52,
+            "nama": "Naufal Ulwan",
+            "sip": "125121231231",
+            "jenisKelamin": "L",
+            "jadwalPraktek": "Senin-Sabtu 08.00-16.00 WIB",
+            "poli": "Gigi",
+            "noTelepon": "082124293938",
+            "noStr": "29835912741872012"
+        }
+    ]
+}

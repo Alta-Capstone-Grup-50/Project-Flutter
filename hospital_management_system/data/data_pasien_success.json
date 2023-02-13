@@ -1,0 +1,29 @@
+{
+    "code": 200,
+    "data": [
+        {
+            "id": 4,
+            "nik": "35111104067530211",
+            "nama": "Jaela Nur Puspita Sari",
+            "jenisKelamin": "P",
+            "poli": "Kandungan",
+            "namaDokter": "",
+            "alamat": "Jl Diponogoro 5 No 120 RT 02 RW 10 Bekasi",
+            "noTelepon": "08213123124",
+            "tempatLahir": "Bekasi",
+            "tanggalLahir": "21-04-2000"
+        },
+        {
+            "id": 1,
+            "nik": "35111105057530215",
+            "nama": "Nurhuda Bikhoir",
+            "jenisKelamin": "L",
+            "poli": "Umum",
+            "namaDokter": "",
+            "alamat": "Jl KH Wahid Hasyim no 10 RT 30 RW 09 Malang",
+            "noTelepon": "082122019283",
+            "tempatLahir": "Malang",
+            "tanggalLahir": "7 Desember 1994"
+        }
+    ]
+}

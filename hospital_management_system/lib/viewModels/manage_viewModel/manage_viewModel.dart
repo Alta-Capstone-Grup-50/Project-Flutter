@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hospital_management_system/models/account/create/account_create_model.dart';
 import 'package:hospital_management_system/models/account/data/account_model.dart';
@@ -32,7 +33,7 @@ class ManageViewModel extends ChangeNotifier {
   List<AccountModel> get search => _search;
   List<AccountModel> get listManageData => _listManageData;
 
-  AccountService service = AccountService();
+  AccountService service = AccountService(dio: Dio());
 
   TextEditingController searchController = TextEditingController();
 
@@ -73,7 +74,9 @@ class ManageViewModel extends ChangeNotifier {
     final Map<String, dynamic> createData = data.toJson();
 
     await Future.delayed(const Duration(seconds: 2), () {
-      CreateAccountService().createAccount(createData).then((response) async {
+      CreateAccountService(dio: Dio())
+          .createAccount(createData)
+          .then((response) async {
         if (response.statusCode! >= 200 && response.statusCode! < 300) {
           _result = {
             'status': true,
@@ -135,7 +138,9 @@ class ManageViewModel extends ChangeNotifier {
   ) async {
     await progressWidget.show();
 
-    DeleteAccountService().deleteAccount(id.toString()).then((response) {
+    DeleteAccountService(dio: Dio())
+        .deleteAccount(id.toString())
+        .then((response) {
       if (response.statusCode! >= 200 && response.statusCode! < 300) {
         progressWidget.hide();
 

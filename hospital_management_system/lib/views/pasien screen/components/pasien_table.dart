@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:hospital_management_system/models/pasien/data/pasien_model.dart';
-import 'package:hospital_management_system/viewModels/rawatJalan_viewModel/rawatJalan_viewModel.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_core/theme.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';

@@ -6,7 +6,6 @@ part 'pasien_create_model.g.dart';
 @freezed
 class PasienCreateModel with _$PasienCreateModel {
   const factory PasienCreateModel({
-    int? code,
     String? nik,
     String? nama,
     String? jenisKelamin,

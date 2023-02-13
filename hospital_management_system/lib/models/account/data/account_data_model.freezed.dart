@@ -21,7 +21,7 @@ AccountDataModel _$AccountDataModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$AccountDataModel {
   int? get code => throw _privateConstructorUsedError;
-  List<AccountModel>? get dataManage => throw _privateConstructorUsedError;
+  List<AccountModel>? get data => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +35,7 @@ abstract class $AccountDataModelCopyWith<$Res> {
           AccountDataModel value, $Res Function(AccountDataModel) then) =
       _$AccountDataModelCopyWithImpl<$Res, AccountDataModel>;
   @useResult
-  $Res call({int? code, List<AccountModel>? dataManage});
+  $Res call({int? code, List<AccountModel>? data});
 }
 
 /// @nodoc
@@ -52,16 +52,16 @@ class _$AccountDataModelCopyWithImpl<$Res, $Val extends AccountDataModel>
   @override
   $Res call({
     Object? code = freezed,
-    Object? dataManage = freezed,
+    Object? data = freezed,
   }) {
     return _then(_value.copyWith(
       code: freezed == code
           ? _value.code
           : code // ignore: cast_nullable_to_non_nullable
               as int?,
-      dataManage: freezed == dataManage
-          ? _value.dataManage
-          : dataManage // ignore: cast_nullable_to_non_nullable
+      data: freezed == data
+          ? _value.data
+          : data // ignore: cast_nullable_to_non_nullable
               as List<AccountModel>?,
     ) as $Val);
   }
@@ -75,7 +75,7 @@ abstract class _$$_AccountDataModelCopyWith<$Res>
       __$$_AccountDataModelCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int? code, List<AccountModel>? dataManage});
+  $Res call({int? code, List<AccountModel>? data});
 }
 
 /// @nodoc
@@ -90,16 +90,16 @@ class __$$_AccountDataModelCopyWithImpl<$Res>
   @override
   $Res call({
     Object? code = freezed,
-    Object? dataManage = freezed,
+    Object? data = freezed,
   }) {
     return _then(_$_AccountDataModel(
       code: freezed == code
           ? _value.code
           : code // ignore: cast_nullable_to_non_nullable
               as int?,
-      dataManage: freezed == dataManage
-          ? _value._dataManage
-          : dataManage // ignore: cast_nullable_to_non_nullable
+      data: freezed == data
+          ? _value._data
+          : data // ignore: cast_nullable_to_non_nullable
               as List<AccountModel>?,
     ));
   }
@@ -109,27 +109,27 @@ class __$$_AccountDataModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_AccountDataModel implements _AccountDataModel {
   const _$_AccountDataModel(
-      {required this.code, required final List<AccountModel>? dataManage})
-      : _dataManage = dataManage;
+      {required this.code, required final List<AccountModel>? data})
+      : _data = data;
 
   factory _$_AccountDataModel.fromJson(Map<String, dynamic> json) =>
       _$$_AccountDataModelFromJson(json);
 
   @override
   final int? code;
-  final List<AccountModel>? _dataManage;
+  final List<AccountModel>? _data;
   @override
-  List<AccountModel>? get dataManage {
-    final value = _dataManage;
+  List<AccountModel>? get data {
+    final value = _data;
     if (value == null) return null;
-    if (_dataManage is EqualUnmodifiableListView) return _dataManage;
+    if (_data is EqualUnmodifiableListView) return _data;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
 
   @override
   String toString() {
-    return 'AccountDataModel(code: $code, dataManage: $dataManage)';
+    return 'AccountDataModel(code: $code, data: $data)';
   }
 
   @override
@@ -138,14 +138,13 @@ class _$_AccountDataModel implements _AccountDataModel {
         (other.runtimeType == runtimeType &&
             other is _$_AccountDataModel &&
             (identical(other.code, code) || other.code == code) &&
-            const DeepCollectionEquality()
-                .equals(other._dataManage, _dataManage));
+            const DeepCollectionEquality().equals(other._data, _data));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, code, const DeepCollectionEquality().hash(_dataManage));
+      runtimeType, code, const DeepCollectionEquality().hash(_data));
 
   @JsonKey(ignore: true)
   @override
@@ -164,7 +163,7 @@ class _$_AccountDataModel implements _AccountDataModel {
 abstract class _AccountDataModel implements AccountDataModel {
   const factory _AccountDataModel(
       {required final int? code,
-      required final List<AccountModel>? dataManage}) = _$_AccountDataModel;
+      required final List<AccountModel>? data}) = _$_AccountDataModel;
 
   factory _AccountDataModel.fromJson(Map<String, dynamic> json) =
       _$_AccountDataModel.fromJson;
@@ -172,7 +171,7 @@ abstract class _AccountDataModel implements AccountDataModel {
   @override
   int? get code;
   @override
-  List<AccountModel>? get dataManage;
+  List<AccountModel>? get data;
   @override
   @JsonKey(ignore: true)
   _$$_AccountDataModelCopyWith<_$_AccountDataModel> get copyWith =>

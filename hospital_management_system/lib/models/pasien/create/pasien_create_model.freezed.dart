@@ -20,7 +20,6 @@ PasienCreateModel _$PasienCreateModelFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$PasienCreateModel {
-  int? get code => throw _privateConstructorUsedError;
   String? get nik => throw _privateConstructorUsedError;
   String? get nama => throw _privateConstructorUsedError;
   String? get jenisKelamin => throw _privateConstructorUsedError;
@@ -44,8 +43,7 @@ abstract class $PasienCreateModelCopyWith<$Res> {
       _$PasienCreateModelCopyWithImpl<$Res, PasienCreateModel>;
   @useResult
   $Res call(
-      {int? code,
-      String? nik,
+      {String? nik,
       String? nama,
       String? jenisKelamin,
       String? poli,
@@ -69,7 +67,6 @@ class _$PasienCreateModelCopyWithImpl<$Res, $Val extends PasienCreateModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? code = freezed,
     Object? nik = freezed,
     Object? nama = freezed,
     Object? jenisKelamin = freezed,
@@ -81,10 +78,6 @@ class _$PasienCreateModelCopyWithImpl<$Res, $Val extends PasienCreateModel>
     Object? jenisPenanganan = freezed,
   }) {
     return _then(_value.copyWith(
-      code: freezed == code
-          ? _value.code
-          : code // ignore: cast_nullable_to_non_nullable
-              as int?,
       nik: freezed == nik
           ? _value.nik
           : nik // ignore: cast_nullable_to_non_nullable
@@ -134,8 +127,7 @@ abstract class _$$_PasienCreateModelCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int? code,
-      String? nik,
+      {String? nik,
       String? nama,
       String? jenisKelamin,
       String? poli,
@@ -157,7 +149,6 @@ class __$$_PasienCreateModelCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? code = freezed,
     Object? nik = freezed,
     Object? nama = freezed,
     Object? jenisKelamin = freezed,
@@ -169,10 +160,6 @@ class __$$_PasienCreateModelCopyWithImpl<$Res>
     Object? jenisPenanganan = freezed,
   }) {
     return _then(_$_PasienCreateModel(
-      code: freezed == code
-          ? _value.code
-          : code // ignore: cast_nullable_to_non_nullable
-              as int?,
       nik: freezed == nik
           ? _value.nik
           : nik // ignore: cast_nullable_to_non_nullable
@@ -217,8 +204,7 @@ class __$$_PasienCreateModelCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_PasienCreateModel implements _PasienCreateModel {
   const _$_PasienCreateModel(
-      {this.code,
-      this.nik,
+      {this.nik,
       this.nama,
       this.jenisKelamin,
       this.poli,
@@ -231,8 +217,6 @@ class _$_PasienCreateModel implements _PasienCreateModel {
   factory _$_PasienCreateModel.fromJson(Map<String, dynamic> json) =>
       _$$_PasienCreateModelFromJson(json);
 
-  @override
-  final int? code;
   @override
   final String? nik;
   @override
@@ -254,7 +238,7 @@ class _$_PasienCreateModel implements _PasienCreateModel {
 
   @override
   String toString() {
-    return 'PasienCreateModel(code: $code, nik: $nik, nama: $nama, jenisKelamin: $jenisKelamin, poli: $poli, alamat: $alamat, noTelepon: $noTelepon, tempatLahir: $tempatLahir, tanggalLahir: $tanggalLahir, jenisPenanganan: $jenisPenanganan)';
+    return 'PasienCreateModel(nik: $nik, nama: $nama, jenisKelamin: $jenisKelamin, poli: $poli, alamat: $alamat, noTelepon: $noTelepon, tempatLahir: $tempatLahir, tanggalLahir: $tanggalLahir, jenisPenanganan: $jenisPenanganan)';
   }
 
   @override
@@ -262,7 +246,6 @@ class _$_PasienCreateModel implements _PasienCreateModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_PasienCreateModel &&
-            (identical(other.code, code) || other.code == code) &&
             (identical(other.nik, nik) || other.nik == nik) &&
             (identical(other.nama, nama) || other.nama == nama) &&
             (identical(other.jenisKelamin, jenisKelamin) ||
@@ -281,8 +264,8 @@ class _$_PasienCreateModel implements _PasienCreateModel {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, code, nik, nama, jenisKelamin,
-      poli, alamat, noTelepon, tempatLahir, tanggalLahir, jenisPenanganan);
+  int get hashCode => Object.hash(runtimeType, nik, nama, jenisKelamin, poli,
+      alamat, noTelepon, tempatLahir, tanggalLahir, jenisPenanganan);
 
   @JsonKey(ignore: true)
   @override
@@ -301,8 +284,7 @@ class _$_PasienCreateModel implements _PasienCreateModel {
 
 abstract class _PasienCreateModel implements PasienCreateModel {
   const factory _PasienCreateModel(
-      {final int? code,
-      final String? nik,
+      {final String? nik,
       final String? nama,
       final String? jenisKelamin,
       final String? poli,
@@ -315,8 +297,6 @@ abstract class _PasienCreateModel implements PasienCreateModel {
   factory _PasienCreateModel.fromJson(Map<String, dynamic> json) =
       _$_PasienCreateModel.fromJson;
 
-  @override
-  int? get code;
   @override
   String? get nik;
   @override

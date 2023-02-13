@@ -1,0 +1,22 @@
+{
+    "code": 200,
+    "data": [
+        {
+            "id": 4,
+            "nik": "330709815",
+            "nama": "Yusuf",
+            "alamat": "Tuban, Banyuwangi",
+            "jenisKelamin": "P",
+            "jadwalRawatJalan": "Senin, 4 Juli 2022 Pukul 08.00 WIB",
+            "noAntrian": "K-1",
+            "proses": false,
+            "keterangan": "",
+            "noTelepon": "083720012964",
+            "tanggalKeterangan": "",
+            "tempatLahir": "Peterongan",
+            "tanggalLahir": "1999-12-18",
+            "jenisPenyakit": "",
+            "jenisPenanganan": "Rawat jalan"
+        }
+    ]
+}

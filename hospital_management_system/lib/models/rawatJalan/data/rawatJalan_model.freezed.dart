@@ -29,7 +29,7 @@ mixin _$RawatJalanModel {
   String? get noAntrian => throw _privateConstructorUsedError;
   bool? get proses => throw _privateConstructorUsedError;
   String? get keterangan => throw _privateConstructorUsedError;
-  String? get noHp => throw _privateConstructorUsedError;
+  String? get noTelepon => throw _privateConstructorUsedError;
   String? get tempatLahir => throw _privateConstructorUsedError;
   String? get tanggalKeterangan => throw _privateConstructorUsedError;
   String? get tanggalLahir => throw _privateConstructorUsedError;
@@ -58,7 +58,7 @@ abstract class $RawatJalanModelCopyWith<$Res> {
       String? noAntrian,
       bool? proses,
       String? keterangan,
-      String? noHp,
+      String? noTelepon,
       String? tempatLahir,
       String? tanggalKeterangan,
       String? tanggalLahir,
@@ -88,7 +88,7 @@ class _$RawatJalanModelCopyWithImpl<$Res, $Val extends RawatJalanModel>
     Object? noAntrian = freezed,
     Object? proses = freezed,
     Object? keterangan = freezed,
-    Object? noHp = freezed,
+    Object? noTelepon = freezed,
     Object? tempatLahir = freezed,
     Object? tanggalKeterangan = freezed,
     Object? tanggalLahir = freezed,
@@ -132,9 +132,9 @@ class _$RawatJalanModelCopyWithImpl<$Res, $Val extends RawatJalanModel>
           ? _value.keterangan
           : keterangan // ignore: cast_nullable_to_non_nullable
               as String?,
-      noHp: freezed == noHp
-          ? _value.noHp
-          : noHp // ignore: cast_nullable_to_non_nullable
+      noTelepon: freezed == noTelepon
+          ? _value.noTelepon
+          : noTelepon // ignore: cast_nullable_to_non_nullable
               as String?,
       tempatLahir: freezed == tempatLahir
           ? _value.tempatLahir
@@ -178,7 +178,7 @@ abstract class _$$_RawatJalanModelCopyWith<$Res>
       String? noAntrian,
       bool? proses,
       String? keterangan,
-      String? noHp,
+      String? noTelepon,
       String? tempatLahir,
       String? tanggalKeterangan,
       String? tanggalLahir,
@@ -206,7 +206,7 @@ class __$$_RawatJalanModelCopyWithImpl<$Res>
     Object? noAntrian = freezed,
     Object? proses = freezed,
     Object? keterangan = freezed,
-    Object? noHp = freezed,
+    Object? noTelepon = freezed,
     Object? tempatLahir = freezed,
     Object? tanggalKeterangan = freezed,
     Object? tanggalLahir = freezed,
@@ -250,9 +250,9 @@ class __$$_RawatJalanModelCopyWithImpl<$Res>
           ? _value.keterangan
           : keterangan // ignore: cast_nullable_to_non_nullable
               as String?,
-      noHp: freezed == noHp
-          ? _value.noHp
-          : noHp // ignore: cast_nullable_to_non_nullable
+      noTelepon: freezed == noTelepon
+          ? _value.noTelepon
+          : noTelepon // ignore: cast_nullable_to_non_nullable
               as String?,
       tempatLahir: freezed == tempatLahir
           ? _value.tempatLahir
@@ -291,7 +291,7 @@ class _$_RawatJalanModel implements _RawatJalanModel {
       this.noAntrian,
       this.proses,
       this.keterangan,
-      this.noHp,
+      this.noTelepon,
       this.tempatLahir,
       this.tanggalKeterangan,
       this.tanggalLahir,
@@ -320,7 +320,7 @@ class _$_RawatJalanModel implements _RawatJalanModel {
   @override
   final String? keterangan;
   @override
-  final String? noHp;
+  final String? noTelepon;
   @override
   final String? tempatLahir;
   @override
@@ -334,7 +334,7 @@ class _$_RawatJalanModel implements _RawatJalanModel {
 
   @override
   String toString() {
-    return 'RawatJalanModel(id: $id, nik: $nik, nama: $nama, alamat: $alamat, jenisKelamin: $jenisKelamin, jadwalRawatJalan: $jadwalRawatJalan, noAntrian: $noAntrian, proses: $proses, keterangan: $keterangan, noHp: $noHp, tempatLahir: $tempatLahir, tanggalKeterangan: $tanggalKeterangan, tanggalLahir: $tanggalLahir, jenisPenyakit: $jenisPenyakit, jenisPenanganan: $jenisPenanganan)';
+    return 'RawatJalanModel(id: $id, nik: $nik, nama: $nama, alamat: $alamat, jenisKelamin: $jenisKelamin, jadwalRawatJalan: $jadwalRawatJalan, noAntrian: $noAntrian, proses: $proses, keterangan: $keterangan, noTelepon: $noTelepon, tempatLahir: $tempatLahir, tanggalKeterangan: $tanggalKeterangan, tanggalLahir: $tanggalLahir, jenisPenyakit: $jenisPenyakit, jenisPenanganan: $jenisPenanganan)';
   }
 
   @override
@@ -355,7 +355,8 @@ class _$_RawatJalanModel implements _RawatJalanModel {
             (identical(other.proses, proses) || other.proses == proses) &&
             (identical(other.keterangan, keterangan) ||
                 other.keterangan == keterangan) &&
-            (identical(other.noHp, noHp) || other.noHp == noHp) &&
+            (identical(other.noTelepon, noTelepon) ||
+                other.noTelepon == noTelepon) &&
             (identical(other.tempatLahir, tempatLahir) ||
                 other.tempatLahir == tempatLahir) &&
             (identical(other.tanggalKeterangan, tanggalKeterangan) ||
@@ -381,7 +382,7 @@ class _$_RawatJalanModel implements _RawatJalanModel {
       noAntrian,
       proses,
       keterangan,
-      noHp,
+      noTelepon,
       tempatLahir,
       tanggalKeterangan,
       tanggalLahir,
@@ -413,7 +414,7 @@ abstract class _RawatJalanModel implements RawatJalanModel {
       final String? noAntrian,
       final bool? proses,
       final String? keterangan,
-      final String? noHp,
+      final String? noTelepon,
       final String? tempatLahir,
       final String? tanggalKeterangan,
       final String? tanggalLahir,
@@ -442,7 +443,7 @@ abstract class _RawatJalanModel implements RawatJalanModel {
   @override
   String? get keterangan;
   @override
-  String? get noHp;
+  String? get noTelepon;
   @override
   String? get tempatLahir;
   @override

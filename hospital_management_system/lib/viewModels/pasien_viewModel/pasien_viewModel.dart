@@ -131,7 +131,7 @@ class PasienViewModel extends ChangeNotifier {
       PasienUpdateModel data, ProgressDialog progressWidget) async {
     Map<String, dynamic> updateData = data.toJson();
 
-    progressWidget.show();
+    await progressWidget.show();
 
     UpdatePasienService()
         .updatePasien(id.toString(), updateData)
@@ -163,7 +163,7 @@ class PasienViewModel extends ChangeNotifier {
     int id,
     ProgressDialog progressWidget,
   ) async {
-    progressWidget.show();
+    await progressWidget.show();
 
     notifyListeners();
     await DeletePasienService()

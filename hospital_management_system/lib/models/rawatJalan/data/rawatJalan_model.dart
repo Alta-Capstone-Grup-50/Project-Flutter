@@ -15,7 +15,7 @@ class RawatJalanModel with _$RawatJalanModel {
     String? noAntrian,
     bool? proses,
     String? keterangan,
-    String? noHp,
+    String? noTelepon,
     String? tempatLahir,
     String? tanggalKeterangan,
     String? tanggalLahir,

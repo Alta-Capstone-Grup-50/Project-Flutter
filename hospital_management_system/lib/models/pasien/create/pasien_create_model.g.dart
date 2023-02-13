@@ -8,7 +8,6 @@ part of 'pasien_create_model.dart';
 
 _$_PasienCreateModel _$$_PasienCreateModelFromJson(Map<String, dynamic> json) =>
     _$_PasienCreateModel(
-      code: json['code'] as int?,
       nik: json['nik'] as String?,
       nama: json['nama'] as String?,
       jenisKelamin: json['jenisKelamin'] as String?,
@@ -23,7 +22,6 @@ _$_PasienCreateModel _$$_PasienCreateModelFromJson(Map<String, dynamic> json) =>
 Map<String, dynamic> _$$_PasienCreateModelToJson(
         _$_PasienCreateModel instance) =>
     <String, dynamic>{
-      'code': instance.code,
       'nik': instance.nik,
       'nama': instance.nama,
       'jenisKelamin': instance.jenisKelamin,

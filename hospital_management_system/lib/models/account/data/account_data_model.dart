@@ -8,7 +8,7 @@ part 'account_data_model.g.dart';
 class AccountDataModel with _$AccountDataModel {
   const factory AccountDataModel({
     required int? code,
-    required List<AccountModel>? dataManage,
+    required List<AccountModel>? data,
   }) = _AccountDataModel;
 
   factory AccountDataModel.fromJson(Map<String, dynamic> json) =>

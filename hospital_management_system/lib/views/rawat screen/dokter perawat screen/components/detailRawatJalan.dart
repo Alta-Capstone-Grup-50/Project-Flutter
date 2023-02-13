@@ -259,7 +259,7 @@ class _DetailRawatJalanState extends State<DetailRawatJalan> {
                   Padding(
                     padding: const EdgeInsets.only(top: 12),
                     child: Input(
-                      initialValue: putDataRawat[indexOfPage].noHp,
+                      initialValue: putDataRawat[indexOfPage].noTelepon,
                       borderRadius: const BorderRadius.all(Radius.zero),
                       keyboardType: TextInputType.phone,
                       enabled: false,
